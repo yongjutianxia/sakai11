@@ -18,6 +18,7 @@
 		<configuration name="reset.button" value="false" type="final" />
 		<configuration name="help.id" value="sakai.motd" type="final" />
 
+		<configuration name="hide.options" value="true" />
 	</tool>
 
 </registration>
