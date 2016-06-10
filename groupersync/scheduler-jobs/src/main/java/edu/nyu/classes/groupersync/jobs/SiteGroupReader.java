@@ -10,8 +10,10 @@ import org.sakaiproject.site.cover.SiteService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 class SiteGroupReader {
 
@@ -41,6 +43,7 @@ class SiteGroupReader {
 
         for (AuthzGroup sakaiGroup : sakaiGroups) {
             List<UserWithRole> members = new ArrayList<UserWithRole>();
+            Map<String, String> rolesOfActiveUsers = new HashMap<String, String>();
             HashSet<String> inactiveUsers = new HashSet<String>();
 
             // Load direct members of this group
@@ -49,6 +52,9 @@ class SiteGroupReader {
                     inactiveUsers.add(m.getUserEid());
                     continue;
                 }
+
+                // Used below
+                rolesOfActiveUsers.put(m.getUserEid(), m.getRole().getId());
 
                 if (!m.isProvided()) {
                     // Provided users will be handled separately below.
@@ -68,8 +74,18 @@ class SiteGroupReader {
                             continue;
                         }
 
-                        members.add(new UserWithRole(m.getUserId(), m.getRole()));
-                        seenUsers.add(m.getUserId());
+                        String userId = m.getUserId();
+                        String role = m.getRole();
+
+                        if (rolesOfActiveUsers.containsKey(userId)) {
+                            // We'll give priority to the role set manually
+                            // within Sakai, just in case the user has had their
+                            // SIS role overridden.
+                            role = rolesOfActiveUsers.get(userId);
+                        }
+
+                        members.add(new UserWithRole(userId, role));
+                        seenUsers.add(userId);
                     }
                 }
             }
