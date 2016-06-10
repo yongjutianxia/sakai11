@@ -133,9 +133,8 @@ $(function () {
         q3_div.height(q4_div.height());
       }
     };
-     
+
     reset_row_heights();
-    // setInterval(reset_row_heights, 1000);
 
 
     var divToScroll = $('#q4 > div');
@@ -154,7 +153,7 @@ $(function () {
         return isSupported;
     }
 
-    $('#q3,#q4').on('mousewheel', function(event) {
+    $('#q3').on('mousewheel', function(event) {
         var leftPosition = divToScroll.scrollLeft();
         var topPosition = divToScroll.scrollTop();
 
@@ -162,12 +161,25 @@ $(function () {
         if (event.deltaX) {
           divToScroll.scrollLeft(leftPosition + (event.deltaX * event.deltaFactor));
         }
-        
+
         if (event.deltaY) {
           divToScroll.scrollTop(topPosition - (event.deltaY * event.deltaFactor));
         }
 
-        event.preventDefault();
-        return false;
+        var div = divToScroll[0];
+
+
+        var reachedBottom = (div.scrollHeight - div.scrollTop - divToScroll.height()) <= 10;
+        var reachedTop = (div.scrollTop == 0);
+
+        // If we're at the top or bottom of the inner scroll pane,
+        // allow the outer one to scroll (to match the browser's
+        // default scrolling behavior)
+        if (reachedTop || reachedBottom) {
+          return true;
+        } else {
+          event.preventDefault();
+          return false;
+        }
     });
 });
