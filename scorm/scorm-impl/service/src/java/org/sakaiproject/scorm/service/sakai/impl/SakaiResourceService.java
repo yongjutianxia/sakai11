@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -149,26 +150,33 @@ public abstract class SakaiResourceService extends AbstractResourceService {
 		return created;
 	}
 
-	private List<Archive> findUnvalidatedArchives(String collectionId) throws ResourceStorageException {
+	private List<Archive> findUnvalidatedArchives(String rootCollectionId) throws ResourceStorageException {
 		List<Archive> archives = new LinkedList<Archive>();
+		Stack<String> collectionIdsToCheck = new Stack<String>();
+
+		collectionIdsToCheck.push(rootCollectionId);
+
 		try {
-			ContentCollection collection = this.contentService().getCollection(collectionId);
-			List<ContentEntity> members = collection.getMemberResources();
+			while (!collectionIdsToCheck.isEmpty()) {
+				String collectionId = collectionIdsToCheck.pop();
 
-			for (ContentEntity member : members) {
-				if (member.isResource()) {
-					String mimeType = ((ContentResource) member).getContentType();
-					if (isValidArchive(mimeType)) {
-						ResourceProperties props = member.getProperties();
-						String title = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+				ContentCollection collection = this.contentService().getCollection(collectionId);
+				List<ContentEntity> members = collection.getMemberResources();
 
-						archives.add(new Archive(member.getId(), title));
+				for (ContentEntity member : members) {
+					if (member.isResource()) {
+						String mimeType = ((ContentResource) member).getContentType();
+						if (isValidArchive(mimeType)) {
+							ResourceProperties props = member.getProperties();
+							String title = props.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+
+							archives.add(new Archive(member.getId(), title));
+						}
+					} else if (member.isCollection() && member.getVirtualContentEntity() == null && member.getContentHandler() == null) {
+						collectionIdsToCheck.push(member.getId());
 					}
-				} else if (member.isCollection() && member.getVirtualContentEntity() == null && member.getContentHandler() == null) {
-					archives.addAll(findUnvalidatedArchives(member.getId()));
 				}
 			}
-
 		} catch (Exception e) {
 			log.error("Caught an exception looking for content packages", e);
 			throw new ResourceStorageException("Caught an exception looking for content packages, reason: " + e.getMessage(), e);
