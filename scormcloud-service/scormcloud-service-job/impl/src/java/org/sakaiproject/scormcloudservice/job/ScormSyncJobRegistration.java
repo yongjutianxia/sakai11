@@ -21,7 +21,7 @@ public class ScormSyncJobRegistration {
         Scheduler scheduler = schedulerManager.getScheduler();
 
         try {
-            if (!scheduler.isStarted()) {
+            if (!ServerConfigurationService.getBoolean("startScheduler@org.sakaiproject.api.app.scheduler.SchedulerManager", true)) {
                 LOG.info("Doing nothing because the scheduler isn't started");
                 return;
             }
