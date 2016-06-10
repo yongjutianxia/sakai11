@@ -40,13 +40,12 @@ var markAsHidden = function (elt) {
 $(document).ready(function() {
     var settingsTool = findSettingsMenuLink();
 
-    if (showSiteInfoAsSettings) {
-        markAsHidden(settingsTool);
-
+    if (!settingsTool) {
         return;
     }
 
-    if (!settingsTool) {
+    if (showSiteInfoAsSettings) {
+        markAsHidden(settingsTool);
         return;
     }
 
