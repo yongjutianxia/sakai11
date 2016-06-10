@@ -98,8 +98,11 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 	
 	public String getUrl(final SessionBean sessionBean) {
 		
-		if (log.isDebugEnabled())
+		if (log.isDebugEnabled()) {
 			log.debug("NYU-SCORM-DEBUG -- LaunchData: " + sessionBean.getLaunchData());
+			if (sessionBean.getLaunchData() == null)
+				Thread.dumpStack();
+		}
 		
 		if (sessionBean.getLaunchData() == null)
 			return null;
