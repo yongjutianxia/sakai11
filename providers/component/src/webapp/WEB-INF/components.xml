@@ -46,6 +46,7 @@
 				<entry key="I" value="Instructor"/>
 				<entry key="GSI" value="Teaching Assistant"/>
 				<entry key="S" value="Student"/>
+				<entry key="A" value="Course Site Admin"/>
 			</map>
 		</entry>
 		<entry key="courseOfferingRoleToSiteRole">
