@@ -4,6 +4,9 @@
     data-sakai-group-title="{{this}}"
     data-address="{{address}}">
     <td class="col-sm-4"><div>{{this}}</div>
+        {{#if rosters}}
+            <div class="roster-name">{{roster}}</div>
+        {{/if}}
         <div><button class="btn btn-xs btn-default show-members-btn">Members</button></div>
     </td>
     <td class="col-sm-6">

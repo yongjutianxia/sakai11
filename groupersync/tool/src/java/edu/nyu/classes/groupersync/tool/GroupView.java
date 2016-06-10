@@ -43,6 +43,10 @@ class GroupView implements Comparable<GroupView> {
         return displayString;
     }
 
+    public String getRoster() {
+        return group.getProviderGroupId();
+    }
+
     public String getStatus() {
         return groupInfo.getStatus().getLabel();
     }

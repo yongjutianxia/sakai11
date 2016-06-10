@@ -87,3 +87,7 @@ h3 {
 small.text-danger {
     font-weight: bold;
 }
+
+.roster-name {
+    color: #888;
+}
