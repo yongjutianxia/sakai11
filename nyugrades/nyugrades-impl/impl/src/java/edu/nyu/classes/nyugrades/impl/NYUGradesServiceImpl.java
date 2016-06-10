@@ -213,10 +213,6 @@ public class NYUGradesServiceImpl implements NYUGradesService
     public GradeSet getGradesForSection(String sectionEid)
         throws SiteNotFoundForSectionException, MultipleSitesFoundForSectionException, GradePullDisabledException
     {
-        if (!sectionEid.startsWith("FA14")) {
-            throw new GradePullDisabledException(sectionEid);
-        }
-
         String siteId = getSiteId(sectionEid);
 
         if (!isSitePublished(siteId)) {
