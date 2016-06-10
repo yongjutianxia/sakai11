@@ -218,10 +218,11 @@ public class ScormServiceStore {
                         ps.executeUpdate();
 
                         // Mark jobs as permanently failed as needed
-                        ps = connection.prepareStatement("update scs_scorm_job set mtime = ?, status = ? WHERE retry_count >= ?");
+                        ps = connection.prepareStatement("update scs_scorm_job set mtime = ?, status = ? WHERE retry_count >= ? AND status != ?");
                         ps.setLong(1, System.currentTimeMillis());
                         ps.setString(2, JOB_STATUS.PERMANENTLY_FAILED.toString());
                         ps.setInt(3, RETRY_COUNT);
+                        ps.setString(4, JOB_STATUS.PERMANENTLY_FAILED.toString());
                         ps.executeUpdate();
                     } finally {
                         connection.commit();
