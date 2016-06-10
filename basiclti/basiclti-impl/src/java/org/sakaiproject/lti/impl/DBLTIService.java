@@ -360,6 +360,15 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 			contentModel = contentModelList.toArray(new String[contentModelList.size()]);
 		}
 		
+		// CLASSES-1847 Honor "always launch in popup" if set
+		// This workaround is required until a patch is offered for
+		// https://jira.sakaiproject.org/browse/SAK-26269
+		if (Integer.valueOf(1).equals(tool.get(LTIService.LTI_NEWPAGE))) {
+			newProps.put(LTIService.LTI_NEWPAGE, "1");
+			contentModelList.add("newpage:checkbox:label=bl_newpage");
+			contentModel = contentModelList.toArray(new String[contentModelList.size()]);
+		}
+
 		if (contentModel == null)
 			return rb.getString("error.invalid.toolid");
 		return insertThingDao("lti_content", contentModel, LTIService.CONTENT_MODEL, newProps, siteId, isAdminRole, isMaintainRole);
