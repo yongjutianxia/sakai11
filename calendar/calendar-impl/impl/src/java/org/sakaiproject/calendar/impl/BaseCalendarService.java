@@ -5145,7 +5145,7 @@ public abstract class BaseCalendarService implements CalendarService, DoubleStor
 
 	// Mime Types
 	protected final static String PDF_MIME_TYPE = "application/pdf";
-	protected final static String ICAL_MIME_TYPE = "text/calendar";
+	protected final static String ICAL_MIME_TYPE = "text/calendar; charset=UTF-8";
 
 	// Constants for time calculations
 	protected static long MILLISECONDS_IN_DAY = (60 * 60 * 24 * 1000);
