@@ -133,7 +133,6 @@ public class ActivityAjaxButton extends AjaxRolloverImageButton {
 	}
 	
 	private void doNavigate(SessionBean sessionBean, int seqRequest, AjaxRequestTarget target) {
-		log.debug("NYU-SCORM-DEBUG -- doNavigate -- SessionBean: " + sessionBean + "; SeqRequest: " + seqRequest + "; Target: " + target);
 		sequencingService.navigate(seqRequest, sessionBean, new LocalResourceNavigator(), target);
 		
 		if (form.getLaunchPanel() != null) {		

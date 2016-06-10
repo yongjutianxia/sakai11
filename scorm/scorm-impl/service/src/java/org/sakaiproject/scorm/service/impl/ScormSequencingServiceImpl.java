@@ -174,8 +174,6 @@ public abstract class ScormSequencingServiceImpl implements ScormSequencingServi
 		// SessionBean needs to be populated with courseId and learnerId by this point
 		if (log.isDebugEnabled()) {
 			log.debug("navigate (" + request + ")");
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-int -- SessionBean: " + sessionBean + "; Agent: " + agent + "; Target: " + target + "; RequestValue: " + request);
-
 			if (sessionBean.getContentPackage() == null || sessionBean.getLearnerId() == null) {
 				log.error("Session bean should be populated with content package and learner id");
 			}
@@ -203,10 +201,6 @@ public abstract class ScormSequencingServiceImpl implements ScormSequencingServi
 		ILaunch launch = sequencer.navigate(request);
 		ContentPackageManifest manifest = adlManager().getManifest(sessionBean);
 		
-		if (log.isDebugEnabled()) {
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-int -- ISeqActivityTree: " + tree + "; ISequencer: " + sequencer + "; ILaunch: " + launch + "; ContentPackageManifest: " + manifest + "; RequestValue: " + request);
-		}
-
 		update(sessionBean, sequencer, launch, manifest);
 
 		String result = launch.getLaunchStatusNoContent();
@@ -298,17 +292,12 @@ public abstract class ScormSequencingServiceImpl implements ScormSequencingServi
 
 		if (log.isDebugEnabled()) {
 			log.debug("navigate (" + choiceRequest + ")");
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-string -- SessionBean: " + sessionBean + "; Agent: " + agent + "; Target: " + target + "; RequestValue: " + choiceRequest);
 		}
 
 		ISeqActivityTree tree = adlManager().getActivityTree(sessionBean);
 		ISequencer sequencer = adlManager().getSequencer(tree);
 		ILaunch launch = sequencer.navigate(choiceRequest);
 		ContentPackageManifest manifest = adlManager().getManifest(sessionBean);
-		
-		if (log.isDebugEnabled()) {
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-string -- ISeqActivityTree: " + tree + "; ISequencer: " + sequencer + "; ILaunch: " + launch + "; ContentPackageManifest: " + manifest);
-		}
 		
 		update(sessionBean, sequencer, launch, manifest);
 
@@ -324,15 +313,10 @@ public abstract class ScormSequencingServiceImpl implements ScormSequencingServi
 
 		if (log.isDebugEnabled()) {
 			log.debug("navigate (" + sessionBean.getActivityId() + ")");
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-activity -- SessionBean: " + sessionBean + "; Agent: " + agent + "; Target: " + target + "; activityId: " + activityId);
 		}
 
 		ILaunch launch = sequencer.navigate(sessionBean.getActivityId());
 		ContentPackageManifest manifest = adlManager().getManifest(sessionBean);
-
-		if (log.isDebugEnabled()) {
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-activity -- ISeqActivityTree: " + tree + "; ISequencer: " + sequencer + "; ILaunch: " + launch + "; ContentPackageManifest: " + manifest);
-		}
 		
 		update(sessionBean, sequencer, launch, manifest);
 
@@ -364,11 +348,6 @@ public abstract class ScormSequencingServiceImpl implements ScormSequencingServi
 
 		if (log.isDebugEnabled()) {
 			log.debug("SCO is " + launch.getSco());
-			log.debug("NYU-SCORM-DEBUG -- update -- ActivityId: " + launch.getActivityId());
-			log.debug("NYU-SCORM-DEBUG -- update -- ScoId: " + launch.getSco());
-			log.debug("NYU-SCORM-DEBUG -- update -- NavigationState: " + launch.getNavState());
-			log.debug("NYU-SCORM-DEBUG -- update -- LaunchData: " + manifest.getLaunchData(sessionBean.getScoId()) + "; getScoId: " + sessionBean.getScoId());
-			log.debug("NYU-SCORM-DEBUG -- update -- ObjectiveStatusSet: " + sequencer.getObjStatusSet(launch.getActivityId()));
 			Thread.dumpStack();
 		}
 

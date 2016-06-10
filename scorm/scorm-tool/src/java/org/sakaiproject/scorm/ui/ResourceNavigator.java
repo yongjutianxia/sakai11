@@ -51,9 +51,6 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 	
 	public void displayResource(final SessionBean sessionBean, Object target) {
 		
-		if (log.isDebugEnabled())
-			log.debug("NYU-SCORM-DEBUG -- Session Bean: " + sessionBean + "; Target: " + target);
-		
 		if (null == sessionBean)
 			return;
 		
@@ -62,9 +59,6 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 		}
 		
 		String url = getUrl(sessionBean);
-		
-		if (log.isDebugEnabled())
-			log.debug("NYU-SCORM-DEBUG -- URL: " + url);
 		
 		
 		// Don't bother to display anything if a null url is returned. 
@@ -98,20 +92,11 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 	
 	public String getUrl(final SessionBean sessionBean) {
 		
-		if (log.isDebugEnabled()) {
-			log.debug("NYU-SCORM-DEBUG -- LaunchData: " + sessionBean.getLaunchData());
-			if (sessionBean.getLaunchData() == null)
-				Thread.dumpStack();
-		}
-		
 		if (sessionBean.getLaunchData() == null)
 			return null;
 		
 		String resourceId = sessionBean.getContentPackage().getResourceId();		
 		String launchLine = sessionBean.getLaunchData().getLaunchLine();
-		
-		if (log.isDebugEnabled())
-			log.debug("NYU-SCORM-DEBUG -- resourceId: " + resourceId + "; launchLine: " + launchLine);
 		
 		if (StringUtils.isBlank(launchLine))
 			return null;
@@ -139,9 +124,6 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 		String resourceName = resourceService().getResourcePath(resourceId, launchLine);
 	
 		
-		if (log.isDebugEnabled())
-			log.debug("NYU-SCORM-DEBUG -- resourceName: " + resourceName);
-	
 		
 		//ResourceReference reference = new ResourceReference(PlayerPage.class, resourceName);
 		
