@@ -54,7 +54,7 @@
 		           </h:panelGroup>
 		         
 		         
-		       <h:panelGroup rendered="#{PrivateMessagesTool.instructor}">	  
+		       <h:panelGroup rendered="#{PrivateMessagesTool.instructor}" style="display: none;">
 		         <f:verbatim><h3></f:verbatim><h:outputText value="#{msgs.pvt_site_settings}" /><f:verbatim></h3></f:verbatim>
 				  
                          <h:panelGroup styleClass="shorttext" rendered="#{!PrivateMessagesTool.emailCopyDisabled}">
