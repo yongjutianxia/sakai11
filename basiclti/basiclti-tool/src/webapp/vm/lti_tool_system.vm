@@ -153,8 +153,11 @@ ${includeLatestJQuery}
 	                </td>
 	                <td headers="site_id">
 	                	#set($siteId="<span style='display:none;'>zzzz</span>")
+
+                                ## Case varies between databases: ## UPPERCASE for Oracle, lowercase for MySQL.  Check both.
 	                	#set($siteId=$tool.get("SITE_ID"))
 	                	#set($siteId=$tool.get("site_id"))
+
 	                	$!siteId
 	                </td>
 	                #if ($isAdmin) <td headers="use">$tool.get("lti_content_count")</td> #end

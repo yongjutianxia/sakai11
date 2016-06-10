@@ -150,7 +150,12 @@ ${includeLatestJQuery}
 			<tr>
 			<td headers="matchpattern"> $validator.escapeHtml($content.get("title"))</td>
 			<td headers="url">
-				#set($launch = $content.get("launch"))
+                                #if(!$content.get("launch"))
+					#set($launch = "")
+                                #else
+					#set($launch = $content.get("launch"))
+                                #end
+
 				#if ($launch)
 					 $validator.escapeHtml($launch)
 				#else
