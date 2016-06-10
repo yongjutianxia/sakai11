@@ -9921,12 +9921,14 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					}
 					collectNewSiteInfo(state, params, providerChosenList);
 					
+					/* //NYU mod for site tempaltes being applied after the data has been collected - we dont want to do this as it will skip the last screen.
 					String find_course = params.getString("find_course");
 					if (state.getAttribute(STATE_TEMPLATE_SITE) != null && (find_course == null || !"true".equals(find_course)))
 					{
 						// creating based on template
 						doFinish(data);
 					}
+					*/
 				}
 			}
 			break;
@@ -12132,6 +12134,13 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					site.setType(SiteTypeUtil.getTargetSiteType(templateSite.getType()));
 				} else {
 					site = SiteService.addSite(id, siteInfo.site_type);
+				}
+				
+				//NYU mod we can override the type of the site if we set it in this attribute.
+				//and the associate with template code does that.
+				String siteType = (String) state.getAttribute(STATE_TYPE_SELECTED);
+				if(StringUtils.isNotBlank(siteType)){
+					site.setType(siteType);
 				}
 				
 				// add current user as the maintainer
