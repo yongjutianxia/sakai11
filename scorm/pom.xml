@@ -22,7 +22,8 @@
         2.8.0 
         2.9.0 
      -->
-    <version>2.8.1</version>
+    <!-- TO INFINITY AND BEYOND -->
+    <version>10.7</version>
   </parent>
   <artifactId>sakai-scorm-base</artifactId>
   <name>Sakai Scorm Project</name>

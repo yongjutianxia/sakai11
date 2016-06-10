@@ -37,6 +37,11 @@
       <artifactId>${sakai.spring.artifactId}</artifactId>
       <version>${sakai.spring.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
+
     <!-- 
     <dependency>
       <groupId>org.sakaiproject.edu-services.course-management</groupId>
@@ -53,10 +58,22 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+    </dependency>
     <!-- SCO-85 -->
     <dependency>
       <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
+      <artifactId>ehcache-core</artifactId>
       <type>jar</type>
       <scope>test</scope>
     </dependency>    
@@ -120,9 +137,6 @@
           <artifactId>coursemanagement-api</artifactId>
         </dependency>
       </dependencies>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
     </profile>
     <profile>
       <id>sakai2.9</id>
@@ -158,6 +172,44 @@
           <scope>provided</scope>
         </dependency>        
       </dependencies>
+    </profile>
+    <profile>
+      <id>sakai10.1</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-kernel-api</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-kernel-util</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.edu-services.course-management</groupId>
+          <artifactId>coursemanagement-api</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>net.sf.ehcache</groupId>
+          <artifactId>ehcache-core</artifactId>
+          <type>jar</type>
+          <scope>provided</scope>
+        </dependency>        
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <type>jar</type>
+          <scope>provided</scope>
+        </dependency>        
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <type>jar</type>
+          <scope>provided</scope>
+        </dependency>        
+      </dependencies>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
   </profiles>
 </project>
