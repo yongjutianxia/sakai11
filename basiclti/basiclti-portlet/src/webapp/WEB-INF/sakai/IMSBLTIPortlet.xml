@@ -334,7 +334,7 @@
 
 	</tool>
 
-	<tool id="nyu.mediasite.poly" title="Mediasite" description="Mediasite (Poly)">
+	<tool id="nyu.mediasite.engineering" title="Mediasite" description="Mediasite (Engineering)">
 
 	  <configuration name="sakai:portlet-pre-render" value="true" />
 
@@ -397,7 +397,7 @@
 
 	</tool>
 	
-	<tool id="nyu.panopto.poly" title="Panopto" description="Panopto (Poly)">
+	<tool id="nyu.panopto.engineering" title="Panopto" description="Panopto (Engineering)">
 
 	  <configuration name="sakai:portlet-pre-render" value="true" />
 
