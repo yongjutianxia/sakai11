@@ -161,7 +161,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
-            ['Maximize', 'ShowBlocks']
+            ['Maximize', 'ShowBlocks'],
+            ['Audio', 'kalturaflash', 'magicembed', 'Youtube']
         ],
         toolbar: 'Full',
         resize_dir: 'both',
@@ -201,6 +202,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('autosave',webJars+'autosave/8541f541d9985cfd0859c7d8eb6be404afe95a2d/', 'plugin.js');
             CKEDITOR.plugins.addExternal('notification',basePath+'notification/', 'plugin.js');
             CKEDITOR.plugins.addExternal('fontawesome',basePath+'fontawesome/', 'plugin.js');
+
+            CKEDITOR.plugins.addExternal('audio',basePath+'audio/', 'plugin.js'); 
+            CKEDITOR.plugins.addExternal('kalturaflash',basePath+'kalturaflash/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('magicembed',basePath+'magicembed/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('youtube',basePath+'youtube/', 'plugin.js');
+
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
                and to extraPlugins. This also needs extra stylesheets.
@@ -227,6 +234,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             } 
             CKEDITOR.dtd.$removeEmpty.span = false;
             CKEDITOR.dtd.$removeEmpty['i'] = false;
+            ckconfig.extraPlugins+=",audio,kalturaflash,magicembed,youtube";
         }
     })();
 
