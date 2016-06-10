@@ -20,6 +20,7 @@
         this.bindToEvents();
 
         // Do an initial check of the value we got from Sakai.
+        this.cleanInitialDescription();
         this.descriptionUpdated();
     }
 
@@ -28,6 +29,11 @@
         return this.maxLength - this.requiredSuffixLength;
     };
 
+
+    AutoPopulateHandler.prototype.cleanInitialDescription = function () {
+        var description = this.descriptionInput.val();
+        this.descriptionInput.val(description.replace(this.invalid_description_regex, ' '));
+    };
 
     AutoPopulateHandler.prototype.descriptionUpdated = function () {
         var description = this.descriptionInput.val();
@@ -53,6 +59,8 @@
         this.lastGeneratedValue = description.toLowerCase()
             .replace(/\s+/g, this.whitespace_replacement_char)
             .replace(this.invalid_address_regex, '')
+            .replace(new RegExp(this.whitespace_replacement_char + '+', 'g'),
+                     this.whitespace_replacement_char)
             .substring(0, this.calculateMaxLength());
 
         this.addressInput.val(this.lastGeneratedValue).trigger("change");
@@ -164,7 +172,6 @@
         this.baseUrl = baseUrl;
         this.config = config;
     }
-
 
     CRUDModal.prototype.showCreateForm = function (groupContainer) {
         var self = this;
