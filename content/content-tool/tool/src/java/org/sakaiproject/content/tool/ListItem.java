@@ -331,6 +331,8 @@ public class ListItem
 				//this.members = coll.getMembers();
 				item.setIconLocation( ContentTypeImageService.getContentTypeImage("folder"));
 	        }
+		logger.warn("*** Getting actions for entity: " + entity + " ID: " + entity.getId() + " Reference: " + entity.getReference() + " URL: " + entity.getUrl());
+
         List<ResourceToolAction> otherActions = ResourcesAction.getActions(entity, item.getPermissions(), registry);
         List<ResourceToolAction> pasteActions = ResourcesAction.getPasteActions(entity, item.getPermissions(), registry, items_to_be_moved, items_to_be_copied);
 
