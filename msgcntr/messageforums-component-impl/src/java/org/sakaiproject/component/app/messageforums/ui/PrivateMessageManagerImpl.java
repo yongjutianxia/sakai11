@@ -1136,14 +1136,22 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
     /** determines if default in sakai.properties is set, if not will make a reasonable default */
     String defaultEmail = ServerConfigurationService.getString("setup.request","postmaster@" + ServerConfigurationService.getServerName());
     String systemEmail = ServerConfigurationService.getString("msgcntr.notification.from.address", defaultEmail);
+    String displayEmail = systemEmail;
    
     if (!ServerConfigurationService.getBoolean("msgcntr.notification.user.real.from", false)) {
     	systemEmail = ServerConfigurationService.getString("msgcntr.notification.from.address", defaultEmail);
     } else  {
-    	if (currentUser.getEmail() != null)
+    	if (currentUser.getEmail() != null) {
     		systemEmail = currentUser.getEmail();
-    	else
+
+            String displayName = currentUser.getDisplayName();
+
+            if (displayName != null) {
+                displayEmail = String.format("%s <%s>", displayName, systemEmail);
+            }
+        } else {
     		systemEmail = ServerConfigurationService.getString("msgcntr.notification.from.address", defaultEmail);
+        }
     }
     
     String bodyString = buildMessageBody(message);
@@ -1234,7 +1242,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
 		{
     	//send as 1 action to all recipients
     	//we need to add som headers
-    	additionalHeaders.add("From: " + systemEmail);
+    	additionalHeaders.add("From: " + displayEmail);
     	additionalHeaders.add("Subject: " + message.getTitle());
     	emailService.sendToUsers(recipients.keySet(), additionalHeaders, bodyString);
     	}   	
