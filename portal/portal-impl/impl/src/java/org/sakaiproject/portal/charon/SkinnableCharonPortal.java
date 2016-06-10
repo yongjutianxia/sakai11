@@ -1429,6 +1429,28 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		headJs.append("sakai.editor.sitePrintSkin = '" + CSSUtils.getCssPrintSkin(skin) + "';\n");
 		headJs.append("sakai.editor.editors.ckeditor.browser = '"+ EditorConfiguration.getCKEditorFileBrowser()+ "';\n");
 		headJs.append("</script>\n");
+
+		// CLASSES-1937 poke the site's CKEditor templates into the page if configured
+		if (placement != null) {
+			headJs.append("<script type=\"text/javascript\">\n");
+			headJs.append("sakai.editor.siteId = '" + placement.getContext() + "';\n");
+			try {
+				Site site = siteHelper.getSiteVisit(placement.getContext());
+				if (site != null) {
+					ResourceProperties rp = site.getProperties();
+					String ckeditorTemplates = (String) rp.getProperty("ckeditor_templates");
+					if (ckeditorTemplates != null) {
+						headJs.append("sakai.editor.templates = '" + ckeditorTemplates + "';\n");
+					}
+				}
+			} catch (IdUnusedException e) {
+				M_log.debug("Site doesn't exist: " + placement.getContext());
+			} catch (PermissionException e) {
+				M_log.debug("User not able to access site: " + placement.getContext());
+			}
+			headJs.append("</script>\n");
+		}
+
 		headJs.append(preloadScript);
 		headJs.append(editorScript);
 		headJs.append(launchScript);

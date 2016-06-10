@@ -238,6 +238,27 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.dtd.$removeEmpty['i'] = false;
             ckconfig.extraPlugins+=",audio,kalturaflash,magicembed,youtube";
             ckconfig.extraPlugins+=",ckeditor_wiris";
+
+            // CLASSES-1937
+            if (sakai.editor.siteId && sakai.editor.templates) {
+              // Note: the packaged 'default' CKEditor templates have
+              // been replaced with Sakai 11's 'customtemplates'
+              var custom_templates = sakai.editor.templates.split(",");
+              ckconfig.templates = custom_templates.map(function(template) {
+                if (template === "default") {
+                  return "customtemplates";
+                }
+
+                return template;
+              }).join(",");
+              ckconfig.templates_files = custom_templates.map(function(template) {
+                if (template == "default") {
+                  return basePath + 'templates/default.js';
+                }
+      
+                return basePath + 'sitetemplates/' + template + '.js';
+              });
+            }
         }
     })();
 
