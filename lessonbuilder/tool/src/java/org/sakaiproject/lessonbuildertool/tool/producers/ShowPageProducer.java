@@ -1550,6 +1550,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							UIOutput.make(tableRow, "scormGraded", i.getAttribute("scormGraded"));
 							UIOutput.make(tableRow, "scormRequired", String.valueOf(i.isRequired()));
 							UIOutput.make(tableRow, "scormPrerequisite", String.valueOf(i.isPrerequisite()));
+
+							itemGroupString = simplePageBean.getItemGroupString(i, null, true);
+							UIOutput.make(tableRow, "item-groups", itemGroupString);
 						} else if (i.getType() == SimplePageItem.FORUM) {
 							UIOutput.make(tableRow, "extra-info");
 							UIOutput.make(tableRow, "type", "8");
