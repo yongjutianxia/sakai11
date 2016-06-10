@@ -288,14 +288,13 @@ public class ErrorReporter
 				+ rb.getString("bugreport.stacktrace") + "\n" + problem + "\n"
 				+ placementDisplay + "\n" + requestDisplay);
 
-		//only send email if user entered a comment
-		if(StringUtils.isBlank(userReport)) {
-			M_log.debug("User did not enter a comment, no email will be sent.");
-			return;
-		}
-		
 		// mail
 		String emailAddr = ServerConfigurationService.getString("portal.error.email");
+
+		// NYU: If this user didn't enter a comment, send to a different address
+		if(StringUtils.isBlank(userReport)) {
+			emailAddr = ServerConfigurationService.getString("portal.error.email-for-no-comment");
+		}
 
 		if (emailAddr != null)
 		{
