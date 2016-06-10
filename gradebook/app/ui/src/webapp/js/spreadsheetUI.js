@@ -95,3 +95,58 @@ function gethandles(){
    $(q4_div).scroll(adjustScrolls);
 }
 $(document).ready(gethandles);
+
+
+// Bind a mouse wheel listener for the left hand pane so scrolling works consistently.
+$(function () {
+    // This function checks if the specified event is supported by the browser.
+    // Source: http://perfectionkills.com/detecting-event-support-without-browser-sniffing/
+    function isEventSupported(eventName) {
+        var el = document.createElement('div');
+        eventName = 'on' + eventName;
+        var isSupported = (eventName in el);
+        if (!isSupported) {
+            el.setAttribute(eventName, 'return;');
+            isSupported = typeof el[eventName] == 'function';
+        }
+        el = null;
+        return isSupported;
+    }
+
+
+    // nicked from above
+    var reset_row_heights = function () {
+      // this makes sure the height of the data cells matches up for all rows
+      $("#q3 tr").each(function(i){
+          thisHeight = $(this).height();
+          thatHeight = $("#q4 tr:eq(" + i + ")").height();
+          if(thisHeight > thatHeight){
+            $("#q4 tr:eq(" + i + ")").height(thisHeight);
+          } else {
+            $(this).css("height",thatHeight + "px");
+          }
+        })
+    };
+
+    setInterval(reset_row_heights, 5000);
+
+
+    var wheelEvent = isEventSupported('mousewheel') ? 'mousewheel' : 'wheel';
+    var divToScroll = $('#q4 > div');
+
+    $('#q3,#q4').on(wheelEvent, function(e) {
+        var oEvent = e.originalEvent,
+            delta  = oEvent.deltaY || oEvent.wheelDelta;
+
+        var topPosition = divToScroll.scrollTop();
+
+        var direction = ((delta < 0) ? -1 : 1);
+        var offset = (25 * direction);
+
+        // Pass the scroll to the other pane
+        divToScroll.scrollTop(topPosition + offset);
+
+        e.preventDefault();
+        return false;
+    });
+});
