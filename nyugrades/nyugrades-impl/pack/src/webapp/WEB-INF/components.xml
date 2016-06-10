@@ -6,7 +6,6 @@
 	<bean id="edu.nyu.classes.nyugrades.api.DBService"
 			class="edu.nyu.classes.nyugrades.impl.DBServiceImpl"
                         init-method="init"
-                        destroy-method="destroy"
 			singleton="true">
 	</bean>
 
