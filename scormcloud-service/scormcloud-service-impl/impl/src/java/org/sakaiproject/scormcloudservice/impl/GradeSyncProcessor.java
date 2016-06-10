@@ -214,7 +214,7 @@ class GradeSyncProcessor {
 
     private void syncCourse(final String courseId, final ScormServiceStore store)
         throws ScormException {
-        LOG.info("Syncing SCORM courseId: " + courseId);
+        LOG.debug("Syncing SCORM courseId: " + courseId);
 
         GradebookConnection gradebook = new GradebookConnection(store);
         ScormCourse course = store.getCourseForId(courseId);
@@ -234,7 +234,7 @@ class GradeSyncProcessor {
 
             List<RegistrationData> registrationList = registrationService.GetRegistrationList(null, null, courseId, null, null, null);
 
-            LOG.info(courseId + ": Found " + registrationList.size() + " registrations to sync");
+            LOG.debug(courseId + ": Found " + registrationList.size() + " registrations to sync");
 
             for (RegistrationData registration : registrationList) {
                 String registrationId = registration.getRegistrationId();
@@ -244,9 +244,9 @@ class GradeSyncProcessor {
 
                 if (scoreFromResult.isReset() || scoreFromResult.isUnknown()) {
                     if (scoreFromResult.isReset()) {
-                        LOG.info("Processing a reset for registration: " + registrationId);
+                        LOG.debug("Processing a reset for registration: " + registrationId);
                     } else {
-                        LOG.info("Score for registration " + registrationId + " was marked as 'unknown'");
+                        LOG.debug("Score for registration " + registrationId + " was marked as 'unknown'");
                     }
 
                     store.removeScore(registrationId);
@@ -273,7 +273,7 @@ class GradeSyncProcessor {
                     LOG.error("Received an unparseable score from SCORM Cloud API for registration: " + registrationId +
                             " score was: " + scoreFromResult.getRawScore());
                 } else {
-                    LOG.info("Recording score for registration: " + registrationId +
+                    LOG.debug("Recording score for registration: " + registrationId +
                             ": " + scoreFromResult.getRawScore());
 
                     store.recordScore(registrationId, scoreFromResult.getScore());
