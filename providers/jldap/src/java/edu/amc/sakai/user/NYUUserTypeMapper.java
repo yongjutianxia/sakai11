@@ -191,10 +191,6 @@ public class NYUUserTypeMapper extends EntryAttributeToUserTypeMapper {
 			return userType;
 		}
 
-		String result = userTypeOverrideCache.getTypeForUser(netId, userType);
-
-                System.err.println("RESULT FOR " + netId + " is " + result);
-
-                return result;
+		return userTypeOverrideCache.getTypeForUser(netId, userType);
 	}
 }
