@@ -220,6 +220,17 @@
       <property name="localeGetter" ref="requestLocaleProxy" />
     </bean>
 
+    <bean class="org.sakaiproject.lessonbuildertool.tool.producers.ShowScormProducer" >
+      <property name="messageLocator" ref="messageLocator"/>
+      <property name="simplePageBean" ref="simplePageBean" />
+      <property name="simplePageToolDao">
+	<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+      </property>
+      <property name="httpServletRequest" ref="httpServletRequest" />
+      <property name="httpServletResponse" ref="httpServletResponse" />
+      <property name="localeGetter" ref="requestLocaleProxy" />
+    </bean>
+
     <bean class="org.sakaiproject.lessonbuildertool.tool.producers.IFrameWindowProducer" >
 		<property name="simplePageBean" ref="simplePageBean" />
 		<property name="localeGetter" ref="requestLocaleProxy" />

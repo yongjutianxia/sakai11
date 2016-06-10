@@ -302,6 +302,16 @@
                   <li rsf:id="blti-li">
                     <a href="#" role="menuitem button" rsf:id="add-blti" class="add-before-param"><span rsf:id="msg.simplepage.blti"></span></a>
                   </li>
+		  <li rsf:id="scorm-li">
+		    <a role="menuitem" href="#" rsf:id="add-scorm" class="add-scorm"><span rsf:id="msg.simplepage.scorm"></span></a>
+                    <div rsf:id="msg=simplepage.scorm-descrip"></div>
+		  </li>
+		  <li>
+		    <a role="menuitem" href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a>
+                    <div rsf:id="msg=simplepage.subpage-descrip"></div>
+		  </li>
+
+<!-- CLASSES-1565 Remove the rsf:id="addwebsite-li" and rsf:id="blti-li" options -->
 		</ul>
 		</div>
 
@@ -790,10 +800,16 @@
                         <span style="display:none" rsf:id="questionGradebookTitle" class="questionGradebookTitle"></span>
                         <span style="display:none" rsf:id="questionitem-required" class="questionitem-required"></span>
                         <span style="display:none" rsf:id="questionitem-prerequisite" class="questionitem-prerequisite"></span>
-			<span style="display:none" rsf:id="questionitem-groups" class="item-groups"></span>
+
                         <span style="display:none" rsf:id="questionCorrectText" class="questionCorrectText"></span>
                         <span style="display:none" rsf:id="questionIncorrectText" class="questionIncorrectText"></span>
                     </div>
+
+                    <span style="display:none" rsf:id="scormGraded" class="scormGraded"></span>
+                    <span style="display:none" rsf:id="scormRequired" class="scormRequired"></span>
+                    <span style="display:none" rsf:id="scormPrerequisite" class="scormPrerequisite"></span>
+
+
                 </li>
             </ul>
 		    <script type="text/javascript">
@@ -1027,6 +1043,23 @@
                           <a role="button" href="#" rsf:id="edit-item-settings" id="edit-item-settings"><span rsf:id="edit-item-settings-text" id="edit-item-settings-text"></span></a>
                             </p>
 
+                        <div id="scormstuff" style="display:none">
+                          <p class="checkbox">
+                              <input type="checkbox" name="edit-scorm-prerequisite" id="edit-scorm-prerequisite" rsf:id="edit-scorm-prerequisite" />
+                              <label for="edit-scorm-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+                          </p>
+
+                          <p class="checkbox">
+                              <input type="checkbox" name="edit-scorm-required" id="edit-scorm-required" rsf:id="edit-scorm-required" />
+                              <label for="edit-scorm-required"><span rsf:id="msg=simplepage.require" id="require-label"></span></label>
+                          </p>
+
+                          <p class="checkbox">
+                              <input type="checkbox" name="edit-scorm-sync-to-gradebook" rsf:id="edit-scorm-sync-to-gradebook" id="edit-scorm-sync-to-gradebook" />
+                              <label for="edit-scorm-sync-to-gradebook"><span rsf:id="msg=simplepage.scorm.sync-to-gradebook"></span></label>
+                          </p>
+                        </div>
+
                         <div id="pagestuff">
                         <input type="checkbox" name="item-next" id="item-next" rsf:id="item-next" />
                         <label for="item-next" id="label-item-next"><span rsf:id="msg=simplepage.subpage-next"></span></label><br />
@@ -1127,7 +1160,57 @@
                 </form>
 			</div>
 
-			<div id="add-multimedia-dialog" rsf:id="add-multimedia-dialog" class="lessonsDialog">
+              <div id="add-scorm-dialog" rsf:id="add-scorm-dialog">
+                  <div class="ui-widget" id="scorm-error-container">
+                      <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+                          <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                              <strong rsf:id="msg=simplepage.error_colon"></strong> <span id="scorm-error"></span></p>
+                      </div>
+                  </div>
+                  <form action="#" rsf:id="add-scorm-form" method="post" enctype="multipart/form-data">
+                      <input type="hidden" rsf:id="csrf22" />
+                      <div class="border instructionPanel">
+                          <p class="instruction" rsf:id="msg=simplepage.scorm.add_file_instructions"></p>
+                      </div>
+
+                      <div class="border2 controlsPanel">
+                          <p class="shorttext required">
+                              <span class="reqStar">*</span>
+                              <label class="scormTitle" rsf:id="scormtitle-label" for="scorm-title"></label>
+                              <input type="text" name="scorm-title" id="scorm-title" rsf:id="scorm-title" maxlength="99" length="30" /><br />
+                          </p>
+
+                          <p class="required">
+                              <label rsf:id="msg=simplepage.upload_label" for="scorm-file">File</label>
+                              <input type="file" name="scorm-file" id="scorm-file" style="width:95%" class="edit-scorm-input" required="required" />
+                          </p>
+
+                          <p class="checkbox">
+                              <input type="checkbox" name="scorm-prerequisite" id="scorm-prerequisite" rsf:id="scorm-prerequisite" />
+                              <label for="scorm-prerequisite"><span rsf:id="msg=simplepage.prerequisites_label"></span></label>
+                          </p>
+
+                          <p class="checkbox">
+                              <input type="checkbox" name="scorm-required" id="scorm-required" rsf:id="scorm-required" />
+                              <label for="scorm-required"><span rsf:id="msg=simplepage.require" id="require-label"></span></label>
+                          </p>
+
+                          <p class="checkbox">
+                              <input type="checkbox" name="scorm-sync-to-gradebook" id="scorm-sync-to-gradebook" rsf:id="scorm-sync-to-gradebook" />
+                              <label for="scorm-sync-to-gradebook"><span rsf:id="msg=simplepage.scorm.sync-to-gradebook"></span></label>
+                          </p>
+
+
+                          <input type="hidden" rsf:id="scorm-item-id" id="scorm-item-id" />
+                          <input class="bold" type="submit" id="scorm-add-item" rsf:id="scorm-add-item" onclick="event.returnValue = checkScormForm(); return checkScormForm();" />
+                          <input type="submit" rsf:id="scorm-cancel" onclick="closeAddScormDialog(); return false" />
+                      </div>
+                  </form>
+              </div>
+
+
+
+	      <div id="add-multimedia-dialog" rsf:id="add-multimedia-dialog" class="lessonsDialog">
 				<div class="ui-widget" id="mm-error-container">
 					<div class="messageError">
 						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 

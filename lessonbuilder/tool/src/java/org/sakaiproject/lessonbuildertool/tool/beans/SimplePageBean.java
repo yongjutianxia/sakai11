@@ -44,6 +44,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
+import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.TypeException;
@@ -96,6 +97,8 @@ import org.sakaiproject.portal.util.ToolUtils;
 import org.sakaiproject.lti.api.LTIService;
 import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.tsugi.lti2.ContentItem;
+import org.sakaiproject.scormcloudservice.api.ScormCloudService;
+import org.sakaiproject.scormcloudservice.api.ScormException;
 
 /**
  * Backing bean for Simple pages
@@ -156,6 +159,8 @@ public class SimplePageBean {
 	private boolean subpageNext = false;
 	private boolean subpageButton = false;
 	private String csrfToken = null;
+
+	private String scormTitle = null;
 
 	private List<Long> currentPath = null;
 	private Set<Long> allowedPages = null;    
@@ -1821,6 +1826,20 @@ public class SimplePageBean {
 			simplePageToolDao.deleteAllSavedStatusesForChecklist(i);
 		}
 
+		
+		if (i.getType() == SimplePageItem.SCORM) {
+			ScormCloudService scorm = (ScormCloudService)org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.scormcloudservice.api.ScormCloudService");
+
+			if (scorm != null) {
+				try {
+					scorm.markAsDeleted(getCurrentPage().getSiteId(),
+							String.valueOf(i.getId()));
+				} catch (ScormException e) {
+					log.warn("Failure when marking SCORM module as deleted: " + itemId, e);
+				}
+			}
+		}
+		
 		b = simplePageToolDao.deleteItem(i);
 		
 		if (b) {
@@ -2498,6 +2517,10 @@ public class SimplePageBean {
 	    sessionManager.getCurrentToolSession().setAttribute(LESSONBUILDER_BACKPATH, backPath);
 	}
 
+	public void setScormTitle(String st) {
+		scormTitle = st;
+	}
+
 	public void setSubpageTitle(String st) {
 		subpageTitle = st;
 	}
@@ -2830,7 +2853,27 @@ public class SimplePageBean {
 				i.setSameWindow(true);
 
 			    i.setHeight(height);
+			} else if (i.getType() == SimplePageItem.SCORM) {
+				i.setAttribute("scormGraded", String.valueOf(graded));
+
+				ScormCloudService scorm = (ScormCloudService)org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.scormcloudservice.api.ScormCloudService");
+
+				if (scorm == null) {
+					throw new RuntimeException("Couldn't contact SCORM module");
+				}
+
+				try {
+					scorm.updateCourse(getCurrentPage().getSiteId(),
+							String.valueOf(i.getId()),
+							i.getName(),
+							graded);
+				} catch (ScormException e) {
+					log.error("Failure when updating module in SCORM Cloud for lesson item " + i.getId(), e);
+				}
+
+
 			}
+
 
 			update(i);
 
@@ -5028,6 +5071,22 @@ public class SimplePageBean {
 			// Simply viewing will complete at this time
 			completeCache.put(itemId, true);
 			return true;
+		} else if (item.getType() == SimplePageItem.SCORM){
+			boolean result = false;
+
+			if (canEditPage()) {
+				result = true;
+			} else {
+				ScormCloudService scorm = (ScormCloudService)org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.scormcloudservice.api.ScormCloudService");
+				String siteId = getCurrentSiteId();
+
+				if (scorm.wasLaunchedByCurrentUser(siteId, String.valueOf(item.getId()))) {
+					result = true;
+				}
+			}
+
+			completeCache.put(itemId, result);
+			return result;
 		}
 		else {
 			completeCache.put(itemId, false);
@@ -7970,6 +8029,122 @@ public class SimplePageBean {
 			
 			return "added-comment";
 		}
+
+
+
+	public void addScorm() {
+		ScormCloudService scorm = (ScormCloudService)org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.scormcloudservice.api.ScormCloudService");
+
+		if (scorm == null) {
+			throw new RuntimeException("Couldn't contact SCORM module");
+		}
+
+
+		if (!itemOk(itemId))
+			return;
+		if (!canEditPage())
+			return;
+		if (!checkCsrf())
+			return;
+
+		String name = null;
+		String sakaiId = null;
+		String mimeType = null;
+		MultipartFile file = null;
+
+		if (multipartMap.size() > 0) {
+			// 	user specified a file, create it
+			file = multipartMap.values().iterator().next();
+			// zero length is valid. We get that if it's not a file upload
+			if (file.isEmpty()) {
+				file = null;
+			}
+
+		}
+
+		if (file == null || !uploadSizeOk(file)) {
+			log.error("Missing file for SCORM upload");
+			return;
+		}
+
+		mimeType = file.getContentType();
+		String siteId = getCurrentSiteId();
+
+		String resourceId;
+
+		try {
+			String folderName = Validator.escapeResourceName(getPageTitle()) + "/SCORM-MODULES";
+			String collectionId = contentHostingService.getSiteCollection(siteId) + folderName + "/";
+
+			try {
+				ContentCollectionEdit edit =  contentHostingService.addCollection(collectionId);
+				edit.getPropertiesEdit().addProperty(ResourceProperties.PROP_DISPLAY_NAME, folderName);
+				edit.setHidden();
+				contentHostingService.commitCollection(edit);
+			} catch (IdUsedException e) {
+			}
+
+			String base = IdManager.getInstance().createUuid();
+			String extension = "zip";
+
+			ContentResourceEdit res = contentHostingService.addResource(collectionId, 
+					base, extension, MAXIMUM_ATTEMPTS_FOR_UNIQUENESS);
+			res.setContentType(mimeType);
+			res.setContent(file.getInputStream());
+
+			try {
+				contentHostingService.commitResource(res, NotificationService.NOTI_NONE);
+			} catch (java.lang.NullPointerException e) {
+			}
+
+			resourceId = res.getId();
+
+		} catch (org.sakaiproject.exception.OverQuotaException ignore) {
+			setErrMessage(messageLocator.getMessage("simplepage.overquota"));
+			return;
+		} catch (Exception e) {
+			setErrMessage(messageLocator.getMessage("simplepage.resourceerror").replace("{}", e.toString()));
+			log.error("addMultimedia error 1 " + e);
+			return;
+		}
+
+		SimplePageItem item = null;
+
+		SimplePage page = getCurrentPage();
+
+		Long parent = page.getPageId();
+		Long topParent = page.getTopParent();
+
+		String owner = page.getOwner();
+		String group = page.getGroup();
+
+		if (topParent == null) {
+			topParent = parent;
+		}
+
+		item = appendItem("", scormTitle, SimplePageItem.SCORM);
+
+		if (item == null) {
+			log.error("Failed to append item");
+			return;
+		}
+
+		item.setNextPage(subpageNext);
+		item.setFormat("");
+		item.setName(scormTitle);
+		item.setRequired(required);
+		item.setPrerequisite(prerequisite);
+		item.setAttribute("scormGraded", String.valueOf(graded));
+
+		update(item);
+
+		try {
+			scorm.addCourse(siteId, String.valueOf(item.getId()), resourceId, scormTitle, graded);
+		} catch (ScormException e) {
+			log.error("Failure when adding a new module to SCORM Cloud", e);
+		}
+	}
+
 
     /**
      * Truncate a Java string so that its UTF-8 representation will not 

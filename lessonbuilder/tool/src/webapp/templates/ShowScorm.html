@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html rsf:id="html" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>
+        <script rsf:id="scr=portal-matter" type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
+        <link rsf:id="scr=portal-matter" href="/library/skin/tool_base.css" type="text/css" rel="stylesheet" media="all" />
+        <link rsf:id="scr=portal-matter" href="/library/skin/default/tool.css" type="text/css" rel="stylesheet" media="all" />
+        <link rel="stylesheet" rsf:id="scr=rewrite-url" href="../css/Simplepagetool.css" type="text/css"/>
+        <link rel="stylesheet" rsf:id="scr=rewrite-url" href="../css/Scorm.css" type="text/css"/>
+        <title rsf:id="msg=simplepage.scorm.title"></title>
+    </head>
+    <body rsf:id="scr=sakai-body">
+	<div class="portletBody" id="outer" role="application" style="z-index:1">
+            <div class="neoPortletTitleWrap">
+                <div class="portletTitle">
+                    <div class="title">
+                        <a href="#" rsf:id="resetbutton" class="reload">
+                            <img rsf:id="resetimage" src="/library/image/transparent.gif"/>
+                        </a>
+                	<h2>
+                	    <span rsf:id="pagetitle"></span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <p rsf:id="scorm-player-not-available"><span rsf:id="msg=simplepage.scorm.not-available"></span></p>
+            <p rsf:id="scorm-item-status"></p>
+            <p rsf:id="scorm-item-completed"></p>
+
+            <p rsf:id="scorm-player-launching">
+                <span rsf:id="msg=simplepage.scorm.launching"></span>
+            </p>
+
+            <div class="scorm-actions">
+                <a target="_blank" class="scorm-preview-link scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="scorm-preview-link" rsf:id="scorm-preview-link"></a>
+
+                <a target="_blank" class="scorm-reportage-link scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="scorm-reportage-link" rsf:id="scorm-reportage-link"></a>
+            </div>
+
+	    <a href="#" id="scorm-return-btn" rsf:id="return" class="scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span rsf:id="msg=simplepage.go-back"></span></a>
+
+            <span id="scorm-player-link" rsf:id="scorm-player-link" style="display: none"></span>
+        </div>
+
+
+        <script type="text/javascript" src="$context/js/jquery-1.8.3.min.js"></script>
+        <script>
+         $(function () {
+             if ($('#scorm-player-link').text() != '') {
+                 console.log("Redirecting to player...");
+                 window.location = $('#scorm-player-link').text();
+             }
+         });
+        </script>
+
+        <script rsf:id="scorm-redirect-to-lesson">
+         $(function () {
+             setTimeout(function () {
+                 console.log($('#scorm-return-btn'));
+                 $('#scorm-return-btn').click();
+             }, 3000);
+         });
+        </script>
+    </body>
+</html>
