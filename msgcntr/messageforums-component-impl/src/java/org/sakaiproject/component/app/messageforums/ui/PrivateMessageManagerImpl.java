@@ -1219,6 +1219,17 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements
     			recipientList.add(receiver);                    
     		}      
 
+	if (ServerConfigurationService.getBoolean("msgcntr.notification.user.real.from", false)) {
+		// We use global address rewriting to ensure that all messages
+		// coming out of the system originate from the same address.
+		//
+		// That bites us here, though, because we want to address this
+		// message from the user.  Add an extra header to skip the
+		// rewriting logic in BasicEmailService.
+		//
+		additionalHeaders.add("X-NYUClasses-Preserve-Addresses: true");
+	}
+
 		if (asEmail)
 		{
     	//send as 1 action to all recipients
