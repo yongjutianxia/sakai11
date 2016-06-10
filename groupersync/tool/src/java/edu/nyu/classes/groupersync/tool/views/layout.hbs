@@ -28,20 +28,24 @@
          };
          var grouper = new GrouperSync('{{{baseUrl}}}', config);
         </script>
+
         <script>
-            function resizeFrame(updown) 
+            function resizeFrame()
             {
                 if (top.location !== self.location) {
                     var frame = parent.document.getElementById(window.name);
                 }
-                if (frame){
-                    if(updown==='shrink') {
-                        var clientH = document.body.clientHeight;
-                    } else {
-                        var clientH = $(parent.document).find('.portletMainWrap').height();
+                if (frame) {
+                    var clientH = document.body.clientHeight;
+
+                    if (clientH < 600) {
+                        clientH = 600;
                     }
-                    $( frame ).height( clientH );
-                } 
+
+                    if ($(frame).height() < clientH) {
+                        $(frame).height(clientH);
+                    }
+                }
             }
             resizeFrame();
         </script>
