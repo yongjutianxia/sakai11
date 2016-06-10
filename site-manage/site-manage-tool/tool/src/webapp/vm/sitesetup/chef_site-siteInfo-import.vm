@@ -20,9 +20,17 @@
 			#foreach($site in $sites)
 			#set ($siteIDCounter = $siteIDCounter + 1)
 				#if ($!currentSite && ($site.Id != $!currentSite.Id))
-					<div class="checkbox">		
 						<label for="site_$siteIDCounter">
 							<input type="checkbox" name="importSites" id="site_$siteIDCounter" value="$site.getId()" 
+								#if ($site.getType()) 
+								data-type="$site.getType()"
+								#else
+								data-type="other"
+								#end
+								#if ($site.getType() == "course")
+								data-term="$site.getProperties().getProperty('term')"
+								#end
+
 								#if ($!importSiteList.containsKey($!site))
 									checked="checked"
 								#end
@@ -51,4 +59,21 @@
 		#end
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 	</form>
+  <script src="/sakai-site-manage-tool/js/import.nyu.js"></script>
+  <script>
+    // NYU Customisation to categorize sites by academic session or type
+    $(function() {
+      var ACADEMIC_SESSIONS = [
+        #foreach($academicSession in $academicSessions)
+          {
+            title: "$academicSession.getTitle()",
+            id: "$academicSession.getEid()"
+          }
+          #if( $foreach.hasNext ), #end
+        #end
+      ];
+
+      NYU.setupSites($("form[name='featuresForm']"), ACADEMIC_SESSIONS);
+     });
+  </script>
 </div>
