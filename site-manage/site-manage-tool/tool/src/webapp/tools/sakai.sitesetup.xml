@@ -29,6 +29,8 @@
 
 		<category name="myworkspace" />
 		
+		<!-- NYU mod - must have site.add.course to see the site setup tool -->
+		<configuration name="functions.require" value="site.add.course" /> 
 	</tool>
 
 </registration>
