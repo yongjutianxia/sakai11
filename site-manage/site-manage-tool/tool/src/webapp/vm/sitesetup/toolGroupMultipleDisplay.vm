@@ -138,6 +138,32 @@
                     </li>
                 #end
         </ol>
+
+        ## CLASSES-1847 Hide "Plugin Tools" from users and instead insert as hidden inputs
+        #foreach($externalTool in $nyuExternalTools)
+            #set($externalToolSelected = false)
+            #if($toolRegistrationSelectedList)
+                #foreach($tId in $toolRegistrationSelectedList)
+                    #if ($tId == $externalTool.getId())
+                        #set($externalToolSelected = true)
+                    #end
+                #end
+            #end
+            #if ($ltiTools)
+                #foreach($tId in $ltiTools.keySet())
+                    #if ($tId == $externalTool.getId())
+                        #set($externalToolSelected = true)
+                    #end
+                #end
+            #end
+            #if ($externalToolSelected)
+                <div style="display: none">
+                    <input type="checkbox" name="selectedTools" value="$externalTool.getId()" id="$externalTool.getId()" checked="checked" disabled="disabled">
+                    <label>$validator.escapeHtml($externalTool.getTitle())</label>
+                    <input type="hidden" name="selectedTools" value="$externalTool.getId()" checked="checked"/>
+                </div>
+            #end
+        #end
     </div>
     <div class="col-md-1 separator"></div>
     <div id="toolSelectionList" class="col-md-4">

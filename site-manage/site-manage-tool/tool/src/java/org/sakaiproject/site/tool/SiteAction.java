@@ -6175,11 +6175,14 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		}	 
 	}
 
+	// CLASSES-1847 Hide "Plugin Tools" from users and instead insert as hidden inputs
 	// add external tools to end of toolGroup list
 	String externaltoolgroupname = getGroupName(LTI_TOOL_TITLE);
+	externaltoolgroupname = "NYU_EXTERNAL_TOOLS"; // CLASSES-1847 custom name used to toggle hidden inputs
 	List externalTools = getLtiToolGroup(externaltoolgroupname, moreInfoDir, site);
-	if (externalTools.size() > 0 ) 
-		toolGroup.put(externaltoolgroupname, externalTools);
+	state.setAttribute("nyuExternalTools", externalTools);
+	//if (externalTools.size() > 0)
+	//	toolGroup.put(externaltoolgroupname, externalTools);
 	
 	// Home page should be auto-selected
 	if (checkhome==true) {
