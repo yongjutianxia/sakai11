@@ -292,10 +292,18 @@ public class RequestFilter implements Filter
 		}
 
 		StringBuilder url = new StringBuilder();
+
+                // Modified for the case where non-SSL Tomcat instances are running behind an SSL-enabled load balancer.
+                boolean showPort = true;
+                if ((port == 80 && transport.equalsIgnoreCase("http")) ||
+                    (port == 443 && transport.equalsIgnoreCase("https"))) {
+                  showPort = false;
+                }
+
 		url.append(transport);
 		url.append("://");
 		url.append(req.getServerName());
-		if (((port != 80) && (!secure)) || ((port != 443) && secure))
+		if (showPort)
 		{
 			url.append(":");
 			url.append(port);
