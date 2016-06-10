@@ -50,6 +50,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -668,8 +669,10 @@ public class SiteAction extends PagedResourceActionII {
 	 */
 	public static final String CONVERT_NULL_JOINABLE_TO_UNJOINABLE = "wsetup.convert.null.joinable.to.unjoinable";
 	
-	private static final String SITE_TEMPLATE_PREFIX = "template";
-	
+	// site template prefix value from init-param in web.xml
+	private static String DEFAULT_SITE_TEMPLATE_PREFIX = null;
+
+
 	private static final String STATE_TYPE_SELECTED = "state_type_selected";
 
 	// the template index after exist the question mode
@@ -1324,7 +1327,9 @@ public class SiteAction extends PagedResourceActionII {
 		addIntoStateVisitedTemplates(state, indexString);
 		
 		template = buildContextForTemplate(getPrevVisitedTemplate(state), Integer.valueOf(indexString), portlet, context, data, state);
-		return template;
+
+                // Apply NYU template overrides at this point
+		return getTemplate(template, (String) getContext(data).get("template"));
 
 	} // buildMainPanelContext
 
@@ -1726,7 +1731,10 @@ public class SiteAction extends PagedResourceActionII {
 			
 			// template site
 			setTemplateListForContext(context, state);
-			
+
+			//CLASSES-372 need to know if user is admin
+			context.put("isAdmin", SecurityService.isSuperUser());
+
 			return (String) getContext(data).get("template") + TEMPLATE[1];
 	case 4:
 			/*
@@ -8404,6 +8412,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			int siteTitleMaxLength = ServerConfigurationService.getInt("site.title.maxlength", 25);
 			state.setAttribute(STATE_SITE_TITLE_MAX, siteTitleMaxLength);
 		}
+
+                //set the default template prefix, which comes from the init-param in web.xml
+		DEFAULT_SITE_TEMPLATE_PREFIX = getContext(data).get("template");
 
 	} // init
 
@@ -15932,6 +15943,35 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		}
 		return true; //backwards compatibility
 	}
+
+
+	/**
+	 * Helper method to check if we have a configured prefix and any template overrides, and if not, to fall back to the original.
+	 * @param template	the template suffix that we want to load
+	 * @return
+	 */
+	private String getTemplate(String template, String dropPrefix) {
+		// Drop the dropPrefix from the template string if present
+		template = template.replaceAll("^" + Pattern.quote(dropPrefix) + "/?", "");
+
+		//check if we have a configured template prefix
+		//if we do, then check if we have an overriden template specified for the given template suffix.
+		//if that passes as well, return the configured prefix + template override, otherwise default
+		String prefix = ServerConfigurationService.getString("sitesetup.templates.prefix");
+		if(StringUtils.isNotBlank(prefix)){
+			String[] templateOverrides = ServerConfigurationService.getStrings("sitesetup.template.overrides");
+			
+			if(ArrayUtils.contains(templateOverrides, template)) {
+				M_log.debug("Using override template: " + prefix + template);
+				return prefix + template;
+			}
+		}
+		
+		//no override, return default
+		M_log.debug("Using default template: " + DEFAULT_SITE_TEMPLATE_PREFIX + template);
+		return DEFAULT_SITE_TEMPLATE_PREFIX + template;
+	}
+}
 
 	
 }
