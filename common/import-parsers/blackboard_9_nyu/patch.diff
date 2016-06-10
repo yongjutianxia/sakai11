@@ -1,0 +1,174 @@
+diff -ur blackboard_6/pom.xml /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/pom.xml
+--- /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/pom.xml	2014-04-08 06:45:33.000000000 +1000
++++ pom.xml	2014-09-29 08:30:41.000000000 +1000
+@@ -4,7 +4,7 @@
+   <parent>
+     <artifactId>common</artifactId>
+     <groupId>org.sakaiproject.common</groupId>
+-    <version>1.1.4</version>
++    <version>10.1</version>
+     <relativePath>../../../pom.xml</relativePath>
+   </parent>
+   <name>Sakai Import Blackboard 6.x</name>
+@@ -39,7 +39,7 @@
+ 
+       <dependency>
+           <groupId>org.springframework</groupId>
+-          <artifactId>spring</artifactId>
++          <artifactId>spring-core</artifactId>
+       </dependency>
+ 
+       <dependency>
+@@ -68,7 +68,10 @@
+             <groupId>commons-lang</groupId>
+             <artifactId>commons-lang</artifactId>
+         </dependency>
+-
++        <dependency>
++          <groupId>commons-codec</groupId>
++          <artifactId>commons-codec</artifactId>
++        </dependency>
+       <dependency>
+          <groupId>org.jsoup</groupId>
+          <artifactId>jsoup</artifactId>
+diff -ur blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParser.java /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParser.java
+--- /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParser.java	2014-04-08 06:45:33.000000000 +1000
++++ src/java/org/sakaiproject/importer/impl/Blackboard9NYUFileParser.java	2014-09-29 08:37:19.000000000 +1000
+@@ -3,6 +3,7 @@
+ import java.io.FileInputStream;
+ import java.io.File;
+ import java.io.InputStream;
++import java.io.ByteArrayInputStream;
+ import java.io.IOException;
+ import java.text.Normalizer;
+ import java.util.ArrayList;
+@@ -85,8 +86,8 @@
+ 	}
+ 	
+ 	public boolean isValidArchive(byte[] fileData) {
+-		if (super.isValidArchive(fileData)) {
+-			Document manifest = extractFileAsDOM("/imsmanifest.xml", fileData);
++		if (super.isValidArchive(new ByteArrayInputStream(fileData))) {
++			Document manifest = extractFileAsDOM("/imsmanifest.xml", new ByteArrayInputStream(fileData));
+                         if (enclosingDocumentContainsNamespaceDeclaration(manifest, BB_NAMESPACE_URI)) { 
+                             return true;
+                         } else if (enclosingDocumentContainsNamespaceDeclaration(manifest, WEBCT_NAMESPACE_URI)) {
+@@ -324,7 +325,7 @@
+ 						branchOfImportables.add(introFile);
+ 					}
+ 				}
+-				file.setFileBytes(fileHelper.getFileBytesForNode(node, contextPath));				
++				file.setInputStream(new ByteArrayInputStream(fileHelper.getFileBytesForNode(node, contextPath)));				
+ 
+ 				if (putThisFileIntoAFolder && !((Bb6FileHelper)fileHelper).isPartOfAssessment(node)) {
+ 					file.setDestinationResourcePath(contextPath + folderName + "/" + fileName);
+diff -ur blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParserTest.java /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParserTest.java
+--- /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/Blackboard6FileParserTest.java	2014-04-08 06:45:33.000000000 +1000
++++ src/java/org/sakaiproject/importer/impl/Blackboard6FileParserTest.java	2014-09-29 08:35:12.000000000 +1000
+@@ -2,6 +2,7 @@
+ 
+ import java.io.IOException;
+ import java.io.InputStream;
++import java.io.ByteArrayInputStream;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.Iterator;
+@@ -34,7 +35,7 @@
+ 	}
+ 	
+ 	public void testCanGetDataSource() {
+-		ImportDataSource dataSource = (ImportDataSource) parser.parse(archiveData, System.getProperty("java.io.tmpdir"));
++		ImportDataSource dataSource = (ImportDataSource) parser.parse(new ByteArrayInputStream(archiveData), System.getProperty("java.io.tmpdir"));
+ 		assertNotNull(dataSource);
+ 		List<ImportMetadata> categories = dataSource.getItemCategories();
+ 		List<ImportMetadata> selection = new ArrayList();
+@@ -44,7 +45,7 @@
+ 		System.out.println("I've got " + dataItems.size() + " data items to feed to Sakai.");
+ 		for(Importable thing : dataItems) {
+ 			if (thing instanceof FileResource) {
+-				System.out.println(((FileResource)thing).getDestinationResourcePath() + ((FileResource)thing).getTitle() + ":" + ((FileResource)thing).getFileBytes().length + " bytes");
++				// System.out.println(((FileResource)thing).getDestinationResourcePath() + ((FileResource)thing).getTitle() + ":" + ((FileResource)thing).getFileBytes().length + " bytes");
+ 			}
+ 			if (thing instanceof Folder) {
+ 				System.out.println(((Folder)thing).getPath() + ((Folder)thing).getTitle());
+@@ -53,7 +54,7 @@
+ 	}
+ 	
+ 	public void testArchiveIsValid() {
+-		assertTrue(parser.isValidArchive(archiveData));
++		assertTrue(parser.isValidArchive(new ByteArrayInputStream(archiveData)));
+ 	}
+ 	
+ 	public void testBb5FormatIsInvalid() throws IOException {
+@@ -61,7 +62,7 @@
+ 		invalidArchiveData = new byte[invalidArchiveStream.available()];
+ 		invalidArchiveStream.read(invalidArchiveData, 0, invalidArchiveStream.available());
+ 		invalidArchiveStream.close();
+-		assertFalse(parser.isValidArchive(invalidArchiveData));
++		assertFalse(parser.isValidArchive(new ByteArrayInputStream(invalidArchiveData)));
+ 	}
+ 
+ }
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl: .svn
+diff -ur blackboard_6/src/java/org/sakaiproject/importer/impl/translators/Bb6AssessmentTranslator.java /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/translators/Bb6AssessmentTranslator.java
+--- /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/translators/Bb6AssessmentTranslator.java	2014-04-08 06:45:33.000000000 +1000
++++ src/java/org/sakaiproject/importer/impl/translators/Bb9NYUAssessmentTranslator.java	2014-09-29 08:28:08.000000000 +1000
+@@ -262,9 +262,9 @@
+ 			// Drop comment garbage
+ 			q.setQuestionText(stripHTMLComments(questionTextString + questionResourceEmbed));
+ 			try {
+-				float pointValue = Float.parseFloat(XPathHelper.getNodeValue("./itemmetadata/qmd_absolutescore_max", questionNode));
++				double pointValue = Double.parseDouble(XPathHelper.getNodeValue("./itemmetadata/qmd_absolutescore_max", questionNode));
+ 				if (pointValue < 0) {
+-					pointValue = Float.parseFloat(XPathHelper.getNodeValue("./resprocessing/outcomes/decvar/@maxvalue", questionNode));
++					pointValue = Double.parseDouble(XPathHelper.getNodeValue("./resprocessing/outcomes/decvar/@maxvalue", questionNode));
+ 				}
+ 				q.setPointValue(pointValue);
+ 			} catch (NumberFormatException e) {
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer/impl/translators: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject/importer: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org/sakaiproject: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java/org: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src/java: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/src: .svn
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6: .svn
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6FileHelper.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6FileHelper.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ItemHelper.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ItemHelper.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ManifestHelper.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ManifestHelper.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ResourceHelper.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser$Bb6ResourceHelper.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParser.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParserTest.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/Blackboard6FileParserTest.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AnnouncementTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AnnouncementTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentAttemptFilesTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentAttemptFilesTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentAttemptTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentAttemptTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6AssessmentTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CollabSessionTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CollabSessionTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CourseMembershipTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CourseMembershipTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CourseUploadsTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6CourseUploadsTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6DiscussionBoardTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6DiscussionBoardTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6ExternalLinkTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6ExternalLinkTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6GroupUploadsTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6GroupUploadsTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6HTMLDocumentTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6HTMLDocumentTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6QtiTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6QtiTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6QuestionPoolTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6QuestionPoolTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator$1.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator$1.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator$FormattingVisitor.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SmartTextDocumentTranslator$FormattingVisitor.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6StaffInfoTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6StaffInfoTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SurveyTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6SurveyTranslator.class differ
+Binary files blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6TextDocumentTranslator.class and /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/classes/org/sakaiproject/importer/impl/translators/Bb6TextDocumentTranslator.class differ
+Only in blackboard_6/target: generated-sources
+diff -ur blackboard_6/target/maven-archiver/pom.properties /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/maven-archiver/pom.properties
+--- /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target/maven-archiver/pom.properties	2014-08-11 12:23:58.000000000 +1000
++++ target/maven-archiver/pom.properties	2014-09-29 08:37:26.000000000 +1000
+@@ -1,5 +1,5 @@
+ #Generated by Maven
+-#Mon Aug 11 12:23:58 EST 2014
+-version=1.1.4
++#Mon Sep 29 08:37:26 EST 2014
++version=10.1
+ groupId=org.sakaiproject
+ artifactId=sakai-import-bb6
+Only in blackboard_6/target: maven-status
+Only in blackboard_6/target: sakai-import-bb6-10.1.jar
+Only in /home/mst/projects/nyu/sakai/cle/src/nyu-sakai-trunk/common/import-parsers/blackboard_6/target: sakai-import-bb6-1.1.4.jar

@@ -35,6 +35,7 @@ public class AssessmentQuestion extends AbstractImportable {
 	public static int FILL_BLANK = 8;
 	public static int MATCHING = 9;
 	public static int ORDERING = 10;
+	public static int FILL_BLANK_PLUS = 11;
 	
 	private int questionType;
 	private Map answers;
