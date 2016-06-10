@@ -33,11 +33,12 @@
                         "movie": val
                     },
                     success: function(data) {
-                        if (typeof data != "object" || !data.hasOwnProperty("ref0") || !data["ref0"].hasOwnProperty("data")) {
+                        if (typeof data != "object" || !data.hasOwnProperty("html")) {
                            alert("Error retrieving Youtube data for this video: "+val); 
                            result = false;
+                        } else {
+                           $this.getParentEditor().insertHtml(data["html"]);
                         }
-                        $this.getParentEditor().insertHtml(data["ref0"]["data"]["html"]);
                     },
                     error: function() {
                         alert("Error retrieving Youtube data for for this video: "+val);
