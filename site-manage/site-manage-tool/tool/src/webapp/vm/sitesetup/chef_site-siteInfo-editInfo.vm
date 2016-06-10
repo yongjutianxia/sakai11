@@ -66,7 +66,7 @@
 			</tr>
 			#end								
 		#end
-		#foreach($id in $!providerCourseTitles.keys())
+		#foreach($id in $!providerCourseList)
 			<tr>
 				<td style="padding-left:1em">
 					$!providerCourseTitles.get($id)
