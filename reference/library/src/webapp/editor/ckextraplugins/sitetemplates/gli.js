@@ -1,5 +1,5 @@
 CKEDITOR.addTemplates("gli", {
-  imagesPath: CKEDITOR.getUrl("../ckextraplugins/sitetemplates/images/"),
+  imagesPath: '/library/editor/ckextraplugins/sitetemplates/images/',
   templates: [
     {
   "title": "GLI Header Template",
@@ -59,7 +59,7 @@ CKEDITOR.addTemplates("gli", {
   "title": "GLI Activity Template",
   "image": "gli_activity_template.gif",
   "description": "GLI Activity Template",
-  "html": "<style type=\"text/css\">*.nyu-template.gli-activity-template{width:100.0%;max-width:988.0px}*.nyu-template.gli-activity-template *.gli-indent{padding:0 40.0px 0 40.0px}*.nyu-template.gli-activity-template h3{font-size:14.0pt;font-family:Arial, sans-serif;color:gray}*.nyu-template.gli-activity-template *.twocolumnleft{width:75.0%;min-width:75.0px;margin-top:0;vertical-align:top;padding:0}*.nyu-template.gli-activity-template *.twocolumnright{min-width:525.0px;vertical-align:top;padding:7.0px;margin-top:0}</style> <div class=\"nyu-template gli-activity-template\"> <div class=\"gli-indent\"> <table role=\"presentation\" style=\"width: 100.0%;\"> <tbody> <tr> <td class=\"twocolumnleft\"><img alt=\"Activity Image Placeholder\" src=\"/library/editor/ckextraplugins/sitetemplates/images/gli/Activity.png\" style=\"width: 100.0%;\"/></td> <td class=\"twocolumnright\"> <h3>[x] Activity: [Activity Title]</h3> </td> </tr> </tbody> </table> </div> </div>"
+  "html": "<style type=\"text/css\">*.nyu-template.gli-activity-template{width:100.0%;max-width:988.0px}*.nyu-template.gli-activity-template *.gli-indent{padding:0 40.0px 0 40.0px}*.nyu-template.gli-activity-template h3{font-size:14.0pt;font-family:Arial, sans-serif;color:gray}*.nyu-template.gli-activity-template *.twocolumnleft{width:75.0px;min-width:75.0px;margin-top:0;vertical-align:top;padding:0}*.nyu-template.gli-activity-template *.twocolumnright{min-width:525.0px;vertical-align:top;padding:7.0px;margin-top:0}</style> <div class=\"nyu-template gli-activity-template\"> <div class=\"gli-indent\"> <table role=\"presentation\" style=\"width: 100.0%;\"> <tbody> <tr> <td class=\"twocolumnleft\"><img alt=\"Activity Image Placeholder\" src=\"/library/editor/ckextraplugins/sitetemplates/images/gli/Activity.png\" style=\"width: 100.0%;\"/></td> <td class=\"twocolumnright\"> <h3>[x] Activity: [Activity Title]</h3> </td> </tr> </tbody> </table> </div> </div>"
 },
     {
   "title": "GLI Footer Template",
