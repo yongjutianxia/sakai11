@@ -93,6 +93,10 @@
             <groupId>org.sakaiproject.calendar</groupId>
             <artifactId>sakai-calendar-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.sakaiproject</groupId>
+            <artifactId>sakai-syllabus-api</artifactId>
+        </dependency>
 		<dependency>
 	      	<groupId>org.sakaiproject.shortenedurl</groupId>
 	      	<artifactId>shortenedurl-api</artifactId>
@@ -124,6 +128,10 @@
         <dependency>
           <groupId>org.sakaiproject.samigo</groupId>
           <artifactId>samigo-services</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.common</groupId>
+          <artifactId>archive-api</artifactId>
         </dependency>
         <dependency>
           <groupId>org.quartz-scheduler</groupId>
@@ -188,6 +196,18 @@
             <artifactId>OkiSID</artifactId>
             <version>rc6.1</version>
         </dependency>
+	<!-- Needed for WSLongsight only -->
+        <dependency>
+          <groupId>org.sakaiproject.edu-services.gradebook</groupId>
+          <artifactId>gradebook-service-hibernate</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.edu-services.gradebook</groupId>
+          <artifactId>gradebook-service-impl</artifactId>
+          <version>${sakai.version}</version>
+        </dependency>
+	<!-- End WSLongsight only-->
+
     </dependencies>
 
     <build>

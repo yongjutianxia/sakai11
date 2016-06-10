@@ -1,6 +1,7 @@
 package org.sakaiproject.webservices;
 
 import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -2663,7 +2664,7 @@ public class WSLongsight extends AbstractWebService {
 			file.read(bytes);
 			file.close();
 
-			ResetOnCloseInputStream inputStream = new ResetOnCloseInputStream(file);
+			ResetOnCloseInputStream inputStream = new ResetOnCloseInputStream(new BufferedInputStream(file));
 
 			if (importService.isValidArchive(inputStream)) {
 				ImportDataSource importDataSource = importService.parseFromFile(inputStream);
@@ -3056,11 +3057,7 @@ public class WSLongsight extends AbstractWebService {
 		}
 	}
 
-	@WebMethod
-	@Path("/transferCopyEntities")
-	@Produces("text/plain")
-	@GET
-	public Map transferCopyEntities(String toolId, String fromContext, String toContext) {
+	private Map transferCopyEntities(String toolId, String fromContext, String toContext) {
 
 		Map transversalMap = new HashMap();
 
@@ -3094,11 +3091,7 @@ public class WSLongsight extends AbstractWebService {
 		return transversalMap;
 	}
 
-	@WebMethod
-	@Path("/updateEntityReferences")
-	@Produces("text/plain")
-	@GET
-	public void updateEntityReferences(String toolId, String toContext, Map transversalMap, Site newSite) {
+	private void updateEntityReferences(String toolId, String toContext, Map transversalMap, Site newSite) {
 		for (Iterator i = EntityManager.getEntityProducers().iterator(); i.hasNext();) {
 			EntityProducer ep = (EntityProducer) i.next();
 			if (ep instanceof EntityTransferrerRefMigrator && ep instanceof EntityTransferrer) {
