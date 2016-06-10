@@ -1478,7 +1478,13 @@ $(document).ready(function() {
 			var row = $(this).parent().parent().parent();
 			var itemid = row.find(".current-item-id2").text();
 
-			$("#name").val(row.find(".link-text").text());
+			// CLASSES-1859 fix name input not populated when "New Window"
+			// is selected for BLTI items
+			if (row.find(".link-text").length > 0) {
+				$("#name").val(row.find(".link-text").text());
+			} else {
+				$("#name").val(row.find(".itemlink").text().trim());
+			}
 			$("#description").val(row.find(".rowdescription").text());
 
 			$("select[name=indent-level-selection]").val(row.find(".indentLevel").text());
