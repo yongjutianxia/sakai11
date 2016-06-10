@@ -7,6 +7,7 @@
         description="For embedding NYU Libraries Resources within the site.">
 
     <configuration name="sakai.properties.url.key" value="nyu.libraries.url" />
+    <configuration name="special" value="special" />
     <configuration name="height" value="800px" />
     <configuration name="reset.button" value="false" type="final" />
     <configuration name="hide.options" value="false" />
