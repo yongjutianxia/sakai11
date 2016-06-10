@@ -323,7 +323,7 @@ public class PortletIFrame extends GenericPortlet {
 							siteInfo = StringUtils.trimToNull(s.getTitle());
 						}
 						StringBuilder alertMsg = new StringBuilder();
-						if ( siteInfo != null ) siteInfo = validator.processFormattedText(siteInfo, alertMsg);
+						if ( siteInfo != null ) siteInfo = validator.processFormattedText(siteInfo, alertMsg, org.sakaiproject.util.api.FormattedText.Level.NONE);
 						context.put("siteInfo", siteInfo);
 						vHelper.doTemplate(vengine, "/vm/info.vm", context, out);
 						return;
