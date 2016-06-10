@@ -14,7 +14,7 @@ NYU.setupSites = function(form, academicSessions) {
       div.append($(this).closest("p"));
     });
 
-    container.prepend(div);
+    container.append(div);
   };
 
   var sessions = $("<div>").addClass("site-manage-import-sessions");
@@ -24,8 +24,8 @@ NYU.setupSites = function(form, academicSessions) {
   $(".instruction:first", form).after(sessions);
 
 
-  insertGroupedInputs("Projects", $(":input[name='importSites'][data-type='project']"), other);
   insertGroupedInputs("Other", $(":input[name='importSites'][data-type!='project'][data-type!='course']"), other);
+  insertGroupedInputs("Projects", $(":input[name='importSites'][data-type='project']"), other);
 
   $.each(academicSessions, function(i, academicSession) {
     insertGroupedInputs(academicSession.title, $(":input[name='importSites'][data-term='"+academicSession.title+"']"), sessions);
