@@ -6680,6 +6680,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		int index = Integer.valueOf(params.getString("templateIndex"))
 				.intValue();
 
+		//since we have injected another screen, we don't want doFinish to cleanState or schedule a refresh
+		//so we add a flag to disable it, and we handle it ourselves
+		state.setAttribute(STATE_RESET, false);
+
 		// Let actionForTemplate know to make any permanent changes before
 		// continuing to the next template
 		String direction = "continue";
@@ -16251,6 +16255,11 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	 */
 	private void doNewSiteCreated(RunData data) {
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		//get the site just created
+		Site site = getStateSite(state);
+
+		//maintain the siteId in state
+		state.setAttribute(STATE_SITE_INSTANCE_ID, site.getId());
 
 		state.setAttribute(STATE_TEMPLATE_INDEX, "63");
 	}
