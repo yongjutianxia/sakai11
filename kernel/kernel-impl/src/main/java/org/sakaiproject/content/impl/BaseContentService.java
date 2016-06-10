@@ -6978,7 +6978,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 				{
 					// if this is an html file we have more checks
 				    String lcct = contentType.toLowerCase();
-				    if ( ( lcct.startsWith("text/") || lcct.startsWith("image/") 
+				    if ( ( lcct.startsWith("text/") // || lcct.startsWith("image/") 
 				            || lcct.contains("html") || lcct.contains("script") ) && 
 				            m_serverConfigurationService.getBoolean(SECURE_INLINE_HTML, true)) {
 				        // increased checks to handle more mime-types - https://jira.sakaiproject.org/browse/KNL-749
