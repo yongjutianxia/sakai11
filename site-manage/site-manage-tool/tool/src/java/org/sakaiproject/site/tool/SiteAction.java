@@ -2065,8 +2065,12 @@ public class SiteAction extends PagedResourceActionII {
 					context.put("published", Boolean.TRUE);
 				} else {
 					context.put("published", Boolean.FALSE);
-					context.put("owner", site.getCreatedBy().getSortName());
 				}
+
+				// NYU: Moved this out of the "else" block
+				// above.  Want to see this all the time.
+				context.put("owner", site.getCreatedBy().getSortName());
+
 				Time creationTime = site.getCreatedTime();
 				if (creationTime != null) {
 					context.put("siteCreationDate", creationTime
