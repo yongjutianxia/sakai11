@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroup;
 
-class GroupView {
+class GroupView implements Comparable<GroupView> {
     private static final Log log = LogFactory.getLog(GroupView.class);
 
     private final AuthzGroup group;
@@ -22,7 +22,7 @@ class GroupView {
 
     public GroupView(AuthzGroup group, String displayString, GrouperSyncService grouper) {
         this.group = group;
-        this.displayString = displayString;
+        this.displayString = (displayString == null) ? "" : displayString;
 
         this.groupInfo = GroupInfo.unknown();
 
@@ -81,5 +81,10 @@ class GroupView {
 
     public boolean isReadyForUse() {
         return groupInfo.isReadyForUse();
+    }
+
+    @Override
+    public int compareTo(GroupView other) {
+        return toString().compareTo(other.toString());
     }
 }

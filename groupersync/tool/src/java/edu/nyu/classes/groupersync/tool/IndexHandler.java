@@ -1,31 +1,32 @@
 package edu.nyu.classes.groupersync.tool;
 
-import org.sakaiproject.site.api.Group;
-import java.io.IOException;
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
 import com.github.jknack.handlebars.Template;
-import org.sakaiproject.authz.api.AuthzGroup;
-import java.util.ArrayList;
-import java.util.Collection;
-import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.site.api.Site;
-import org.sakaiproject.tool.cover.ToolManager;
-import edu.nyu.classes.groupersync.api.GrouperSyncService;
-import javax.servlet.ServletException;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import org.sakaiproject.exception.IdUnusedException;
-import com.github.jknack.handlebars.Helper;
-import java.net.MalformedURLException;
 import com.github.jknack.handlebars.Template;
-import org.sakaiproject.component.cover.ServerConfigurationService;
-import java.util.HashMap;
-import com.github.jknack.handlebars.Handlebars;
+import edu.nyu.classes.groupersync.api.GrouperSyncService;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.site.api.Group;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.cover.ToolManager;
 
 public class IndexHandler extends BaseHandler {
 
@@ -58,9 +59,9 @@ public class IndexHandler extends BaseHandler {
         try {
             Site site = SiteService.getSite(siteId);
 
-            Collection<GroupView> wholeSite = new ArrayList<GroupView>();
-            Collection<GroupView> sections = new ArrayList<GroupView>();
-            Collection<GroupView> adhocGroups = new ArrayList<GroupView>();
+            List<GroupView> wholeSite = new ArrayList<GroupView>();
+            List<GroupView> sections = new ArrayList<GroupView>();
+            List<GroupView> adhocGroups = new ArrayList<GroupView>();
 
             wholeSite.add(new GroupView(site, "All site members", grouper));
             for (Group group : site.getGroups()) {
@@ -72,6 +73,9 @@ public class IndexHandler extends BaseHandler {
                     sections.add(groupView);
                 }
             }
+
+            Collections.sort(sections);
+            Collections.sort(adhocGroups);
 
             Map<String, Object> context = new HashMap<String, Object>();
             context.put("baseUrl", determineBaseURL());
