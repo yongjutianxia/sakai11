@@ -315,7 +315,7 @@ function redirectBasedOnSelection(){
 				<span id="submitnotif" style="visibility:hidden">$tlang.getString("gen.proces")</span>
 
 				<!-- call populate method for new sites -->
-				<input type="hidden" name="eventSubmit_doContinue" value="x" />
+				<input type="hidden" name="eventSubmit_doContinue_new_course" value="x" />
 			</p>
 			#end
 
