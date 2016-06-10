@@ -847,4 +847,55 @@
 
 	</tool>
 
+
+        <tool
+            id="nyu.webex"
+            title="WebEx"
+            description="WebEx">
+          <configuration name="sakai:portlet-pre-render" value="true" />
+          <category name="course" />
+          <category name="project" />
+          <category name="portfolio" />
+          <configuration name="functions.require" />
+          <configuration name="sakai:menuClass" value="icon-sakai-bbb"/>
+          <configuration name="imsti.launch" />
+          <configuration name="imsti.xml" />
+          <configuration name="imsti.secret" />
+          <configuration name="imsti.key" />
+          <configuration name="imsti.pagetitle" value="WebEx"/>
+          <configuration name="imsti.tooltitle" value="WebEx"/>
+          <configuration name="imsti.newpage" value="off" />
+          <configuration name="imsti.maximize" value="on" />
+          <configuration name="imsti.frameheight" value="1024" />
+          <configuration name="imsti.debug" />
+          <configuration name="imsti.releasename" value="on"/> 
+          <configuration name="imsti.releaseemail" value="on"/> 
+          <configuration name="imsti.custom" />
+          <configuration name="imsti.allowsettings" value="off"/>
+          <configuration name="imsti.allowroster" value="off"/>
+          <configuration name="imsti.allowoutcomes" value="off"/> 
+          <configuration name="imsti.allowlori" value="off"/> 
+          <configuration name="imsti.contentlink" />
+          <configuration name="final.launch" value="true"/>
+          <configuration name="final.xml" value="true"/>
+          <configuration name="final.secret" value="true"/>
+          <configuration name="final.key" value="true"/>
+          <configuration name="final.pagetitle" value="true"/>
+          <configuration name="final.tooltitle" value="true"/>
+          <configuration name="final.newpage" value="true"/>
+          <configuration name="final.maximize" value="true"/>
+          <configuration name="final.frameheight" value="true"/>
+          <configuration name="final.debug" value="false"/>
+          <configuration name="final.releasename" value="true"/>
+          <configuration name="final.releaseemail" value="true"/>
+          <configuration name="final.custom" value="true"/>
+          <configuration name="final.allowsettings" value="true"/>
+          <configuration name="final.allowroster" value="true"/>
+          <configuration name="final.allowoutcomes" value="true"/>
+          <configuration name="final.allowlori" value="true"/>
+          <configuration name="final.contentlink" value="true"/>
+        </tool>
+
+
+
 </registration>
