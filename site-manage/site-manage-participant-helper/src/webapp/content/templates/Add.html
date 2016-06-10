@@ -16,11 +16,13 @@
 	<div rsf:id="content:">
 		<!-- instruction for adding participant to course sites  -->
 		<h3 rsf:id="msg=java.addp">Add Participant</h3>
-		<p>
+		<!-- CLASSES-1623 NYU custom text
+		<p class="instruction">
 			<span rsf:id="add.official" class="highlight"></span>
 			<span rsf:id = "add.official1"></span>
 		</p>
-		<p rsf:id = "add.official.instruction"></p>
+		-->
+
 		<!-- alert message -->
 		<div rsf:id="error-row:">
 			<div class="alertMessage" rsf:id="error">We Have Errors!</div>
@@ -34,7 +36,7 @@
 			<input rsf:id="csrfToken" name="csrfToken" id="csrfToken" type="hidden"/>
 			<!-- CLASSES-1623 NYU custom text -->
 			<h4>Automatic Enrollments</h4>
-			<p>Faculty and Students enrolled in a course through SIS/Albert are automatically added as participants to the course's corresponding NYU Classes course site at the time of site creation.</p>
+			<p>Faculty and Students enrolled in a course through SIS/Albert are <strong>automatically</strong> added as participants to the course's corresponding NYU Classes course site at the time of site creation.</p>
 			<!-- add official account -->
 			<h4 class="instruction" rsf:id="officialAccountSectionTitle"></h4>
 			<p>To <strong>manually</strong> add participants to this site, enter the NetID or NYU Directory email address of the individual(s) you wish to add below.</p>
