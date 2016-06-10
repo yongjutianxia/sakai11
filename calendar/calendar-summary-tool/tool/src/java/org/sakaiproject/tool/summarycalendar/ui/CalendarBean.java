@@ -23,6 +23,7 @@ package org.sakaiproject.tool.summarycalendar.ui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -236,18 +237,28 @@ public class CalendarBean {
 		String[] channelArray;
 		boolean isOnWorkspaceTab = M_ss.isUserSite(getSiteId());
 
+		LOG.debug("isOnWorkspaceTab: " + isOnWorkspaceTab);
+		
 		// Figure out the list of channel references that we'll be using.
 		// MyWorkspace is special: if not superuser, and not otherwise defined,
 		// get all channels
-		if(isOnWorkspaceTab && !M_as.isSuperUser() && initMergeList == null){
+		// NYU mod, remove  not superuser restriction
+		if(isOnWorkspaceTab && initMergeList == null){
+			LOG.debug("Getting for My Workspace");
 			channelArray = mergedCalendarList.getAllPermittedChannels(new CalendarChannelReferenceMaker());
 		}else{
+			LOG.debug("Normal site, getting from configured merge list");
 			channelArray = mergedCalendarList.getChannelReferenceArrayFromDelimitedString(primaryCalendarReference, initMergeList);
 		}
+		
+		LOG.debug("Channels to look at for synoptic tool: " + Arrays.toString(channelArray));
+		
 		if(entryProvider == null){
 			entryProvider = new MergedListEntryProviderFixedListWrapper(new EntryProvider(), primaryCalendarReference, channelArray, new CalendarReferenceToChannelConverter());
 		}
-		mergedCalendarList.loadChannelsFromDelimitedString(isOnWorkspaceTab, false, entryProvider, StringUtil.trimToZero(M_sm.getCurrentSessionUserId()), channelArray, M_as.isSuperUser(), getSiteId());
+		
+		//NYU mod, ignore super user status, force to false. We want all merged messages
+		mergedCalendarList.loadChannelsFromDelimitedString(isOnWorkspaceTab, false, entryProvider, StringUtil.trimToZero(M_sm.getCurrentSessionUserId()), channelArray, false, getSiteId());
 
 		return mergedCalendarList;
 	}

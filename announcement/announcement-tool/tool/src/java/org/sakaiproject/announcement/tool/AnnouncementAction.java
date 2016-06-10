@@ -1536,8 +1536,10 @@ public class AnnouncementAction extends PagedResourceActionII
 					initMergeList = tc.getPlacementConfig().getProperty(PORTLET_CONFIG_PARM_MERGED_CHANNELS);	
 				}
 
-				if (isOnWorkspaceTab() && !m_securityService.isSuperUser())
+				if (isOnWorkspaceTab())
 				{
+					M_log.debug("Getting for My Workspace");
+
 					String[] channelArrayFromConfigParameterValuebeBefore = null;
 
 					channelArrayFromConfigParameterValuebeBefore = mergedAnnouncementList
@@ -1584,6 +1586,9 @@ public class AnnouncementAction extends PagedResourceActionII
 				}
 				else
 				{
+				
+					M_log.debug("Normal site, getting from configured merge list");
+				
 					channelArrayFromConfigParameterValue = mergedAnnouncementList
 					.getChannelReferenceArrayFromDelimitedString(state.getChannelId(), initMergeList);
 					
@@ -1614,6 +1619,7 @@ public class AnnouncementAction extends PagedResourceActionII
 			}
 		}
 
+		//NYU mod, ignore super user status, force to false. We want all merged messages
 		mergedAnnouncementList.loadChannelsFromDelimitedString(
 		        isOnWorkspaceTab(), 
 		        new MergedListEntryProviderFixedListWrapper(
@@ -1623,7 +1629,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		            new AnnouncementReferenceToChannelConverter() ), 
 		        StringUtils.trimToEmpty(SessionManager.getCurrentSessionUserId()), 
 		        channelArrayFromConfigParameterValue, 
-		        m_securityService.isSuperUser(),
+				false,
 		        ToolManager.getCurrentPlacement().getContext());
 
 		Iterator channelsIt = mergedAnnouncementList.iterator();
