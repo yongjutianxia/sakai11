@@ -22,14 +22,14 @@ import org.sakaiproject.db.cover.SqlService;
 import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.api.UserFactory;
 import org.sakaiproject.user.api.User;
-
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 public class NYUDirectoryProvider extends JLDAPDirectoryProvider
 {
     // In test mode, we'll always hit LDAP for user information and log warnings
     // if we get any sort of mismatch.  Intended to be used to check data
     // integrity prior to going live.  It's also VERY SLOW :)
-    private static boolean TEST_MODE = true;
+    private boolean testMode = false;
 
     private static Log LOG = LogFactory.getLog(NYUDirectoryProvider.class);
 
@@ -45,6 +45,10 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
 
         if (userTypeMapper == null) {
             throw new RuntimeException("Couldn't get NYU user type mapper.  Can't initialize!");
+        }
+
+        if (ServerConfigurationService.getBoolean("nyudirectoryprovider.test-mode", false)) {
+            testMode = true;
         }
     }
 
@@ -143,7 +147,7 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
                 missedUserCount));
 
 
-        if (TEST_MODE) {
+        if (testMode) {
             validateResult(usersCollection);
         }
 
