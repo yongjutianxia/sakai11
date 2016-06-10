@@ -1895,6 +1895,17 @@ $(document).ready(function() {
 			return false;
 		});
 
+		$('#add-scorm-dialog form').on('submit', function() {
+			var saveButton = $(this).find('#scorm-add-item');
+			var spinner = $("<img >").attr('src', '/library/image/indicator.gif').css('position', 'relative').css('top', '0.5em').css('margin-right', '2px');
+
+			$("#scorm-cancel-button").attr('disabled', true);
+			$("#scorm-add-item").val("Uploading...").before(spinner);
+
+			return true;
+		});
+
+
 		$(".add-website").click(function(){
 			oldloc = $(".dropdown a");
 			closeDropdowns();
