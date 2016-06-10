@@ -165,11 +165,19 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
 
     // Query the database for the users in `pageOfUsers` and load their information into the UserEdit objects.
     private void fetchPageOfUsers(Connection connection, List<UserEdit> pageOfUsers, Map<String, UserEdit> usersByEid) throws SQLException {
+        if (pageOfUsers.isEmpty()) {
+            return;
+        }
+
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            ps = connection.prepareStatement("SELECT netid, lname, mname, fname, email FROM nyu_t_users where netid in (" + placeholdersFor(pageOfUsers) + ")");
+            if (pageOfUsers.size() > 1) {
+                ps = connection.prepareStatement("SELECT netid, lname, mname, fname, email FROM nyu_t_users where netid in (" + placeholdersFor(pageOfUsers) + ")");
+            } else {
+                ps = connection.prepareStatement("SELECT netid, lname, mname, fname, email FROM nyu_t_users where netid = ?");
+            }
 
             for (int i = 0; i < pageOfUsers.size(); i++) {
                 UserEdit user = pageOfUsers.get(i);
