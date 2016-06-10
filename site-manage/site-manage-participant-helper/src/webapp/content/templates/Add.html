@@ -32,11 +32,16 @@
 		<!-- form for adding participant -->
 		<form rsf:id="participant-form" >
 			<input rsf:id="csrfToken" name="csrfToken" id="csrfToken" type="hidden"/>
+			<!-- CLASSES-1623 NYU custom text -->
+			<h4>Automatic Enrollments</h4>
+			<p>Faculty and Students enrolled in a course through SIS/Albert are automatically added as participants to the course's corresponding NYU Classes course site at the time of site creation.</p>
 			<!-- add official account -->
-			<h4 rsf:id="officialAccountSectionTitle"></h4>
+			<h4 class="instruction" rsf:id="officialAccountSectionTitle"></h4>
+			<p>To <strong>manually</strong> add participants to this site, enter the NetID or NYU Directory email address of the individual(s) you wish to add below.</p>
 			<label rsf:id="officialAccountLabel" for ="officialAccountParticipant">
 	           Official Account Label
 	        </label>
+			<a href="http://www.nyu.edu/servicelink/041309409300648" target="_blank"><span class="icon-sakai-help"></span></a>
 	        <br/>
 	        <textarea rsf:id="officialAccountParticipant" name="officialAccountParticipant" cols="35" rows="4" id="officialAccountParticipant"></textarea>
 			<a href="#" onclick="rsf:id='officialAccountPickerAction'"><h5 rsf:id="officialAccountPickerLabel"></h5></a><br />
