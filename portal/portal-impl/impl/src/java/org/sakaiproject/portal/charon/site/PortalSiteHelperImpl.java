@@ -23,6 +23,7 @@ package org.sakaiproject.portal.charon.site;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -680,8 +681,18 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				m.put("current", Boolean.valueOf(current));
 				m.put("ispopup", Boolean.valueOf(p.isPopUp()));
 				m.put("pagePopupUrl", pagePopupUrl);
-				m.put("pageTitle", Web.escapeHtml(p.getTitle()));
-				m.put("jsPageTitle", Web.escapeJavascript(p.getTitle()));
+
+                                // CLASSES-1445 Prefix certain workspace tools with "My"
+                                String displayTitle = p.getTitle();
+
+                                if (SiteService.isUserSite(site.getId()) && needsMyPrefix(displayTitle)) {
+                                    displayTitle = "My " + displayTitle;
+                                }
+
+				m.put("pageTitle", Web.escapeHtml(displayTitle));
+				m.put("jsPageTitle", Web.escapeJavascript(displayTitle));
+
+
 				m.put("pageId", Web.escapeUrl(p.getId()));
 				m.put("jsPageId", Web.escapeJavascript(p.getId()));
 				m.put("pageRefUrl", pagerefUrl);
@@ -840,6 +851,12 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			ServerConfigurationService.getInt("display.users.present.time.delay", 3000)) );
 
 		return theMap;
+	}
+
+	private static List<String> prefixableTitles = Arrays.asList(new String[] { "Calendar", "Resources", "Announcements" });
+
+	private boolean needsMyPrefix(String title) {
+		return prefixableTitles.contains(title);
 	}
 
 	/**
