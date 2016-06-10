@@ -208,8 +208,12 @@
 					$tlang.getString("sitegen.siteinfolist.courses")
 				</th>
 				<td>
-					#foreach ($title in $providerCourseTitles)
-						$title<br />
+                                        ## CLASSES-455 NYU customisation
+                                        ## Ensure the listing is ordered by the course id
+					#foreach ($eid in $providerCourseList)
+                                                #if ($providerCourseTitles.containsKey($eid))
+                                                      $providerCourseTitles.get($eid) <span class="eid">$eid</span><br />
+                                                #end
 					#end
 					#foreach($id in $!cmRequestedCourseList)
 						$id.title $tlang.getString("man.requested")<br />

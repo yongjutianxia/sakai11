@@ -83,9 +83,9 @@
 #findCoursePanels label .eid,
 .itemSummary .eid,
 #multipleSectionsWarningDialog .eid {
-    color: #999;
-    margin-left: 10px;
-    font-size: 0.9em;
+    color: #999 !important;
+    margin-left: 10px !important;
+    font-size: 0.9em !important;
 }
 .section-attached-icon {
     width: 16px;
