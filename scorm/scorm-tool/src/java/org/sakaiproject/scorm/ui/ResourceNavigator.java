@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL:  $
- * $Id:  $
+ * $URL$
+ * $Id$
  ***********************************************************************************
  *
  * Copyright (c) 2007 The Sakai Foundation.
@@ -50,6 +50,10 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 	}
 	
 	public void displayResource(final SessionBean sessionBean, Object target) {
+		
+		if (log.isDebugEnabled())
+			log.debug("NYU-SCORM-DEBUG -- Session Bean: " + sessionBean + "; Target: " + target);
+		
 		if (null == sessionBean)
 			return;
 		
@@ -58,6 +62,9 @@ public abstract class ResourceNavigator implements INavigable, Serializable {
 		}
 		
 		String url = getUrl(sessionBean);
+		
+		if (log.isDebugEnabled())
+			log.debug("NYU-SCORM-DEBUG -- URL: " + url);
 		
 		
 		// Don't bother to display anything if a null url is returned. 
