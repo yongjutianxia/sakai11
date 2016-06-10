@@ -12185,8 +12185,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				}
 				else	
 				{
+
 					if (allowGrade)
 						retVal = rb.getString("ungra");
+					else if (submitTime == null)
+						retVal = rb.getString("gen.notsta");
 					else
 						// submission saved, not submitted.
 						retVal = rb.getString("gen.dra2") + " " + rb.getString("gen.inpro");
