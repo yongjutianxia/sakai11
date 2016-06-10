@@ -184,12 +184,75 @@
 		<property name="gradebookFrameworkService" ref="org.sakaiproject.service.gradebook.GradebookFrameworkService"/>
 
 		<!-- Set up default system-wide grading scales. -->
-<!--
 		<property name="availableGradingScales">
 			<list>
 				<bean class="org.sakaiproject.service.gradebook.shared.GradingScaleDefinition">
 					<property name="uid" value="LetterGradePlusMinusMapping"/>
-					<property name="name" value="Letter Grades with +/-"/>
+					<property name="name" value="Official: Letter Grades with +/-"/>
+					<property name="grades">
+						<list>
+							<value>A</value>
+							<value>A-</value>
+							<value>B+</value>
+							<value>B</value>
+							<value>B-</value>
+							<value>C+</value>
+							<value>C</value>
+							<value>C-</value>
+							<value>D+</value>
+							<value>D</value>
+							<value>F</value>
+						</list>
+					</property>
+					<property name="defaultBottomPercents">
+						<list>
+							<value>95.0</value>
+							<value>90.0</value>
+							<value>87.0</value>
+							<value>83.0</value>
+							<value>80.0</value>
+							<value>77.0</value>
+							<value>73.0</value>
+							<value>70.0</value>
+							<value>67.0</value>
+							<value>63.0</value>
+							<value>00.0</value>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.sakaiproject.service.gradebook.shared.GradingScaleDefinition">
+					<property name="uid" value="LetterGradePlusMinusMapping_law"/>
+					<property name="name" value="Law: Letter Grades with +/-"/>
+					<property name="grades">
+						<list>
+							<value>A+</value>
+							<value>A</value>
+							<value>A-</value>
+							<value>B+</value>
+							<value>B</value>
+							<value>B-</value>
+							<value>C</value>
+							<value>D</value>
+							<value>F</value>
+						</list>
+					</property>
+					<property name="defaultBottomPercents">
+						<list>
+							<value>100.0</value>
+							<value>95.0</value>
+							<value>90.0</value>
+							<value>87.0</value>
+							<value>83.0</value>
+							<value>80.0</value>
+							<value>73.0</value>
+							<value>63.0</value>
+							<value>00.0</value>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.sakaiproject.service.gradebook.shared.GradingScaleDefinition">
+					<property name="uid" value="LetterGradePlusMinusMapping_dental"/>
+					<property name="name" value="Dental: Letter Grades with +/-"/>
 					<property name="grades">
 						<list>
 							<value>A+</value>
@@ -201,9 +264,7 @@
 							<value>C+</value>
 							<value>C</value>
 							<value>C-</value>
-							<value>D+</value>
 							<value>D</value>
-							<value>D-</value>
 							<value>F</value>
 						</list>
 					</property>
@@ -218,9 +279,41 @@
 							<value>77.0</value>
 							<value>73.0</value>
 							<value>70.0</value>
+							<value>63.0</value>
+							<value>00.0</value>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.sakaiproject.service.gradebook.shared.GradingScaleDefinition">
+					<property name="uid" value="LetterGradePlusMinusMapping_stern"/>
+					<property name="name" value="Stern: Letter Grades with +/-"/>
+					<property name="grades">
+						<list>
+							<value>A</value>
+							<value>A-</value>
+							<value>B+</value>
+							<value>B</value>
+							<value>B-</value>
+							<value>C+</value>
+							<value>C</value>
+							<value>C-</value>
+							<value>D+</value>
+							<value>D</value>
+							<value>F</value>
+						</list>
+					</property>
+					<property name="defaultBottomPercents">
+						<list>
+							<value>95.0</value>
+							<value>90.0</value>
+							<value>87.0</value>
+							<value>83.0</value>
+							<value>80.0</value>
+							<value>77.0</value>
+							<value>73.0</value>
+							<value>70.0</value>
 							<value>67.0</value>
 							<value>63.0</value>
-							<value>60.0</value>
 							<value>00.0</value>
 						</list>
 					</property>
@@ -267,7 +360,7 @@
 		</property>
 
 		<property name="defaultGradingScale" value="LetterGradePlusMinusMapping"/>
--->
+
 
 		<!--
 			You could use a configuration like this to disable the plus-minus scale,
