@@ -14139,6 +14139,59 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		return roles;
 	} // getRolesAllowedToAttachSection
 
+
+	private HashMap<String, ArrayList> reGroupSectionsBasedOnNYUCrosslistings(Map sections)
+	{
+		Map<String, String> sectionEidToCourseOfferingEid = new HashMap<String, String>();
+
+		// Build an inverted map from section -> course eid
+		for (Iterator i = sections.keySet().iterator(); i.hasNext();) {
+			String courseOfferingEid = (String) i.next();
+			ArrayList courseSections = (ArrayList) sections.get(courseOfferingEid);
+
+			for (Object section : courseSections) {
+				sectionEidToCourseOfferingEid.put(((SectionObject)section).getEid(),
+						courseOfferingEid);
+			}
+		}
+
+		// For each section in the flattened list of sections...
+		//  Look up that section in nyu_t_crosslistings as nonsponsor_course
+		//  If we find it:
+		//    Remove that section from the eid it's under
+		//    Add it after the section of its parent
+		HashMap<String, ArrayList> result = new HashMap();
+
+		for (Iterator i = sections.values().iterator(); i.hasNext();) {
+			for (SectionObject section : (ArrayList<SectionObject>)i.next()) {
+				String sectionEid = (String) section.getEid();
+
+				// Leave it where it is by default
+				String owningCourseOfferingEid = (String)sectionEidToCourseOfferingEid.get(sectionEid);
+
+				// But check our table to see if we should transplant it somewhere else
+				String sponsorSectionEid = nyuDbHelper.findSponsor(sectionEid);
+
+				if (sponsorSectionEid != null && sectionEidToCourseOfferingEid.containsKey(sponsorSectionEid)) {
+					// Where'd I leave my bone saw?
+					owningCourseOfferingEid = sectionEidToCourseOfferingEid.get(sponsorSectionEid);
+					section.sponsorSectionEid = sponsorSectionEid;
+				}
+
+				// And pop the section into its final resting place
+				if (!result.containsKey(owningCourseOfferingEid)) {
+					result.put(owningCourseOfferingEid, new ArrayList());
+				}
+
+				result.get(owningCourseOfferingEid).add(section);
+			}
+		}
+
+
+		return result;
+	}
+
+
 	/**
 	 * Here, we will preapre two HashMap: 1. courseOfferingHash stores
 	 * courseOfferingId and CourseOffering 2. sectionHash stores
@@ -14162,6 +14215,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		HashMap sectionHash = new HashMap();
 		prepareCourseAndSectionMap(userId, academicSessionEid,
 				courseOfferingHash, sectionHash);
+
+		sectionHash = reGroupSectionsBasedOnNYUCrosslistings(sectionHash);
+
+
 		// courseOfferingHash & sectionHash should now be filled with stuffs
 		// put section list in state for later use
 
@@ -14363,6 +14420,8 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 		public List<String> authorizer;
 		
+		public String sponsorSectionEid;
+
 		public String description;
 
 		public SectionObject(Section section) {
@@ -14432,6 +14491,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			return authorizer;
 		}
 		
+		public String getSponsorSectionEid() {
+			return sponsorSectionEid;
+		}
+
 		public String getAuthorizerString() {
 			StringBuffer rv = new StringBuffer();
 			if (authorizer != null && !authorizer.isEmpty())
