@@ -38,15 +38,65 @@ public class ExternalHelpSystem {
         }
 
         public String toString() {
-          return String.format("%s : %s : %s", tool, label, url);
+          return String.format("\"%s\", \"%s\", \"%s\"", tool, label, url);
+        }
+    }
+
+
+    private class HelpSet {
+        private Map<String, ExternalHelp> help;
+        private Map<String, ExternalHelp> news;
+
+        public HelpSet(String userRole) {
+            help = readHelpEntries("externalHelp.help." + userRole);
+            news = readHelpEntries("externalHelp.news." + userRole);
+        }
+
+
+        public ExternalHelp getHelp(String toolId) { return help.get(toolId); }
+        public ExternalHelp getNews(String toolId) { return news.get(toolId); }
+
+
+        private Map<String, ExternalHelp> readHelpEntries(String basename) {
+            int count = ServerConfigurationService.getInt(basename + ".count", 0);
+
+            Map<String, ExternalHelp> result = new HashMap<String, ExternalHelp>(count);
+
+            for (int i = 1; i <= count; i++) {
+                String tool = ServerConfigurationService.getString(String.format("%s.%d.tool", basename, i));
+                String url = ServerConfigurationService.getString(String.format("%s.%d.url", basename, i));
+                String label = ServerConfigurationService.getString(String.format("%s.%d.label", basename, i));
+
+                result.put(tool, new ExternalHelp(tool, url, label));
+            }
+
+            return result;
+        }
+
+
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("\n");
+            sb.append("Help entries:\n");
+            for (ExternalHelp entry : help.values()) {
+                sb.append("  <" + entry.toString() + ">\n");
+            }
+
+            sb.append("News entries:\n");
+            for (ExternalHelp entry : news.values()) {
+                sb.append("  <" + entry.toString() + ">\n");
+            }
+
+            sb.append("\n");
+
+            return sb.toString();
         }
     }
 
 
     private boolean enabled;
-    private Map<String, ExternalHelp> help;
-    private Map<String, ExternalHelp> news;
-
+    private Map<String, HelpSet> roleHelpSets;
 
     public ExternalHelpSystem() {
         enabled = ServerConfigurationService.getBoolean("externalHelp.enabled", false);
@@ -58,28 +108,19 @@ public class ExternalHelpSystem {
             return;
         }
 
-        help = readHelpEntries("externalHelp.help");
-        news = readHelpEntries("externalHelp.news");
+        roleHelpSets = new HashMap<String, HelpSet>();
+        String[] userRoles = ServerConfigurationService.getStrings("externalHelp.user-roles");
 
-        LOG.info("Loaded external help entries:" + help);
-        LOG.info("Loaded external news entries:" + news);
-    }
-
-
-    private Map<String, ExternalHelp> readHelpEntries(String basename) {
-        int count = ServerConfigurationService.getInt(basename + ".count", 0);
-
-        Map<String, ExternalHelp> result = new HashMap<String, ExternalHelp>(count);
-
-        for (int i = 1; i <= count; i++) {
-            String tool = ServerConfigurationService.getString(String.format("%s.%d.tool", basename, i));
-            String url = ServerConfigurationService.getString(String.format("%s.%d.url", basename, i));
-            String label = ServerConfigurationService.getString(String.format("%s.%d.label", basename, i));
-
-            result.put(tool, new ExternalHelp(tool, url, label));
+        if (userRoles == null) {
+            return;
         }
 
-        return result;
+        for (String userRole : userRoles) {
+            HelpSet roleHelpSet = new HelpSet(userRole);
+            roleHelpSets.put(userRole, roleHelpSet);
+
+            LOG.info(String.format("Added help set for role '%s': %s", userRole, roleHelpSet));
+        }
     }
 
 
@@ -87,13 +128,23 @@ public class ExternalHelpSystem {
         return enabled;
     }
 
-    public ExternalHelp getHelp(String toolId) {
-        return help.get(toolId);
+    public ExternalHelp getHelp(String toolId, String userRole) {
+        if (!roleHelpSets.containsKey(userRole)) {
+            return null;
+        }
+
+        return roleHelpSets.get(userRole).getHelp(toolId);
     }
 
-    public ExternalHelp getMainHelp() { return help.get(MAIN_HELP_TOOL_ID); }
 
-    public ExternalHelp getNews(String toolId) {
-        return news.get(toolId);
+    public ExternalHelp getNews(String toolId, String userRole) {
+        if (!roleHelpSets.containsKey(userRole)) {
+            return null;
+        }
+
+        return roleHelpSets.get(userRole).getNews(toolId);
     }
+
+
+    public ExternalHelp getMainHelp() { return getHelp(MAIN_HELP_TOOL_ID, "global"); }
 }

@@ -733,19 +733,19 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		RenderResult result = ToolRenderService.render(this, placement, req, res,
 
                 if (externalHelpSystem.isActive()) {
-                    ExternalHelpSystem.ExternalHelp help = externalHelpSystem.getHelp(placement.getToolId());
-                    ExternalHelpSystem.ExternalHelp news = externalHelpSystem.getNews(placement.getToolId());
+			String userRole = "student";
+			if (securityService.unlock(SiteService.SECURE_UPDATE_SITE, site
+						   .getReference())) {
+				userRole = "instructor";
+			}
 
-                    if (securityService.unlock(SiteService.SECURE_UPDATE_SITE, site
-                                               .getReference())) {
-                        toolMap.put("showingExternalNews", Boolean.valueOf(true));
-                    } else {
-                        toolMap.put("showingExternalNews", Boolean.valueOf(false));
-                    }
 
-                    toolMap.put("usingExternalHelp", Boolean.valueOf(true));
-                    toolMap.put("externalHelp", help);
-                    toolMap.put("externalNews", news);
+			ExternalHelpSystem.ExternalHelp help = externalHelpSystem.getHelp(placement.getToolId(), userRole);
+			ExternalHelpSystem.ExternalHelp news = externalHelpSystem.getNews(placement.getToolId(), userRole);
+
+			toolMap.put("usingExternalHelp", Boolean.valueOf(true));
+			toolMap.put("externalHelp", help);
+			toolMap.put("externalNews", news);
                 }
 
 

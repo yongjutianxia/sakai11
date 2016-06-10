@@ -112,7 +112,7 @@
 
                                 #end ## END of IF ( $toolDirectUrlEnabled && ${tool.showDirectToolUrl} )
 
-                                #if (${tool.showingExternalNews} && ${tool.externalNews})
+                                #if (${tool.externalNews})
                                     <a class="external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">${tool.externalNews.label}</a>
                                 #end
 
