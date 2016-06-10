@@ -3266,7 +3266,10 @@ public class SimplePageBean {
 					i.setHeight(Integer.toString(height));
 				    else
 					i.setHeight("");
-				    if (format == null || format.trim().equals(""))
+				    //CLASSES-1856 set item to "window" popup if external tool is defined as a popup
+				    if (blti.isPopUp()) {
+				    	i.setFormat("window");
+				    } else if (format == null || format.trim().equals(""))
 					i.setFormat("");
 				    else
 					i.setFormat(format);
