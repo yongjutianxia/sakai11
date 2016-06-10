@@ -46,7 +46,7 @@ public class AjaxPhaseListener implements PhaseListener {
 					if (messageId != null && topicId != null) {
 						if (!forumTool.isMessageReadForUser(Long.valueOf(topicId),
 								Long.valueOf(messageId))) {
-							forumTool.markMessageReadForUser(Long.valueOf(topicId),
+							forumTool.markMessageReadForUserWithoutReset(Long.valueOf(topicId),
 									Long.valueOf(messageId), true);
 							out.println("SUCCESS");
 						} else {

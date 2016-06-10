@@ -7981,9 +7981,15 @@ public class DiscussionForumTool
 		 return messageManager.isMessageReadForUser(topicId, messageId);
 	 }
 	 
+	 public void markMessageReadForUserWithoutReset(Long topicId, Long messageId, Boolean read)
+	 {
+		 messageManager.markMessageReadForUser(topicId, messageId, read);
+	 }
+
 	 public void markMessageReadForUser(Long topicId, Long messageId, Boolean read)
 	 {
 		 messageManager.markMessageReadForUser(topicId, messageId, read);
+
 		 if(selectedThreadHead != null){
 			 //reset the thread to show unread
 			 processActionGetDisplayThread();
