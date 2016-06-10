@@ -1265,6 +1265,11 @@ div[role="dialog"] {
     width:250px;
     display:block;
 }
+/* CLASSES-1931 */
+.direct-url-wrap,
+.tool-directurl {
+    display: none !important;
+}
 .portletTitle .title {
     float: left;
 }
