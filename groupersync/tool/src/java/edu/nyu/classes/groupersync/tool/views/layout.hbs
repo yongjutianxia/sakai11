@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="/groupersync-tool/stylesheets/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{{skinRepo}}}/tool_base.css" />
+
+        {{{randomSakaiHeadStuff}}}
+
+        <link rel="stylesheet" type="text/css" href="/groupersync-tool/stylesheets/groupersync.css" />
+    </head>
+    <body>
+
+        <div class="portletBody groupersync-body">
+            {{{subpage this subpage}}}
+        </div>
+
+        <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/groupersync-tool/scripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/groupersync-tool/scripts/groupersync.js"></script>
+        <script>
+         var config = {
+             maxDescriptionLength: {{{maxDescriptionLength}}},
+             maxAddressLength: {{{maxAddressLength}}},
+             descriptionExcludedCharacters: '{{{descriptionExcludedCharacters}}}',
+             addressAllowedCharacters: '{{{addressAllowedCharacters}}}',
+             whitespaceReplacementCharacter: '{{{whitespaceReplacementCharacter}}}',
+         };
+         var grouper = new GrouperSync('{{{baseUrl}}}', config);
+        </script>
+        <script>
+            function resizeFrame(updown) 
+            {
+                if (top.location !== self.location) {
+                    var frame = parent.document.getElementById(window.name);
+                }
+                if (frame){
+                    if(updown==='shrink') {
+                        var clientH = document.body.clientHeight;
+                    } else {
+                        var clientH = $(parent.document).find('.portletMainWrap').height();
+                    }
+                    $( frame ).height( clientH );
+                } 
+            }
+            resizeFrame();
+        </script>
+    </body>
+</html>

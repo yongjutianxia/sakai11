@@ -75,6 +75,7 @@
                 <module>feedback</module>
                 <module>gradebook</module>
                 <module>gradebookng</module>
+                <module>groupersync</module>
                 <module>help</module>
                 <module>hierarchy</module>
                 <module>jobscheduler</module>

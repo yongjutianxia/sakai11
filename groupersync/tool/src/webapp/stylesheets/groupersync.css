@@ -1,0 +1,89 @@
+body {
+    /* Fix 0.9em font size causing super small text size! */
+    font-size: 1.2em !important;
+}
+
+h2, h3 {
+    font-weight: bold;
+}
+
+h3 {
+    padding: 10px 0 10px 10px;
+    border-left: 3px solid #2F7FAB;
+    background-color: #eeeeee !important;
+    font-size: 1.2em;
+    box-shadow: inset 0 -1px 1px #DDD;
+}
+
+.subtable {
+    max-width: 900px;
+    background-color: #fafafa;
+    margin: 2em 0 0 1em;
+    padding-bottom: 10px;
+    border: 1px solid #f1f1f1;
+}
+
+.subtable h3 {
+    margin: 0 0 1em 0;
+}
+
+.subtable table {
+    margin: 10px;
+    width: 880px;
+    background-color: white;
+}
+
+.show-members-btn {
+    margin: 5px;
+}
+
+.member-list {
+    list-style-type: none;
+}
+
+/* FIXME: Can probably use the bootstrap grid for this? */
+.modal-body {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.group-container .form-control, .modal-body .form-control {
+    padding: 6px 12px;
+    height: 34px;
+}
+
+.group-description {
+    margin-bottom: 1em;
+}
+
+.clipboard-help-text {
+    color: green;
+}
+
+.group-pending-msg {
+    color: green;
+}
+
+.member-list .member .name {
+    display: inline-block;
+    width: 15em;
+    margin-right: 2em;
+    overflow: hidden;
+}
+
+.member-list .member .eid {
+    display: inline-block;
+    width: 6em;
+    margin-right: 2em;
+    overflow: hidden;
+}
+
+.member-list .member .role {
+    display: inline-block;
+    width: 12em;
+    overflow: hidden;
+}
+
+small.text-danger {
+    font-weight: bold;
+}
