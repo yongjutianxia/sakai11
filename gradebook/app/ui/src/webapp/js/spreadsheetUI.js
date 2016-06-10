@@ -74,7 +74,7 @@ function gethandles(){
    q4_div = $("#q4 div");
 
    var q4s_width = $(q4s).width();
-   if (q4s_width > q4_table_width) {
+    if (q4s_width > q4_table_width) {
       var mainwrap = $("#mainwrap");
       maxwidth = $(mainwrap).width() - (q4s_width - q4_table_width) + 15;
         if(maxwidth < $("body").width() - 2) 
@@ -89,6 +89,8 @@ function gethandles(){
       $(q4_div).height($(q4_div).height() - (q4s_height - q4_table_height) + 15);
    }
    //end check if we need scrollbars - SAK-9969
+
+
    el1 = $(q2_div_ul).get(0);
    el2 = $("#q3 div table").get(0);
    els = $(q4_div).get(0);
@@ -99,6 +101,7 @@ $(document).ready(gethandles);
 
 // Bind a mouse wheel listener for the left hand pane so scrolling works consistently.
 $(function () {
+
     // This function checks if the specified event is supported by the browser.
     // Source: http://perfectionkills.com/detecting-event-support-without-browser-sniffing/
     function isEventSupported(eventName) {
@@ -114,37 +117,63 @@ $(function () {
     }
 
 
-    // nicked from above
     var reset_row_heights = function () {
-      // this makes sure the height of the data cells matches up for all rows
       $("#q3 tr").each(function(i){
           thisHeight = $(this).height();
           thatHeight = $("#q4 tr:eq(" + i + ")").height();
-          if(thisHeight > thatHeight){
-            $("#q4 tr:eq(" + i + ")").height(thisHeight);
-          } else {
-            $(this).css("height",thatHeight + "px");
-          }
+
+          var new_height = Math.max(thisHeight, thatHeight) + 5;
+
+          $("#q4 tr:eq(" + i + ")").height(new_height);
+          $(this).height(new_height);
         })
+
+      // If we're not showing a scrollbar (such as on OSX), set the heights to
+      // take up the full space available
+      var q3_div = $('#q3 > div');
+      var q4_div = $('#q4 > div');
+
+      if (q4_div.height() === q4_div[0].clientHeight) {
+        // what a world.
+        q3_div.height(q4_div.height());
+      }
     };
 
-    setInterval(reset_row_heights, 5000);
+    reset_row_heights();
 
 
     var wheelEvent = isEventSupported('mousewheel') ? 'mousewheel' : 'wheel';
     var divToScroll = $('#q4 > div');
 
     $('#q3,#q4').on(wheelEvent, function(e) {
-        var oEvent = e.originalEvent,
-            delta  = oEvent.deltaY || oEvent.wheelDelta;
 
+        var oEvent = e.originalEvent;
+        var deltaY = oEvent.deltaY;
+        var deltaX = oEvent.deltaX || 0;
+
+        if (deltaY === undefined) {
+          deltaY = oEvent.wheelDelta;
+          deltaX = 0;
+        }
+
+        var leftPosition = divToScroll.scrollLeft();
         var topPosition = divToScroll.scrollTop();
 
-        var direction = ((delta < 0) ? -1 : 1);
-        var offset = (25 * direction);
+
+        if (oEvent.deltaMode === 1) {
+          // Firefox defaults to line-based scrolling, so we need to accelerate it.
+          deltaX *= 20;
+          deltaY *= 20;
+        }
 
         // Pass the scroll to the other pane
-        divToScroll.scrollTop(topPosition + offset);
+        if (deltaX) {
+          divToScroll.scrollLeft(leftPosition + deltaX);
+        }
+
+        if (deltaY) {
+          divToScroll.scrollTop(topPosition + deltaY);
+        }
 
         e.preventDefault();
         return false;

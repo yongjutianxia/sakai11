@@ -1,11 +1,14 @@
 div#mainwrap {
    position: relative;
 }
+
+
 div#headers {
    background-color: #ddd;
    border: 1px solid #afafaf;
    border-bottom: 4px solid #afafaf;
-   margin-right: 15px;
+   height: 45px;
+   margin-right: 0px;
    overflow: hidden;
    padding: 0;
 }

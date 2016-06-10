@@ -87,7 +87,7 @@
 			<%@ include file="/inc/filterPagingRoster.jspf"%>
 		</t:aliasBean>
 
-          <c:set var="initHeight" value="${(fn:length(rosterBean.studentRows)) *32}"/>
+          <c:set var="initHeight" value="400"/>
 
 		<gbx:spreadsheetUI 
 			colLock="#{rosterBean.colLock}"
