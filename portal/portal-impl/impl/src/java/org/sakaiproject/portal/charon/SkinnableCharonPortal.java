@@ -31,8 +31,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -93,6 +96,7 @@ import org.sakaiproject.portal.charon.handlers.ToolResetHandler;
 import org.sakaiproject.portal.charon.handlers.WorksiteHandler;
 import org.sakaiproject.portal.charon.handlers.WorksiteResetHandler;
 import org.sakaiproject.portal.charon.handlers.XLoginHandler;
+import org.sakaiproject.portal.charon.handlers.SamlLoginHandler;
 import org.sakaiproject.portal.charon.site.PortalSiteHelperImpl;
 import org.sakaiproject.portal.render.api.RenderResult;
 import org.sakaiproject.portal.render.cover.ToolRenderService;
@@ -789,6 +793,45 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	}
 
 
+	private String getOriginalURL(HttpServletRequest req)
+	{
+		String result = req.getRequestURI();
+		String qs = req.getQueryString();
+
+
+		if (qs != null) {
+			result = result + "?" + qs;
+		}
+
+		return URLEncoder.encode(result);
+	}
+
+
+	private boolean handleSamlRedirect(HttpServletRequest req, HttpServletResponse res, Session session)
+		throws IOException
+	{
+		String ssoURL = ServerConfigurationService.getString("edu.nyu.classes.saml.ssoURL");
+
+                String path = req.getPathInfo();
+
+                Pattern toplevelPaths = Pattern.compile("(^/$|^/site/|^/tool/)");
+
+		if (toplevelPaths.matcher(path).find() &&
+		    ssoURL != null && !"".equals(ssoURL) &&
+		    session.getUserId() == null) {
+			// The user isn't logged in to CLE, but appears to have
+			// an existing SSO session.  Bounce them back to the SSO
+			// server to complete their login to CLE.
+
+			res.sendRedirect(ssoURL + "&target=" + getOriginalURL(req));
+
+			return true;
+		}
+
+		return false;
+	}
+
+
 	/**
 	 * Respond to navigation / access requests.
 	 *
@@ -823,6 +866,10 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
 			// get the Sakai session
 			Session session = SessionManager.getCurrentSession();
+
+			if (handleSamlRedirect(req, res, session)) {
+				return;
+			}
 
 			// recognize what to do from the path
 			String option = URLUtils.getSafePathInfo(req);
@@ -2000,6 +2047,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		addHandler(new ReLoginHandler());
 		addHandler(new LoginHandler());
 		addHandler(new XLoginHandler());
+		addHandler(new SamlLoginHandler());
 		addHandler(new LogoutHandler());
 		addHandler(new ErrorDoneHandler());
 		addHandler(new ErrorReportHandler());

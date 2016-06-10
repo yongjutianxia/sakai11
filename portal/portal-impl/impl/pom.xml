@@ -115,6 +115,13 @@
             <artifactId>xom</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+      		<groupId>edu.nyu.classes.saml</groupId>
+      		<artifactId>saml-api</artifactId>
+      		<version>10.0</version>
+      		<scope>provided</scope>
+    	</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>

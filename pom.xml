@@ -98,6 +98,7 @@
                 <module>rsf</module>
                 <module>rwiki</module>
                 <module>samigo</module>
+                <module>saml</module>
                 <module>search</module>
                 <module>sections</module>
                 <module>shortenedurl</module>
