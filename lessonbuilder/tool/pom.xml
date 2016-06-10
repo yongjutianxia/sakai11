@@ -72,6 +72,13 @@
         </dependency>
 
         <dependency>
+            <groupId>edu.nyu.classes.externalhelp</groupId>
+            <artifactId>externalhelp-api</artifactId>
+            <version>${sakai.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.sakaiproject.entitybroker</groupId>
             <artifactId>entitybroker-utils</artifactId>
             <!--version>${sakai.entitybroker.version}</version-->

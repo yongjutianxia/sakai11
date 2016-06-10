@@ -76,6 +76,11 @@ import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 import org.springframework.core.io.Resource;
 
+import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
+import edu.nyu.classes.externalhelp.api.ExternalHelpSystem;
+import edu.nyu.classes.externalhelp.api.ExternalHelp;
+
 
 /**
  * View items such as quizes that are shown inline
@@ -236,6 +241,25 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 	    // currently only support 11
 	    String helpurl = null; /* (String)toolSession.getAttribute("sakai-portal:help-action"); */
 	    String reseturl = null; /* (String)toolSession.getAttribute("sakai-portal:reset-action"); */
+
+	    String helpMessage = messageLocator.getMessage("simplepage.help-button");
+
+	    ExternalHelpSystem helpSystem = (ExternalHelpSystem) ComponentManager.get("edu.nyu.classes.externalhelp.api.ExternalHelpSystem");
+	    if (helpSystem.isActive()) {
+		String siteId = toolConfiguration.getSiteId();
+
+		boolean instructor = SecurityService.unlock(SiteService.SECURE_UPDATE_SITE, SiteService.siteReference(siteId));
+
+		ExternalHelp help = helpSystem.getHelp("sakai.lessonbuildertool", instructor ? "instructor" : "student");
+
+		if (help != null) {
+		    helpurl = help.getUrl();
+		    helpMessage = help.getLabel();
+		} else {
+		    helpurl = null;
+		}
+	    }
+
 	    String skinName = null;
 	    String skinRepo = null;
 	    String iconBase = null;
@@ -256,11 +280,10 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 		    decorate(new UIFreeAttributeDecorator("onclick",
 					  "openWindow('" + helpurl + "', 'Help', 'resizeable=yes,toolbar=no,scrollbars=yes,menubar=yes,width=800,height=600'); return false")).
 		    decorate(new UIFreeAttributeDecorator("title",
-				 messageLocator.getMessage("simplepage.help-button")));
+				 helpMessage));
 		if (!inline)
 		UIOutput.make(tofill, "helpimage2").
-		    decorate(new UIFreeAttributeDecorator("alt",
-				 messageLocator.getMessage("simplepage.help-button")));
+		    decorate(new UIFreeAttributeDecorator("alt", helpMessage));
 		UIOutput.make(tofill, "helpnewwindow2",
 		    messageLocator.getMessage("simplepage.opens-in-new"));
 
