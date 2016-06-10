@@ -2433,6 +2433,23 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 
 		submission.setTimeLastModified(TimeService.newTime());
 
+
+		// BEGIN NYU DEBUGGING
+		try {
+		    if (!submission.getGradeReleased()) {
+			AssignmentSubmission oldSubmission = getSubmission(submissionRef);
+
+			if (oldSubmission != null && oldSubmission.getGradeReleased()) {
+			    M_log.info("NYU DEBUG: We're setting this submission (" + submissionRef + ") back to unreleased.  How did that happen?");
+			    M_log.info("harmless stack trace follows:");
+			    new Exception().printStackTrace();
+			}
+		    }
+		} catch (Throwable anything) {
+		    // Continue at all costs!
+		}
+		// END NYU DEBUGGING
+
 		// complete the edit
 		m_submissionStorage.commit(submission);
 		
