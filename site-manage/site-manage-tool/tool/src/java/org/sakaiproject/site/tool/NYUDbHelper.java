@@ -14,10 +14,13 @@ import org.sakaiproject.db.api.SqlService;
  * NYUDbHelper abstracts the DB calls to the additional NYU_ specific DB tables.
  * 
  * @author Steve Swinsburg (steve.swinsburg@gmail.com)
+ * @author Mark Triggs (mark.triggs@nyu.edu)
  *
  */
 
 public class NYUDbHelper {
+
+	String DEFAULT_KEY = "DEFAULT";
 
 	private SqlService sqlService;
 	private static Log M_log = LogFactory.getLog(NYUDbHelper.class);
@@ -140,18 +143,8 @@ public class NYUDbHelper {
 		return null;	
 	}
 	
-	/**
-	 * Lookup the template that we are to use for this schoolCode.
-	 * If null is returned, then no template is to be used.
-	 * @param schoolCode school code for the site we are creating
-	 * @return
-	 */
-	protected String getSiteTemplateForSchoolCode(String schoolCode) {
 
-		if(StringUtils.isBlank(schoolCode)) {
-			return null;
-		}
-		
+	protected String schoolCodeLookup(String schoolCode) {
 		try {
 			Connection db = sqlService.borrowConnection();
 
@@ -173,6 +166,23 @@ public class NYUDbHelper {
 		} catch (SQLException e) {
 			M_log.warn(this + ".getSiteTemplateForSchoolCode: " + e);
 		}
+
 		return null;
+	}
+
+
+	protected String getSiteTemplateForSchoolCode(String schoolCode) {
+
+		if (StringUtils.isBlank(schoolCode)) {
+			return null;
+		}
+
+		String result = schoolCodeLookup(schoolCode);
+
+		if (result != null) {
+			return result;
+		} else {
+			return schoolCodeLookup(DEFAULT_KEY);
+		}
 	}
 }
