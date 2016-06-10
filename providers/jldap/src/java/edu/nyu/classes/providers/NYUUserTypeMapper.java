@@ -14,7 +14,7 @@
  *
  **********************************************************************************/
 
-package edu.amc.sakai.user;
+package edu.nyu.classes.providers;
 
 import com.novell.ldap.LDAPAttribute;
 import com.novell.ldap.LDAPEntry;
@@ -37,6 +37,9 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
+import edu.amc.sakai.user.EntryAttributeToUserTypeMapper;
+import edu.amc.sakai.user.LdapAttributeMapper;
 
 /**
  * Extends EntryAttributeToUserTypeMapper to look to the database for overrides
@@ -193,4 +196,10 @@ public class NYUUserTypeMapper extends EntryAttributeToUserTypeMapper {
 
 		return userTypeOverrideCache.getTypeForUser(netId, userType);
 	}
+
+
+    public String getTypeForNetId(String netId) {
+	return userTypeOverrideCache.getTypeForUser(netId, null);
+    }
+
 }

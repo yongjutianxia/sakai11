@@ -44,6 +44,9 @@ import org.sakaiproject.user.api.UserEdit;
 import com.novell.ldap.LDAPAttribute;
 import com.novell.ldap.LDAPEntry;
 
+import edu.nyu.classes.providers.NYULdapAttributeMapper;
+
+
 /**
  * Implements LDAP attribute mappings and filter generations using
  * an attribute map keyed by constants in 

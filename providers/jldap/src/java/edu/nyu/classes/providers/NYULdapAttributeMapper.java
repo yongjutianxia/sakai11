@@ -19,7 +19,7 @@
  *
  **********************************************************************************/
 
-package edu.amc.sakai.user;
+package edu.nyu.classes.providers;
 
 import com.novell.ldap.LDAPEntry;
 
@@ -35,6 +35,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+
+import edu.amc.sakai.user.SimpleLdapAttributeMapper;
+import edu.amc.sakai.user.LdapUserData;
 
 public class NYULdapAttributeMapper extends SimpleLdapAttributeMapper
 {

@@ -41,6 +41,8 @@ import com.novell.ldap.LDAPJSSESecureSocketFactory;
 import com.novell.ldap.LDAPSearchConstraints;
 import com.novell.ldap.LDAPSearchResults;
 import com.novell.ldap.LDAPSocketFactory;
+import edu.nyu.classes.providers.NYULdapAttributeMapper;
+
 
 /**
  * <p>
