@@ -208,7 +208,7 @@
     example describes availabel configuration options for SimpleLdapAttributeMapper
     (the default LdapAttributeMapper implementation). -->
 	<bean id="edu.amc.sakai.user.LdapAttributeMapper"
-			class="edu.amc.sakai.user.NYULdapAttributeMapper"
+			class="edu.nyu.classes.providers.NYULdapAttributeMapper"
 			init-method="init">
 			
 		<!-- A typical set of attribute mappings. Keys are logical
@@ -242,7 +242,7 @@
 		on LDAP attributes. Defaults to an instance of EmptyStringUserTypeMapper -->
 		<property name="userTypeMapper">
 			<!-- Select one of the following beans -->
-			<ref bean="edu.amc.sakai.user.NYUUserTypeMapper" />
+			<ref bean="edu.nyu.classes.providers.NYUUserTypeMapper" />
 			<!-- ref bean="edu.amc.sakai.user.EntryAttributeToUserTypeMapper" /-->
 			<!-- ref bean="edu.amc.sakai.user.EntryContainerRdnToUserTypeMapper" /-->
 			<!-- ref bean="edu.amc.sakai.user.StringUserTypeMapper" /-->
@@ -277,8 +277,8 @@
 	<!-- EntryAttributeToUserTypeMapper calculates Sakai user
 		types by simply passing attribute values through a map with
 		configurable "miss" behavior. -->
-	<bean id="edu.amc.sakai.user.EntryAttributeToUserTypeMapper"
-		class="edu.amc.sakai.user.EntryAttributeToUserTypeMapper">
+	<bean id="edu.nyu.classes.providers.NYUUserTypeMapper"
+		class="edu.nyu.classes.providers.NYUUserTypeMapper">
 		
 		<!-- Optional. If not present or empty, behavior is
 		determined by the value of returnLiteralAttributeValueIfNoMapping
