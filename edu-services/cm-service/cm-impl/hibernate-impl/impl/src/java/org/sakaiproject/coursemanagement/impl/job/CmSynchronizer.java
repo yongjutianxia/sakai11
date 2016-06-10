@@ -291,13 +291,7 @@ public abstract class CmSynchronizer {
 
 	protected void updateCourseOfferingMembers(Element membersElement, CourseOffering courseOffering) {
 		Set existingMembers = cmService.getCourseOfferingMemberships(courseOffering.getEid());
-		
-		// Build a map of existing member userEids to Memberships
-		Map existingMemberMap = new HashMap(existingMembers.size());
-		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
-			Membership member = (Membership)iter.next();
-			existingMemberMap.put(member.getUserId(), member);
-		}
+                Set blessedUsers = new HashSet<String>();		
 
 		// Keep track of the new members userEids, and add/update them
 		Set newMembers = new HashSet();
@@ -307,14 +301,18 @@ public abstract class CmSynchronizer {
 			String userEid = memberElement.getAttributeValue("userEid");
 			String role = memberElement.getAttributeValue("role");
 			String status = memberElement.getAttributeValue("status");
+
+                        blessedUsers.add(userEid);
 			newMembers.add(cmAdmin.addOrUpdateCourseOfferingMembership(userEid, role, courseOffering.getEid(), status));
 		}
 		
 		// For everybody not in the newMembers set, remove their memberships
-		existingMembers.removeAll(newMembers);
 		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
 			Membership member = (Membership)iter.next();
-			cmAdmin.removeCourseOfferingMembership(member.getUserId(), courseOffering.getEid());
+                        if (!blessedUsers.contains(member.getUserId())) {
+                          if(log.isInfoEnabled()) log.info("REMOVING: " + member.getUserId() + " from course offering: " + courseOffering.getEid());
+                          cmAdmin.removeCourseOfferingMembership(member.getUserId(), courseOffering.getEid());
+                        }
 		}
 	}
 
@@ -519,13 +517,7 @@ public abstract class CmSynchronizer {
 
 	protected void updateSectionMembers(Element membersElement, Section section) {
 		Set existingMembers = cmService.getSectionMemberships(section.getEid());
-		
-		// Build a map of existing member userEids to Memberships
-		Map existingMemberMap = new HashMap(existingMembers.size());
-		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
-			Membership member = (Membership)iter.next();
-			existingMemberMap.put(member.getUserId(), member);
-		}
+                Set blessedUsers = new HashSet<String>();
 
 		// Keep track of the new members userEids, and add/update them
 		Set newMembers = new HashSet();
@@ -535,14 +527,18 @@ public abstract class CmSynchronizer {
 			String userEid = memberElement.getAttributeValue("userEid");
 			String role = memberElement.getAttributeValue("role");
 			String status = memberElement.getAttributeValue("status");
+
+                        blessedUsers.add(userEid);
 			newMembers.add(cmAdmin.addOrUpdateSectionMembership(userEid, role, section.getEid(), status));
 		}
 		
 		// For everybody not in the newMembers set, remove their memberships
-		existingMembers.removeAll(newMembers);
 		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
 			Membership member = (Membership)iter.next();
-			cmAdmin.removeSectionMembership(member.getUserId(), section.getEid());
+                        if (!blessedUsers.contains(member.getUserId())) {
+                          if(log.isInfoEnabled()) log.info("REMOVING: " + member.getUserId() + " from section: " + section.getEid());
+                          cmAdmin.removeSectionMembership(member.getUserId(), section.getEid());
+                        }
 		}
 	}
 
@@ -583,13 +579,8 @@ public abstract class CmSynchronizer {
 	
 	protected void updateCourseSetMembers(Element membersElement, CourseSet courseSet) {
 		Set existingMembers = cmService.getCourseSetMemberships(courseSet.getEid());
-		
-		// Build a map of existing member userEids to Memberships
-		Map existingMemberMap = new HashMap(existingMembers.size());
-		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
-			Membership member = (Membership)iter.next();
-			existingMemberMap.put(member.getUserId(), member);
-		}
+                Set blessedUsers = new HashSet<String>();
+
 
 		// Keep track of the new members userEids, and add/update them
 		Set newMembers = new HashSet();
@@ -599,14 +590,18 @@ public abstract class CmSynchronizer {
 			String userEid = memberElement.getAttributeValue("userEid");
 			String role = memberElement.getAttributeValue("role");
 			String status = memberElement.getAttributeValue("status");
+
+                        blessedUsers.add(userEid);
 			newMembers.add(cmAdmin.addOrUpdateCourseSetMembership(userEid, role, courseSet.getEid(), status));
 		}
 		
 		// For everybody not in the newMembers set, remove their memberships
-		existingMembers.removeAll(newMembers);
 		for(Iterator iter = existingMembers.iterator(); iter.hasNext();) {
 			Membership member = (Membership)iter.next();
-			cmAdmin.removeCourseSetMembership(member.getUserId(), courseSet.getEid());
+                        if (!blessedUsers.contains(member.getUserId())) {
+                          if(log.isInfoEnabled()) log.info("REMOVING: " + member.getUserId() + " from course set: " + courseSet.getEid());
+                          cmAdmin.removeCourseSetMembership(member.getUserId(), courseSet.getEid());
+                        }
 		}
 	}
 

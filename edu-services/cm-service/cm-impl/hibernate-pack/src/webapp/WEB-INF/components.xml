@@ -230,5 +230,30 @@
 			</props>
 		</property>
 	</bean>
- </beans>
+	<!-- NYU sync job -->
+	<bean id="CMSyncJob"
+	      class="org.sakaiproject.coursemanagement.impl.job.NYUCMSyncJob"
+	      init-method="init" destroy-method="destroy">
+	  <property name="cmService">
+	    <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+	  </property>
+	  <property name="cmAdmin">
+	    <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+	  </property>
+	</bean>
 
+	<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.NYUCMSyncJob"
+	      class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+	      singleton="true" init-method="init">
+	  <property name="beanId">
+	    <value>CMSyncJob</value>
+	  </property>
+	  <property name="jobName">
+	    <value>NYU CM Sync Job</value>
+	  </property>
+	  <property name="schedulerManager">
+	    <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+	  </property>
+	</bean>
+
+ </beans>
