@@ -426,6 +426,8 @@ public class SiteAction extends PagedResourceActionII {
 	// Names for other state attributes that are lists
 	private final static String STATE_WORKSITE_SETUP_PAGE_LIST = "wSetupPageList"; // the
 
+	private NYUDbHelper nyuDbHelper;
+
 	// list
 	// of
 	// site
@@ -1478,6 +1480,22 @@ public class SiteAction extends PagedResourceActionII {
 		
 		List unJoinableSiteTypes = (List) state.getAttribute(STATE_DISABLE_JOINABLE_SITE_TYPE);
 
+	//NYU front page override
+	//Rules:
+	// - if not super user then skip the -list template (0) and take them to the -type template     (1)
+	// - if not super user and not user type=SiteCreator, and are about to be taken to -findCourse (53), then take them to -newSiteCourse instead and they get a note on that page.
+	//              this means that user type=SiteCreator get taken to the -findCourse page like admin, ie they are not intercepted.
+	if(index == 0) {
+		if (!SecurityService.isSuperUser()) {
+			index = 1;
+		}
+	}
+	if(index == 53) {
+		User user = UserDirectoryService.getCurrentUser();
+		if(!SecurityService.isSuperUser() && !StringUtils.equals(user.getType(), "SiteCreator")){
+			index=36;
+		}
+	}
 		
 		switch (index) {
 		case 0:
@@ -8415,6 +8433,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
                 //set the default template prefix, which comes from the init-param in web.xml
 		DEFAULT_SITE_TEMPLATE_PREFIX = getContext(data).get("template");
+
+
+		//setup the NYU DB Helper
+		nyuDbHelper = new NYUDbHelper();
 
 	} // init
 
@@ -15970,6 +15992,284 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		//no override, return default
 		M_log.debug("Using default template: " + DEFAULT_SITE_TEMPLATE_PREFIX + template);
 		return DEFAULT_SITE_TEMPLATE_PREFIX + template;
+	}
+
+	/**
+	 * Hanlder for doContinue_populate
+	 *
+	 */
+	public void doContinue_populate(RunData data) {
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		ParameterParser params = data.getParameters();
+
+		String option = params.getString("option");
+
+		M_log.debug("doContinue_populate option: " + option);
+
+		if ("continue".equals(option)) {
+
+			//set the defaults for the site, tool list etc
+			setDefaults(state, params);
+
+			//let the normal continue method finish up
+			doContinue(data);
+
+			//override the template to go to next (-newSiteConfirm)
+			state.setAttribute(STATE_TEMPLATE_INDEX, "10");
+		} else if ("back".equals(option)) {
+			doBack(data);
+
+		} else if ("cancel".equals(option)) {
+			doCancel_create(data);
+		} else {
+			M_log.error("Invalid option value for this method: " + option);
+		}
+	} // doContinue_populate
+
+
+
+	/**
+	 * Set the defaults for a site. Similar to getFeatures but without the extra parts we dont need.
+	 * @param state SessionState that we need to inject data into
+	 * @param params Parameters sent in the request that we can extract data from also
+	 */
+	private void setDefaults(SessionState state, ParameterParser params) {
+		state.setAttribute(STATE_TOOL_HOME_SELECTED, true);
+
+		//get the SiteInfo object so we can mod it
+		SiteInfo siteInfo = (SiteInfo) state.getAttribute(STATE_SITE_INFO);
+		siteInfo.published=false;
+
+		//get the first sectionEid attached to this site
+		String sectionEid = getFirstSectionEid(params);
+		String prop_school = null;
+		if(StringUtils.isNotBlank(sectionEid)){
+
+			M_log.debug("sectionEid to retrieve data for this site:" + sectionEid);
+
+			//set the required site attributes
+			String description = nyuDbHelper.getSiteDescription(sectionEid);
+			siteInfo.description = description;
+			M_log.debug("Description: " + description);
+
+			String short_description = nyuDbHelper.getSiteShortDescription(sectionEid);
+			siteInfo.short_description = short_description;
+			M_log.debug("Short description: " + short_description);
+
+			//other properties set as site properties
+			String prop_department = nyuDbHelper.getSiteDepartment(sectionEid);
+			if(StringUtils.isNotBlank(prop_department)) {
+				siteInfo.addProperty("Department", prop_department);
+				M_log.debug("Department: " + prop_department);
+			}
+
+			prop_school = nyuDbHelper.getSiteSchool(sectionEid);
+			if(StringUtils.isNotBlank(prop_school)) {
+				siteInfo.addProperty("School", prop_school);
+				M_log.debug("School: " + prop_school);
+			}
+
+			String prop_location = nyuDbHelper.getSiteLocation(sectionEid);
+			if(StringUtils.isNotBlank(prop_location)) {
+				siteInfo.addProperty("Location", prop_location);
+				M_log.debug("Location: " + prop_location);
+			}
+		}
+
+		//dump the state
+		//dumpState(state);
+
+		//put back into state
+		state.setAttribute(STATE_SITE_INFO, siteInfo);
+
+		//CLASSES-494, get template site if it exists
+		String templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school);
+
+		//check siteid supplied is an actual site
+		if(SiteService.siteExists(templateSiteId)) {
+			M_log.debug("Using template site: " + templateSiteId);
+			associateWithSiteTemplate(state, templateSiteId);
+		} else {
+			//otherwise set the default tool list
+			M_log.debug("No valid template site found for: " + prop_school + ", using defaults.");
+
+			//default tool list
+			String type = (String) state.getAttribute(STATE_SITE_TYPE);
+			List defaultTools = ServerConfigurationService.getDefaultTools(type);
+			M_log.debug("defaultTools: " + defaultTools);
+
+			//required tools
+			List requiredTools = ServerConfigurationService.getToolsRequired(type);
+			M_log.debug("requiredTools: " + requiredTools);
+			defaultTools.addAll(requiredTools);
+
+			state.setAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST, defaultTools);
+		}
+
+
+	}
+
+	/**
+	 * New final screen dispatcher
+	 * @param data
+	 */
+	private void doNewSiteCreated(RunData data) {
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+		//get the site just created
+		Site site = getStateSite(state);
+
+		//maintain the siteId in state
+		state.setAttribute(STATE_SITE_INSTANCE_ID, site.getId());
+
+		state.setAttribute(STATE_TEMPLATE_INDEX, "62");
+	}
+
+	/**
+	 * Helper to get a relative URL to a site (/portal/site/siteid)
+	 * @param siteId
+	 * @return
+	 */
+	private String getRelativeUrlToSite(String siteId) {
+		StringBuilder url = new StringBuilder();
+		url.append(ServerConfigurationService.getString("portalPath", "/portal"));
+		url.append("/site/");
+		url.append(siteId);
+		return url.toString();
+	}
+
+	/**
+	 * Helper to get the reset URL for the given tool placement (/portal/tool-reset/placementId)
+	 * @param toolId
+	 * @return
+	 */
+	private String getRelativeUrlToResetTool(String toolPlacementId) {
+		StringBuilder url = new StringBuilder();
+		url.append(ServerConfigurationService.getString("portalPath", "/portal"));
+		url.append("/tool-reset/");
+		url.append(toolPlacementId);
+		return url.toString();
+	}
+
+	/**
+	 * Helper to extract the first sectionEid from the list. Other areas of SiteAction use the first one, ie when constructing the title etc, so this should be safe.
+	 * @param params	we take this one from the params since the data isnt in the state yet
+	 * @return
+	 */
+	private String getFirstSectionEid(ParameterParser params) {
+
+		if (params.getStrings("providerCourseAdd") != null){
+			List<String> sections = new ArrayList(Arrays.asList(params.getStrings("providerCourseAdd")));
+
+			M_log.debug("sections:" + sections.size());
+
+			if(!sections.isEmpty()){
+
+				for(String section: sections) {
+					M_log.debug(section);
+				}
+
+				return sections.get(0);
+			}
+		}
+		return null;
+	}
+
+
+	private void dumpState(SessionState state) {
+		List<String> attributes = state.getAttributeNames();
+		for(String a: attributes) {
+			Object o = state.getAttribute(a);
+			M_log.debug(a + ": " + o.getClass().getName() + ": " + o);
+		}
+	}
+
+	/**
+	 * Ensures the user creating the site has the correct role in the site.
+	 * If their user 'type' is 'CSAdmin' or 'SiteCreator' then their 'role' in the site needs to be set to 'Course Site Admin'.
+	 * @param siteId
+	 */
+	private void ensureCreatorUserRole(String siteId) {
+		try {
+
+			User user = UserDirectoryService.getCurrentUser();
+			if(StringUtils.equals(user.getType(), "CSAdmin") || StringUtils.equals(user.getType(), "SiteCreator")) {
+				Site site = SiteService.getSite(siteId);
+				site.addMember(UserDirectoryService.getCurrentUser().getId(), "Course Site Admin", true, false);
+				SiteService.save(site);
+			}
+
+			//maybe feed something back to the user? Need the state though (addAlert)
+		} catch (IdUnusedException e) {
+			M_log.error(this + ".ensureCreatorUserRole: " + e);
+		} catch (PermissionException e) {
+			M_log.error(this + ".ensureCreatorUserRole: " + e);
+		} catch (IllegalArgumentException e) {
+			M_log.error(this + ".ensureCreatorUserRole: " + e);
+		}
+
+		return;
+	}
+
+	/**
+	 * Associate a new site with a template.
+	 * @param state SessionState for the new site
+	 * @param templateSiteId siteId of the template we pull data from
+	 */
+	private void associateWithSiteTemplate(SessionState state, String templateSiteId) {
+
+		Site templateSite = null;
+		try
+		{
+			templateSite = SiteService.getSite(templateSiteId);
+			// save the template site in state
+			state.setAttribute(STATE_TEMPLATE_SITE, templateSite);
+
+			// the new site type is hardcoded to course.
+			// this is read by a mod to addNewSite and used prefernetially
+			// normally the site type comes from the template but that may be propject and we probably dont want that.
+			state.setAttribute(STATE_TYPE_SELECTED, "course");
+
+		} catch (Exception e) {
+			M_log.warn(this + ".associateWithSiteTemplate" + e.getClass().getName(), e);
+			state.removeAttribute(STATE_TEMPLATE_SITE);
+			return;
+		}
+
+		//SiteInfo siteInfo = (SiteInfo) state.getAttribute(STATE_SITE_INFO);
+
+		// copy site information from template site
+		//siteInfo.iconUrl = templateSite.getIconUrl();
+		//siteInfo.infoUrl = templateSite.getInfoUrl();
+		//siteInfo.joinable = templateSite.isJoinable();
+		//siteInfo.joinerRole = templateSite.getJoinerRole();
+		//siteInfo.include = false;
+
+		//copy tools from template site
+		List<String> toolIdsSelected = new Vector<String>();
+		List pageList = templateSite.getPages();
+		if (!((pageList == null) || (pageList.size() == 0))) {
+			for (ListIterator i = pageList.listIterator(); i.hasNext();) {
+				SitePage page = (SitePage) i.next();
+
+				List pageToolList = page.getTools();
+				if (pageToolList != null && pageToolList.size() > 0)
+				{
+					Tool tConfig = ((ToolConfiguration) pageToolList.get(0)).getTool();
+					if (tConfig != null)
+					{
+						toolIdsSelected.add(tConfig.getId());
+					}
+				}
+			}
+		}
+
+		M_log.debug("added tools from template:" + toolIdsSelected);
+
+
+		state.setAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST, toolIdsSelected);
+		//state.setAttribute(STATE_SITE_INFO, siteInfo);
+
 	}
 }
 
