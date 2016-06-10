@@ -124,7 +124,7 @@ public class RowGroupDataTableRenderer extends HtmlTableRenderer {
 			// Render a single colspanned cell displaying the current RowGroup
 			writer.startElement(HTML.TD_ELEM, uiData);
 			writer.writeAttribute(HTML.COLSPAN_ATTR, columns, null);
-			writer.write(JsfUtil.getLocalizedMessage("section_table_category_header", new String[] {rowGroupable.getRowGroupTitle()}));
+			writer.write(JsfUtil.getLocalizedMessage("section_table_category_header", new String[] {"Course"}));
 			writer.endElement(HTML.TD_ELEM);
 
 			renderRowEnd(facesContext, writer, uiData);
