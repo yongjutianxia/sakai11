@@ -1782,7 +1782,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			rcontext.put("bottomNavCopyright", copyright);
 			rcontext.put("bottomNavServiceVersion", serviceVersion);
 			rcontext.put("bottomNavSakaiVersion", sakaiVersion);
-			rcontext.put("bottomNavServer", server);
+
+			String sanitizedServer = ServerConfigurationService.getString("nyu.serveralias."+server);
+			if (sanitizedServer != null) {
+				rcontext.put("bottomNavServer", sanitizedServer);
+			} else {
+				rcontext.put("bottomNavServer", server);
+			}
 
 			// SAK-25931 - Do not remove this from session here - removal is done by /direct
 	                Session s = SessionManager.getCurrentSession();
