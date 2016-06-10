@@ -457,6 +457,14 @@ public class SkinnableLogin extends HttpServlet implements Login {
 		String cancelWording = rb.getString("log.cancel");
 		String passwordResetWording = rb.getString("log.password.reset");
 
+                String server = serverConfigurationService.getServerId();
+                String sanitizedServer = serverConfigurationService.getString("nyu.serveralias."+server);
+                if (sanitizedServer != null) {
+                    rcontext.put("bottomNavServer", sanitizedServer);
+                } else {
+                    rcontext.put("bottomNavServer", server);
+                }
+
 		rcontext.put("action", response.encodeURL(Web.returnUrl(request, null)));
 		rcontext.put("pageSkinRepo", skinRepo);
 		rcontext.put("pageSkin", skin);
