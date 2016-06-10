@@ -3531,6 +3531,9 @@ public class SiteAction extends PagedResourceActionII {
 			context.put( CONTEXT_IS_ADMIN, SecurityService.isSuperUser() );
 			context.put( CONTEXT_SKIP_COURSE_SECTION_SELECTION, ServerConfigurationService.getBoolean( SAK_PROP_SKIP_COURSE_SECTION_SELECTION, Boolean.FALSE ) );
 			context.put( CONTEXT_FILTER_TERMS, ServerConfigurationService.getBoolean( SAK_PROP_FILTER_TERMS, Boolean.FALSE ) );
+
+			// NYU mod. CLASSES-1697 add if this is a custom create from template workflow to the context
+			context.put("isNYUCustomWorkflowFromTemplate", "yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE)));
 			
 			return (String) getContext(data).get("template") + TEMPLATE[37];
 		case 42:
@@ -5894,8 +5897,15 @@ public class SiteAction extends PagedResourceActionII {
 				if (state.getAttribute(STATE_MESSAGE) == null) {
 					if (state.getAttribute(STATE_TEMPLATE_SITE) != null)
 					{
+						// NYU mod. CLASSES-1697. If we're on a custom workflow creating from a template
+						// don't doFinish yet... Instead navigate to the course edit page
+						// and follow the standard workflow. 
+						if ("yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE))) {
+							state.setAttribute(STATE_TEMPLATE_INDEX, "13");
+						} else {
 						// create site based on template
 						doFinish(data);
+						}
 					}
 					else
 					{
