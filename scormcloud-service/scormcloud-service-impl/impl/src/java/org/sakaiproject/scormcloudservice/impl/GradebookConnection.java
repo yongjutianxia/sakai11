@@ -1,6 +1,7 @@
 package org.sakaiproject.scormcloudservice.impl;
 
 import org.sakaiproject.scormcloudservice.api.ScormException;
+import org.sakaiproject.scormcloudservice.api.ScormRegistrationNotFoundException;
 import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
@@ -39,9 +40,13 @@ public class GradebookConnection {
     }
 
 
-    public void removeScore(String registrationId) throws ScormException {
+    public void removeScore(String registrationId) throws ScormException, ScormRegistrationNotFoundException {
         String userId = store.getUserForRegistration(registrationId);
         ScormCourse course = store.getCourseForRegistration(registrationId);
+
+        if (userId == null || course == null) {
+            throw new ScormRegistrationNotFoundException(registrationId);
+        }
 
         createAssessmentIfMissing(course.getSiteId(), course.getId(), course.getTitle());
         gradebookService.updateExternalAssessmentScore(course.getSiteId(), course.getId(), userId, null);

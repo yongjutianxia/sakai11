@@ -6,6 +6,7 @@ import com.rusticisoftware.hostedengine.client.datatypes.RegistrationData;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.scormcloudservice.api.ScormException;
+import org.sakaiproject.scormcloudservice.api.ScormRegistrationNotFoundException;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.slf4j.Logger;
@@ -250,7 +251,23 @@ class GradeSyncProcessor {
 
                     store.removeScore(registrationId);
                     if (course.getGraded()) {
-                        gradebook.removeScore(registrationId);
+                        try {
+                            gradebook.removeScore(registrationId);
+                        } catch (ScormRegistrationNotFoundException e) {
+                            if (scoreFromResult.isUnknown()) {
+                                // This can happen when a registration was created in SCORM Cloud
+                                // but never stored locally.  For example, if the API call to create
+                                // the registration times out due to network issues, we'll catch an
+                                // exception locally and discard the registration, but it lives on
+                                // in SCORM Cloud.
+                                //
+                                // As long as the registration doesn't have a score recorded, we can
+                                // safely ignore these (since the student would have created a
+                                // second registration when they retried the launch).
+                            } else {
+                                throw e;
+                            }
+                        }
                     }
                 } else if (scoreFromResult.isInvalid()) {
                     LOG.error("Received an unparseable score from SCORM Cloud API for registration: " + registrationId +
