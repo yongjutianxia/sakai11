@@ -1718,6 +1718,17 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
     public Collection findUsersByEmail(String email, UserFactory factory) {
 
 		String filter = ldapAttributeMapper.getFindUserByEmailFilter(email);
+
+		// NYU modification (CLASSES-1622): some of our users don't have
+		// email addresses in LDAP, so where possible we extract their
+		// email address from the database and use the NetID to locate
+		// the user.
+		String netID = NYULdapAttributeMapper.getNetIdForEmail(email);
+
+		if (netID != null) {
+			filter = ldapAttributeMapper.getFindUserByEidFilter(StringUtils.trimToNull(netID.toLowerCase()));
+		}
+
 		List<User> users = new ArrayList<User>();
 		try {
 			List<LdapUserData> ldapUsers = searchDirectory(filter, null, null, null, null, maxResultSize);
