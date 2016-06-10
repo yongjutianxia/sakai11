@@ -32,4 +32,6 @@ create table grouper_sync_status (group_id varchar(255) PRIMARY KEY,
        grouper_group_id varchar(255) NOT NULL,
        status varchar(100));
 
+alter table grouper_sync_status add (update_mtime TIMESTAMP);
+
 create index grouper_sync_status_grpid on grouper_sync_status (grouper_group_id);

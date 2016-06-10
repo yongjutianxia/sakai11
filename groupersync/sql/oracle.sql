@@ -34,4 +34,6 @@ create table grouper_sync_status (group_id varchar2(255) PRIMARY KEY,
        grouper_group_id varchar2(255) NOT NULL,
        status varchar2(100));
 
+alter table grouper_sync_status add (update_mtime TIMESTAMP WITH TIME ZONE);
+
 create index grouper_sync_status_grpid on grouper_sync_status (grouper_group_id);
