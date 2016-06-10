@@ -381,6 +381,9 @@ public class SiteAction extends PagedResourceActionII {
 	private static final String UNGROUPED_TOOL_TITLE = "systoolgroups.ungrouped";
 	private static final String LTI_TOOL_TITLE		 = "systoolgroups.lti";
 
+	//CLASSES-1676 Add a custom workflow flag used when creating a site from a template
+	private static final String NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE = "nyuCreateFromTemplate";
+
     //********************
 
 	private static final String STATE_TOOL_EMAIL_ADDRESS = "toolEmailAddress";
@@ -1983,6 +1986,9 @@ public class SiteAction extends PagedResourceActionII {
 
 			context.put("titleMaxLength", state.getAttribute(STATE_SITE_TITLE_MAX));
 
+			// NYU mod. CLASSES-1697 add if this is a custom create from template workflow to the context
+			context.put("isNYUCustomWorkflowFromTemplate", "yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE)));
+
 			return (String) getContext(data).get("template") + TEMPLATE[10];
 		case 12:
 			/*
@@ -2547,8 +2553,13 @@ public class SiteAction extends PagedResourceActionII {
 			} else {
 				// new site
 				context.put("existingSite", Boolean.FALSE);
-				context.put("continue", "4");
-				
+				// NYU mod. CLASSES-1697. If creating from a site template,
+				// the next page should be the confirmation screen
+				if ("yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE))) {
+					context.put("continue", "10");
+				} else {
+					context.put("continue", "4");
+				}
 				// get the system default as locale string
 				context.put("locale_string", "");
 			}
@@ -3774,6 +3785,9 @@ public class SiteAction extends PagedResourceActionII {
 			context.put( CONTEXT_SKIP_MANUAL_COURSE_CREATION, ServerConfigurationService.getBoolean( SAK_PROP_SKIP_MANUAL_COURSE_CREATION, Boolean.FALSE ) );
 			context.put( CONTEXT_FILTER_TERMS, ServerConfigurationService.getBoolean( SAK_PROP_FILTER_TERMS, Boolean.FALSE ) );
 			
+			// NYU mod. CLASSES-1697 add if this is a custom create from template workflow to the context
+			context.put("isNYUCustomWorkflowFromTemplate", "yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE)));
+
 			return (String) getContext(data).get("template") + TEMPLATE[53];
 		}
 		case 54:
@@ -10058,6 +10072,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				}
 			}
 			break;
+		case 53:
+			if (!forward) {
+				// NYU mod. CLASSES-1697. Cancel the custom NYU create from template workflow
+				state.setAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE, "no");
+			}
+			break;
 		}
 
 	}// actionFor Template
@@ -12621,6 +12641,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		state.removeAttribute(STATE_TOOL_REGISTRATION_TITLE_LIST);
 		state.removeAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST);
 		MathJaxEnabler.removeMathJaxToolsAttributeFromState(state);  // SAK-22384
+
+		//CLASSES-1676 Also remove this custom workflow flag
+		state.removeAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE);
 	}
 
 	private List orderToolIds(SessionState state, String type, List<String> toolIdList, boolean synoptic) {
@@ -13662,6 +13685,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 				//NYU mod, add a final screen
 				doNewSiteCreated(data);
+				//CLASSES-1676 and remove this attribute from the state
+				//as we're done with the custom workflow!
+				state.removeAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE);
+
 			}
 			else  // There is a site in the state already, likely from a previous request that is still processing
 			{
@@ -15134,9 +15161,16 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					if (getStateSite(state) == null) {
 						if (state.getAttribute(STATE_TEMPLATE_SITE) != null)
 						{
+							// NYU mod. CLASSES-1697. If we're on a custom workflow creating from a template
+							// don't doFinish yet... Instead navigate to the course edit page
+							// and follow the standard workflow. 
+							if ("yes".equals(state.getAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE))) {
+								state.setAttribute(STATE_TEMPLATE_INDEX, "13");
+							} else {
 							// if creating site using template, stop here and generate the new site
 							// create site based on template
 							doFinish(data);
+							}
 						}
 						else
 						{
@@ -15478,6 +15512,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			}
 			else if ("createCourseOnTemplate".equals(option))
 			{
+				// NYU mod. CLASSES-1697 this is a custom NYU workflow
+				state.setAttribute(NYU_CUSTOM_WORKFLOW_CREATING_FROM_TEMPLATE, "yes");
+
 				doSite_copyFromCourseTemplate(data);
 			}
 			else if ("createCourseOnTemplate".equals(option))

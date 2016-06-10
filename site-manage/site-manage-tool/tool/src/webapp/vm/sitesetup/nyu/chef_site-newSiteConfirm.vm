@@ -84,7 +84,9 @@
 			<input
 				type="button"
 				class="active"
-				#if (($!isCourseSite && $!manualAddNumber) || $!selectedRequestedCourse )
+				#if ($!isNYUCustomWorkflowFromTemplate)
+					#set($name = "$tlang.getString('sitetype.createfromtemplate')")
+				#elseif (($!isCourseSite && $!manualAddNumber) || $!selectedRequestedCourse )
 					#set($name = "$tlang.getString('newsc.reqsite')")
 				#else
 					#set($name="$tlang.getString('newsc.crsite')")
