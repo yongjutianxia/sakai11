@@ -736,6 +736,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
                     ExternalHelpSystem.ExternalHelp help = externalHelpSystem.getHelp(placement.getToolId());
                     ExternalHelpSystem.ExternalHelp news = externalHelpSystem.getNews(placement.getToolId());
 
+                    if (securityService.unlock(SiteService.SECURE_UPDATE_SITE, site
+                                               .getReference())) {
+                        toolMap.put("showingExternalNews", Boolean.valueOf(true));
+                    } else {
+                        toolMap.put("showingExternalNews", Boolean.valueOf(false));
+                    }
+
                     toolMap.put("usingExternalHelp", Boolean.valueOf(true));
                     toolMap.put("externalHelp", help);
                     toolMap.put("externalNews", news);
