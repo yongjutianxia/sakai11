@@ -232,13 +232,13 @@ class GradeSyncProcessor {
         try {
             RegistrationService registrationService = ScormCloud.getRegistrationService();
 
-            List<RegistrationData> registrationList = registrationService.GetRegistrationList(null, null, courseId, null, null, null);
+            List<RegistrationData> registrationList = registrationService.GetRegistrationListResults(courseId, null, null, null, null, null, null);
 
-            LOG.debug(courseId + ": Found " + registrationList.size() + " registrations to sync");
+            LOG.info(courseId + ": Found " + registrationList.size() + " registrations to sync");
 
             for (RegistrationData registration : registrationList) {
                 String registrationId = registration.getRegistrationId();
-                String registrationResult = registrationService.GetRegistrationResult(registrationId);
+                String registrationResult = registration.getResultsData();
 
                 ScormScore scoreFromResult = extractScore(registrationResult);
 
