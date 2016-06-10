@@ -2044,7 +2044,7 @@ public class SiteAction extends PagedResourceActionII {
 				state.removeAttribute(SITE_DUPLICATED_NAME);
 				
                                 // Fields added by NYU
-                                for (String property : new String[] { "School", "Department", "Location" }) {
+                                for (String property : new String[] { "School", "Department", "Location", "InstructionMode" }) {
                                   if (siteProperties.getProperty(property) != null) {
                                     context.put("site" + property, siteProperties.getProperty(property));
                                   }
@@ -16275,6 +16275,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		String prop_school = null;
 		String prop_department = null;
 		String prop_location = null;
+		String prop_instruction_mode = null;
 		
 		if(StringUtils.isNotBlank(sectionEid)){
 
@@ -16306,6 +16307,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			if(StringUtils.isNotBlank(prop_location)) {
 				siteInfo.addProperty("Location", prop_location);
 				M_log.debug("Location: " + prop_location);
+			}
+
+			prop_instruction_mode = nyuDbHelper.getSiteInstructionMode(sectionEid);
+			if(StringUtils.isNotBlank(prop_instruction_mode)) {
+				siteInfo.addProperty("InstructionMode", prop_instruction_mode);
+				M_log.debug("InstructionMode: " + prop_instruction_mode);
 			}
 		}
 

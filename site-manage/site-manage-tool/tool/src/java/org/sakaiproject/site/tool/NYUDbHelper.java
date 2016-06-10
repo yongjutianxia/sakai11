@@ -110,7 +110,16 @@ public class NYUDbHelper {
 	protected String getSiteLocation(String sectionEid) {
 		return getPropertyFromCourseCatalog(sectionEid, "location");
 	}
-	
+
+	/**
+	 * Get the instruction mode for the site (e.g. online, in person, hybrid)
+	 * @param sectionEid
+	 * @return
+	 */
+	protected String getSiteInstructionMode(String sectionEid) {
+		return getPropertyFromCourseCatalog(sectionEid, "instruction_mode");
+	}
+
 	/**
 	 * Helper to do the DB calls for us onto nyu_t_course_catalog table, given a sectionEid and a column name. 
 	 * The sectionEid is the stem_name with separators replaced.

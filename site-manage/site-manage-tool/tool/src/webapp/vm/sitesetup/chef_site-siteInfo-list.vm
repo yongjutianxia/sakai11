@@ -201,6 +201,17 @@
 				</td>
 			</tr>
 
+                        #if ($!siteInstructionMode)
+			<tr>
+				<th>Instruction Mode</th>
+				<td>
+					$!siteInstructionMode
+				</td>
+			</tr>
+                        #end
+
+			#end
+
 
 			#if ($!allowUpdate)
 			<tr> 
