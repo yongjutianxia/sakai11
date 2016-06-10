@@ -58,8 +58,6 @@ public abstract class PrecachingDbUserService extends DbUserService
 
     boolean logUsersRemoved = false; 
     boolean logUsersNotRemoved = false; 
-    boolean logUsersAccessed = false;
-    boolean logUsersNotAccessed = true;
 
     /**
      * Query to retrieve all distinct userIds from all sites
@@ -103,8 +101,6 @@ public abstract class PrecachingDbUserService extends DbUserService
 
         this.logUsersRemoved = serverConfigurationService().getBoolean("precache.users.log.usersRemoved", this.logUsersRemoved);
         this.logUsersNotRemoved = serverConfigurationService().getBoolean("precache.users.log.usersNotRemoved", this.logUsersNotRemoved);
-        this.logUsersAccessed = serverConfigurationService().getBoolean("precache.users.log.usersAccessed", this.logUsersAccessed);
-        this.logUsersNotAccessed = serverConfigurationService().getBoolean("precache.users.log.usersNotAccessed", this.logUsersNotAccessed);
 
         Calendar cal = Calendar.getInstance();
 
@@ -134,6 +130,7 @@ public abstract class PrecachingDbUserService extends DbUserService
                 if (hour < 12) {
                     cal.set(Calendar.AM_PM, Calendar.AM);
                 } else {
+                    hour -= 12;
                     cal.set(Calendar.AM_PM, Calendar.PM);
                 }
                 cal.set(Calendar.HOUR, hour);
@@ -142,6 +139,7 @@ public abstract class PrecachingDbUserService extends DbUserService
                 scheduledTask = new UserCacheTimerTask();
                 dailyTimer.scheduleAtFixedRate(scheduledTask, recurringTaskStart, recurringTaskPeriod);
                 log.info("User precache scheduled for daily run at " + cacheTimeString);
+                log.info("Next run will be " + cal.getTime());
             } catch (RuntimeException e) {
                 log.error("User precache: Didn't schedule user cache refresh: Bad config?, it should be like: 'precache.users.refresh.time = 04:00' : " + e.getMessage(), e);
             }
@@ -172,17 +170,12 @@ public abstract class PrecachingDbUserService extends DbUserService
 
             int removedCount = 0;
             int notRemovedCount = 0;
-            int accessedCount = 0;
-            int notAccessedCount = 0;
 
             List<String> removedUsers = new ArrayList<String>();
             List<String> notRemovedUsers = new ArrayList<String>();
-            List<String> accessedUsers = new ArrayList<String>();
-            List<String> notAccessedUsers = new ArrayList<String>();
 
             long totalTime = 0;
             for (String userId : userIds) {
-
                 // clear existing cache entry
                 String key = makeUserRef(userId);
                 if (log.isDebugEnabled()) {
@@ -203,30 +196,13 @@ public abstract class PrecachingDbUserService extends DbUserService
                 if (log.isDebugEnabled()) {
                     log.debug("doCacheRefresh(): NEW key==[" + key + "] in cache? after removing:  " + m_callCache.containsKey(key));
                 }
-
-                // redo the lookup of this user which will reload the cache
-                try {
-                    long before = System.currentTimeMillis();
-                    if (log.isDebugEnabled()) {
-                        log.debug("doCacheRefresh(): key==[" + key + "] in cache? before accessing:  " + m_callCache.containsKey(key));
-                    }
-                    getUser(userId);
-                    if (log.isDebugEnabled()) {
-                        log.debug("doCacheRefresh(): key==[" + key + "] in cache? after accessing:  " + m_callCache.containsKey(key));
-                    }
-                    long after = System.currentTimeMillis();
-                    totalTime += after - before;
-                    accessedCount++;
-                    if (logUsersAccessed) {
-                        accessedUsers.add(userId);
-                    }
-                } catch (UserNotDefinedException e) {
-                    notAccessedCount++;
-                    if (logUsersNotAccessed) {
-                        notAccessedUsers.add(userId);
-                    }
-                }
             }
+
+            // redo the lookup of all users (which will reload the cache)
+            long before = System.currentTimeMillis();
+            getUsers(userIds);
+            long after = System.currentTimeMillis();
+            totalTime += after - before;
 
             // now output the results of cache reset in the logs as configured
             String delimiter = "";
@@ -251,28 +227,6 @@ public abstract class PrecachingDbUserService extends DbUserService
                 }
                 log.info("doCacheRefresh(): " + notRemovedCount + " entries not found in cache");
                 log.info("doCacheRefresh(): These users not found in cache and so not removed: [" + notRemovedUserSB.toString() + "]");
-            }
-            if (logUsersAccessed) {
-                delimiter = "";
-                StringBuilder accessedUserSB = new StringBuilder();
-                for (String userId : accessedUsers) {
-                    accessedUserSB.append(delimiter);
-                    accessedUserSB.append(userId);
-                    delimiter = ":";
-                }
-                log.info("doCacheRefresh(): " + accessedCount + " users accessed and so recached");
-                log.info("doCacheRefresh(): These users accessed and so newly cached: [" + accessedUserSB.toString() + "]");
-            }
-            if (logUsersNotAccessed) {
-                delimiter = "";
-                StringBuilder notAccessedUserSB = new StringBuilder();
-                for (String userId : notAccessedUsers) {
-                    notAccessedUserSB.append(delimiter);
-                    notAccessedUserSB.append(userId);
-                    delimiter = ":";
-                }
-                log.info("doCacheRefresh(): " + notAccessedCount + " users not found and so not recached");
-                log.info("doCacheRefresh(): These users not found and so not newly cached: [" + notAccessedUserSB.toString() + "]");
             }
 
             if (log.isInfoEnabled()) {
