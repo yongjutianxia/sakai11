@@ -113,10 +113,12 @@ public class NYUEmailUtils
 
   public static void conditionalSmtpFromRewrite(Collection<String> headers, Properties sessionProps, String fromAddress)
   {
-    if (shouldPreserveAddresses(headers)) {
-      // Arrange for the SMTP from address to be the same as the sender's address
-      sessionProps.put("mail.smtp.from", fromAddress);
-    }
+      boolean safeToRewrite = fromAddress.matches("^.*@[^ ]*nyu\\.edu[^.]*");
+
+      if (shouldPreserveAddresses(headers) && safeToRewrite) {
+          // Arrange for the SMTP from address to be the same as the sender's address
+          sessionProps.put("mail.smtp.from", fromAddress);
+      }
   }
 
 
