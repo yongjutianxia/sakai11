@@ -16316,7 +16316,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		state.setAttribute(STATE_SITE_INFO, siteInfo);
 
 		//CLASSES-494, get template site if it exists
-		String templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school, prop_department, prop_location);
+		String templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school);
 
 		//check siteid supplied is an actual site
 		if(SiteService.siteExists(templateSiteId)) {

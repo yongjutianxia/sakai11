@@ -143,13 +143,10 @@ public class NYUDbHelper {
 	/**
 	 * Lookup the template that we are to use for this schoolCode.
 	 * If null is returned, then no template is to be used.
-	 * 
-	 * @param schoolCode school code for the site we are creating, can be null
-	 * @param departmentCode department code for the site we are creating, can be null
-	 * @param locationCode location code for the site we are creating, can be null
+	 * @param schoolCode school code for the site we are creating
 	 * @return
 	 */
-	protected String getSiteTemplateForSchoolCode(String schoolCode, String departmentCode, String locationCode) {
+	protected String getSiteTemplateForSchoolCode(String schoolCode) {
 
 		if(StringUtils.isBlank(schoolCode)) {
 			return null;
@@ -159,23 +156,8 @@ public class NYUDbHelper {
 			Connection db = sqlService.borrowConnection();
 
 			try {
-				
-				String sql = 
-				"SELECT template_site_id "
-				+ "FROM nyu_t_site_templates "
-				+ "WHERE (? IS NOT NULL AND school_code = ?) "
-				+ "AND (? IS NOT NULL AND department_code = ?) "
-				+ "AND (? IS NOT NULL AND location_code = ?)"
-				;
-				
-				PreparedStatement ps = db.prepareStatement(sql);
-				
+				PreparedStatement ps = db.prepareStatement("SELECT template_site_id FROM nyu_t_site_templates WHERE school_code = ?");
 				ps.setString(1, schoolCode);
-				ps.setString(2, schoolCode);
-				ps.setString(3, departmentCode);
-				ps.setString(4, departmentCode);
-				ps.setString(5, locationCode);
-				ps.setString(6, locationCode);
 
 				ResultSet rs = ps.executeQuery();
 				try {
