@@ -270,10 +270,24 @@ public class SamigoAssessmentHandler implements HandlesImportable {
 	
 	protected String contextualizeUrls(String text, String siteId) {
 		if (text == null) return null;
+
 		// this regular expression is specifically looking for image urls
 		// but only urls that are not absolute (i.e., do not start "http")
 		String anyRelativeUrl = "src=\"(?!http)/?";
-		return text.replaceAll(anyRelativeUrl, "src=\"/access/content/group/" 
-				+ siteId + "/TQimages/"); 	        } 
+		text = text.replaceAll(anyRelativeUrl, "src=\"/access/content/group/" 
+                               + siteId + "/TQimages/");
 
+                // leave icon images alone, though
+                text = text.replaceAll("src=\".*?(/library/image/silk.*)\"", "src=\"$1\""); 
+
+                // Rewrite the paths used by embedded object tags too
+		text = text.replaceAll("\"mp3=", "\"mp3=/access/content/group/" 
+                               + siteId + "/TQimages/");
+
+		String anyRelativeHref = "href=\"(?!http)/?";
+		text = text.replaceAll(anyRelativeHref, "href=\"/access/content/group/" 
+                               + siteId + "/TQimages/");
+
+        return text;
+    } 
 }
