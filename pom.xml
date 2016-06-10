@@ -129,6 +129,7 @@
                 <module>velocity</module>
                 <module>web</module>
                 <module>webservices</module>
+                <module>wiris</module>
             </modules>
         </profile>
         <profile>
