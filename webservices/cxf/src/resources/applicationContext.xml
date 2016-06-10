@@ -155,6 +155,10 @@
                     address="/soap/lessons"/>
 
 
+    <jaxws:endpoint id="WSLongsight"
+                    implementor="#org.sakaiproject.webservices.WSLongsight"
+                    address="/soap/longsight"/>
+
     <bean id="org.sakaiproject.webservices.AbstractWebService" class="org.sakaiproject.webservices.AbstractWebService" init-method="init">
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
         <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
@@ -208,4 +212,6 @@
     <bean id="org.sakaiproject.webservices.SakaiGradebook" class="org.sakaiproject.webservices.SakaiGradebook" init-method="init" parent="org.sakaiproject.webservices.AbstractWebService" >
         <property name="gradebookFrameworkService" ref="org.sakaiproject.service.gradebook.GradebookFrameworkService"/>
     </bean>
+    <bean id="org.sakaiproject.webservices.WSLongsight" class="org.sakaiproject.webservices.WSLongsight" init-method="init" parent="org.sakaiproject.webservices.AbstractWebService" />
+
 </beans>
