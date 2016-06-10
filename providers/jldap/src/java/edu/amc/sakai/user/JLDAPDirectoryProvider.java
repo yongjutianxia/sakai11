@@ -482,6 +482,17 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 */
 	public boolean findUserByEmail(UserEdit edit, String email)
 	{
+		// NYU modification (CLASSES-390): some of our users don't have
+		// email addresses in LDAP, so where possible we extract their
+		// email address from the database and use the NetID to locate
+		// the user.
+		String netID = NYULdapAttributeMapper.getNetIdForEmail(email);
+
+		if (netID != null) {
+			edit.setEid(StringUtils.trimToNull(netID.toLowerCase()));
+			return getUser(edit);
+		}
+
 		try {
 			
 			boolean useStdFilter = !(ldapAttributeMapper instanceof EidDerivedEmailAddressHandler);

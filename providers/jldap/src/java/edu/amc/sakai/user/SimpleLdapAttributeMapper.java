@@ -23,6 +23,7 @@ package edu.amc.sakai.user;
 
 import java.text.MessageFormat;
 import java.text.ParsePosition;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -611,6 +612,15 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 			sb.append(criteria);
 			sb.append("*)");
 			
+			List<String> netids = NYULdapAttributeMapper.getMatchingNetIds(criteria);
+			for (String netid : netids) {
+				sb.append("(");
+				sb.append(eidAttr);
+				sb.append("=");
+				sb.append(netid);
+				sb.append(")");
+			}
+
 			sb.append("(");
 			sb.append(emailAttr);
 			sb.append("=");

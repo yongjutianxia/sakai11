@@ -208,7 +208,7 @@
     example describes availabel configuration options for SimpleLdapAttributeMapper
     (the default LdapAttributeMapper implementation). -->
 	<bean id="edu.amc.sakai.user.LdapAttributeMapper"
-			class="edu.amc.sakai.user.SimpleLdapAttributeMapper"
+			class="edu.amc.sakai.user.NYULdapAttributeMapper"
 			init-method="init">
 			
 		<!-- A typical set of attribute mappings. Keys are logical
