@@ -170,6 +170,15 @@ public class SamlCertificateServiceImpl implements SamlCertificateService
       }
 
       result.put(entityId, certs);
+
+      // We're done with this node now.  Remove it from the document to improve
+      // the performance of subsequent XPath queries.  Turns out that the list
+      // of nodes is stored as a linked list, so it gets slower and slower as
+      // you move through the document unless you do this.
+      //
+      // Reference: http://stackoverflow.com/questions/3782618/xpath-evaluate-performance-slows-down-absurdly-over-multiple-calls
+      //
+      descriptor.getParentNode().removeChild(descriptor);
     }
   }
 
