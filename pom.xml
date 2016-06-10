@@ -101,6 +101,8 @@
                 <module>rwiki</module>
                 <module>samigo</module>
                 <module>saml</module>
+                <module>sakai-wicket-for-scorm</module>
+                <module>scorm</module>
                 <module>search</module>
                 <module>sections</module>
                 <module>shortenedurl</module>

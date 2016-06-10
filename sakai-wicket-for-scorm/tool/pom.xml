@@ -100,6 +100,20 @@
     </profile>
     <profile>
       <id>sakai2.8</id>
+      <dependencies>
+        <!-- Sakai dependencies -->
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-kernel-api</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-component-manager</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>sakai10.1</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
