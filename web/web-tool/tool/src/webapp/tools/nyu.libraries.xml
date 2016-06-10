@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<registration>
+
+  <tool id="nyu.libraries"
+        title="NYU Libraries"
+        description="For embedding NYU Libraries Resources within the site.">
+
+    <configuration name="sakai.properties.url.key" value="nyu.libraries.url" />
+    <configuration name="height" value="800px" />
+    <configuration name="reset.button" value="false" type="final" />
+    <configuration name="hide.options" value="false" />
+
+    <category name="course" />
+    <category name="project" />
+    <category name="portfolio" />
+    <category name="myworkspace" />
+
+    <!-- Allow this to be set -->
+    <configuration name="functions.require" /> 
+
+  </tool>
+
+</registration>
