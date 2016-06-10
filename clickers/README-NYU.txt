@@ -1,3 +1,3 @@
-Version of clickers used here:
+Version of clickers used: Sakai-10.x-29-Apr-2015-TPC.zip
 
-sha1 f4aae146158fd928b22e52ba518f6f8a81b33d11  Sakai-10.x-22-Aug-2014.zip
+See https://jira.nyu.edu/browse/CLASSES-2094
