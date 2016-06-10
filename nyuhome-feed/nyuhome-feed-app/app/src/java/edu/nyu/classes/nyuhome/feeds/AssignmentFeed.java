@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import edu.nyu.classes.nyuhome.api.QueryUser;
-import edu.nyu.classes.nyuhome.api.DataFeed;
 import edu.nyu.classes.nyuhome.api.DataFeedEntry;
 import edu.nyu.classes.nyuhome.api.Resolver;
 
@@ -38,6 +37,7 @@ class AssignmentResponse implements DataFeedEntry {
     @Getter private String title;
     @Getter private String instructions;
     @Getter private String reference;
+    @Getter private String toolUrl;
 
 
     public Date getSortDate() {
@@ -50,7 +50,7 @@ class AssignmentResponse implements DataFeedEntry {
 }
 
 
-public class AssignmentFeed implements DataFeed {
+public class AssignmentFeed extends SakaiToolFeed {
     private static final Logger LOG = LoggerFactory.getLogger(AssignmentFeed.class);
 
     public List<DataFeedEntry> getUserData(QueryUser user, Resolver resolver, int maxAgeDays, int maxResults) {
@@ -94,6 +94,7 @@ public class AssignmentFeed implements DataFeed {
             .title(content.getTitle())
             .instructions(content.getInstructions())
             .reference(content.getReference())
+            .toolUrl(buildUrl(content.getContext(), "sakai.assignment.grades"))
             .build();
     }
 

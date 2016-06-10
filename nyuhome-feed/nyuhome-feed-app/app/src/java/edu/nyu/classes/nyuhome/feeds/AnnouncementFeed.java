@@ -30,6 +30,12 @@ import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
 import org.sakaiproject.announcement.api.AnnouncementMessageHeader;
 
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.site.cover.SiteService;
+
+import org.sakaiproject.exception.IdUnusedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,10 +50,11 @@ class AnnouncementResponse implements DataFeedEntry {
     @Getter private String body;
     @Getter private String site__siteid;
     @Getter private String fromUser__userid;
+    @Getter private String toolUrl;
 }
 
 
-public class AnnouncementFeed implements DataFeed {
+public class AnnouncementFeed extends SakaiToolFeed {
     private static final Logger LOG = LoggerFactory.getLogger(AnnouncementFeed.class);
 
 
@@ -141,6 +148,8 @@ public class AnnouncementFeed implements DataFeed {
             .reference(msg.getReference())
             .body(msg.getBody())
             .site__siteid(siteId)
+            .toolUrl(buildUrl(siteId, "sakai.announcements"))
             .build();
     }
+
 }
