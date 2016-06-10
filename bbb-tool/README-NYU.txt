@@ -1,1 +1,1 @@
-This is the master branch (e58f51396a7f2996f43b4908dc3514cfcc48138d) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git
+This is the master branch (297c311e7a10abc4faa4cc102ea6a63e2b8d42c1) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git

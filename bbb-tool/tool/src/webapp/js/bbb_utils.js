@@ -211,12 +211,14 @@ var BBBUtils;
     }
 
     // Get meeting info from BBB server
-    BBBUtils.setMeetingInfo = function(meeting) {
+    BBBUtils.setMeetingInfo = function(meeting, asyncmode) {
+        if(typeof(asyncmode)==='undefined') asyncmode = true;
+
         var meetingInfo = null;
         jQuery.ajax( {
             url : "/direct/bbb-tool/" + meeting.id + "/getMeetingInfo.json",
             dataType : "json",
-            async : true,
+            async : asyncmode,
             timeout : 10000,
             success : function(data) {
             },
@@ -252,7 +254,7 @@ var BBBUtils;
 				meeting.hasBeenForciblyEnded = meetingInfo.hasBeenForciblyEnded;
 				meeting.participantCount = meetingInfo.participantCount;
 				meeting.moderatorCount = meetingInfo.moderatorCount;
-			} else {
+			} else if (meetingInfo.messageKey != 'notFound'){
 				//Different errors can be handled here
 				meeting.unreachableServer = "true";
 			}
@@ -537,7 +539,7 @@ var BBBUtils;
 
         for(var i=0,j=bbbCurrentMeetings.length;i<j;i++) {
             if( bbbCurrentMeetings[i].id == meetingId ) {
-                BBBUtils.setMeetingInfo(bbbCurrentMeetings[i]);
+                BBBUtils.setMeetingInfo(bbbCurrentMeetings[i], false);
                 bbbCurrentMeetings[i].joining = joining;
                 BBBUtils.checkMeetingAvailability(bbbCurrentMeetings[i]);
                 updateMeetingInfo(bbbCurrentMeetings[i]);
@@ -716,10 +718,10 @@ var BBBUtils;
             dataType : "json",
             async : true,
             success : function(notice) {
-            	if(notice && notice.text) {
-            	   BBBUtils.showMessage(notice.text, notice.level);
-            	   BBBUtils.adjustFrameHeight();
-            	}
+                if(notice && notice.text) {
+                    BBBUtils.adjustFrameHeight();
+                    BBBUtils.showMessage(notice.text, notice.level);
+                }
             }
         });
     }
