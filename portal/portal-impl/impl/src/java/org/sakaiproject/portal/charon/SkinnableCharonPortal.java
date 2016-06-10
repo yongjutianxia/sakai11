@@ -1164,6 +1164,11 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("toolDirectUrlEnabled", ServerConfigurationService.getBoolean("portal.tool.direct.url.enabled", true));
 		rcontext.put("toolShortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.portal.tool.enabled", true));
 		
+		if (externalHelpSystem.isActive()) {
+			rcontext.put("usingExternalHelp", Boolean.valueOf(true));
+			rcontext.put("externalHelpMain", externalHelpSystem.getMainHelp());
+		}
+
 		return rcontext;
 	}
 

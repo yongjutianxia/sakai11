@@ -12,7 +12,7 @@ public class ExternalHelpSystem {
 
 
     private static Log LOG = LogFactory.getLog(ExternalHelpSystem.class);
-
+    private static String MAIN_HELP_TOOL_ID = "__help__";
 
     public class ExternalHelp {
         private String tool;
@@ -35,6 +35,10 @@ public class ExternalHelpSystem {
 
         public String getLabel() {
             return label;
+        }
+
+        public String toString() {
+          return String.format("%s : %s : %s", tool, label, url);
         }
     }
 
@@ -86,6 +90,8 @@ public class ExternalHelpSystem {
     public ExternalHelp getHelp(String toolId) {
         return help.get(toolId);
     }
+
+    public ExternalHelp getMainHelp() { return help.get(MAIN_HELP_TOOL_ID); }
 
     public ExternalHelp getNews(String toolId) {
         return news.get(toolId);
