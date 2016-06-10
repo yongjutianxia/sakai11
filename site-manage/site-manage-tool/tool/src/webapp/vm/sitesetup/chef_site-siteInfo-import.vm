@@ -69,7 +69,7 @@
             title: "$academicSession.getTitle()",
             id: "$academicSession.getEid()"
           }
-          #if( $foreach.hasNext ), #end
+          #if( $velocityCount < $academicSessions.size()), #end
         #end
       ];
 
