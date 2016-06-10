@@ -69,6 +69,7 @@
                 <module>delegatedaccess</module>
                 <module>deploy</module>
                 <module>edu-services</module>
+                <module>external-help</module>
                 <module>emailtemplateservice</module>
                 <module>entitybroker</module>
                 <module>external-calendaring-service</module>
