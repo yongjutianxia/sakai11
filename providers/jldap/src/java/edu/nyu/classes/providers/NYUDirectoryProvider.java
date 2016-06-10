@@ -196,8 +196,8 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
                 UserEdit user = usersByEid.get(eid.toLowerCase());
 
                 user.setEmail(rs.getString("email"));
+                user.setFirstName(formatFirstName(rs.getString("fname"), rs.getString("mname")));
                 user.setLastName(rs.getString("lname"));
-                user.setFirstName(rs.getString("fname"));
 
                 user.setType(userTypeMapper.getTypeForNetId(eid));
 
@@ -207,6 +207,15 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
         } finally {
             if (rs != null) { rs.close(); }
             if (ps != null) { ps.close(); }
+        }
+    }
+
+
+    private String formatFirstName(String firstName, String middleNameOrNull) {
+        if (middleNameOrNull == null || "".equals(middleNameOrNull.trim())) {
+            return firstName;
+        } else {
+            return firstName + " " + middleNameOrNull.trim();
         }
     }
 
