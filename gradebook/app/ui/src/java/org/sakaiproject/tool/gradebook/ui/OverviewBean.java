@@ -203,6 +203,10 @@ public class OverviewBean extends GradebookDependentBean implements Serializable
 						Assignment assignWithNoCat = (Assignment) unassignedIter.next();
 						if (assignWithNoCat.isExternallyMaintained())
 							displayGradeEditorCol = true;
+						
+						// SAK-23743, if no category, it is not included in the course grade so UI should display 'No' in the 'Included in Course Grade' Column.
+						// This doesnt affect calculations since the item is already excluded. Just the UI.
+						assignWithNoCat.setCounted(false);
 						gradebookItemList.add(assignWithNoCat);
 					}
 				}
