@@ -22,6 +22,9 @@
 ******************************************************************************/
 package org.adl.util.debug;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * <strong>Filename:</strong>  DebugIndicator.java<br><br>
  * <strong>Description:</strong>  This class is used to control debug 
@@ -29,9 +32,16 @@ package org.adl.util.debug;
  * ability to send these statements to the Java Console
  */
 public class DebugIndicator {
+	private static Log log = LogFactory.getLog(DebugIndicator.class);
 
 	/**
 	 * This controls display of log messages to the java console 
 	 */
-	public static boolean ON = false;
+	/**
+	 * This is copied from scorm/scorm-impl/adl/src/java/org/adl/util/debug/DebugIndicator.java
+	 * to not use the static value of <em>false</em>.  Its comment was:
+	 * "JLR 8/24/2007 -- wiring this up to log4j for consistency's sake."
+	 * afs5@nyu.edu - 2015-11-17
+	 */
+	public static boolean ON = log.isDebugEnabled();
 }
