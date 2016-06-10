@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL:  $
- * $Id:  $
+ * $URL$
+ * $Id$
  ***********************************************************************************
  *
  * Copyright (c) 2007 The Sakai Foundation.
@@ -100,6 +100,7 @@ public class LazyLaunchPanel extends LazyLoadPanel {
 	private int chooseStartOrResume(SessionBean sessionBean, INavigable navigator, AjaxRequestTarget target) {
 		int navRequest = SeqNavRequests.NAV_NONE;
 		sessionBean.setAttempt(null);
+		log.debug("NYU-SCORM-DEBUG -- chooseStartOrResume -- SessionBean: " + sessionBean + "; NavRequest: " + navRequest + "; Navigator: " + navigator + "; Target: " + target);
 		sequencingService.navigate(SeqNavRequests.NAV_NONE, sessionBean, null, target);
 		IValidRequests navigationState = sessionBean.getNavigationState();
 		if (navigationState.isStartEnabled()) {
@@ -242,7 +243,9 @@ public class LazyLaunchPanel extends LazyLoadPanel {
 	}
 
 	private String tryLaunch(SessionBean sessionBean, int navRequest, AjaxRequestTarget target) {
+		log.debug("NYU-SCORM-DEBUG -- tryLaunch -- SessionBean: " + sessionBean + "; NavRequest: " + navRequest + "; Target: " + target);
 		String result = sequencingService.navigate(navRequest, sessionBean, null, target);
+		log.debug("NYU-SCORM-DEBUG -- tryLaunch -- result: " + result);
 
 		// Success is null.
 		if (result == null || result.contains("_TOC_")) {
@@ -253,21 +256,30 @@ public class LazyLaunchPanel extends LazyLoadPanel {
 		if (result.equals("_INVALIDNAVREQ_")) {
 			IValidRequests state = sessionBean.getNavigationState();
 			if (state.isSuspendEnabled()) {
+				log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _INVALIDNAVREQ_ -- calling  NAV_SUSPENDALL");
 				result = sequencingService.navigate(SeqNavRequests.NAV_SUSPENDALL, sessionBean, null, target);
+				log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_SUSPENDALL -- result: " + result);
 				if (StringUtils.equals(result, "_ENDSESSION_")) {
+					log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _ENDSESSION_ -- calling  NAV_RESUMEALL");
 					result = sequencingService.navigate(SeqNavRequests.NAV_RESUMEALL, sessionBean, null, target);
+					log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_RESUMEALL -- result: " + result);
 					if (result == null || result.contains("_TOC_")) {
+						log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_RESUMEALL -- returning result: " + result);
 						return result;
 					}
 				}
 			}
 			if (StringUtils.equals(result, "_INVALIDNAVREQ_")) {
+				log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _INVALIDNAVREQ_ -- calling  NAV_ABANDONALL");
 				result = sequencingService.navigate(SeqNavRequests.NAV_ABANDONALL, sessionBean, null, target);
+				log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_ABANDONALL -- result: " + result);
 
 				// If it worked, start again
 				if (StringUtils.equals(result, "_ENDSESSION_")) {
+					log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _ENDSESSION_ -- calling  NAV_NONE");
 					state = sessionBean.getNavigationState();
 					result = sequencingService.navigate(SeqNavRequests.NAV_NONE, sessionBean, null, target);
+					log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_NONE -- result: " + result + "; state: " + state);
 					if (result == null || result.contains("_TOC_")) {
 //						sessionBean.setSuspended(false);
 //						sessionBean.setStarted(true);
@@ -275,20 +287,27 @@ public class LazyLaunchPanel extends LazyLoadPanel {
 //						sessionBean.setRestart(false);
 					}
 					state = sessionBean.getNavigationState();
+					log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_NONE -- result: " + result + "; state: " + state);
 					// Only start if allowed...
 					if (state.isStartEnabled()) {
+						log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _INVALIDNAVREQ_ -- calling  NAV_START");
 						result = sequencingService.navigate(SeqNavRequests.NAV_START, sessionBean, null, target);
+						log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_START -- result: " + result);
 					}
 				}
 			}
 			// Otherwise, we may need to issue a 'None' 
 		} else if (result.equals("_SEQBLOCKED_")) {
+			log.debug("NYU-SCORM-DEBUG -- tryLaunch -- _SEQBLOCKED_ -- calling  NAV_NONE");
 			result = sequencingService.navigate(SeqNavRequests.NAV_NONE, sessionBean, null, target);
+			log.debug("NYU-SCORM-DEBUG -- tryLaunch -- NAV_NONE -- result: " + result);
 		}
 		if (result == null || result.contains("_TOC_")) {
+			log.debug("NYU-SCORM-DEBUG -- tryLaunch -- setting 'started'");
 			sessionBean.setStarted(true);
 		}
-
+		
+		log.debug("NYU-SCORM-DEBUG -- tryLaunch -- final return result: " + result);
 		return result;
 	}
 
