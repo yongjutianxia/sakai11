@@ -818,6 +818,39 @@ public class SakaiScript extends AbstractWebService {
         return "success";
     }
 
+
+    /**
+     * Set the ProviderID of an authzgroup (realm)
+     *
+     * @param      sessionid               the id of a valid session
+     * @param      authzgroupid    the id of the authzgroup to add the role to
+     * @param      providerid                      the id of the provider to set
+     * @return                                     success or exception message
+     *
+     */
+    @WebMethod
+    @Path("/setAuthzGroupProviderId")
+    @Produces("text/plain")
+    @GET
+    public String setAuthzGroupProviderId(@WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+                                          @WebParam(name = "authzgroupid", partName = "authzgroupid") @QueryParam("authzgroupid") String authzgroupid,
+                                          @WebParam(name = "providerId", partName = "providerId") @QueryParam("providerId") String providerId)
+    {
+        Session session = establishSession(sessionid);
+
+        try {
+            AuthzGroup authzgroup = authzGroupService.getAuthzGroup(authzgroupid);
+            authzgroup.setProviderGroupId(providerId);
+            authzGroupService.save(authzgroup);
+        } catch (Exception e) {  
+            LOG.error("WS setAuthzGroupProviderId(): " + e.getClass().getName() + " : " + e.getMessage());
+            return e.getClass().getName() + " : " + e.getMessage();
+        }
+
+        return "success";
+    }
+
+
     /**
      * Remove all roles that exist in an authzgroup (realm)
      *
