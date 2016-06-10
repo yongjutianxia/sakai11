@@ -86,6 +86,8 @@
                 <module>msgcntr</module>
                 <module>oauth</module>
                 <module>pasystem</module>
+                <module>nyugrade</module>
+                <module>nyuhome-feed</module>
                 <module>podcasts</module>
                 <module>polls</module>
                 <module>portal</module>
