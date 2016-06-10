@@ -250,29 +250,6 @@ function redirectBasedOnSelection(){
 				<input type="hidden" name="find_course"  value="x" id="find_course"/>
 				
 
-		
-		#if ($termCourseList && $currentUserId != $userId)
-					<div class="shorttext required">
-						<span class="reqStar">*</span>						
-						<label for="uniqname">		
-						   $tlang.getString("man.authoriz")
-						</label>
-						<input type="text" name="uniqname"  id="uniqname"   size="40" value="$!authorizers" />
-					</div>
-					<p class="labelindnt instruction">
-					   $tlang.getString("man.email")
-					</p>
-					<div class="shorttext">
-						<label for="additional" class="block">
-							$tlang.getString("man.spec")
-						</label>
-						<textarea id="additional"   name="additional" rows="4" cols="40" wrap="virtual">$validator.escapeHtmlTextarea($form_additional)</textarea>
-					</div>
-					<p  class="instruction labelindnt">
-						$tlang.getString("man.please")
-					</p>
-		#end
-		<p/>
 		<input type="hidden" name="back" value="$!backIndex" />
 		<input id="index" type="hidden" name="templateIndex" value="$!templateIndex" />
 		<input type="hidden" name="option" id="option" value="x" />
