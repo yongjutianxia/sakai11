@@ -180,6 +180,28 @@
 					$!term
 				</td>
 			</tr>
+
+                        <!-- NYU modifications here -->
+			<tr>
+				<th>School</th>
+				<td>
+					$!siteSchool
+				</td>
+			</tr>
+			<tr>
+				<th>Department</th>
+				<td>
+					$!siteDepartment
+				</td>
+			</tr>
+			<tr>
+				<th>Location</th>
+				<td>
+					$!siteLocation
+				</td>
+			</tr>
+
+
 			#if ($!allowUpdate)
 			<tr> 
 				<th>

@@ -2035,6 +2035,13 @@ public class SiteAction extends PagedResourceActionII {
 				state.removeAttribute(SITE_DUPLICATED);
 				state.removeAttribute(SITE_DUPLICATED_NAME);
 				
+                                // Fields added by NYU
+                                for (String property : new String[] { "School", "Department", "Location" }) {
+                                  if (siteProperties.getProperty(property) != null) {
+                                    context.put("site" + property, siteProperties.getProperty(property));
+                                  }
+                                }
+
 				context.put("siteFriendlyUrls", getSiteUrlsForSite(site));
 				context.put("siteDefaultUrl", getDefaultSiteUrl(siteId));
 				
