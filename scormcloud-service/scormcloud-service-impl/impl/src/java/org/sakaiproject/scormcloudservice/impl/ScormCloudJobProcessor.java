@@ -168,6 +168,15 @@ class ScormCloudJobProcessor {
             store.markCompleted(job);
         } catch (Exception e) {
             LOG.error("Failure while processing SCORM job " + job.getId(), e);
+
+            if (errorMessages.length() == 0) {
+                // The ImportCourse method can throw an exception in addition to
+                // returning an ImportResult containing an error.  If that
+                // happened, take the message from the exception for display.
+
+                errorMessages.append(e.getMessage());
+            }
+
             try {
                 store.recordFailure(job, errorMessages.toString());
             } catch (Exception e2) {
