@@ -29,10 +29,6 @@ import org.sakaiproject.bbb.api.BBBException;
 import org.sakaiproject.bbb.api.BBBMeeting;
 import org.sakaiproject.bbb.api.BBBMeetingManager;
 import org.sakaiproject.bbb.impl.bbbapi.BBBAPI;
-import org.sakaiproject.bbb.impl.bbbapi.BBBAPI_063;
-import org.sakaiproject.bbb.impl.bbbapi.BBBAPI_070;
-import org.sakaiproject.bbb.impl.bbbapi.BBBAPI_080;
-import org.sakaiproject.bbb.impl.bbbapi.BBBAPI_081;
 import org.sakaiproject.bbb.impl.bbbapi.BaseBBBAPI;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.user.api.User;
@@ -62,10 +58,24 @@ public class BBBAPIWrapper/* implements Runnable */{
     private long bbbAutorefreshRecordings = 0;
     /** BBB API getSiteRecordings active flag (default to true) */
     private boolean bbbGetSiteRecordings = true;
-    /** BBB API recording flag to activate recording parameters in the client (default to true) */
-    private boolean bbbRecording = true;
-    /** BBB API maximum length allowed for meeting description (default 2083) */
+    /** BBB UX flag to activate/deactivate recording parameters in the client (default to true) */
+    private boolean bbbRecordingEnabled = true;
+    /** BBB default value for 'recording' checkbox (default to false) */
+    private boolean bbbRecordingDefault = false;
+    /** BBB UX maximum length allowed for meeting description (default 2083) */
     private int bbbDescriptionMaxLength = 2048;
+    /** BBB UX flag to activate/deactivate 'duration' box (default to false) */
+    private boolean bbbDurationEnabled = false;
+    /** BBB default value for 'duration' box (default 120 minutes) */
+    private int bbbDurationDefault = 120;
+    /** BBB UX flag to activate/deactivate 'wait for moderator' chekbox (default to true) */
+    private boolean bbbWaitModeratorEnabled = true;
+    /** BBB default value for 'wait for moderator' checkbox (default to true) */
+    private boolean bbbWaitModeratorDefault = true;
+    /** BBB UX flag to activate/deactivate 'Users can open multiple sessions' chekbox (default to false) */
+    private boolean bbbMultipleSessionsAllowedEnabled = false;
+    /** BBB default value for 'Users can open multiple sessions' checkbox (default to false) */
+    private boolean bbbMultipleSessionsAllowedDefault = true;
 
     
     /** BBB API */
@@ -89,14 +99,8 @@ public class BBBAPIWrapper/* implements Runnable */{
     private boolean bbbVersionCheckThreadEnabled = false;
     private boolean bbbVersionCheckThreadRunning = false;
 
-    /** A mapping of BBB proxies onto their BBB server urls */
-    private Map<String, BBBAPI> bbbProxyMap = new HashMap<String, BBBAPI>();
-
-    private String[] bbbUrls = {};
-    private String[] bbbSalts = {};
-    private List<String> liveUrls = null;
-
-    private Timer allocatorTimer = null;
+    private String bbbUrl;
+    private String bbbSalt;
 
     // -----------------------------------------------------------------------
     // --- Initialization related methods ------------------------------------
@@ -106,64 +110,38 @@ public class BBBAPIWrapper/* implements Runnable */{
 
         String bbbUrlString = config.getString(BBBMeetingManager.CFG_URL, DEFAULT_BBB_URL);
         if (bbbUrlString == ""){
-            logger.warn("No BigBlueButton servers specified. The bbb.url property in sakai.properties must be either set to a single url or a comma separated list of urls. There should be a corresponding list of salts in the bbb.salt property.");
+            logger.warn("No BigBlueButton server specified. The bbb.url property in sakai.properties must be set to a single url. There should be a corresponding shared secret value in the bbb.salt property.");
             return;
         }
 
         String bbbSaltString = config.getString(BBBMeetingManager.CFG_SALT, DEFAULT_BBB_SALT);
         if (bbbSaltString == ""){
-            logger.warn("BigBlueButton salt key was not specified! Use 'bbb.salt = your_bbb_key' in sakai.properties.");
+            logger.warn("BigBlueButton shared secret was not specified! Use 'bbb.salt = your_bbb_shared_secret' in sakai.properties.");
             return;
         }
 
-        bbbUrls = bbbUrlString.split(",");
-        bbbSalts = bbbSaltString.split(",");
-        if (bbbUrls.length != bbbSalts.length){
-            logger.warn("The number of BigBlueButton salts does not match the number of BigBlueButton urls! Check your bbb.salt and bbb.url properties in sakai.properties.");
-            return;
-        }
-
-        //Clean Urls
-        for (int i = 0; i < bbbUrls.length; i++){
-            if( bbbUrls[i].substring(bbbUrls[i].length()-1, bbbUrls[i].length()).equals("/") )
-                bbbUrls[i] = bbbUrls[i].substring(0, bbbUrls[i].length()-1);
-        }
+        //Clean Url
+        bbbUrl = bbbUrlString.substring(bbbUrlString.length()-1, bbbUrlString.length()).equals("/")? bbbUrlString: bbbUrlString + "/";
+        bbbSalt = bbbSaltString;
         
-        liveUrls = new ArrayList<String>(bbbUrls.length);
-        if( doLoadBBBProxyMap() ) {
-        	if (bbbUrls.length > 0) {
-        		api = bbbProxyMap.get(bbbUrls[0]);
-        	}
-        }
-
-
-        // let's make sure that our meetings are all set up at least with a configured hosts
-        List<BBBMeeting> meetings = storageManager.getAllMeetings();
-        for (BBBMeeting meeting : meetings) {
-            String hostUrl = meeting.getHostUrl();
-            if (!bbbProxyMap.containsKey(hostUrl)) {
-                // The host for this meeting is not alive. Try and move the meeting.
-                logger.warn("'" + hostUrl + "', the host of meeting '" + meeting.getId()
-                          + "', was not available. The meeting will be moved to the first available host ...");
-            	
-                //Assign the first configured URL
-            	storageManager.setMeetingHost(meeting.getId(), bbbUrls[0]);
-            		
-            }
-        }
+        //api will always have a value, except when the url and salt were not configured
+        api = new BaseBBBAPI(bbbUrl, bbbSalt);
 
         bbbAutorefreshMeetings = (long) config.getInt(BBBMeetingManager.CFG_AUTOREFRESHMEETINGS, (int) bbbAutorefreshMeetings);
         bbbAutorefreshRecordings = (long) config.getInt(BBBMeetingManager.CFG_AUTOREFRESHRECORDINGS, (int) bbbAutorefreshRecordings);
         bbbGetSiteRecordings = (boolean) config.getBoolean(BBBMeetingManager.CFG_GETSITERECORDINGS, bbbGetSiteRecordings);
-        bbbRecording = (boolean) config.getBoolean(BBBMeetingManager.CFG_RECORDING, bbbRecording);
+        bbbRecordingEnabled = (boolean) config.getBoolean(BBBMeetingManager.CFG_RECORDING_ENABLED, bbbRecordingEnabled);
         bbbDescriptionMaxLength = (int) config.getInt(BBBMeetingManager.CFG_DESCRIPTIONMAXLENGTH, bbbDescriptionMaxLength);
-
+        bbbDurationEnabled = (boolean) config.getBoolean(BBBMeetingManager.CFG_DURATION_ENABLED, bbbDurationEnabled);
+        bbbDurationDefault = (int) config.getInt(BBBMeetingManager.CFG_DURATION_DEFAULT, bbbDurationDefault);
+        bbbWaitModeratorEnabled = (boolean) config.getBoolean(BBBMeetingManager.CFG_WAITMODERATOR_ENABLED, bbbWaitModeratorEnabled);
+        bbbWaitModeratorDefault = (boolean) config.getBoolean(BBBMeetingManager.CFG_WAITMODERATOR_DEFAULT, bbbWaitModeratorDefault);
+        bbbMultipleSessionsAllowedEnabled = (boolean) config.getBoolean(BBBMeetingManager.CFG_MULTIPLESESSIONSALLOWED_ENABLED, bbbMultipleSessionsAllowedEnabled);
+        bbbMultipleSessionsAllowedDefault = (boolean) config.getBoolean(BBBMeetingManager.CFG_MULTIPLESESSIONSALLOWED_DEFAULT, bbbMultipleSessionsAllowedDefault);
+        
     }
 
     public void destroy() {
-        /*
-         * if(bbbVersionCheckThreadEnabled) { stopBBBVersionCheckThread(); }
-         */
     }
 
     public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
@@ -187,95 +165,70 @@ public class BBBAPIWrapper/* implements Runnable */{
     public boolean isMeetingRunning(String meetingID) 
     		throws BBBException {
         if (logger.isDebugEnabled()) logger.debug("isMeetingRunning()");
-        
-        if( bbbProxyMap.size() == 0 && !doLoadBBBProxyMap() ) 
-            throw new BBBException(BBBException.MESSAGEKEY_UNREACHABLE, "No BigBlueButton server has been properly initialized" );
-        String hostUrl = storageManager.getMeetingHost(meetingID);
-        BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
 
-        if (hostProxy == null)	
+        if ( api == null )
             return false;
-        else
-            return hostProxy.isMeetingRunning(meetingID);
+
+        return api.isMeetingRunning(meetingID);
     }
 
     public Map<String, Object> getMeetingInfo(String meetingID, String password)
             throws BBBException {
-        //if (logger.isDebugEnabled()) logger.debug("getMeetingInfo()");
+        if (logger.isDebugEnabled()) logger.debug("getMeetingInfo()");
 
-        String hostUrl = storageManager.getMeetingHost(meetingID);
         Map<String, Object> meetingInfoResponse = new HashMap<String, Object>();
-        
-        try{
-            if( bbbProxyMap.size() == 0 && !doLoadBBBProxyMap() ) 
-                throw new BBBException(BBBException.MESSAGEKEY_UNREACHABLE, "No BigBlueButton server has been properly initialized" );
-            BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
 
-            meetingInfoResponse = hostProxy.getMeetingInfo(meetingID, password); 
-            
-        } catch ( BBBException e){
-        	if( BBBException.MESSAGEKEY_UNREACHABLE.equals(e.getMessageKey()) || BBBException.MESSAGEKEY_HTTPERROR.equals(e.getMessageKey()) ){
-        	    doRestartBBBProxyMap();
-        	    meetingInfoResponse = responseError(e.getMessageKey(), e.getMessage() );
-        	}
-        } catch ( Exception e){
-            doRestartBBBProxyMap();
-            meetingInfoResponse = responseError(BBBException.MESSAGEKEY_UNREACHABLE, e.getMessage() );
+        if ( api != null  ) {
+            try{
+                meetingInfoResponse = api.getMeetingInfo(meetingID, password); 
+            } catch ( BBBException e){
+                if( BBBException.MESSAGEKEY_UNREACHABLE.equals(e.getMessageKey()) || 
+                        BBBException.MESSAGEKEY_HTTPERROR.equals(e.getMessageKey()) ||
+                        BBBException.MESSAGEKEY_INVALIDRESPONSE.equals(e.getMessageKey()) ){
+                    meetingInfoResponse = responseError(e.getMessageKey(), e.getMessage() );
+                }
+            } catch ( Exception e){
+                meetingInfoResponse = responseError(BBBException.MESSAGEKEY_UNREACHABLE, e.getMessage() );
+            }
+
         }
 
         return meetingInfoResponse;
-
     }
 
     public String getJoinMeetingURL(String meetingID, User user, String password)
             throws BBBException {
-        //if (logger.isDebugEnabled()) logger.debug("getJoinMeetingURL()");
+        if (logger.isDebugEnabled()) logger.debug("getJoinMeetingURL()");
 
-        String hostUrl = storageManager.getMeetingHost(meetingID);
         String joinMeetingURLResponse = "";
 
-        try{
-            if( bbbProxyMap.size() == 0 && !doLoadBBBProxyMap() ) 
-                throw new BBBException(BBBException.MESSAGEKEY_UNREACHABLE, "No BigBlueButton server has been properly initialized" );
-            BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-
-            joinMeetingURLResponse = hostProxy.getJoinMeetingURL(meetingID, user, password); 
-            
-        } catch ( BBBException e){
-            if( BBBException.MESSAGEKEY_UNREACHABLE.equals(e.getMessageKey()) || BBBException.MESSAGEKEY_HTTPERROR.equals(e.getMessageKey()) ){
-                doRestartBBBProxyMap();
-            }
-        } catch ( Exception e){
-            doRestartBBBProxyMap();
+        if ( api != null ) {
+            joinMeetingURLResponse = api.getJoinMeetingURL(meetingID, user, password); 
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
         }
 
         return joinMeetingURLResponse;
-
     }
     
     public Map<String, Object> getRecordings(String meetingID)
             throws BBBException {
-        //if (logger.isDebugEnabled()) logger.debug("getRecordings()");
-        
-        String hostUrl = storageManager.getMeetingHost(meetingID);
+        if (logger.isDebugEnabled()) logger.debug("getRecordings()");
+
         Map<String, Object> recordingsResponse = new HashMap<String, Object>();
         
-        try{
-            if( bbbProxyMap.size() == 0 && !doLoadBBBProxyMap() ) 
-                throw new BBBException(BBBException.MESSAGEKEY_UNREACHABLE, "No BigBlueButton server has been properly initialized" );
-            BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-
-            recordingsResponse = hostProxy.getRecordings(meetingID); 
-            
-        } catch ( BBBException e){
-            if( BBBException.MESSAGEKEY_UNREACHABLE.equals(e.getMessageKey()) || BBBException.MESSAGEKEY_HTTPERROR.equals(e.getMessageKey()) ){
-                doRestartBBBProxyMap();
+        if ( api != null ) {
+            try{
+                recordingsResponse = api.getRecordings(meetingID);
+            } catch ( BBBException e){
+                recordingsResponse = responseError(e.getMessageKey(), e.getMessage() );
+                logger.debug("getRecordings.BBBException: message=" + e.getMessage());
+            } catch ( Exception e){
+                recordingsResponse = responseError(BBBException.MESSAGEKEY_GENERALERROR, e.getMessage() );
+                logger.debug("getRecordings.Exception: message=" + e.getMessage());
             }
-            recordingsResponse = responseError(e.getMessageKey(), e.getMessage() );
-            logger.debug("getRecordings.BBBException: message=" + e.getMessage());
-        } catch ( Exception e){
-        	recordingsResponse = responseError(BBBException.MESSAGEKEY_GENERALERROR, e.getMessage() );
-            logger.debug("getRecordings.Exception: message=" + e.getMessage());
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
         }
 
         return recordingsResponse;
@@ -283,187 +236,72 @@ public class BBBAPIWrapper/* implements Runnable */{
 
     public Map<String, Object> getSiteRecordings(String meetingIDs)
             throws BBBException {
-
         if (logger.isDebugEnabled()) logger.debug("getSiteRecordings(): for meetingIDs=" + meetingIDs);
 
-        String hostUrl = this.bbbUrls[0];
-        logger.debug("getSiteRecordings(): hostUrl=[" + hostUrl + "]");
-    	Map<String, Object> siteRecordingsResponse = new HashMap<String, Object>();
-
-        try{
-            if( bbbProxyMap.size() == 0 && !doLoadBBBProxyMap() ) 
-                throw new BBBException(BBBException.MESSAGEKEY_UNREACHABLE, "No BigBlueButton server has been properly initialized" );
-            BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-
-            if (hostProxy == null) {
-            	siteRecordingsResponse = responseError("noProxyFound", "No proxy found for host '" + hostUrl + "'. Returning [FAILED] for the getSiteRecordings.");
-            } else {
-                if( meetingIDs != null && !meetingIDs.trim().equals("") ) {
-                	if( bbbGetSiteRecordings ){
-                		logger.debug("getting site recordings all in one call for [" + meetingIDs + "]");
-                		siteRecordingsResponse = hostProxy.getRecordings(meetingIDs);
-                	} else {
-                		logger.debug("getting site recordings one by one");
-                	    String[] MeetingIdArray = {};
-                	    MeetingIdArray = meetingIDs.split(",");
-                        if (MeetingIdArray.length >= 0 ){
-                        	for(int i=0; i < MeetingIdArray.length; i++){
-                        		siteRecordingsResponse = getMergedMap(siteRecordingsResponse, hostProxy.getRecordings(MeetingIdArray[i]));
-                        	}
-                        }
-                	}
-                } else {
-                	//siteRecordingsResponse = responseError(BBBException.MESSAGEKEY_NOTFOUND, "No recordings were found for this Site" );
-                	siteRecordingsResponse.put("recordings", new Object());
-                	siteRecordingsResponse.put("returncode", "SUCCESS");
-                }
-                	
-            }
-            
-            
-        } catch ( BBBException e){
-            if( BBBException.MESSAGEKEY_UNREACHABLE.equals(e.getMessageKey()) || BBBException.MESSAGEKEY_HTTPERROR.equals(e.getMessageKey()) )
-                doRestartBBBProxyMap();
-            siteRecordingsResponse = responseError(e.getMessageKey(), e.getMessage() );
-            logger.debug("getRecordings.BBBException: message=" + e.getMessage());
-        } catch ( Exception e){
-        	siteRecordingsResponse = responseError(BBBException.MESSAGEKEY_GENERALERROR, e.getMessage() );
-            logger.debug("getRecordings.Exception: message=" + e.getMessage());
-        }
-
-        return siteRecordingsResponse;
-
-    }
-    
-    private Map<String, Object> getMergedMap(Map<String, Object> target, Map<String, Object> source) {
-
-    	Map<String, Object> responseMap = new HashMap<String, Object>();
-    	
-    	if( source.containsValue("noRecordings") ){
-        	if( !target.containsKey("returncode") ){
-        		responseMap = source;
-        	} else {
-        		responseMap = target;
-        	}
-    	} else {
-        	if( !target.containsKey("returncode") ){
-        		responseMap = source;
-        	} else if( target.containsValue("noRecordings") ){
-        		target.remove("messageKey");
-        		target.remove("message");
-        		target.remove("recordings");
-        		target.put("recordings", source.get("recordings"));
-        		responseMap = target;
-        	} else {
-            	ArrayList<Object> targetRecordingList = (ArrayList<Object>) target.get("recordings");
-            	ArrayList<Object> sourceRecordingList = (ArrayList<Object>) source.get("recordings");
-
-            	Object[] elements = sourceRecordingList.toArray();
-                for(int i=0; i < elements.length ; i++)        
-            		targetRecordingList.add(elements[i]);
-
-                target.remove("recordings");
-        		target.put("recordings", targetRecordingList);
-
-        		responseMap = target;
-        	}
-    	}
-    	
-    	return responseMap;
-    	
+        return getRecordings(meetingIDs);
     }
     
     public Map<String, Object> getAllRecordings()
     		throws BBBException {
+        if (logger.isDebugEnabled()) logger.debug("getAllRecordings()");
 
-        String hostUrl = this.bbbUrls[0];
-        
-    	BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-        if (hostProxy == null && !doLoadBBBProxyMap() )
-            return responseError("noProxyFound", "No proxy found for host '" + hostUrl + ". Returning [FAILED] for the getAllRecordings.");
-
-    	return hostProxy.getRecordings("");
+        return getRecordings("");
     }
 
     public boolean endMeeting(String meetingID, String password)
             throws BBBException {
-        String hostUrl = storageManager.getMeetingHost(meetingID);
+        if (logger.isDebugEnabled()) logger.debug("endMeeting()");
+
+        boolean endMeetingResponse = false;
+
+        if ( api != null ) {
+            endMeetingResponse = api.endMeeting(meetingID, password);
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
+        }
         
-        BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-        if (hostProxy == null && !doLoadBBBProxyMap() ) return false;
-        
-        return hostProxy.endMeeting(meetingID, password);
+        return endMeetingResponse;
     }
 
     public boolean publishRecordings(String meetingID, String recordingID, String publish) 
     		throws BBBException {
-        String hostUrl = storageManager.getMeetingHost(meetingID);
-        
-        BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-        if (hostProxy == null && !doLoadBBBProxyMap() ) return false;
+        if (logger.isDebugEnabled()) logger.debug("publishRecordings()");
 
-        return hostProxy.publishRecordings(meetingID, recordingID, publish);
+        boolean publishRecordingsResponse = false;
+
+        if ( api != null ) {
+            publishRecordingsResponse = api.publishRecordings(meetingID, recordingID, publish);
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
+        }
+
+        return publishRecordingsResponse;
     }
 
     public boolean deleteRecordings(String meetingID, String recordingID)
             throws BBBException {
-        String hostUrl = storageManager.getMeetingHost(meetingID);
+        if (logger.isDebugEnabled()) logger.debug("publishRecordings()");
 
-        BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-        if (hostProxy == null && !doLoadBBBProxyMap() ) return false;
+        boolean deleteRecordingsResponse = false;
+
+        if ( api != null ) {
+            deleteRecordingsResponse = api.deleteRecordings(meetingID, recordingID);
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
+        }
         
-        return hostProxy.deleteRecordings(meetingID, recordingID);
+        return deleteRecordingsResponse;
     }
 
     public void makeSureMeetingExists(BBBMeeting meeting) 
     		throws BBBException {
-        String hostUrl = storageManager.getMeetingHost(meeting.getId());
-
-        BBBAPI hostProxy = bbbProxyMap.get(hostUrl);
-        if (hostProxy == null && !doLoadBBBProxyMap() ) return;
-        
-        hostProxy.makeSureMeetingExists(meeting);
+        if ( api != null ) {
+            api.makeSureMeetingExists(meeting);
+        } else {
+            throw new BBBException(BBBException.MESSAGEKEY_INTERNALERROR, "Internal tool configuration error");
+        }
     }
 
-    // -----------------------------------------------------------------------
-    // --- BBB API Version Check thread related methods ----------------------
-    // -----------------------------------------------------------------------
-    /** BBB Version Check thread */
-    /*
-     * public void run(){ try{
-     * logger.debug("Started BBB API Version Check thread");
-     * while(bbbVersionCheckThreadRunning){
-     * 
-     * for(BBBAPI bbbApi : bbbProxyMap.values()) { // do the check
-     * bindAPIClassToBBBVersion(bbbApi); }
-     * 
-     * // sleep if no work to do if(!bbbVersionCheckThreadRunning) break; try{
-     * synchronized (bbbVersionCheckThreadSemaphore){
-     * bbbVersionCheckThreadSemaphore.wait(bbbVersionCheckInterval); }
-     * }catch(InterruptedException e){
-     * logger.warn("Failed to sleep BBB API Version Check thread",e); } }
-     * }catch(Throwable t){
-     * logger.debug("Failed to executeBBB API Version Check thread",t);
-     * }finally{ if(bbbVersionCheckThreadRunning){ // thread was stopped by an
-     * unknown error: restartlogger.debug(
-     * "BBB API Version Check thread was stoped by an unknown error: restarting..."
-     * ); startBBBVersionCheckThread(); }else
-     * logger.debug("Finished BBB API Version Check thread"); } }
-     */
-
-    /** Start the BBB Version Check thread */
-    /*
-     * private void startBBBVersionCheckThread(){ bbbVersionCheckThreadRunning =
-     * true; bbbVersionCheckThread = null; bbbVersionCheckThread = new
-     * Thread(this, this.getClass().getName()); bbbVersionCheckThread.start(); }
-     */
-
-    /** Stop the BBB Version Check thread */
-    /*
-     * private void stopBBBVersionCheckThread(){ bbbVersionCheckThreadRunning =
-     * false; synchronized (bbbVersionCheckThreadSemaphore){
-     * bbbVersionCheckThreadSemaphore.notifyAll(); } }
-     */
 
     // -----------------------------------------------------------------------
     // --- Utility methods ---------------------------------------------------
@@ -480,139 +318,6 @@ public class BBBAPIWrapper/* implements Runnable */{
         return versionSnapshot;
     }
 
-    protected void bindAPIClassToBBBVersion(final BBBAPI proxy) 
-            throws BBBException {
-        logger.debug("Checking BBB API version...");
-
-        try {
-            // get BBB API version
-            String defaultVersion = BaseBBBAPI.APIVERSION_LATEST;
-            String returnedVersion = proxy.getAPIVersion();
-
-            // We have a live one, add it to the live list
-            if (returnedVersion != null) {
-                liveUrls.add(proxy.getUrl());
-            } else {
-                logger.debug("Error checking BigBlueButton version. Striking '" + proxy.getUrl() + " from the map ...");
-                bbbProxyMap.remove(proxy.getUrl());
-                liveUrls.remove(proxy.getUrl());
-                return;
-            }
-
-            // convert to numeric & bind
-            try {
-                String _version = returnedVersion;
-                // remove -SNAPSHOT, -FINAL, ...
-                if (_version.indexOf("-") != -1) {
-                    String stringPart = _version.substring(_version.indexOf("-") + 1);
-                    versionSnapshot = "SNAPSHOT".equalsIgnoreCase(stringPart.trim());
-                    _version = _version.substring(0, _version.indexOf("-"));
-                }
-
-                // version should be like x.x or x.xx
-                float versionNumber = Float.parseFloat(_version);
-                if (versionNumber < 0.63f) {
-                    BBBAPI newProxy = getAPI(BaseBBBAPI.APIVERSION_MINIMUM, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                } else if (versionNumber < 0.70f) {
-                    BBBAPI newProxy = getAPI(BaseBBBAPI.APIVERSION_063, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                } else if (versionNumber < 0.80f) {
-                    BBBAPI newProxy = getAPI(BaseBBBAPI.APIVERSION_070, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                } else if (versionNumber == 0.80f) {
-                    BBBAPI newProxy = getAPI(BaseBBBAPI.APIVERSION_080, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                } else if (versionNumber == 0.81f) {
-                    BBBAPI newProxy = getAPI(BaseBBBAPI.APIVERSION_081, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                } else {
-                    BBBAPI newProxy = getAPI(defaultVersion, proxy.getUrl(), proxy.getSalt());
-                    bbbProxyMap.put(proxy.getUrl(), newProxy);
-                }
-
-            } catch (NumberFormatException e) {
-                // invalid version => bind to latest
-                logger.warn("Invalid BigBlueButton version found (" + version + ") => binding to " + defaultVersion, e);
-                BBBAPI newProxy = getAPI(defaultVersion, proxy.getUrl(), proxy.getSalt());
-                bbbProxyMap.put(proxy.getUrl(), newProxy);
-            }
-        } catch (Exception e) {
-            logger.error("Unable to check BigBlueButton version ", e);
-        }
-    }
-
-    private BBBAPI getAPI(String _version, String url, String salt) {
-
-        BBBAPI newProxy = null;
-        // <= 0.64
-        if (BaseBBBAPI.APIVERSION_063.equals(_version)) {
-            newProxy = new BBBAPI_063(url, salt);
-
-            // >= 0.70
-        } else if (BaseBBBAPI.APIVERSION_070.equals(_version)) {
-            newProxy = new BBBAPI_070(url, salt);
-
-            // >= 0.80
-        } else if (BaseBBBAPI.APIVERSION_080.equals(_version)) {
-            newProxy = new BBBAPI_080(url, salt);
-            
-            // >= 0.81
-        } else if (BaseBBBAPI.APIVERSION_081.equals(_version)) {
-            newProxy = new BBBAPI_081(url, salt);
-        }
-
-        logger.debug("Sakai BigBlueButton Tool bound to API: " + newProxy.getClass().getSimpleName());
-
-        return newProxy;
-    }
-
-    private class AllocatorTimerTask extends TimerTask {
-
-        private Random random = new Random();
-        private int liveAtStart = 0;
-        private int attempt = 1;
-
-        public void run() {
-            List<String> testUrls = new ArrayList<String>(liveUrls);
-            liveAtStart = testUrls.size();
-            attempt = 1;
-            allocate(testUrls);
-        }
-
-        private void allocate(List<String> testUrls) {
-
-            if (logger.isDebugEnabled()) logger.debug("Allocation attempt #" + attempt);
-
-            String newUrl = testUrls.get(random.nextInt(testUrls.size()));
-
-            if (logger.isDebugEnabled()) logger.debug("BBB allocator picked " + newUrl);
-
-            BBBAPI bbbProxy = bbbProxyMap.get(newUrl);
-
-            try {
-                if (bbbProxy != null) {
-                    bbbProxy.getMeetings();
-                    synchronized (api) {
-                        api = bbbProxy;
-                    }
-                } else {
-                    logger.error("No proxy mapped onto '" + newUrl + "'");
-                }
-            } catch (Exception e) {
-                logger.error("Failed to allocate a BigBlueButton instance. The getMeetings call failed against "
-                             + bbbProxy.getUrl() + ". It will be removed from the testUrls list for this allocation run.", e);
-                testUrls.remove(bbbProxy.getUrl());
-
-                // Allow as many attempts as there are live urls
-                if (attempt < liveAtStart) {
-                    attempt++;
-                    allocate(testUrls);
-                }
-            }
-        }
-    }
-
     public long getAutorefreshForMeetings() {
         return bbbAutorefreshMeetings;
     }
@@ -622,35 +327,39 @@ public class BBBAPIWrapper/* implements Runnable */{
     }
     
     public boolean isRecordingEnabled(){
-        return bbbRecording;
+        return bbbRecordingEnabled;
     }
-    
+
+    public boolean getRecordingDefault(){
+        return bbbRecordingDefault;
+    }
+
+    public boolean isDurationEnabled(){
+        return bbbDurationEnabled;
+    }
+
+    public int getDurationDefault(){
+        return bbbDurationDefault;
+    }
+
+    public boolean isWaitModeratorEnabled(){
+        return bbbWaitModeratorEnabled;
+    }
+
+    public boolean getWaitModeratorDefault(){
+        return bbbWaitModeratorDefault;
+    }
+
+    public boolean isMultipleSessionsAllowedEnabled(){
+        return bbbMultipleSessionsAllowedEnabled;
+    }
+
+    public boolean getMultipleSessionsAllowedDefault(){
+        return bbbMultipleSessionsAllowedDefault;
+    }
+
     public int getMaxLengthForDescription(){
         return bbbDescriptionMaxLength;
-    }
-
-    private boolean doLoadBBBProxyMap() {
-
-        if (logger.isDebugEnabled()) logger.debug("determine API version running on BBB server...");
-        
-        try {
-            for (int i = 0; i < bbbUrls.length; i++) {
-                BaseBBBAPI baseBBBAPI = new BaseBBBAPI(bbbUrls[i], bbbSalts[i]);
-                bindAPIClassToBBBVersion(baseBBBAPI);
-            }
-        } catch(Exception e) {
-            doRestartBBBProxyMap();
-        }
-
-        if( bbbProxyMap.size() == 0 ){
-            logger.debug("No BigBlueButton server has been properly initialized...");
-            return false;
-        } else
-            return true;
-    }
-
-    private void doRestartBBBProxyMap(){
-        bbbProxyMap = new HashMap<String, BBBAPI>();
     }
 
     private Map<String, Object> responseError(String messageKey, String message){

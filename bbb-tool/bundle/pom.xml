@@ -6,8 +6,8 @@
 	
   	<parent>
         <groupId>org.sakaiproject.bbb</groupId>
-        <artifactId>bbb</artifactId>
-        <version>1.0.8-a1</version>
+    	<artifactId>bbb</artifactId>
+    	<version>1.0.8</version>
   	</parent>
   	
   	<name>BigBlueButton Bundles</name>

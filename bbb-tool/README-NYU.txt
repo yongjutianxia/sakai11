@@ -1,1 +1,1 @@
-This is branch 1.0.8 from https://github.com/blindsidenetworks/bigbluebutton-sakai.git
+This is the master branch (e58f51396a7f2996f43b4908dc3514cfcc48138d) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git

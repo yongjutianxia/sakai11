@@ -25,11 +25,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="text/javascript" language="JavaScript" src="lib/trimpath.js"></script>
-<script type="text/javascript" language="JavaScript" src="lib/jquery-1.3.2.min.js"></script> 
+<script type="text/javascript" language="JavaScript" src="lib/jquery-1.4.4.min.js"></script> 
 <script type="text/javascript" language="JavaScript" src="lib/jquery.i18n.properties.min.js"></script>
 <script type="text/javascript" language="JavaScript" src="lib/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" language="JavaScript" src="lib/jquery.datepick.package-3.7.5/jquery.datepick.pack.js"></script>
 <script type="text/javascript" language="JavaScript" src="lib/jquery.timePicker.js"></script>
+<script type="text/javascript" language="JavaScript">var CKEDITOR_BASEPATH='/library/editor/ckeditor/';
+</script>
+<script type="text/javascript" language="JavaScript" src="/library/editor/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" language="JavaScript" src="/library/editor/ckeditor.launch.js"></script>
 <script type="text/javascript" language="JavaScript" src="/library/editor/FCKeditor/fckeditor.js"></script>
 <script type="text/javascript" language="JavaScript" src="lib/jquery.tipTip.minified.js"></script>
 <script type="text/javascript" language="JavaScript" src="js/bbb_utils.js"></script>
@@ -39,6 +43,7 @@
 <link rel="stylesheet" type="text/css" href="css/bbb.css" />
 <link rel="stylesheet" type="text/css" href="lib/jquery.datepick.package-3.7.5/redmond.datepick.css" />
 <script type="text/javascript" language="JavaScript">
+var sakaiVersion;
 $(document).ready(function(){
     var arg = BBBUtils.getParameters();
     // load Sakai skin
@@ -78,13 +83,16 @@ $(document).ready(function(){
             jQuery.getScript("lib/jquery.datepick.package-3.7.5/jquery.datepick-" + lang[0] + ".js");
         }
     }
+    sakaiVersion = arg['version'];
 });
+function waitForModeratorRefresh(meetingId) {
+    setTimeout( "BBBUtils.checkOneMeetingAvailability('" + meetingId + "', true)", 15000 );
+};
 </script>
 </head>
 <body>
 
 <div id="bbb_toolbar" class="portletBody"></div>
-<br />
 <div id="bbb_messages" style="display: none"></div>
 <div id="bbb_container">
     <div id="bbb_content"></div>
@@ -94,14 +102,12 @@ $(document).ready(function(){
 <!--  Templates Start -->
 <div id="bbb_toolbar_template" style="display:none;"><!--
 <ul id="bbb_toolbar_items" class="navIntraTool actionToolBar" role="menu">
+    
     <li class="firstToolBarItem" role="menuitem">
           <span><a id="bbb_home_link" title="${bbb_home_tooltip}" href="javascript:;">${bbb_home_label}</a></span>
     </li>
     <li role="menuitem">
           <span><a id="bbb_recordings_link" title="${bbb_recordings_tooltip}" href="javascript:;">${bbb_recordings_label}</a></span>
-    </li>
-    <li role="menuitem">
-          <span><a id="bbb_create_meeting_link" title="${bbb_create_meeting_tooltip}" href="javascript:;">${bbb_create_meeting_label}</a></span>
     </li>
     <li role="menuitem">
           <span><a id="bbb_permissions_link" title="${bbb_permissions_tooltip}" href="javascript:;">${bbb_permissions_label}</a></span>
@@ -111,6 +117,8 @@ $(document).ready(function(){
 </div>
 
 <div id="bbb_rooms_template" style="display:none"><!--
+<input type="button" id="bbb_create_meeting_link" title="${bbb_create_meeting_tooltip}" value="${bbb_create_meeting_label}" />
+
 <table id="bbb_meeting_table" class="listHier">
     <thead>
         <tr>
@@ -126,7 +134,7 @@ $(document).ready(function(){
     {if !m.deleted}
       <tr class="meetingRow">
         <td>
-          {if m.joinUrl}
+          {if m.joinable}
               <a href="javascript:;" onclick="return switchState('meetingInfo',{'meetingId':'${m.id}'})" title="${bbb_meeting_details_tooltip}">${m.name}</a>
           {else}
               <span>${m.name}</span>
@@ -155,9 +163,9 @@ $(document).ready(function(){
               </small>
               </div> 
         </td>
-        {var statusClass = m.joinable ? 'status_joinable_' : (m.notStarted ? 'status_notstarted' : 'status_finished')}
-        {var statusText = m.joinable ? (m.joinableMode == 'available'? bbb_status_joinable_available: m.joinableMode == 'inprogress'? bbb_status_joinable_inprogress: m.joinableMode == 'unavailable'? bbb_status_joinable_unavailable: bbb_status_joinable_unreachable ) : (m.notStarted ? bbb_status_notstarted : bbb_status_finished)}
-        <td id="meeting_status_${m.id}" class="${statusClass}${m.joinableMode}">${statusText}</td>
+        {var statusClass = m.joinable ? 'status_joinable_' + m.joinableMode: (m.notStarted ? 'status_notstarted' : 'status_finished')}
+        {var statusText = m.joinable ? (m.joinableMode == 'available'? bbb_status_joinable_available: m.joinableMode == 'inprogress'? bbb_status_joinable_inprogress: m.joinableMode == 'unavailable'? bbb_status_joinable_unavailable: m.joinableMode == 'unreachable'? bbb_status_joinable_unreachable: '' ) : (m.notStarted ? bbb_status_notstarted : bbb_status_finished)}
+        <td id="meeting_status_${m.id}" class="${statusClass}">${statusText}</td>
         <td>${m.startDate ? new Date( parseInt(m.startDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset) + ( (new Date()).dst() && !(new Date( parseInt(m.startDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(m.startDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset))).dst()? (3600000 * -1): 0 ) ).toISO8601String() : ''}</td>
         <td>${m.endDate ? new Date( parseInt(m.endDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset) + ( (new Date()).dst() && !(new Date( parseInt(m.endDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(m.endDate) - parseInt(bbbBrowserTimeZoneOffset) + parseInt(bbbUserTimeZoneOffset))).dst()? (3600000 * -1): 0 ) ).toISO8601String() : ''}</td>
         <td>${m.ownerDisplayName}</td>
@@ -218,7 +226,13 @@ $(document).ready(function(){
             <td class="startDate">${r.startTime ? (new Date(parseInt(r.startTime)).toISO8601String()) + ' ' + r.timezoneOffset: ''}</td>
             <td>
               {for p in r.playback}
-        	    <a href="${p.url}" title="${p.type}" target="_blank">${p.type}</a>&nbsp;
+              	{var recType = bbb_recording_type[p.type] === undefined ? p.type : bbb_recording_type[p.type]}
+              	{var viewRecType = bbb_recording_view_tooltip[p.type] === undefined ? p.type : bbb_recording_view_tooltip[p.type]}
+                {if r.published == 'true'}
+                    <a href="${p.url}" title="${viewRecType}" target="_blank">${recType}</a>&nbsp;
+                {else}
+                    ${recType}&nbsp;
+                {/if}
               {/for}
             </td>
             <td>
@@ -260,24 +274,44 @@ $(document).ready(function(){
       <tr>
         <td class="lbl">${bbb_info_description}</td>
         <td>
-            <textarea id="bbb_welcome_message_textarea" name="props.welcomeMessage" cols="36" rows="10" style="width: 480px;" wrap="virtual">{if isNew}${bbb_default_welcome_description}{else}${meeting.props.welcomeMessage}{/if}</textarea>
+            <textarea class="bbb_welcome_message_textarea" id="bbb_welcome_message_textarea" name="props.welcomeMessage" cols="36" rows="10" style="width: 480px;" wrap="virtual">{if isNew}${bbb_default_welcome_description}{else}${meeting.props.welcomeMessage}{/if}</textarea>
         </td>
       </tr>
-      {if isRecording}
+      {if recordingEnabled}
       <tr>
         <td class="lbl">${bbb_info_recording}</td>
         <td>
-            {var recordingChecked = isNew ? false : meeting.recording }
+            {var recordingChecked = isNew ? recordingDefault : meeting.recording }
             <input id="recording" name="recording" type="checkbox" {if recordingChecked}checked{/if}/>
         </td>
       </tr>
       {/if}
+      {if durationEnabled}
       <tr>
         <td class="lbl">${bbb_info_duration}</td>
         <td>
             <input id="recordingDuration" name="recordingDuration" type="text" value="${meeting.recordingDuration}" style="width: 35px;" />&nbsp;${bbb_info_recording_duration_units}
         </td>
       </tr>
+      {/if}
+      {if waitmoderatorEnabled}
+      <tr>
+        <td class="lbl">${bbb_info_waitformoderator}</td>
+        <td>
+            {var waitForModerator = isNew ? waitmoderatorDefault : meeting.waitForModerator }
+            <input id="waitForModerator" name="waitForModerator" type="checkbox" {if waitForModerator}checked{/if}/>
+        </td>
+      </tr>
+      {/if}
+      {if multiplesessionsallowedEnabled}
+      <tr>
+        <td class="lbl">${bbb_info_multiplesessionsallowed}</td>
+        <td>
+            {var multipleSessionsAllowed = isNew ? multiplesessionsallowedDefault : meeting.multipleSessionsAllowed }
+            <input id="multipleSessionsAllowed" name="multipleSessionsAllowed" type="checkbox" {if multipleSessionsAllowed}checked{/if}/>
+        </td>
+      </tr>
+      {/if}
     </table>
     
     <br/>
@@ -355,7 +389,8 @@ $(document).ready(function(){
         <td class="lbl">{if isNew}${bbb_notification_notify}{else}${bbb_notification_notify_edit}{/if}</td>
         <td>
             {var notifyParticipantsChecked = false }
-            <input id="notifyParticipants" name="notifyParticipants" type="checkbox" {if notifyParticipantsChecked}checked{/if}/>
+            <input id="notifyParticipants" name="notifyParticipants" type="checkbox" {if notifyParticipantsChecked}checked{/if} onclick="BBBUtils.setNotifictionOptions();"/>
+            <span id="notifyParticipants_iCalAttach_span"></span>
         </td>
       </tr>
     </table>
@@ -378,12 +413,12 @@ $(document).ready(function(){
     <thead>
         <tr class="listHier">
             <th align="left">${bbb_permissions_role}</th>
-            <th style="text-align:center;">create</th>
-            <th style="text-align:center;">edit own</th>
-            <th style="text-align:center;">edit any</th>
-            <th style="text-align:center;">delete own</th>
-            <th style="text-align:center;">delete any</th>
-            <th style="text-align:center;">participate</th>
+            <th style="text-align:center;">${bbb_permissions_create}</th>
+            <th style="text-align:center;">${bbb_permissions_edit_own}</th>
+            <th style="text-align:center;">${bbb_permissions_edit_any}</th>
+            <th style="text-align:center;">${bbb_permissions_delete_own}</th>
+            <th style="text-align:center;">${bbb_permissions_delete_any}</th>
+            <th style="text-align:center;">${bbb_permissions_participate}</th>
         </tr>
     </thead>
 <tbody>
@@ -437,7 +472,7 @@ $(document).ready(function(){
             {var dispNotStarted = meeting.notStarted ? 'display:inline' : 'display:none'}
             {var dispInProgress = meeting.joinable ? 'display:inline' : 'display:none'}
             {var dispFinished = meeting.finished ? 'display:inline' : 'display:none'}
-            {var labelJoinable = meeting.joinableMode == 'available'? bbb_status_joinable_available: meeting.joinableMode == 'inprogress'? bbb_status_joinable_inprogress: bbb_status_joinable_unavailable}
+            {var labelJoinable = meeting.joinableMode == 'available'? bbb_status_joinable_available: meeting.joinableMode == 'inprogress'? bbb_status_joinable_inprogress: meeting.joinableMode == 'unavailable'? bbb_status_joinable_unavailable: meeting.joinableMode == 'unreachable'? bbb_status_joinable_unreachable: ''}
             <span id="meeting_status_notstarted_${meeting.id}" class="status_notstarted" style="${dispNotStarted}">
                 ${bbb_status_notstarted}
             </span>
@@ -449,7 +484,7 @@ $(document).ready(function(){
             </span>
             {var displayLink = meeting.joinUrl && meeting.joinable && meeting.joinableMode == 'available'? 'display:inline' : 'display:none'}
             <span id="meeting_joinlink_${meeting.id}" style="${displayLink}">
-                (<a id="joinMeetingLink" target="_blank" href="javascript:;" onclick="return BBBUtils.joinMeeting('${meeting.id}', '#joinMeetingLink')" title="${bbb_launch_meeting_tooltip}" style="font-weight:bold">${bbb_meetinginfo_link}</a>
+                (<a id="joinMeetingLink" target="_blank" href="javascript:;" onclick="return BBBUtils.joinMeeting('${meeting.id}', '#joinMeetingLink', ${meeting.multipleSessionsAllowed});" title="${bbb_meetinginfo_launch_meeting_tooltip}" style="font-weight:bold">${bbb_meetinginfo_link}</a>
                 <img src="/library/image/silk/user_go.png" alt=">" style="vertical-align:middle"/>)
             </span>
         </td>
