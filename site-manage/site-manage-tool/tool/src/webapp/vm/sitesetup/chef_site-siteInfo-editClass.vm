@@ -23,7 +23,8 @@
 					</th>
 				</tr>
 				#set ($providerCourseListNum =0)	
-				#foreach($id in $!providerCourseTitles.keys())
+				## CLASSES-2030 iterate over providerCourseList so ordered by section_id
+				#foreach($id in $!providerCourseList)
 				#set ($providerCourseListNum =$providerCourseListNum + 1)	
 					<tr>
 						<td headers="class">
