@@ -348,8 +348,17 @@ public class RequestFilter implements Filter
 		// keep track of temp files with this request that need to be deleted on the way out
 		List<FileItem> tempFiles = new ArrayList<FileItem>();
 
+		boolean threadRenamed = false;
+		String thisThreadName = Thread.currentThread().getName();
+
+
 		try
 		{
+			if (thisThreadName != null && thisThreadName.startsWith("http-nio")) {
+				threadRenamed = true;
+				Thread.currentThread().setName(thisThreadName + "::" + startTime);
+			}
+
 			threadLocalManager.set(CURRENT_REMOTE_USER, Boolean.valueOf(m_sakaiRemoteUser));
 			threadLocalManager.set(CURRENT_HTTP_SESSION, Integer.valueOf(m_sakaiHttpSession));
 			threadLocalManager.set(CURRENT_CONTEXT, m_contextId);
@@ -546,6 +555,10 @@ public class RequestFilter implements Filter
 			{
 				long elapsedTime = System.currentTimeMillis() - startTime;
 				M_log.debug("request timing (ms): " + elapsedTime + " for " + sb);
+			}
+
+			if (threadRenamed) {
+				Thread.currentThread().setName(thisThreadName);
 			}
 		}
 	}
