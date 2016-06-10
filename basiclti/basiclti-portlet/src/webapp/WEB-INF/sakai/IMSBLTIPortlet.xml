@@ -717,7 +717,7 @@
 	</tool>
 
 
-	<tool id="nyu.forclass" title="ForClass" description="ForClass Setup">
+	<tool id="nyu.forclass" title="ForClass Setup" description="ForClass Setup">
 
           <configuration name="sakai:menuClass" value="icon-sakai-basiclti"/>
 	  <configuration name="sakai:portlet-pre-render" value="true" />
