@@ -194,6 +194,21 @@ public class NYUGradesServiceImpl implements NYUGradesService
     }
 
 
+    private Map<String, String> pullGradesFromGradebook(String siteId)
+    {
+        // get the calculated grades
+        Map<String, String> grades = new HashMap<String, String>(gradebookService.getCalculatedCourseGrade(siteId));
+        Map<String, String> eCourseGrade = gradebookService.getEnteredCourseGrade(siteId);
+
+        // override any grades the instructor has manually set
+        for (Map.Entry<String, String> entry : eCourseGrade.entrySet()) {
+            grades.put(entry.getKey(), entry.getValue());
+        }
+
+        return grades;
+    }
+
+
     public GradeSet getGradesForSection(String sectionEid)
         throws SiteNotFoundForSectionException, MultipleSitesFoundForSectionException
     {
@@ -203,7 +218,7 @@ public class NYUGradesServiceImpl implements NYUGradesService
             throw new SiteNotFoundForSectionException(sectionEid);
         }
 
-        Map grades = gradebookService.getImportCourseGrade(siteId, false);
+        Map grades = pullGradesFromGradebook(siteId);
 
         filterSingleSection((Map<String, String>) grades, sectionEid);
 
