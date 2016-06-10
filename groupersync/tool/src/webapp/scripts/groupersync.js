@@ -165,7 +165,7 @@
 
     CRUDModal.prototype.showCreateForm = function (groupContainer) {
         var self = this;
-        var template = $($('#crud-template').html().trim());
+        var template = $($.trim($('#crud-template').html()));
         var sakaiGroupId = groupContainer['sakaiGroupId'];
 
         template.find('.create-group-form').attr('action', this.baseUrl + 'create_group');
@@ -230,7 +230,7 @@
 
 
     CRUDModal.prototype.showEditForm = function (groupContainer) {
-        var template = $($('#crud-template').html().trim());
+        var template = $($.trim($('#crud-template').html()));
 
         template.find('.create-group-form').attr('action', this.baseUrl + 'update_group');
         template.find('.create-group-form .sakaiGroupId').val(groupContainer['sakaiGroupId']);
@@ -418,7 +418,7 @@
     DeleteHandler.prototype.showConfirmation = function() {
         var self = this;
 
-        var $modal = $($("#delete-confirmation-template").html().trim());
+        var $modal = $($.trim($("#delete-confirmation-template").html()));
 
         $modal.on("click", ".btn.btn-primary", function() {
             self.deleteConfirmed = true;
