@@ -27,6 +27,7 @@ import edu.nyu.classes.nyugrades.api.SectionNotFoundException;
 import edu.nyu.classes.nyugrades.api.SiteNotFoundForSectionException;
 import edu.nyu.classes.nyugrades.api.MultipleSectionsMatchedException;
 import edu.nyu.classes.nyugrades.api.MultipleSitesFoundForSectionException;
+import edu.nyu.classes.nyugrades.api.GradePullDisabledException;
 
 
 public class NYUGradesServiceImpl implements NYUGradesService
@@ -210,15 +211,24 @@ public class NYUGradesServiceImpl implements NYUGradesService
 
 
     public GradeSet getGradesForSection(String sectionEid)
-        throws SiteNotFoundForSectionException, MultipleSitesFoundForSectionException
+        throws SiteNotFoundForSectionException, MultipleSitesFoundForSectionException, GradePullDisabledException
     {
+        if (!sectionEid.startsWith("FA14")) {
+            throw new GradePullDisabledException(sectionEid);
+        }
+
         String siteId = getSiteId(sectionEid);
 
         if (!isSitePublished(siteId)) {
             throw new SiteNotFoundForSectionException(sectionEid);
         }
 
-        Map grades = pullGradesFromGradebook(siteId);
+        // Reverting to our original method while we get the Gradebook service
+        // sorted out
+        //
+        // Map grades = pullGradesFromGradebook(siteId);
+        //
+        Map grades = gradebookService.getImportCourseGrade(siteId, false);
 
         filterSingleSection((Map<String, String>) grades, sectionEid);
 

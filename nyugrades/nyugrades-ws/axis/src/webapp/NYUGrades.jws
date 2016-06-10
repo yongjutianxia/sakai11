@@ -30,6 +30,7 @@ import edu.nyu.classes.nyugrades.api.SectionNotFoundException;
 import edu.nyu.classes.nyugrades.api.SiteNotFoundForSectionException;
 import edu.nyu.classes.nyugrades.api.MultipleSectionsMatchedException;
 import edu.nyu.classes.nyugrades.api.MultipleSitesFoundForSectionException;
+import edu.nyu.classes.nyugrades.api.GradePullDisabledException;
 
 
 public class NYUGrades/*%ENVIRONMENT%*/
@@ -133,6 +134,9 @@ public class NYUGrades/*%ENVIRONMENT%*/
                                                   courseId, term, sessionCode, classSection));
             } catch (MultipleSitesFoundForSectionException e) {
                 throw new AxisFault(String.format("Multiple sites found for section: %s",
+                                                  sectionEid));
+            } catch (GradePullDisabledException e) {
+                throw new AxisFault(String.format("Grade pull is currently disabled for section: %s",
                                                   sectionEid));
             }
         } finally {
