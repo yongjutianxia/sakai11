@@ -242,7 +242,7 @@
 		on LDAP attributes. Defaults to an instance of EmptyStringUserTypeMapper -->
 		<property name="userTypeMapper">
 			<!-- Select one of the following beans -->
-			<ref bean="edu.amc.sakai.user.EmptyStringUserTypeMapper" />
+			<ref bean="edu.amc.sakai.user.NYUUserTypeMapper" />
 			<!-- ref bean="edu.amc.sakai.user.EntryAttributeToUserTypeMapper" /-->
 			<!-- ref bean="edu.amc.sakai.user.EntryContainerRdnToUserTypeMapper" /-->
 			<!-- ref bean="edu.amc.sakai.user.StringUserTypeMapper" /-->
@@ -283,20 +283,20 @@
 		<!-- Optional. If not present or empty, behavior is
 		determined by the value of returnLiteralAttributeValueIfNoMapping
 		(see below). -->
-		<!-- property name="attributeValueToSakaiUserTypeMap">
+		<property name="attributeValueToSakaiUserTypeMap">
 			<map>
-				<entry key="faculty"><value>faculty</value></entry> 
-				<entry key="students"><value>student</value></entry> 
+                          <!-- User types are now only derived from the database  -->
+                          <!-- <entry key="faculty"><value>Instructor</value></entry>  -->
 			</map>
-		</property -->
+		</property>
 				
 		<!-- Required. The logical name of the LDAP attribute which
 		defines Sakai users' types. Value should be a key into the 
 		attribute mappings associated with this LdapAttributeMapper 
 		instance. -->
-		<property name="logicalAttributeName">
-			<value>groupMembership</value>
-		</property>
+		<!-- <property name="logicalAttributeName"> -->
+		<!-- 	<value>eduPersonAffiliation</value> -->
+		<!-- </property> -->
 				
 		<!-- Optional. Defaults to false -->
 		<!--  property name="returnLiteralAttributeValueIfNoMapping">
