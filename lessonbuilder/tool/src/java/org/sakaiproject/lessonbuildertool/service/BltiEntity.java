@@ -590,4 +590,8 @@ public class BltiEntity implements LessonEntity, BltiInterface {
 
 
 
+	//CLASSES-1847 Expose whether blti tools have are available to a site
+	public boolean hasToolsAvailable() {
+		return servicePresent() && !ltiService.getTools(null, null, 0, 0).isEmpty();
+	}
 }

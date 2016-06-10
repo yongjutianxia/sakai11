@@ -89,6 +89,7 @@ import org.sakaiproject.lessonbuildertool.SimplePagePeerEvalResult;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPage;
 import org.sakaiproject.lessonbuildertool.SimpleChecklistItem;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
+import org.sakaiproject.lessonbuildertool.service.BltiEntity;
 import org.sakaiproject.lessonbuildertool.service.BltiInterface;
 import org.sakaiproject.lessonbuildertool.service.LessonEntity;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
@@ -3782,7 +3783,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 	//CLASSES-1847 only show the Add External Tool menu option if an external tool is defined for that site
 	private boolean shouldShowExternalToolsLink() {
-		return !bltiEntity.getEntitiesInSite().isEmpty();
+		return ((BltiEntity)bltiEntity).hasToolsAvailable() || !bltiEntity.getEntitiesInSite().isEmpty();
 	}
 
 	private GeneralViewParameters createToolBarLink(String viewID, UIContainer tofill, String ID, String message, SimplePage currentPage, String tooltip) {
