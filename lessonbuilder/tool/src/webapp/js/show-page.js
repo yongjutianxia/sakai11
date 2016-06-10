@@ -1357,6 +1357,13 @@ $(document).ready(function() {
 			}else {
 				$("#question-required").prop("checked", false);
 			}
+
+            var questionShowCorrectAnswers = row.find(".questionShowCorrectAnswers").text();
+            if(questionShowCorrectAnswers == "true") {
+                $("#question-show-correct-answers").attr("checked", true);
+            }else {
+                $("#question-show-correct-answers").attr("checked", false);
+            }
 			
 			var prerequisite = row.find(".questionitem-prerequisite").text();
 			if(prerequisite === "true") {
@@ -2183,34 +2190,6 @@ $(document).ready(function() {
 		$("#directurl").attr('href', $("#directurl").attr('rel'));
 
 	} // Closes admin if statement
-
-	$(".showPollGraph").click(function(e) {
-        e.preventDefault();
-		var pollGraph = $(this).parents(".questionDiv").find(".questionPollGraph");
-		
-		if($(this).attr("value") === $(this).parents(".questionDiv").find(".show-poll").text()) {
-			pollGraph.empty();
-			var pollData = [];
-			pollGraph.parent().find(".questionPollData").each(function(index) {
-				var text = $(this).find(".questionPollText").text();
-				var count = $(this).find(".questionPollNumber").text();
-				
-				pollData[index] = [parseInt(count), text];
-			});
-			
-			pollGraph.show();
-			pollGraph.jqBarGraph({data: pollData, height:100, speed:1});
-			
-			$(this).attr("value",($(this).parents(".questionDiv").find(".hide-poll").text()));
-		}else {
-			pollGraph.hide();
-			pollGraph.empty();
-			
-			$(this).attr("value",($(this).parents(".questionDiv").find(".show-poll").text()));
-		}
-
-        resizeFrame('grow');
-	});
 	
 	$('.add-break-section').click(function(e) {
 		e.preventDefault();
@@ -3101,7 +3080,7 @@ function unhideMultimedia() {
 // Clones one of the multiplechoice answers in the Question dialog and appends it to the end of the list
 function addMultipleChoiceAnswer() {
 	var clonedAnswer = $("#copyableMultipleChoiceAnswerDiv").clone(true);
-	var num = $("#extraMultipleChoiceAnswers").find("div").length + 2; // Should be currentNumberOfAnswers + 1
+	var num = $("#extraMultipleChoiceAnswers").find(".question-answer").length + 2; // Should be currentNumberOfAnswers + 1
 	
 	clonedAnswer.find(".question-multiplechoice-answer-id").val("-1");
 	clonedAnswer.find(".question-multiplechoice-answer-correct").prop("checked", false);
@@ -3162,9 +3141,9 @@ function addShortanswer() {
 
 function updateMultipleChoiceAnswers() {
 	$(".question-multiplechoice-answer-complete").each(function(index, el) {
-		var id = $(el).parent().find(".question-multiplechoice-answer-id").val();
-		var checked = $(el).parent().find(".question-multiplechoice-answer-correct").is(":checked");
-		var text = $(el).parent().find(".question-multiplechoice-answer").val();
+		var id = $(el).closest(".question-answer").find(".question-multiplechoice-answer-id").val();
+		var checked = $(el).closest(".question-answer").find(".question-multiplechoice-answer-correct").is(":checked");
+		var text = $(el).closest(".question-answer").find(".question-multiplechoice-answer").val();
 		
 		$(el).val(index + ":" + id + ":" + checked + ":" + text);
 	});
@@ -3181,7 +3160,7 @@ function updateShortanswers() {
 }
 
 function deleteAnswer(el) {
-	el.parent('div').remove();
+	el.closest('.question-answer').remove();
 }
 
 // Enabled or disables the subfields under grading in the question dialog
@@ -3530,3 +3509,18 @@ function fixStatus(here,itemId) {
 	return;
     };
 }
+
+$(document).ready(function() {
+  // If any poll results, then render their bar graph nicely
+  $(".questionPollResult").each(function() {
+    var $result = $(this);
+    var answers = $result.data("answers");
+    var allResponses = $result.data("all-responses");
+
+    if (answers > 0) {
+      var newWidth = parseInt((answers / allResponses) * 94);
+      $result.find(".questionPollResultLabel").css("left", newWidth + 2 + "%");
+      $result.find(".questionPollResultBar").width(newWidth + "%");
+    }
+  });
+});

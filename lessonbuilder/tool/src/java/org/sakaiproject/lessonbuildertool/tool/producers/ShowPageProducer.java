@@ -56,6 +56,8 @@ import java.util.TimeZone;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -2851,6 +2853,10 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					UIOutput.make(tableRow, "questionText", i.getAttribute("questionText"));
 					
 					List<SimplePageQuestionAnswer> answers = new ArrayList<SimplePageQuestionAnswer>();
+					List<UIBranchContainer> answerContainers = new ArrayList<UIBranchContainer>();
+					// CLASSES-1606 collect all correct answers text
+					List<String> correctAnswers = new ArrayList<String>();
+					List<String> correctAnswerLetters = new ArrayList<String>();
 					if("multipleChoice".equals(i.getAttribute("questionType"))) {
 						answers = simplePageToolDao.findAnswerChoices(i);
 						UIOutput.make(tableRow, "multipleChoiceDiv");
@@ -2878,17 +2884,27 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							UISelectChoice multipleChoiceInput = UISelectChoice.make(answerContainer, "multipleChoiceAnswerRadio", multipleChoiceSelect.getFullID(), j);
 							
 							multipleChoiceInput.decorate(new UIFreeAttributeDecorator("id", multipleChoiceInput.getFullID()));
-							UIOutput.make(answerContainer, "multipleChoiceAnswerText", answers.get(j).getText())
+							// CLASSES-1606 grab the answer text
+							SimplePageQuestionAnswer answer = answers.get(j);
+							String answerText = answer.getText();
+							UIOutput.make(answerContainer, "multipleChoiceAnswerText", answer.getText())
 								.decorate(new UIFreeAttributeDecorator("for", multipleChoiceInput.getFullID()));
 							
 							if(!isAvailable || response != null) {
 								multipleChoiceInput.decorate(new UIDisabledDecorator());
 							}
+							// CLASSES-1606 if correct answer, add text to our list
+							if (answer.isCorrect()) {
+								correctAnswers.add(answerText);
+								correctAnswerLetters.add(getLetterForAnswerIndex(j));
+							}
+							answerContainers.add(answerContainer);
 						}
 						 
 						UICommand answerButton = UICommand.make(questionForm, "answerMultipleChoice", messageLocator.getMessage("simplepage.answer_question"), "#{simplePageBean.answerMultipleChoiceQuestion}");
 						if(!isAvailable || response != null) {
 							answerButton.decorate(new UIDisabledDecorator());
+							answerButton.decorate(new UIFreeAttributeDecorator("style", "display:none"));
 						}
 					}else if("shortanswer".equals(i.getAttribute("questionType"))) {
 						UIOutput.make(tableRow, "shortanswerDiv");
@@ -2910,6 +2926,10 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 						if(!isAvailable || response != null) {
 							answerButton.decorate(new UIDisabledDecorator());
 						}
+						// CLASSES-1606 parse any provided answers, they are all correct answers
+						if (!"".equals(i.getAttribute("questionAnswer"))) {
+							correctAnswers.addAll(Arrays.asList(i.getAttribute("questionAnswer").split("\n")));
+						}
 					}
 					
 					Status questionStatus = getQuestionStatus(i, response);
@@ -2918,34 +2938,69 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					if (statusNote != null) // accessibility version of icon
 					    UIOutput.make(tableRow, "questionNote", statusNote);
 					String statusText = null;
-					if(questionStatus == Status.COMPLETED)
-					    statusText = i.getAttribute("questionCorrectText");
-					else if(questionStatus == Status.FAILED)
-					    statusText = i.getAttribute("questionIncorrectText");
-					if (statusText != null && !"".equals(statusText.trim()))
-					    UIOutput.make(tableRow, "questionStatusText", statusText);
-					
+					String statusCSSClass = null;
+					if(questionStatus == Status.COMPLETED) {
+						statusText = i.getAttribute("questionCorrectText");
+						statusCSSClass = "correct";
+					} else if(questionStatus == Status.FAILED) {
+						statusText = i.getAttribute("questionIncorrectText");
+						statusCSSClass = "incorrect";
+					}
+					if (statusText != null && !"".equals(statusText.trim())) {
+						UIOutput questionStatusText = UIOutput.make(tableRow, "questionStatusText", statusText);
+						questionStatusText.decorate(new UIFreeAttributeDecorator("class", "questionStatusText " + statusCSSClass));
+					}
+					// CLASSES-1606 if answered and questionShowCorrectAnswers==true, then show the correct answers to the student
+					// If shortanswer show the answer text, if multiplechoice show the equivalent letter
+					if (questionStatus == Status.COMPLETED || questionStatus == Status.FAILED) {
+						if (correctAnswers.size() > 0 && "true".equals(i.getAttribute("questionShowCorrectAnswers"))) {
+							String correctAnswerMessage = messageLocator.getMessage("simplepage.question-correct-answer-message");
+							String answersAsString;
+							if ("shortanswer".equals(i.getAttribute("questionType"))) {
+								answersAsString = StringUtils.join(correctAnswers, ", ");
+							} else {
+								answersAsString = StringUtils.join(correctAnswerLetters, ", ");
+							}
+							correctAnswerMessage = correctAnswerMessage.replace("{}", answersAsString);
+							UIOutput.make(tableRow, "questionCorrectAnswerMessage", correctAnswerMessage);
+						}
+					}
 					// Output the poll data
 					if("multipleChoice".equals(i.getAttribute("questionType")) &&
 							(canEditPage || ("true".equals(i.getAttribute("questionShowPoll")) &&
 									(questionStatus == Status.COMPLETED || questionStatus == Status.FAILED)))) {
-						UIOutput.make(tableRow, "showPollGraph", messageLocator.getMessage("simplepage.show-poll"));
+						if (canEditPage) {
+							String instructorMessage;
+							if ("true".equals(i.getAttribute("questionShowPoll"))) {
+								instructorMessage = messageLocator.getMessage("simplepage.poll-instructor-message-graph-only-after-answer");
+							} else {
+								instructorMessage = messageLocator.getMessage("simplepage.poll-instructor-message-graph");
+							}
+							UIOutput.make(tableRow, "questionInstructorMessage", instructorMessage);
+						}
 						UIOutput questionGraph = UIOutput.make(tableRow, "questionPollGraph");
 						questionGraph.decorate(new UIFreeAttributeDecorator("id", "poll" + i.getId()));
 						
 						List<SimplePageQuestionResponseTotals> totals = simplePageToolDao.findQRTotals(i.getId());
 						HashMap<Long, Long> responseCounts = new HashMap<Long, Long>();
+						int numberOfResponses = 0;
 						// in theory we don't need the first loop, as there should be a total
 						// entry for all possible answers. But in case things are out of sync ...
 						for(SimplePageQuestionAnswer answer : answers)
 						    responseCounts.put(answer.getId(), 0L);
-						for(SimplePageQuestionResponseTotals total : totals)
-						    responseCounts.put(total.getResponseId(), total.getCount());
+						for(SimplePageQuestionResponseTotals total : totals) {
+							responseCounts.put(total.getResponseId(), total.getCount());
+							numberOfResponses += total.getCount();
+						}
 						
 						for(int j = 0; j < answers.size(); j++) {
-							UIBranchContainer pollContainer = UIBranchContainer.make(tableRow, "questionPollData:", String.valueOf(j));
-							UIOutput.make(pollContainer, "questionPollText", answers.get(j).getText());
-							UIOutput.make(pollContainer, "questionPollNumber", String.valueOf(responseCounts.get(answers.get(j).getId())));
+							UIBranchContainer answerContainer = answerContainers.get(j);
+							UIBranchContainer pollContainer = UIBranchContainer.make(answerContainer, "questionPollResult:", String.valueOf(j));
+							String numberOfAnswers = String.valueOf(responseCounts.get(answers.get(j).getId()));
+							pollContainer.decorate(new UIFreeAttributeDecorator("data-answers", numberOfAnswers));
+							pollContainer.decorate(new UIFreeAttributeDecorator("data-all-responses",  Integer.toString(numberOfResponses)));
+							UIOutput.make(pollContainer, "questionPollResultBar");
+							UIOutput.make(pollContainer, "questionPollResultLabel", numberOfAnswers);
 						}
 					}
 					
@@ -2978,7 +3033,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 						UIOutput.make(tableRow, "questionitem-groups", itemGroupString);
 						UIOutput.make(tableRow, "questionCorrectText", String.valueOf(i.getAttribute("questionCorrectText")));
 						UIOutput.make(tableRow, "questionIncorrectText", String.valueOf(i.getAttribute("questionIncorrectText")));
-						
+						// CLASSES-1606 Add new option for showing correct answers to the user after submitting a response
+						UIOutput.make(tableRow, "questionShowCorrectAnswers", String.valueOf("true".equals(i.getAttribute("questionShowCorrectAnswers"))));
+
 						if("shortanswer".equals(i.getAttribute("questionType"))) {
 							UIOutput.make(tableRow, "questionType", "shortanswer");
 							UIOutput.make(tableRow, "questionAnswer", i.getAttribute("questionAnswer"));
@@ -4575,6 +4632,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIBoundBoolean.make(form, "question-multiplechoice-answer-correct");
 		UIInput.make(form, "question-multiplechoice-answer", null);
 		UIBoundBoolean.make(form, "question-show-poll", "#{simplePageBean.questionShowPoll}");
+		// CLASSES-1606 add new option for showing correct answers to the user after they respond
+		UIBoundBoolean.make(form, "question-show-correct-answers", "#{simplePageBean.questionShowCorrectAnswers}");
 		
 		UIInput.make(form, "question-correct-text", "#{simplePageBean.questionCorrectText}");
 		UIInput.make(form, "question-incorrect-text", "#{simplePageBean.questionIncorrectText}");
@@ -5088,4 +5147,21 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIOutput.make(peerReviewRows, "peer-eval-sample-text", messageLocator.getMessage("simplepage.peer-eval.sample.4"));
 	}
 
+	// CLASSES-1606 Return a letter for the given answer index
+	// e.g. 0-A, 1-B, 25-Z, 26-AA
+	private String getLetterForAnswerIndex(int i){
+		if(i < 0){
+			return null;
+		}
+
+		int quot = i / 26;
+		int rem = i % 26;
+		String letter = String.valueOf((char)((int)'A' + rem));
+
+		if(quot == 0) {
+			return letter;
+		} else {
+			return getLetterForAnswerIndex(quot-1).concat(letter);
+		}
+	}
 }
