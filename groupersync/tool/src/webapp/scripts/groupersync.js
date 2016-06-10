@@ -18,6 +18,9 @@
         this.addressInput.attr('maxlength', this.calculateMaxLength());
 
         this.bindToEvents();
+
+        // Do an initial check of the value we got from Sakai.
+        this.descriptionUpdated();
     }
 
 
