@@ -12132,6 +12132,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					site = SiteService.addSite(id, templateSite);
 					// set site type
 					site.setType(SiteTypeUtil.getTargetSiteType(templateSite.getType()));
+
+					// We don't want the new site to automatically be a template
+					site.getPropertiesEdit().removeProperty("template");
 				} else {
 					site = SiteService.addSite(id, siteInfo.site_type);
 				}
