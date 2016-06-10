@@ -38,6 +38,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.email.cover.EmailService;
@@ -287,6 +288,12 @@ public class ErrorReporter
 				+ rb.getString("bugreport.stacktrace") + "\n" + problem + "\n"
 				+ placementDisplay + "\n" + requestDisplay);
 
+		//only send email if user entered a comment
+		if(StringUtils.isBlank(userReport)) {
+			M_log.debug("User did not enter a comment, no email will be sent.");
+			return;
+		}
+		
 		// mail
 		String emailAddr = ServerConfigurationService.getString("portal.error.email");
 
@@ -467,13 +474,14 @@ public class ErrorReporter
 					out.println("</head>");
 				}
 				out.println("<body" + bodyOnload + ">");
-				out.println("<div class=\"portletBody\">");
+				out.println("<div class=\"portletBody bugreport\">");
 			}
-			out.println("<h3>" + rb.getString("bugreport.error") + "</h3>");
-			out.println("<p>" + rb.getString("bugreport.statement") + "<br /><br /></p>");
 
-			out.println("<h4>" + rb.getString("bugreport.sendtitle") + "</h4>");
-			out.println("<p>" + rb.getString("bugreport.sendinstructions") + "</p>");
+            out.println("<h3 class='bugreport-title'>" + rb.getString("bugreport.nyuerrortitle") + "</h3>");
+            out.println("<div class='bugreport-instructions'>");
+			out.println("<p>" + rb.getString("bugreport.nyuinstruction1") + "</p>");
+			out.println("<p>" + rb.getString("bugreport.nyuinstruction2") + "</p>");
+            out.println("</div>");
 
 			out.println("<form action=\"" + postAddr + "\" method=\"POST\">");
 			
@@ -514,15 +522,6 @@ public class ErrorReporter
 					+ rb.getString("bugreport.sendsubmit") + "\">");
 			out.println("</div>");
 			out.println("</form><br />");
-
-			out.println("<h4>" + rb.getString("bugreport.recoverytitle") + "</h4>");
-			out.println("<p>" + rb.getString("bugreport.recoveryinstructions") + "");
-			out.println("<ul><li>" + rb.getString("bugreport.recoveryinstructions1")
-					+ "</li>");
-			out.println("<li>" + rb.getString("bugreport.recoveryinstructions2")
-					+ "</li>");
-			out.println("<li>" + rb.getString("bugreport.recoveryinstructions3")
-					+ "</li></ul><br /><br /></p>");
 
 			if (showStackTrace) {
 				out.println("<h4>" + rb.getString("bugreport.detailstitle") + "</h4>");
