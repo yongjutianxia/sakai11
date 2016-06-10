@@ -20,12 +20,26 @@
 				<li class="firstToolBarItem"><span><a href="#" rsf:id="add" class="item_control" title="Create New Group" onclick="">Create New Group</a></span></li>
 				<li><span><a href="#" rsf:id="joinableset_add" class="item_control" title="Create New Joinable Set" onclick="">Create New Joinable Set</a></span></li>
 				<li><span><a href="#" rsf:id="auto_add" class="item_control" title="Automatically Create New Group" onclick="">Auto Groups</a></span></li>
-				<li><span><a href="#" rsf:id="import_add" class="item_control" title="Automatically Create New Group" onclick="">Auto Groups</a></span></li>
-			</ul>
+	<li><span><a href="#" rsf:id="import_add" class="item_control" title="Automatically Create New Group" onclick="">Auto Groups</a></span></li>
+</ul>
 
-			<h3 rsf:id="group-list-title">Groups</h3>
-			<!-- alert message -->
-			<div rsf:id="error-row:">
+
+<div id="joinable-groups-info-message" style="display: none;">
+    <p><b>Note:</b> Students can view and join groups via the Site Groups tool in the left hand menu.  This tool is only visible to students.  <a href="http://www.nyu.edu/servicelink/KB0012830">Click here to learn more</a>.</p>
+</div>
+
+<script language="JavaScript" type="text/JavaScript">
+<!--
+if (window.parent.showSiteInfoAsSettings === true && window.parent.showJoinableGroups === true) {
+  $('#joinable-groups-info-message').show();
+ }
+ //-->
+</script>
+
+
+<h3 rsf:id="group-list-title">Groups</h3>
+<!-- alert message -->
+<div rsf:id="error-row:">
 				<div class="alertMessage" rsf:id="error">We Have Errors!</div>
 			</div>
 			<form rsf:id="delete-group-form">

@@ -181,6 +181,7 @@
 				</td>
 			</tr>
 
+			#if ($!allowUpdate)
                         <!-- NYU modifications here -->
 			<tr>
 				<th>School</th>
@@ -200,6 +201,7 @@
 					$!siteLocation
 				</td>
 			</tr>
+			#end
 
                         #if ($!siteInstructionMode)
 			<tr>
@@ -265,6 +267,7 @@
 		#end
 		
 
+		#if ($!allowUpdate)
 			<tr>
 				<th>
 					$tlang.getString("sitegen.siteinfolist.sitecont")
@@ -273,6 +276,8 @@
 					$validator.escapeHtml($!contactName)#if($!contactEmail && !$contactEmail.equals("")), <a href="mailto:$!contactEmail">$!contactEmail</a>#end
 				</td>
 			</tr>
+		#end
+
 		#if ($!allowUpdate)
 			<tr> 
 				<th>
@@ -442,6 +447,18 @@
 				<a class="getSiteDesc" href="#" id="$!siteId">$tlang.getString("sinfo.list.desc.more")</a>
 			</div>
 		#end
+
+                <div id="joinable-groups-info-message" style="display: none;">
+                    <p><b>Note:</b> Students can view and join groups via the Site Groups tool in the left hand menu.  This tool is only visible to students.  <a href="http://www.nyu.edu/servicelink/KB0012830">Click here to learn more</a>.</p>
+                </div>
+
+                <script>
+                 if (window.parent.showSiteInfoAsSettings === true && window.parent.showJoinableGroups === true) {
+                     $('#joinable-groups-info-message').show();
+                 }
+                </script>
+
+
 		#if ($!groups.size() > 0 || $!joinableGroups.size() > 0 || $!sections.size() > 0)
 		<div id="accordion">
 			#if ($!sections.size() > 0)

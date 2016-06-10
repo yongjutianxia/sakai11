@@ -32,8 +32,7 @@
                      like annc.read, content.read or some other permission
 		     that the particular role is likely to have so the button appears and disappears properly -->
 
-		<!-- CLASSES-223 must have site.upd to see the site info tool. -->
-		<configuration name="functions.require" value="site.upd" /> 
+		<configuration name="functions.require" value="site.visit" /> 
 
 	</tool>
 

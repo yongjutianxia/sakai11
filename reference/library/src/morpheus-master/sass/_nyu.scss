@@ -213,6 +213,7 @@ $footer-color: #414141;
   .icon-sakai-groupergoogle             { @extend .fa-google; }
   .icon-sakai-groupersync               { @extend .fa-google; }
   .icon-sakai-oauth-admin               { @extend .fa-key; }
+  .icon-sakai-joinable-groups           { @extend .fa-users; }
 }
 .#{$namespace}mainHeader{
   .#{$namespace}headerLogo{

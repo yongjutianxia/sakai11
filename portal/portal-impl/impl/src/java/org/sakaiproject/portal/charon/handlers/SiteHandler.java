@@ -31,6 +31,8 @@ import java.util.Iterator;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.Locale;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +79,8 @@ import org.sakaiproject.portal.util.URLUtils;
 import org.sakaiproject.portal.util.ToolUtils;
 import org.sakaiproject.portal.util.ByteArrayServletResponse;
 import org.sakaiproject.util.Validator;
+
+import org.sakaiproject.site.api.Group;
 
 /**
  * @author ieb
@@ -519,6 +523,35 @@ public class SiteHandler extends WorksiteHandler
 			rcontext.put("responseHead", (String) bufferMap.get("responseHead"));
 			rcontext.put("responseBody", (String) bufferMap.get("responseBody"));
 		}
+
+                // CLASSES-1453
+                boolean isInstructor = false;
+
+                if (site != null) {
+                    if (SecurityService.unlock(SiteService.SECURE_UPDATE_SITE, site.getReference())) {
+                        // NYU: Should we show siteinfo as "settings"?
+                        isInstructor = true;
+                        rcontext.put("showSiteInfoAsSettings", "true");
+                    } else {
+                        rcontext.put("showSiteInfoAsSettings", "false");
+                    }
+
+                    rcontext.put("showJoinableGroups", "false");
+
+                    Collection<Group> userGroups = site.getGroupsWithMember(userId);
+                    if (!isInstructor && userGroups != null && !userGroups.isEmpty()) {
+                        // If the user is already in a group, show the tool
+                        rcontext.put("showJoinableGroups", "true");
+                    } else {
+                        // Or if there are joinable groups they may want to join, show it.
+                        for (Group g : site.getGroups()) {
+                            if (g.getProperties().getProperty(Group.GROUP_PROP_JOINABLE_SET) != null) {
+                                rcontext.put("showJoinableGroups", "true");
+                                break;
+                            }
+                        }
+                    }
+                }
 
 		rcontext.put("siteId", siteId);
 		boolean showShortDescription = Boolean.valueOf(ServerConfigurationService.getBoolean("portal.title.shortdescription.show", false));

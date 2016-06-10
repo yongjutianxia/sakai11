@@ -52,9 +52,16 @@ var buildDropdownMenu = function(container, siteId, callback) {
               '</li>';
           }
 
+          var display_title = item.title;
+
+          // defined by settings-renamer.js
+          var NYURewriteItemTitle = (typeof renameSettingsToJoinable != 'undefined') ? renameSettingsToJoinable : function (arg) { return arg; };
+
+          display_title = NYURewriteItemTitle(display_title);
+
           navsubmenu += (li_template
                          .replace(/{{tool_url}}/g, item.tools[0].url)
-                         .replace(/{{item_title}}/g, item.title)
+                         .replace(/{{item_title}}/g, display_title)
                          .replace(/{{item_toolpopupurl}}/g, item.toolpopupurl)
                          .replace(/{{icon}}/g, item.tools[0].toolId.replace(/\./gi, '-'))
                          .replace(/{{is_current}}/g, isCurrent));
