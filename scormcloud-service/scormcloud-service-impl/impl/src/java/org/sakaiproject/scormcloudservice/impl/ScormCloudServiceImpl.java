@@ -34,8 +34,6 @@ class ScormCloudServiceImpl implements ScormCloudService {
 
         String registrationId = addRegistration(siteId, externalId, currentUser.getId(), firstName, lastName);
 
-        markCourseForGradeSync(siteId, externalId);
-
         try {
             RegistrationService registration = ScormCloud.getRegistrationService();
             return registration.GetLaunchUrl(registrationId, backurl);
