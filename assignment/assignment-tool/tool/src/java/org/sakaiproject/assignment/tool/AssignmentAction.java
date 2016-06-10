@@ -4854,7 +4854,10 @@ public class AssignmentAction extends PagedResourceActionII
 			}
 			catch (Exception ee)
 			{
-				M_log.warn(this + ":build_instructor_view_student_assignment_context " + ee.getMessage());
+				//NYU mod - dropped this to debug level so the logs dont get polluted since I believe this may be the long standing issues where provided users are deleted but not removed from the realm - SS
+				if(M_log.isDebugEnabled()) {
+					M_log.debug(this + ":build_instructor_view_student_assignment_context " + ee.getMessage());
+				}
 			}
 		}
 		
@@ -4902,8 +4905,10 @@ public class AssignmentAction extends PagedResourceActionII
 				}
 				catch (Exception ee)
 				{
-					M_log.warn(this + ":build_instructor_view_student_assignment_context " + ee.getMessage());
-				}
+					//NYU mod - dropped this to debug level so the logs dont get polluted since I believe this may be the long standing issues where provided users are deleted but not removed from the realm - SS
+					if(M_log.isDebugEnabled()) {
+						M_log.debug(this + ":build_instructor_view_student_assignment_context " + ee.getMessage());
+				}	}
 			}
 			
 		}
