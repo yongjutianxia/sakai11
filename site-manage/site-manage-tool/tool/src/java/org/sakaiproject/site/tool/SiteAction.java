@@ -1981,6 +1981,8 @@ public class SiteAction extends PagedResourceActionII {
 			
 			context.put("fromArchive", state.getAttribute(STATE_UPLOADED_ARCHIVE_NAME));
 
+			context.put("titleMaxLength", state.getAttribute(STATE_SITE_TITLE_MAX));
+
 			return (String) getContext(data).get("template") + TEMPLATE[10];
 		case 12:
 			/*
