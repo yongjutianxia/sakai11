@@ -16,9 +16,9 @@
 		<!-- types of sites that can either be public or private -->
 		<configuration name="publicChangeableSiteTypes" value="project" />
 		<!-- types of sites that are always public -->
-		<configuration name="publicSiteTypes" value="course" />
+		<configuration name="publicSiteTypes" value="" />
 		<!-- types of sites that are always private -->
-		<configuration name="privateSiteTypes" value="" />
+		<configuration name="privateSiteTypes" value="course" />
 
 		<configuration name="site_mode" value="siteinfo" type="final" />
 

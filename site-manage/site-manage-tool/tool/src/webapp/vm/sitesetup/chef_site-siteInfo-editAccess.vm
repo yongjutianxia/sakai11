@@ -146,60 +146,60 @@
         #end
         ## END Additional Access ##
 		## Site visibility ##
-		<fieldset>
-		<legend>
-		<h4>
-			$tlang.getString("ediacc.vis")
-		</h4>
-		</legend>
-		#if ($!publicChangeable && $published) 
-			#set($publicChangeableDivDisplay='style="display:block"')
-			#set($publicChangeableNoDivDisplay='style="display:none"')
-			#set($publicChangeableNoUnpublishDivDisplay='style="display:none"')
-		#else 
-			#set($publicChangeableDivDisplay='style="display:none"')
-			## show different divs for unpublished site or unchangeable site
-			#if (!$published)
-				#set($publicChangeableNoUnpublishDivDisplay='style="display:block"')
-				#set($publicChangeableNoDivDisplay='style="display:none"')
-			#else
-				#set($publicChangeableNoUnpublishDivDisplay='style="display:none"')
-				#set($publicChangeableNoDivDisplay='style="display:block"')
-			#end
-		#end
-		<div id="publicChangeableDiv" $publicChangeableDivDisplay >
-			<p  id="site_vis_inst">
-				$tlang.getString("ediacc.vis.instr")
-				#if(!$!site)$tlang.getString("ediacc.gloacc2")#end
-			</p>
-			<div class="radio">
-				<label for="access_public">
-					<input type="radio" name="include" id="access_public" value="true" #if($!include)checked="checked"#end aria-describedby="site_vis_inst" />
-					$tlang.getString("ediacc.dismysit")
-				</label>
-			</div>
-			<div class="radio">
-				<label for="access_private">
-					<input type="radio" name="include" id="access_private" value="false" #if(!$!include)checked="checked"#end aria-describedby="site_vis_inst" />
-					$tlang.getString("ediacc.pri")
-				</label>
-			</div>
-		</div>
-		<div id="publicChangeableNoDiv" $publicChangeableNoDivDisplay>
-			<p>
-				## the site should be public
-				$tlang.getString("ediacc.dismysit")
-			</p>
-			<p />
-		</div>
-		<div id="publicChangeableNoUnpublishDiv" $publicChangeableNoUnpublishDivDisplay>
-			<p>
-				## not changeable due to this is a draft site
-				$tlang.getString("ediacc.disdraft")
-			</p>
-			<p />
-		</div>
-		</fieldset>
+## CLASSES-1002 ## 		<fieldset>
+## CLASSES-1002 ## 		<legend>
+## CLASSES-1002 ## 		<h4>
+## CLASSES-1002 ## 			$tlang.getString("ediacc.vis")
+## CLASSES-1002 ## 		</h4>
+## CLASSES-1002 ## 		</legend>
+## CLASSES-1002 ## 		#if ($!publicChangeable && $published) 
+## CLASSES-1002 ## 			#set($publicChangeableDivDisplay='style="display:block"')
+## CLASSES-1002 ## 			#set($publicChangeableNoDivDisplay='style="display:none"')
+## CLASSES-1002 ## 			#set($publicChangeableNoUnpublishDivDisplay='style="display:none"')
+## CLASSES-1002 ## 		#else 
+## CLASSES-1002 ## 			#set($publicChangeableDivDisplay='style="display:none"')
+## CLASSES-1002 ## 			## show different divs for unpublished site or unchangeable site
+## CLASSES-1002 ## 			#if (!$published)
+## CLASSES-1002 ## 				#set($publicChangeableNoUnpublishDivDisplay='style="display:block"')
+## CLASSES-1002 ## 				#set($publicChangeableNoDivDisplay='style="display:none"')
+## CLASSES-1002 ## 			#else
+## CLASSES-1002 ## 				#set($publicChangeableNoUnpublishDivDisplay='style="display:none"')
+## CLASSES-1002 ## 				#set($publicChangeableNoDivDisplay='style="display:block"')
+## CLASSES-1002 ## 			#end
+## CLASSES-1002 ## 		#end
+## CLASSES-1002 ## 		<div id="publicChangeableDiv" $publicChangeableDivDisplay >
+## CLASSES-1002 ## 			<p  id="site_vis_inst">
+## CLASSES-1002 ## 				$tlang.getString("ediacc.vis.instr")
+## CLASSES-1002 ## 				#if(!$!site)$tlang.getString("ediacc.gloacc2")#end
+## CLASSES-1002 ## 			</p>
+## CLASSES-1002 ## 			<div class="radio">
+## CLASSES-1002 ## 				<label for="access_public">
+## CLASSES-1002 ## 					<input type="radio" name="include" id="access_public" value="true" #if($!include)checked="checked"#end aria-describedby="site_vis_inst" />
+## CLASSES-1002 ## 					$tlang.getString("ediacc.dismysit")
+## CLASSES-1002 ## 				</label>
+## CLASSES-1002 ## 			</div>
+## CLASSES-1002 ## 			<div class="radio">
+## CLASSES-1002 ## 				<label for="access_private">
+## CLASSES-1002 ## 					<input type="radio" name="include" id="access_private" value="false" #if(!$!include)checked="checked"#end aria-describedby="site_vis_inst" />
+## CLASSES-1002 ## 					$tlang.getString("ediacc.pri")
+## CLASSES-1002 ## 				</label>
+## CLASSES-1002 ## 			</div>
+## CLASSES-1002 ## 		</div>
+## CLASSES-1002 ## 		<div id="publicChangeableNoDiv" $publicChangeableNoDivDisplay>
+## CLASSES-1002 ## 			<p>
+## CLASSES-1002 ## 				## the site should be public
+## CLASSES-1002 ## 				$tlang.getString("ediacc.dismysit")
+## CLASSES-1002 ## 			</p>
+## CLASSES-1002 ## 			<p />
+## CLASSES-1002 ## 		</div>
+## CLASSES-1002 ## 		<div id="publicChangeableNoUnpublishDiv" $publicChangeableNoUnpublishDivDisplay>
+## CLASSES-1002 ## 			<p>
+## CLASSES-1002 ## 				## not changeable due to this is a draft site
+## CLASSES-1002 ## 				$tlang.getString("ediacc.disdraft")
+## CLASSES-1002 ## 			</p>
+## CLASSES-1002 ## 			<p />
+## CLASSES-1002 ## 		</div>
+## CLASSES-1002 ## 		</fieldset>
 		## END site visibility ##
 		## Global Access ##
 		<fieldset>
