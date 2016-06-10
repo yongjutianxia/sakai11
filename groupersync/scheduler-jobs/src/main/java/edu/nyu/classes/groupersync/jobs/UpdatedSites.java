@@ -23,17 +23,27 @@ class UpdatedSites {
 
     private String extractSiteId(String s) {
         Matcher m = SITE_ID_PATTERN.matcher(s);
+        String result = null;
+
         if (m.find()) {
-            return m.group(1);
+            result = m.group(1);
         } else {
             m = UUID_PATTERN.matcher(s);
 
             if (m.matches()) {
-                return s;
+                result = s;
             }
+        }
 
+        if (result != null) {
+            if (result.startsWith("~")) {
+                // Not interested in people's workspaces
+                return null;
+            } else {
+                return result;
+            }
+        } else {
             log.error("Could not get a site ID out of: " + s);
-
             return null;
         }
     }
@@ -65,15 +75,28 @@ class UpdatedSites {
     private void addSitesWithUpdatedRosters(Connection db, Timestamp since, List<UpdatedSite> result)
             throws SQLException {
 
+        // The horrible substr/instr business below extracts the contents after
+        // the last slash, which is the UUID of either the group or the site_id.
+        String grouperJoinClause = "inner join grouper_group_definitions ggd on substr(sr.realm_id, instr(sr.realm_id, '/', -1) + 1) = ggd.sakai_group_id";
+
+        if (db.getMetaData().getDatabaseProductName().contains("MySQL")) {
+            grouperJoinClause = "inner join grouper_group_definitions ggd on substring_index(sr.realm_id, '/', -1) = ggd.sakai_group_id";
+        }
+
         // The cm_member_container_t only gives us modification stamps down to
         // day granularity, so we're going to pull back some updates
         // unnecessarily here.  Hopefully the update process will be fast enough
         // for this not to matter too much.
-
-        String sql = ("select sr.realm_id, cm.last_modified_date " +
+        //
+        // We also only look for changes to rosters that have been linked to a
+        // site via a group.  Otherwise, when there's a full roster sync we end
+        // up marking all sites as needing checking, which would work, but would
+        // be needlessly slow.
+        String sql = ("select distinct sr.realm_id, cm.last_modified_date " +
                 "from cm_member_container_t cm " +
                 "inner join sakai_realm_provider srp on srp.provider_id = cm.enterprise_id " +
                 "inner join sakai_realm sr on sr.realm_key = srp.realm_key " +
+                grouperJoinClause + " " +
                 "where cm.class_discr = 'org.sakaiproject.coursemanagement.impl.SectionCmImpl' AND cm.last_modified_date >= ?");
 
         PreparedStatement ps = db.prepareStatement(sql);
