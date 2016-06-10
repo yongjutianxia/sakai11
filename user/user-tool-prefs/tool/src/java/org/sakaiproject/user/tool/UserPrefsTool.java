@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -43,6 +44,7 @@ import javax.faces.model.SelectItem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -378,11 +380,44 @@ public class UserPrefsTool
 		if (prefTimeZones.size() == 0)
 		{
 			String[] timeZoneArray = TimeZone.getAvailableIDs();
-			Arrays.sort(timeZoneArray);
-			for (int i = 0; i < timeZoneArray.length; i++)
-				prefTimeZones.add(new SelectItem(timeZoneArray[i], timeZoneArray[i]));
-		}
+			
+			String timezonesToHideStr = ServerConfigurationService.getString("nyu.hide-timezones.regexp", null);
+			Pattern timezonesToHide = (timezonesToHideStr == null || "".equals(timezonesToHideStr.trim())) ?
+				null : Pattern.compile(timezonesToHideStr);
 
+
+			for (int i = 0; i < timeZoneArray.length; i++) {
+				
+				String tz = timeZoneArray[i];
+				
+				if (timezonesToHide != null && timezonesToHide.matcher(tz).find()) {
+					// Skip this entry.  We don't want to give the option of selecting this timezone.
+					continue;
+				}
+
+				//NYU override for Dubai to Abu Dhabi
+				if(StringUtils.equals(tz, "Asia/Dubai")) {
+					tz = "Asia/Abu Dhabi";
+				}
+				
+				//only override display value
+				prefTimeZones.add(new SelectItem(timeZoneArray[i], tz));
+			}
+		}
+		
+		//custom comparator to sort the SelectItems
+		Comparator<SelectItem> tzComparator = new Comparator<SelectItem>() {
+
+			@Override
+			public int compare(SelectItem s1, SelectItem s2) {
+				return s1.getLabel().compareTo(s2.getLabel());
+			}
+			
+		};
+
+		//sort
+		Collections.sort(prefTimeZones, tzComparator);
+		
 		return prefTimeZones;
 	}
 

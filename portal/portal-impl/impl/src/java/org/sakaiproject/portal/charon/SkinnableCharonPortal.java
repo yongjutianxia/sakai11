@@ -575,6 +575,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("allSites", siteView.getRenderContextObject());
 
 		includeLogin(rcontext, req, session);
+                
 		includeBottom(rcontext);
 
 		return rcontext;
@@ -1785,6 +1786,25 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
 			// SAK-25931 - Do not remove this from session here - removal is done by /direct
 	                Session s = SessionManager.getCurrentSession();
+
+                        TimeZone timeZone;
+                        PreferencesService preferenceService = (PreferencesService)ComponentManager.get("org.sakaiproject.user.api.PreferencesService");
+                        ResourceProperties props = prefs.getProperties(TimeService.APPLICATION_ID);
+                        String timeZoneString = props.getProperty(TimeService.TIMEZONE_KEY);
+                        if (timeZoneString != null && !timeZoneString.trim().equals("")) {
+                            timeZone = TimeZone.getTimeZone(timeZoneString);
+                        } else {                                                
+                            timeZone = TimeZone.getDefault();
+                        }
+                        //NYU override for Dubai to Abu Dhabi
+                        String selectedTimeZone = timeZone.getID();
+                        if(StringUtils.equals(selectedTimeZone, "Asia/Dubai")) {
+                            selectedTimeZone = "Asia/Abu Dhabi";
+                        }
+
+                        rcontext.put("selectedTimeZone", selectedTimeZone);
+
+
 			String userWarning = (String) s.getAttribute("userWarning");
 			rcontext.put("userWarning", new Boolean(StringUtils.isNotEmpty(userWarning)));
 
