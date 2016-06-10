@@ -361,9 +361,10 @@ public class DBLTIService extends BaseLTIService implements LTIService {
 		}
 		
 		// CLASSES-1847 Honor "always launch in popup" if set
-		// This workaround is required until a patch is offered for
-		// https://jira.sakaiproject.org/browse/SAK-26269
-		if (Integer.valueOf(1).equals(tool.get(LTIService.LTI_NEWPAGE))) {
+		// This workaround is Oracle/BigDecimal friendly and required
+		// until a patch is offered for https://jira.sakaiproject.org/browse/SAK-26269 
+		M_log.error("newpage value: " + tool.get(LTIService.LTI_NEWPAGE).getClass().toString());
+		if (tool.get(LTIService.LTI_NEWPAGE).toString().indexOf("1") >= 0) {
 			newProps.put(LTIService.LTI_NEWPAGE, "1");
 			contentModelList.add("newpage:checkbox:label=bl_newpage");
 			contentModel = contentModelList.toArray(new String[contentModelList.size()]);
