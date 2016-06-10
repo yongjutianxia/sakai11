@@ -4,7 +4,7 @@
 <div class ="portletBody">
 
 	<h3>
-		Congrats, Your Site has been Created!
+		Congrats! Your site has been created.
 	</h3>
 
 	<p>Go to <a id="goToSiteLink" href="$finish_site_url" target="_top">your new site</a> now or <a id="createAnotherLink" href="$finish_site_reset">create another site</a>.
