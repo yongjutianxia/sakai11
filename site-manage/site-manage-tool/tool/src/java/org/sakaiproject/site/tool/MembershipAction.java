@@ -27,8 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Collection;
+import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.cheftool.Context;
 import org.sakaiproject.cheftool.JetspeedRunData;
 import org.sakaiproject.cheftool.PagedResourceActionII;
@@ -39,6 +43,7 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.coursemanagement.api.Section;
 import org.sakaiproject.coursemanagement.api.exception.IdNotFoundException;
+import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.InUseException;
@@ -52,6 +57,10 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.userauditservice.api.UserAuditRegistration;
 import org.sakaiproject.userauditservice.api.UserAuditService;
+
+import org.sakaiproject.site.api.Group;
+import org.sakaiproject.user.api.UserNotDefinedException;
+
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -101,7 +110,7 @@ public class MembershipAction extends PagedResourceActionII
 		boolean defaultMode = state.getAttribute(STATE_VIEW_MODE) == null;
 		if (defaultMode)
 		{
-			List unjoinableSites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, null,
+			List unjoinableSites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS_ALL, null, null,
 					null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
 			size=unjoinableSites.size();
 		}
@@ -151,12 +160,12 @@ public class MembershipAction extends PagedResourceActionII
 		{
 			if (sortAsc)
 			{
-				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, search,
+				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS_ALL, null, search,
 						null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, page);
 			}
 			else
 			{
-				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, search,
+				rv = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS_ALL, null, search,
 						null, org.sakaiproject.site.api.SiteService.SortType.TITLE_DESC, page);
 			}
 		}
@@ -289,6 +298,64 @@ public class MembershipAction extends PagedResourceActionII
 			{
 				context.put("disableUnjoinSiteTypes", new ArrayList(Arrays.asList(ServerConfigurationService.getStrings("wsetup.disable.unjoin"))));
 			}
+			
+			//NYU mod, get some additional data and send it along, 
+			Map<String, MembershipSiteMetadata> metadata = new HashMap<String,MembershipSiteMetadata>();
+			for(Object o: unjoinableSites) {
+				Site site = (Site) o;
+				
+				MembershipSiteMetadata meta = new MembershipSiteMetadata();
+				
+				//siteId
+				meta.setSiteId(site.getId());
+				
+				//term
+				String term = site.getProperties().getProperty(Site.PROP_SITE_TERM);
+				if(StringUtils.isBlank(term)){
+					term = "";
+				}
+				meta.setTerm(term);
+				
+				//site status
+				meta.setSiteStatus(site.isPublished() ? rb.getString("gen.status.published") : rb.getString("gen.status.unpublished"));
+
+				//instructor eids, sent as string, could be formatted in the VM though, like the groups.
+				Set<String> instructors = site.getUsersHasRole("Instructor");
+				StringBuilder instructorEids = new StringBuilder();
+				for(String uuid: instructors) {
+					String eid;
+					try {
+						eid = userDirectoryService.getUserEid(uuid);
+						instructorEids.append(eid);
+						instructorEids.append(", ");
+					} catch (UserNotDefinedException e) {
+						log.warn("User: " + uuid + " attached to site: " + site.getId() + " but no longer exists. Skipping.");
+					}
+				}
+				//remove trailing ,
+				meta.setInstructorEids(StringUtils.substringBeforeLast(instructorEids.toString(), ","));
+				
+				//group sectioneids, sent as list and formatted in the VM
+				Collection<Group> groups = site.getGroups();
+				List<String> groupSectionEids = new ArrayList<String>();
+				for(Group g: groups) {
+					
+					ResourceProperties props = g.getProperties();
+					String groupSectionEid = (String)props.get("sections_eid");
+					//only add if not blank
+					if(StringUtils.isNotBlank(groupSectionEid)) {
+						groupSectionEids.add(groupSectionEid);
+					}
+				}
+				meta.setGroupSectionEids(groupSectionEids);
+
+				//add to list
+				metadata.put(site.getId(), meta);
+				
+			}
+			
+			context.put("metadata", metadata);
+			
 		}
 		
 		else
