@@ -168,7 +168,7 @@ function switchState(state,arg) {
                     cssDesc:'bbb_sortable_table_header_sortdown',
                     headers: { 2: { sorter: 'bbbDateTimeFormat'}, 3: { sorter: 'bbbDateTimeFormat'} },
                     // Sort DESC status:
-                    sortList: (bbbCurrentMeetings.length > 0) ? [[0,0]] : []
+                    sortList: (bbbCurrentMeetings.length > 0) ? [[0,1]] : []
                 });
             });
 
@@ -218,10 +218,13 @@ function switchState(state,arg) {
 
             // Setup description/welcome msg editor. Depending of the sakai version it will use CKEditor or FCKEditor
             var sakaiVersionArr = sakaiVersion.split('.');
-            if ( parseInt(sakaiVersionArr[0]) == 2 && parseInt(sakaiVersionArr[1]) >= 8)
-                BBBUtils.makeInlineCKEditor('bbb_welcome_message_textarea', 'BBB', '480', '200');
-            else
-                BBBUtils.makeInlineFCKEditor('bbb_welcome_message_textarea', 'Basic', '480', '200');
+            var descriptionType = bbbSettings.config.addUpdateFormParameters.descriptionType;
+            if( descriptionType == 'fckeditor' || descriptionType == 'ckeditor' ) {
+                if ( parseInt(sakaiVersionArr[0]) == 2 && parseInt(sakaiVersionArr[1]) >= 8)
+                    BBBUtils.makeInlineCKEditor('bbb_welcome_message_textarea', 'BBB', '480', '200');
+                else
+                    BBBUtils.makeInlineFCKEditor('bbb_welcome_message_textarea', 'Basic', '480', '200');
+            }
 
             // Setup dates
             var now = new Date(); 
@@ -369,9 +372,15 @@ function switchState(state,arg) {
                     cssHeader:'bbb_sortable_table_header',
                     cssAsc:'bbb_sortable_table_header_sortup',
                     cssDesc:'bbb_sortable_table_header_sortdown',
-                    headers: { 2: { sorter: 'bbbDateTimeFormat'} },
+                    headers: { 2: { sorter: 'bbbDateTimeFormat'}, 3: { sorter: false}, 4: { sorter: false} },
                     // Sort DESC status:
-                    sortList: (bbbCurrentRecordings.length > 0) ? [[0,0]] : []
+                    sortList: (bbbCurrentMeetings.length > 0) ? [[2,1]] : []
+                    //headers: { 2: { sorter: 'bbbDateTimeFormat'} },
+                    //// Sort DESC status:
+                    //sortList: (bbbCurrentRecordings.length > 0) ? [[0,0]] : []
+                    //headers: { 2: { sorter: 'bbbDateTimeFormat'} },
+                    //// Sort DESC status:
+                    //sortList: (bbbCurrentRecordings.length > 0) ? [[0,0]] : []
                 });
             });
 
@@ -417,14 +426,29 @@ function switchState(state,arg) {
                         }
                     );
 
+                    // Add parser for customized date format
+                    $.tablesorter.addParser({
+                        id: "bbbDateTimeFormat",
+                        is: function(s) {
+                            return false; 
+                        },
+                        format: function(s,table) {
+                            return $.tablesorter.formatFloat(new Date(s).getTime());
+                        },
+                        type: "numeric"
+                    });
+
                     // add sorting capabilities
                     $("#bbb_recording_table").tablesorter({
                         cssHeader:'bbb_sortable_table_header',
                         cssAsc:'bbb_sortable_table_header_sortup',
                         cssDesc:'bbb_sortable_table_header_sortdown',
-                        headers: { 2: { sorter: 'bbbDateTimeFormat'} },
+                        headers: { 2: { sorter: 'bbbDateTimeFormat'}, 3: { sorter: false}, 4: { sorter: false} },
                         // Sort DESC status:
-                        sortList: (bbbCurrentRecordings.length > 0) ? [[0,0]] : []
+                        sortList: (bbbCurrentMeetings.length > 0) ? [[2,1]] : []
+                        //headers: { 2: { sorter: 'bbbDateTimeFormat'} },
+                        //// Sort DESC status:
+                        //sortList: (bbbCurrentRecordings.length > 0) ? [[0,0]] : []
                     });
                 });
 
