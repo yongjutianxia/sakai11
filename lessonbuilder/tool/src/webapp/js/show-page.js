@@ -2467,13 +2467,14 @@ $(document).ready(function() {
 	}
 
 
+        // Used by BasicLTI to hide options that don't apply in some cases.
 	function fixitemshows(){
 		var val = $(".format:checked").val();
 		if (val === "window")
 		    $("#edit-height").hide();
 		else
 		    $("#edit-height").show();
-		if (val === "inline") {
+		if (val === "inline" || val === "window") {
 		    $("#prereqstuff").hide();
 		} else {
 		    $("#prereqstuff").show();
