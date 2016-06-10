@@ -134,6 +134,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         // menu. In some cases (Firefox and Safari, at least), this supplies corrections, suggestions, etc.
         disableNativeSpellChecker: false,
         browserContextMenuOnCtrl: true,
+        entities_additional: '',
 
         toolbar_Basic:
         [
