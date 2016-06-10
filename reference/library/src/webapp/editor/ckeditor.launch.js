@@ -75,6 +75,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         folder = "CurrentFolder=" + collectionId
     }
 
+    var imageType = "Image";
+    if (config && config.encodedImage) {
+        imageType = "EncodedImage";
+    }
+
+
     var language = sakai.locale && sakai.locale.userLanguage || '';
     var country = sakai.locale && sakai.locale.userCountry || null;
 
@@ -153,7 +159,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             // Note that it uses spellchecker.net, displays ads and sends content to remote servers without additional setup.
             //['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
             ['Cut','Copy','Paste','PasteText','PasteFromWord','-','RemoveFormat'],
-            ['Image','AudioRecorder','Audio','magicembed','kalturaflash','Youtube','-','fmath_formula','ckeditor_wiris_formulaEditor','ckeditor_wiris_CAS','-','NYUPreview'],
+            [imageType,'AudioRecorder','Audio','magicembed','kalturaflash','Youtube','-','fmath_formula','ckeditor_wiris_formulaEditor','ckeditor_wiris_CAS','-','NYUPreview'],
             extraToolbarButtons,
             ['Maximize'],
             '/',
@@ -216,6 +222,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('ckeditor_wiris',basePath+'ckeditor_wiris/', 'plugin.js');
             CKEDITOR.plugins.addExternal('Mediasite', basePath + 'Mediasite/', 'plugin.js');
             CKEDITOR.plugins.addExternal('nyupreview', basePath + 'nyupreview/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('encodedimage', basePath + 'encodedimage/', 'plugin.js');
 
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
@@ -249,6 +256,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ckconfig.extraPlugins+=",Mediasite";
             ckconfig.extraPlugins+=",autolink";
             ckconfig.extraPlugins+=",nyupreview";
+            ckconfig.extraPlugins+=",encodedimage";
 
             if (sakai.editor.enableMathJax) {
               ckconfig.mathJaxLib = sakai.editor.mathJaxPath;

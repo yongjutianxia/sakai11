@@ -246,6 +246,12 @@ public class RichTextEditArea extends Renderer
 	if(!shouldToggle && (!hasToggle.equals("plain") || valueHasRichText)){
 		writer.write("<script type=\"text/javascript\" defer=\"1\">chef_setupformattedtextarea('" + clientId + "', false, '" + samigoFrameId +"');</script>");
     }
+
+    writer.write("<script type=\"text/javascript\">");
+    writer.write("\tvar textarea_id = \""+ clientId +"\" + \"_textinput\";");
+    writer.write("\n\tvar config = {}; config.encodedImage = true;");
+    writer.write("\n\tsakai.editor.launch(textarea_id,config,'" + outCol + "','" + outRow + "');");
+    writer.write("</script>");
   }
 
   public void decode(FacesContext context, UIComponent component)

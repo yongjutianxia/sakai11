@@ -97,5 +97,15 @@ body {
         }
       }
     }
+    // EncodedImage plugin
+    .cke_button__encodedimage {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f03e');
+        }
+      }
+    }
   }
 }
