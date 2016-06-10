@@ -43,6 +43,7 @@
  	<f:verbatim></li></f:verbatim>
 
 
+    <!-- NYU CLASSES-354, hide options
     <h:panelGroup rendered="#{navMenuBean.sectionOptionsManagementEnabled}">
   		<f:verbatim><li></f:verbatim>
   		<h:panelGroup  rendered="#{viewName ne 'options'}">
@@ -57,6 +58,7 @@
 	    </h:panelGroup>
 		<f:verbatim></li></f:verbatim>
 	</h:panelGroup>	
+    -->
 <f:verbatim></ul></f:verbatim>
 
 <h:panelGrid columns="2" styleClass="rosterPageHeader" columnClasses="rosterPageHeaderLeft,rosterPageHeaderRight">
