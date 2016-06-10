@@ -6765,6 +6765,24 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 	}// doBack
 
+
+	private String getTitleOverride(ParameterParser params, SessionState state, String defaultTitle) {
+		//NYU mod, use whatever value is in the courseSiteTitle box as
+		//the site title, limited to whatever is configured as the max
+		//length
+		String courseSiteTitle = params.getString("courseSiteTitle");
+		int siteTitleMaxLength = (Integer) state.getAttribute(STATE_SITE_TITLE_MAX);
+
+		courseSiteTitle = StringUtils.substring(courseSiteTitle, 0, siteTitleMaxLength);
+
+		if(StringUtils.isNotBlank(courseSiteTitle)) {
+			return courseSiteTitle;
+		} else {
+			return defaultTitle;
+		}
+	}
+
+
 	/**
 	 * doFinish is called when a site has enough information to be saved as an
 	 * unpublished site
@@ -6949,6 +6967,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				// for non course type site, send notification email
 				sendSiteNotification(state, getStateSite(state), null);
 			}
+
+
+
+			// NYU modification: override the site's title from a parameter.
+			String overriddenTitle = getTitleOverride(params, state, site.getTitle());
+			site.setTitle(overriddenTitle);
 
 			// commit site
 			commitSite(site);
@@ -12109,14 +12133,6 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				site.addMember(UserDirectoryService.getCurrentUser().getId(), site.getMaintainRole(), true, false);
 
 				String title = StringUtils.trimToNull(siteInfo.title);
-
-				//NYU mod, use whatever value is in the courseSiteTitle box as the site title, limited to whatever is configured as the max length 
-				String courseSiteTitle = params.getString("courseSiteTitle");
-				int siteTitleMaxLength = (Integer) state.getAttribute(STATE_SITE_TITLE_MAX);
-				courseSiteTitle = StringUtils.substring(courseSiteTitle, 0, siteTitleMaxLength);
-				if(StringUtils.isNotBlank(courseSiteTitle)) {
-					title=courseSiteTitle;
-				}
 
 				String description = siteInfo.description;
 				setAppearance(state, site, siteInfo.iconUrl);
