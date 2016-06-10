@@ -112,9 +112,19 @@
 
                                 #end ## END of IF ( $toolDirectUrlEnabled && ${tool.showDirectToolUrl} )
 
+                                #if (${tool.usingExternalHelp} && ${tool.externalNews})
+                                    <a class="external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">${tool.externalNews.label}</a>
+                                #end
+
+
                                 #if (${tool.toolShowHelpButton})
 
-                                    #if (${tool.toolJSR168Help})
+                                    #if (${tool.usingExternalHelp} && ${tool.externalHelp})
+                                        <a target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
+                                            <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
+                                            <span class="skip">${rloader.site_newwindow}</span>
+                                        </a>
+                                    #elseif (${tool.toolJSR168Help} )
 
                                         <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help" accesskey="h" href="${tool.toolJSR168Help}" title="$rloader.getFormattedMessage("sit_helpfor", $tool.toolRenderResult.title)">
                                             <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
