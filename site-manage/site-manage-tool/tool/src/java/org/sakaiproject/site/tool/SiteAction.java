@@ -6947,7 +6947,8 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				String newSiteIconUrl = transferSiteResource(templateSite.getId(), site.getId(), site.getIconUrl());
 				site.setIconUrl(newSiteIconUrl);
 				
-				userNotificationProvider.notifyTemplateUse(templateSite, UserDirectoryService.getCurrentUser(), site);	
+                                // CLASSES-1579: Nope.
+				// userNotificationProvider.notifyTemplateUse(templateSite, UserDirectoryService.getCurrentUser(), site);	
 			}
 				
 			ResourcePropertiesEdit rp = site.getPropertiesEdit();
