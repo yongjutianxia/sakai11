@@ -17,7 +17,7 @@
 	</bean>
 	
 	<bean id="org.sakaiproject.sitemanage.api.AffiliatedSectionProvider"
-			class="org.sakaiproject.sitemanage.impl.AffiliatedSectionProviderImpl"
+      class="org.sakaiproject.sitemanage.impl.NYUAffiliatedSectionProviderImpl"
 			init-method="init"
 			destroy-method="destroy">
 	</bean>
