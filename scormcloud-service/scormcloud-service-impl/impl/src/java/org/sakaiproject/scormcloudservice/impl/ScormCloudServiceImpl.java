@@ -8,6 +8,7 @@ import com.rusticisoftware.hostedengine.client.RegistrationService;
 import com.rusticisoftware.hostedengine.client.ScormCloud;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.scormcloudservice.api.ScormCloudService;
+import org.sakaiproject.scormcloudservice.api.ScormUploadStatus;
 import org.sakaiproject.scormcloudservice.api.ScormException;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
@@ -199,6 +200,12 @@ class ScormCloudServiceImpl implements ScormCloudService {
         } catch (Exception e) {
             throw new ScormException("Couldn't determine report URL", e);
         }
+    }
+
+
+    public ScormUploadStatus getUploadStatus(String siteId, String externalId) {
+        ScormServiceStore store = new ScormServiceStore();
+        return store.getUploadStatus(siteId, externalId);
     }
 
 }

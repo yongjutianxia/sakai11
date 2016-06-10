@@ -128,6 +128,8 @@ class ScormCloudJobProcessor {
 
 
     private void handleJob(final ScormJob job, final ScormServiceStore store) {
+        StringBuilder errorMessages = new StringBuilder();
+
         try {
             LOG.info("Job started");
 
@@ -142,6 +144,10 @@ class ScormCloudJobProcessor {
 
                 for (ImportResult result : results) {
                     LOG.info("Import finished for " + job.getId() + " with message: " + result.getMessage());
+
+                    if (!result.getWasSuccessful()) {
+                        errorMessages.append(result.getMessage() + "\n\n");
+                    }
                 }
 
                 HashMap<String, String> attributes = service.GetAttributes(job.getId());
@@ -150,6 +156,10 @@ class ScormCloudJobProcessor {
                 attributes.put("scoLaunchType", "1");
                 service.UpdateAttributes(job.getId(), attributes);
 
+                if (errorMessages.length() > 0) {
+                    // If we recorded any errors, fail the whole job (caught by the error handling below)
+                    throw new ScormException("Error messages detected during import");
+                }
             } finally {
                 resource.delete();
             }
@@ -159,9 +169,9 @@ class ScormCloudJobProcessor {
         } catch (Exception e) {
             LOG.error("Failure while processing SCORM job " + job.getId(), e);
             try {
-                store.recordFailure(job);
+                store.recordFailure(job, errorMessages.toString());
             } catch (Exception e2) {
-                LOG.error("Further failure while marking SCORM job " + job.getId() + " as failed!", e);
+                LOG.error("Further failure while marking SCORM job " + job.getId() + " as failed!", e2);
             }
         }
     }

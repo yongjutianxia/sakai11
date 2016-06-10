@@ -24,4 +24,6 @@ public interface ScormCloudService {
     public void runGradeSyncRound() throws ScormException;
 
     public void markCourseForGradeSync(String siteId, String externalId) throws ScormException;
+
+    public ScormUploadStatus getUploadStatus(String siteId, String externalId);
 }

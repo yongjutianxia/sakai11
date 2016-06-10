@@ -1,4 +1,4 @@
-create table scs_scorm_job (uuid varchar(36) primary key, siteid varchar(36), externalid varchar(255), resourceid varchar(255), title varchar(255), graded int, ctime bigint, mtime bigint, retry_count int default 0, status varchar(32), deleted int default 0);
+create table scs_scorm_job (uuid varchar(36) primary key, siteid varchar(36), externalid varchar(255), resourceid varchar(255), title varchar(255), graded int, ctime bigint, mtime bigint, retry_count int default 0, status varchar(32), deleted int default 0, error_message varchar(1024));
 
 alter table scs_scorm_job add index (status);
 

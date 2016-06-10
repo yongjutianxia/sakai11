@@ -3,6 +3,7 @@ package org.sakaiproject.scormcloudservice.impl;
 import org.sakaiproject.db.cover.SqlService;
 import org.sakaiproject.id.cover.IdManager;
 import org.sakaiproject.scormcloudservice.api.ScormException;
+import org.sakaiproject.scormcloudservice.api.ScormUploadStatus;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 
 import java.sql.Connection;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public class ScormServiceStore {
 
+    final int MAX_ERROR_MESSAGE = 1024;
     final int RETRY_COUNT = ServerConfigurationService.getInt("scormcloudservice.max-upload-retries", 10);
     final int RETRY_DELAY_MS = ServerConfigurationService.getInt("scormcloudservice.upload-retry-delay-ms", 60000);
 
@@ -201,17 +203,18 @@ public class ScormServiceStore {
     }
 
 
-    public void recordFailure(final ScormJob job) throws ScormException {
+    public void recordFailure(final ScormJob job, final String errorMessage) throws ScormException {
         try {
             DB.connection(new DBAction() {
                 public void execute(Connection connection) throws SQLException {
                     PreparedStatement ps = null;
                     try {
                         // Update the job
-                        ps = connection.prepareStatement("update scs_scorm_job set mtime = ?, status = ?, retry_count = retry_count + 1 WHERE uuid = ?");
+                        ps = connection.prepareStatement("update scs_scorm_job set mtime = ?, status = ?, error_message = ?, retry_count = retry_count + 1 WHERE uuid = ?");
                         ps.setLong(1, System.currentTimeMillis());
                         ps.setString(2, JOB_STATUS.TEMPORARILY_FAILED.toString());
-                        ps.setString(3, job.getId());
+                        ps.setString(3, (errorMessage.length() > MAX_ERROR_MESSAGE) ? errorMessage.substring(0, MAX_ERROR_MESSAGE) : errorMessage);
+                        ps.setString(4, job.getId());
                         ps.executeUpdate();
 
                         // Mark jobs as permanently failed as needed
@@ -769,5 +772,52 @@ public class ScormServiceStore {
         return result[0];
     }
 
+
+    public ScormUploadStatus getUploadStatus(final String siteId, final String externalId) {
+        final ScormUploadStatus[] result = {null};
+
+
+        try {
+            DB.connection(new DBAction() {
+                public void execute(Connection connection) throws SQLException {
+                    PreparedStatement ps = null;
+                    ResultSet rs = null;
+                    try {
+                        // Find the ID for the course
+                        ps = connection.prepareStatement("select * from scs_scorm_job where siteid = ? AND externalid = ?");
+                        ps.setString(1, siteId);
+                        ps.setString(2, externalId);
+                        rs = ps.executeQuery();
+
+                        if (rs.next()) {
+                            String message = rs.getString("error_message");
+
+                            if (message == null) {
+                                message = "";
+                            }
+
+                            result[0] = new ScormUploadStatus(rs.getInt("retry_count"), RETRY_COUNT, message);
+                        }
+                    } finally {
+                        if (rs != null) {
+                            rs.close();
+                        }
+                        if (ps != null) {
+                            ps.close();
+                        }
+                    }
+                }
+            });
+        } catch (Exception e) {
+            // Skip these in favor of returning a null object.
+        }        
+
+        if (result[0] == null) {
+            // Return a dummy "All OK" for display purposes.  Assume the job was deleted at some point.
+            return new ScormUploadStatus(0, RETRY_COUNT, "");
+        } else {
+            return result[0];
+        }
+    }
 
 }

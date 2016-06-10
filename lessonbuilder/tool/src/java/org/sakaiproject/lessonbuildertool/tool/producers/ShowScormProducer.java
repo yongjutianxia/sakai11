@@ -76,6 +76,7 @@ import edu.nyu.classes.externalhelp.api.ExternalHelpSystem;
 import edu.nyu.classes.externalhelp.api.ExternalHelp;
 
 import org.sakaiproject.scormcloudservice.api.ScormCloudService;
+import org.sakaiproject.scormcloudservice.api.ScormUploadStatus;
 import org.sakaiproject.scormcloudservice.api.ScormException;
 
 
@@ -193,9 +194,25 @@ public class ShowScormProducer implements ViewComponentProducer, NavigationCaseR
 				log.info("Failure when generating SCORM Report URL for lesson: " + itemId, e);
 			}
 
-
 		} else {
+
+		    ScormUploadStatus status = scorm.getUploadStatus(currentSiteId, itemId.toString());
+
+		    if (status.isNew()) {
 			UIOutput.make(tofill, "scorm-item-status", messageLocator.getMessage("simplepage.scorm.new_status"));
+		    } else {
+			if (status.isPermanentlyFailed()) {
+			    UIOutput.make(tofill, "scorm-item-status", messageLocator.getMessage("simplepage.scorm.permfailed_status"));
+			} else {
+			    UIOutput.make(tofill, "scorm-item-status", messageLocator.getMessage("simplepage.scorm.tempfailed_status"));
+			}
+
+			String messages = status.getErrorMessages();
+			if (!messages.isEmpty()) {
+			    UIOutput.make(tofill, "scorm-item-errors");
+			    UIOutput.make(tofill, "scorm-item-error-text", status.getErrorMessages());
+			}
+		    }
 		}
 	}
 
