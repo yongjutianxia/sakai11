@@ -17,10 +17,10 @@
 		 		$("#subType > option").each(function(){
 		 			if(checked){
 		 				if($(this).val() != 5){
-		 					$(this).prop('disabled', 'disabled');
+		 					$(this).prop('disabled', true);
 		 				}
 		 			}else{
-		 				$(this).removeProp('disabled');
+		 				$(this).prop('disabled', false);
 
 		 			}
 		 		});
