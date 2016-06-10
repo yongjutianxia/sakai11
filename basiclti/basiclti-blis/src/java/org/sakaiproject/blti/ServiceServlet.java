@@ -95,6 +95,9 @@ import org.sakaiproject.lti.api.LTIService;
 import org.sakaiproject.util.foorm.SakaiFoorm;
 import org.sakaiproject.util.foorm.FoormUtil;
 
+import java.net.UnknownHostException;
+import java.net.InetAddress;
+
 /**
  * Notes:
  * 
@@ -234,6 +237,14 @@ public class ServiceServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String hostWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.host-whitelist-regex", "");
+		if (!hostWhitelistRegex.isEmpty() && !isHostnameAcceptable(request, hostWhitelistRegex)) {
+			M_log.warn("LTI Services blocked for IP=" + request.getRemoteAddr());
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
+
+
 		String contentType = request.getContentType();
 		if ( contentType != null && contentType.startsWith("application/json") ) {
 			doPostJSON(request, response);
@@ -766,6 +777,32 @@ public class ServiceServlet extends HttpServlet {
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		return;
 	}
+
+
+	protected boolean isHostnameAcceptable(HttpServletRequest request, String pattern)
+	{
+		try {
+			String ip = request.getRemoteAddr();
+
+			// Reverse resolve the IP
+			String hostname = InetAddress.getByName(ip).getCanonicalHostName();
+
+			if (hostname.toLowerCase().matches(pattern)) {
+				// Now forward resolve to ensure hostname wasn't spoofed.
+				if (InetAddress.getByName(hostname).getHostAddress().equalsIgnoreCase(ip)) {
+					return true;
+				} else {
+					M_log.warn("IP address " + ip + " didn't round trip its DNS resolve check");
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} catch (UnknownHostException e) {
+			return false;
+		}
+	}
+
 
 	@SuppressWarnings("unchecked")
 	protected void doPostXml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
