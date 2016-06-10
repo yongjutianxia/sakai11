@@ -39,9 +39,12 @@
 	
 			<fieldset>
 			<legend><h4><h:outputText value="#{msgs.grade_entry_heading}"/></h4></legend>
+
+			<h:inputHidden value="#{gradebookSetupBean.gradeEntryMethod}" id="gradeEntryMethod1"/>
+			<div class="instruction"><h:outputText value="#{msgs.grade_entry_points_only_info}" escape="false"/></div>
+			<%--
 			<div class="indnt1 gbSection">
-				<div class="instruction"><h:outputText value="#{msgs.grade_entry_info}" escape="false"/></div>
-			
+				<div class="instruction"><h:outputText value="#{msgs.grade_entry_points_info}" escape="false"/></div>
 				<h:selectOneRadio value="#{gradebookSetupBean.gradeEntryMethod}" id="gradeEntryMethod1" layout="pageDirection"  rendered="#{gradebookSetupBean.enableLetterGrade}"
 				valueChangeListener="#{gradebookSetupBean.processGradeEntryMethodChange}" onclick="this.form.submit();">
 					<f:selectItem itemValue="points" itemLabel="#{msgs.entry_opt_points}" />
@@ -55,6 +58,7 @@
 				</h:selectOneRadio>
 
 			</div>
+			END NYU CLASSES-519 --%>
 			</fieldset>
 			
 			<% /*Per SAK-10879, no longer allow user to customize letter grading scale. set rendered="false" and removed js call from select radio button */
