@@ -162,7 +162,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
             ['Maximize', 'ShowBlocks'],
-            ['Audio', 'kalturaflash', 'magicembed', 'Youtube']
+            ['Audio', 'kalturaflash', 'magicembed', 'Youtube'],
+            ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_CAS']
         ],
         toolbar: 'Full',
         resize_dir: 'both',
@@ -207,6 +208,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('kalturaflash',basePath+'kalturaflash/', 'plugin.js');
             CKEDITOR.plugins.addExternal('magicembed',basePath+'magicembed/', 'plugin.js');
             CKEDITOR.plugins.addExternal('youtube',basePath+'youtube/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('ckeditor_wiris',basePath+'ckeditor_wiris/', 'plugin.js');
 
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
@@ -235,6 +237,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.dtd.$removeEmpty.span = false;
             CKEDITOR.dtd.$removeEmpty['i'] = false;
             ckconfig.extraPlugins+=",audio,kalturaflash,magicembed,youtube";
+            ckconfig.extraPlugins+=",ckeditor_wiris";
         }
     })();
 
