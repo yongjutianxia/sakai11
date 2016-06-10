@@ -209,9 +209,10 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 		}
 
 		if (sessionBean.isCloseOnNextTerminate()) {
-			log.debug("NYU-SCORM-DEBUG -- navigate-by-int -- SessionBean: " + sessionBean + "; Agent: " + agent + "; Target: " + target + "; RequestValue: " + request);
+			if (log.isDebugEnabled()) {	log.debug("NYU-SCORM-DEBUG -- discardScoBean -- SessionBean: " + sessionBean + "; Agent: " + agent + "; scoId: " + scoId + "; RequestValue: " + request);	}
 			scormSequencingService().navigate(SeqNavRequests.NAV_SUSPENDALL, sessionBean, agent, null);
 			Attempt attempt = sessionBean.getAttempt();
+			if (log.isDebugEnabled()) {	log.debug("NYU-SCORM-DEBUG -- discardScoBean -- Attempt: " + attempt);	}
 			if (attempt != null) {
 				attempt.setSuspended(true);
 				attempt.setNotExited(true);
