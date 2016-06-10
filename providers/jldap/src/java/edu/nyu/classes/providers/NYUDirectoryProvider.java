@@ -120,6 +120,13 @@ public class NYUDirectoryProvider extends JLDAPDirectoryProvider
             SqlService.returnConnection(connection);
         }
 
+        LOG.info(String.format("[%s] Time taken for first attempt lookup of %d users (total: %d)",
+                Thread.currentThread().toString(),
+                usersSize,
+                (System.currentTimeMillis() - startTime),
+                missedUserCount));
+
+
         // If we failed to fetch any of our users from the database, they'll be
         // left behind in our usersByEid map.  Fall back to trying LDAP.
         Collection<UserEdit> missedUsers = usersByEid.values();
