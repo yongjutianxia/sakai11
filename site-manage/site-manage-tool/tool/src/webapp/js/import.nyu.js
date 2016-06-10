@@ -2,7 +2,7 @@ var NYU = NYU || {}
 
 NYU.setupSites = function(form, academicSessions) {
 
-  var insertGroupedInputs = function(title, inputs) {
+  var insertGroupedInputs = function(title, inputs, container) {
     if (inputs.length == 0) {
       return;
     }
@@ -14,13 +14,20 @@ NYU.setupSites = function(form, academicSessions) {
       div.append($(this).closest("p"));
     });
 
-    $(".instruction:first", form).after(div);
+    container.prepend(div);
   };
 
-  insertGroupedInputs("Projects", $(":input[name='importSites'][data-type='project']"));
-  insertGroupedInputs("Other", $(":input[name='importSites'][data-type!='project'][data-type!='course']"));
+  var sessions = $("<div>").addClass("site-manage-import-sessions");
+  var other = $("<div>").addClass("site-manage-import-other");
+
+  $(".instruction:first", form).after(other);
+  $(".instruction:first", form).after(sessions);
+
+
+  insertGroupedInputs("Projects", $(":input[name='importSites'][data-type='project']"), other);
+  insertGroupedInputs("Other", $(":input[name='importSites'][data-type!='project'][data-type!='course']"), other);
 
   $.each(academicSessions, function(i, academicSession) {
-    insertGroupedInputs(academicSession.title, $(":input[name='importSites'][data-term='"+academicSession.title+"']"));
+    insertGroupedInputs(academicSession.title, $(":input[name='importSites'][data-term='"+academicSession.title+"']"), sessions);
   });
 };
