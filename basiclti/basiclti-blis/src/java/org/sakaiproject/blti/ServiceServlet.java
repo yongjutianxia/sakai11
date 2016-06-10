@@ -237,13 +237,20 @@ public class ServiceServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String hostWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.host-whitelist-regex", "");
-		if (!hostWhitelistRegex.isEmpty() && !isHostnameAcceptable(request, hostWhitelistRegex)) {
+		String ipWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.ip-whitelist-regex", "");
+		if (!ipWhitelistRegex.isEmpty() && !isIPAddressAcceptable(request, ipWhitelistRegex)) {
 			M_log.warn("LTI Services blocked for IP=" + request.getRemoteAddr());
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 
+
+		String hostWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.host-whitelist-regex", "");
+		if (!hostWhitelistRegex.isEmpty() && !isHostnameAcceptable(request, hostWhitelistRegex)) {
+			M_log.warn("LTI Services blocked for IP=" + request.getRemoteAddr() + " (host check failed)");
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 
 		String contentType = request.getContentType();
 		if ( contentType != null && contentType.startsWith("application/json") ) {
@@ -803,6 +810,12 @@ public class ServiceServlet extends HttpServlet {
 		}
 	}
 
+
+	protected boolean isIPAddressAcceptable(HttpServletRequest request, String pattern)
+	{
+		String ip = request.getRemoteAddr();
+		return ip.matches(pattern);
+	}
 
 	@SuppressWarnings("unchecked")
 	protected void doPostXml(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
