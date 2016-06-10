@@ -445,8 +445,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 
 			long _ldapFinishTime = System.currentTimeMillis();
 
-			M_log.info(String.format("[%s] Successful LDAP authentication (connection: %d; lookup: %d; bind: %d; total: %d)",
+			M_log.info(String.format("[%s] Successful LDAP authentication for '%s' (connection: %d; lookup: %d; bind: %d; total: %d)",
 							Thread.currentThread().toString(),
+							userLogin,
 							(_ldapFinishedConnecting - _ldapStartTime),
 							(_ldapFinishedLookupUserBindDn - _ldapFinishedConnecting),
 							(_ldapFinishTime - _ldapStartAttemptBind),
@@ -864,8 +865,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		LdapUserData result = (LdapUserData)searchDirectoryForSingleEntry(filter, 
 				conn, null, null, null);
 
-		M_log.info(String.format("[%s] Got entry for single user (total: %d)",
+		M_log.info(String.format("[%s] Got entry for single user '%s' (total: %d)",
 						Thread.currentThread().toString(),
+						eid,
 						(System.currentTimeMillis() - _ldapGetUserByEidStart)));
 
 
