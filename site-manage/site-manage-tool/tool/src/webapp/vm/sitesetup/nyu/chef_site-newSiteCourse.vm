@@ -1,7 +1,4 @@
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/sitesetup/chef_site-newSiteCourse.vm,v 1.3 2005/05/25 17:42:01 gsilver.umich.edu Exp $ -->
-<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery.min.js"></script>
-<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
-<link type="text/css" href="/library/js/jquery-ui-latest/css/smoothness/jquery-ui.css" rel="stylesheet" media="screen" />
 <script type="text/javascript">
 <!-- hide from non-JS browsersf
 function toggle(toggleKey, begin, end) {

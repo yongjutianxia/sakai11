@@ -1,1 +1,13 @@
-# Stub
+##<!-- $Header$ -->
+<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.nyu.css" rel="stylesheet" media="screen" />
+
+<div class ="portletBody">
+
+	<h3>
+		Congrats, Your Site has been Created!
+	</h3>
+
+	<p>Go to <a id="goToSiteLink" href="$finish_site_url" target="_top">your new site</a> now or <a id="createAnotherLink" href="$finish_site_reset">create another site</a>.
+
+
+</div>
