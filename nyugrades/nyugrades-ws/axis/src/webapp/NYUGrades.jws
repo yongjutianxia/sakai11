@@ -1,0 +1,142 @@
+/*
+This file is littered with funny comments containing:
+
+  %ENVIRONMENT%
+
+which I know is weird, and I don't like it any more than you do.  PeopleSoft
+requires unique SOAPActions for each environment, so this token will be
+substituted as a part of deploying this web service.
+
+Session table creation:
+
+  create table nyu_t_grades_ws_session (sessionid varchar(64) primary key, username varchar(99), last_used integer);
+*/
+
+
+import org.apache.axis.AxisFault;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.user.api.UserDirectoryService;
+
+import edu.nyu.classes.nyugrades.api.GradeSet;
+import edu.nyu.classes.nyugrades.api.NYUGradesService;
+import edu.nyu.classes.nyugrades.api.NYUGradesSessionService;
+
+import edu.nyu.classes.nyugrades.api.SectionNotFoundException;
+import edu.nyu.classes.nyugrades.api.SiteNotFoundForSectionException;
+import edu.nyu.classes.nyugrades.api.MultipleSectionsMatchedException;
+import edu.nyu.classes.nyugrades.api.MultipleSitesFoundForSectionException;
+
+
+public class NYUGrades/*%ENVIRONMENT%*/
+{
+    String GRADES_ADMIN_USER = "admin";
+
+    private static final Log LOG = LogFactory.getLog(NYUGrades/*%ENVIRONMENT%*/.class);
+
+    private UserDirectoryService userDirectoryService;
+    private ServerConfigurationService serverConfigurationService;
+    private SessionManager sakaiSessionManager;
+    private NYUGradesSessionService nyuGradesSessions;
+    private NYUGradesService nyuGrades;
+
+
+    private String[] permittedUsernames;
+
+
+    public NYUGrades/*%ENVIRONMENT%*/()
+    {
+        serverConfigurationService = (ServerConfigurationService) ComponentManager.get(ServerConfigurationService.class.getName());
+        userDirectoryService = (UserDirectoryService) ComponentManager.get(UserDirectoryService.class.getName());
+        sakaiSessionManager = (SessionManager) ComponentManager.get(SessionManager.class.getName());
+
+        nyuGradesSessions = (NYUGradesSessionService) ComponentManager.get("edu.nyu.classes.nyugrades.api.NYUGradesSessionService");
+        nyuGrades = (NYUGradesService) ComponentManager.get("edu.nyu.classes.nyugrades.api.NYUGradesService");
+
+        permittedUsernames = serverConfigurationService.getString("nyu.grades-service.allowed_users", "admin").split(", *");
+    }
+
+
+    private boolean passwordValid(String username, String password)
+    {
+        return (userDirectoryService.authenticate(username, password) != null);
+    }
+
+
+    private boolean usernameIsPermitted(String username)
+    {
+        for (String permittedUsername : permittedUsernames) {
+            if (permittedUsername.equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public String login/*%ENVIRONMENT%*/(String username, String password) throws AxisFault
+    {
+        if (!passwordValid(username, password) || !usernameIsPermitted(username)) {
+            LOG.warn("Rejected request from " + username);
+            throw new AxisFault("Permission denied");
+        }
+
+        nyuGradesSessions.expireSessions();
+        return nyuGradesSessions.createSession(username);
+    }
+
+
+    public String logout/*%ENVIRONMENT%*/(String sessionId) throws AxisFault
+    {
+        nyuGradesSessions.deleteSession(sessionId);
+
+        return "OK";
+    }
+
+
+    public GradeSet getGradesForSite/*%ENVIRONMENT%*/(String sessionId,
+                                                      String courseId,
+                                                      String term,
+                                                      String sessionCode,
+                                                      String classSection)
+        throws AxisFault
+    {
+        if (!nyuGradesSessions.checkSession(sessionId)) {
+            LOG.warn("Rejected invalid sessionId");
+            throw new AxisFault("Permission denied");
+        }
+
+        Session sakaiSession = sakaiSessionManager.startSession();
+        try {
+            sakaiSessionManager.setCurrentSession(sakaiSession);
+
+            sakaiSession.setUserId(GRADES_ADMIN_USER);
+            sakaiSession.setUserEid(GRADES_ADMIN_USER);
+
+            String sectionEid = null;
+            try {
+                sectionEid = nyuGrades.findSingleSection(courseId, term, sessionCode, classSection);
+                return nyuGrades.getGradesForSection(sectionEid);
+            } catch (SectionNotFoundException e) {
+                throw new AxisFault(String.format("Failed to find a section for CRSE_ID; STRM; SESSION_CODE; CLASS_SECTION = %s; %s; %s; %s",
+                                                  courseId, term, sessionCode, classSection));
+            } catch (SiteNotFoundForSectionException e) {
+                throw new AxisFault(String.format("Failed to find site for section: %s",
+                                                  sectionEid));
+            } catch (MultipleSectionsMatchedException e) {
+                throw new AxisFault(String.format("Multiple sections matched for CRSE_ID; STRM; SESSION_CODE; CLASS_SECTION = %s; %s; %s; %s",
+                                                  courseId, term, sessionCode, classSection));
+            } catch (MultipleSitesFoundForSectionException e) {
+                throw new AxisFault(String.format("Multiple sites found for section: %s",
+                                                  sectionEid));
+            }
+        } finally {
+            sakaiSession.invalidate();
+        }
+    }
+}
