@@ -14293,6 +14293,13 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 		for (Iterator j = offeringListSorted.iterator(); j.hasNext();) {
 			CourseOffering o = (CourseOffering) j.next();
+
+			if (!sectionHash.containsKey(o.getEid())) {
+				// All of this offering's sections were crosslisted and moved to their primary course.  So long!
+				dealtWith.add(o.getEid());
+				continue;
+			}
+
 			if (!dealtWith.contains(o.getEid())) {
 				// 1. construct list of CourseOfferingObject for CourseObject
 				ArrayList l = new ArrayList();
