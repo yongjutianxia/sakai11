@@ -17,7 +17,7 @@
                                                      {
                                                         label: editor.lang.magicembed.title,
                                                         command: commandName,
-                                                        icon: this.path+"images/magicembed.png"
+                                                        icon: this.path+"images/magicembed_bw.png"
                                                      });
                                  CKEDITOR.dialog.add(commandName, CKEDITOR.getUrl(this.path+'dialogs/magicembed.js'));
                              }

@@ -16,7 +16,7 @@
 			editor.ui.addButton('Youtube', {
 				label: editor.lang.youtube.button,
 				command: commandName,
-				icon: this.path+"images/youtube.png"
+				icon: this.path+"images/youtube_bw.png"
 			});
 			CKEDITOR.dialog.add(commandName, CKEDITOR.getUrl(this.path+'dialogs/youtube.js'));
 		}

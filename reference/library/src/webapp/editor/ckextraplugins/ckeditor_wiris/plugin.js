@@ -30,8 +30,8 @@ var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 var _wrs_conf_enableAccessibility = true;
 
 // Vars
-var _wrs_int_editorIcon = EXTRA_PLUGINS_PATH + '/ckeditor_wiris/core/icons/formula.gif';
-var _wrs_int_CASIcon = EXTRA_PLUGINS_PATH + '/ckeditor_wiris/core/icons/cas.gif';
+var _wrs_int_editorIcon = EXTRA_PLUGINS_PATH + '/ckeditor_wiris/core/icons/formula_bw.gif';
+var _wrs_int_CASIcon = EXTRA_PLUGINS_PATH + '/ckeditor_wiris/core/icons/cas_bw.gif';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;

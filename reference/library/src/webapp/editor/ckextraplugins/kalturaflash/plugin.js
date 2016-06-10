@@ -15,7 +15,7 @@
                                      editor.ui.addButton('kalturaflash', {
                                        label: editor.lang.kalturaflash.button,
                                        command: commandName,
-                                       icon: this.path+"images/nyustream.png"
+                                       icon: this.path+"images/nyustream_bw.png"
                                       });
                                      CKEDITOR.dialog.add( commandName,
                                                           CKEDITOR.getUrl(this.path+'dialogs/kalturaflash.js')

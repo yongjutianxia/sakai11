@@ -17,7 +17,7 @@
                             editor.ui.addButton('Audio', {
                               label: editor.lang.audio.button,
                               command: commandName,
-                              icon: "/library/image/sakai/audio.gif"
+                              icon: "/library/image/sakai/audio_bw.gif"
                             });
                             CKEDITOR.dialog.add(commandName, CKEDITOR.getUrl(this.path+'dialogs/audio.js'));
                           }
