@@ -120,9 +120,8 @@ public abstract class PrecachingDbUserService extends DbUserService
         if (runDaily) {
             // set up recurring task
             cal.setTime(new Date());
-            cal.add(Calendar.DATE, 1); // start tomorrow
             long recurringTaskPeriod = 24l * 60l * 60l * 1000l;
-            log.info("User precache will schedule recurring task every 24 hours, beginning tomorrow");
+            log.info("User precache will schedule recurring task every 24 hours");
 
             try {
                 String[] parts = cacheTimeString.trim().split(":");
@@ -135,6 +134,11 @@ public abstract class PrecachingDbUserService extends DbUserService
                 }
                 cal.set(Calendar.HOUR, hour);
                 cal.set(Calendar.MINUTE, new Integer(parts[1]) );
+
+                if (cal.getTime().before(new Date())) {
+                  cal.add(Calendar.DATE, 1); // start tomorrow
+                }
+
                 Date recurringTaskStart = cal.getTime();
                 scheduledTask = new UserCacheTimerTask();
                 dailyTimer.scheduleAtFixedRate(scheduledTask, recurringTaskStart, recurringTaskPeriod);
