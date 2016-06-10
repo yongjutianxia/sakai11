@@ -585,7 +585,9 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 			this.setSelectedCategoryFilterValue(new Integer(catId));
 			init();
 			//now destroy all of the columns to be readded
-			rosterDataTable.getChildren().removeAll( rosterDataTable.getChildren().subList(2, rosterDataTable.getChildren().size()));
+			if (rosterDataTable.getChildren().size() >= 3) {
+				rosterDataTable.getChildren().removeAll(rosterDataTable.getChildren().subList(2, rosterDataTable.getChildren().size()));
+			}
 		}
     
 
