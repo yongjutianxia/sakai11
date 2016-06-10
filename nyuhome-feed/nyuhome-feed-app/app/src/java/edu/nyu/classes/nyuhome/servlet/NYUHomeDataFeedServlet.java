@@ -28,6 +28,7 @@ import edu.nyu.classes.nyuhome.servlet.SakaiResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.sakaiproject.component.cover.HotReloadConfigurationService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 
@@ -62,13 +63,11 @@ public class NYUHomeDataFeedServlet extends HttpServlet {
 
     public NYUHomeDataFeedServlet() {
         dataFeedClassesConfig = ServerConfigurationService.getString("nyuhome.data.feed.classes", dataFeedClassesConfig);
-        allowedIPPatternConfig = ServerConfigurationService.getString("nyuhome.allowed.ips", allowedIPPatternConfig);
 
         userDirectoryService = (UserDirectoryService) ComponentManager.get("org.sakaiproject.user.api.UserDirectoryService");
         siteService = (SiteService) ComponentManager.get("org.sakaiproject.site.api.SiteService");
 
         LOG.info("Initialized with classes: {}", dataFeedClassesConfig);
-        LOG.info("Initialized with IP whitelist: {}", allowedIPPatternConfig);
 
         List<Class> dfc = new ArrayList<Class>();
 
@@ -186,7 +185,9 @@ public class NYUHomeDataFeedServlet extends HttpServlet {
         throws AccessDeniedException {
         String remoteAddr = req.getRemoteAddr();
 
-        if (!remoteAddr.matches(allowedIPPatternConfig)) {
+        String pattern = HotReloadConfigurationService.getString("nyuhome.allowed.ips", allowedIPPatternConfig);
+
+        if (!remoteAddr.matches(pattern)) {
             throw new AccessDeniedException();
         }
     }

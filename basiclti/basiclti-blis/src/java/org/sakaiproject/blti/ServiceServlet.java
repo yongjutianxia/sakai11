@@ -68,6 +68,7 @@ import org.tsugi.basiclti.BasicLTIUtil;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.AuthzGroupService;
+import org.sakaiproject.component.cover.HotReloadConfigurationService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.id.cover.IdManager;
@@ -237,15 +238,14 @@ public class ServiceServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ipWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.ip-whitelist-regex", "");
+		String ipWhitelistRegex = HotReloadConfigurationService.getString("basiclti.outcomes.ip-whitelist-regex", "");
 		if (!ipWhitelistRegex.isEmpty() && !isIPAddressAcceptable(request, ipWhitelistRegex)) {
 			M_log.warn("LTI Services blocked for IP=" + request.getRemoteAddr());
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 
-
-		String hostWhitelistRegex = ServerConfigurationService.getString("basiclti.outcomes.host-whitelist-regex", "");
+		String hostWhitelistRegex = HotReloadConfigurationService.getString("basiclti.outcomes.host-whitelist-regex", "");
 		if (!hostWhitelistRegex.isEmpty() && !isHostnameAcceptable(request, hostWhitelistRegex)) {
 			M_log.warn("LTI Services blocked for IP=" + request.getRemoteAddr() + " (host check failed)");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
