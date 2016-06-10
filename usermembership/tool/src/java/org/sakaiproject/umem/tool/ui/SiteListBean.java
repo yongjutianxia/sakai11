@@ -45,6 +45,7 @@ import javax.faces.event.ActionEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzPermissionException;
@@ -53,6 +54,7 @@ import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.db.api.SqlService;
+import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
@@ -288,7 +290,7 @@ public class SiteListBean {
 			if(refreshQuery){
 				LOG.debug("Refreshing query...");
 				try{
-					doSearch();
+					doSearch2();
 				}catch(SQLException e){
 					LOG.warn("Failed to perform search on usermembership", e);
 				}
@@ -300,68 +302,6 @@ public class SiteListBean {
 		return "";
 	}
 	
-	/**
-	 * Uses complex SQL for site membership, user role and group membership.<br>
-	 * For a 12 site users it takes < 1 secs!
-	 * @throws SQLException 
-	 */
-	private void doSearch() throws SQLException {
-		userSitesRows = new ArrayList<>();
-		Connection c = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try{
-			c = M_sql.borrowConnection();
-			String sql = "select ss.SITE_ID, ss.TITLE, ss.TYPE, ss.PUBLISHED, srr.ROLE_NAME, srrg.ACTIVE, "+
-						" (select VALUE from SAKAI_SITE_PROPERTY ssp where ss.SITE_ID = ssp.SITE_ID and ssp.NAME = 'term') TERM " +
-						"from SAKAI_SITE ss, SAKAI_REALM sr, SAKAI_REALM_RL_GR srrg, SAKAI_REALM_ROLE srr " +
-						"where sr.REALM_ID = CONCAT('/site/',ss.SITE_ID) " +
-						"and sr.REALM_KEY = srrg.REALM_KEY " +
-						"and srrg.ROLE_KEY = srr.ROLE_KEY " +
-						"and srrg.USER_ID = ? " +
-						"and ss.IS_USER = 0 " + 
-						"and ss.IS_SPECIAL = 0 " +
-						"ORDER BY ss.TITLE";
-			pst = c.prepareStatement(sql);
-			pst.setString(1, userId);
-			rs = pst.executeQuery();
-			while (rs.next()){
-				String id = rs.getString("SITE_ID");
-				String t = rs.getString("TITLE");
-				String tp = rs.getString("TYPE");
-				String pv = rs.getString("PUBLISHED");
-				if("1".equals(pv)) {
-					pv = msgs.getString("status_published");
-				}else{
-					pv = msgs.getString("status_unpublished"); 
-				}
-				String rn = rs.getString("ROLE_NAME");
-				String grps = getGroups(userId, id);
-				String active = rs.getString("ACTIVE").trim().equals("1")? msgs.getString("site_user_status_active") : msgs.getString("site_user_status_inactive");
-				String term = rs.getString("TERM");
-				if(term == null)
-					term = "";
-				userSitesRows.add(new UserSitesRow(id, t, tp, grps, rn, pv, active, term));
-			}
-		}catch(SQLException e){
-			LOG.warn("SQL error occurred while retrieving user memberships for user: " + userId, e);
-			LOG.warn("UserMembership will use alternative methods for retrieving user memberships.");
-			doSearch3();
-		}finally{
-			try{
-				if(rs != null)
-					rs.close();
-			}finally{
-				try{
-					if(pst != null)
-						pst.close();
-				}finally{
-					if(c != null)
-						M_sql.returnConnection(c);
-				}
-			}
-		}
-	}
 
 	/**
 	 * Uses ONLY Sakai API for site membership, user role and group membership.
@@ -379,65 +319,16 @@ public class SiteListBean {
 		Iterator i = siteList.iterator();
 		while (i.hasNext()){
 			Site s = (Site) i.next();
-			UserSitesRow row = new UserSitesRow(s, getGroups(userId, s.getId()), getActiveUserRoleInSite(userId, s));
+			UserSitesRow row = new UserSitesRow(s, getGroups(userId, s), getActiveUserRoleInSite(userId, s));
 			userSitesRows.add(row);
 		}
 		long end = (new Date()).getTime();
 		LOG.debug("doSearch2() took total of "+((end - start)/1000)+" sec.");
 	}
 
-	/**
-	 * Uses single simple SQL for site membership, uses API for user role and
-	 * group membership.<br>
-	 * For a 12 site users it takes ~30secs!
-	 * @throws SQLException 
-	 * @deprecated
-	 */
-	private void doSearch3() throws SQLException {
-		userSitesRows = new ArrayList<>();
-		timeSpentInGroups = 0;
-		Connection c = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try{
-			c = M_sql.borrowConnection();
-			String sql = "select distinct(SAKAI_SITE_USER.SITE_ID) from SAKAI_SITE_USER,SAKAI_SITE where SAKAI_SITE.SITE_ID=SAKAI_SITE_USER.SITE_ID and IS_USER=0 and IS_SPECIAL=0 and USER_ID=?";
-			pst = c.prepareStatement(sql);
-			pst.setString(1, userId);
-			rs = pst.executeQuery();
-			while (rs.next()){
-				String id = rs.getString("SITE_ID");
-				try{
-					Site site = M_site.getSite(id);
-					UserSitesRow row = new UserSitesRow(site, getGroups(userId, site), getActiveUserRoleInSite(userId, site));
-					userSitesRows.add(row);
-				}catch(IdUnusedException e){
-					LOG.warn("Unable to retrieve site for site id: " + id, e);
-				}
-			}
-		}catch(SQLException e){
-			LOG.warn("SQL error occurred while retrieving user memberships for user: " + userId, e);
-			LOG.warn("UserMembership will use alternative methods for retrieving user memberships (ONLY Published sites will be listed).");
-			doSearch2();
-		}finally{
-			try{
-				if(rs != null)
-					rs.close();
-			}finally{
-				try{
-					if(pst != null)
-						pst.close();
-				}finally{
-					if(c != null)
-						M_sql.returnConnection(c);
-				}
-			}
-		}
-		LOG.debug("Group ops took " + (timeSpentInGroups / 1000) + " secs");
-	}
 
 	/**
-	 * Uses Sakai API for getting group membership (very very slow).
+	 * Uses Sakai API for getting group membership
 	 * @param userId The user ID.
 	 * @param site The Site object
 	 * @return A String with group list.
@@ -450,6 +341,14 @@ public class SiteListBean {
 			Group g = (Group) ig.next();
 			if(groups.length() != 0) groups.append(", ");
 			groups.append(g.getTitle());
+			
+			//NYU mod, get the sections_eid property for the group
+			ResourceProperties props = g.getProperties();
+
+			String sectionEid = (String) props.getProperty("sections_eid");
+			if(StringUtils.isNotBlank(sectionEid)) {
+					groups.append("("+sectionEid+")");
+			}
 		}
 		long end = (new Date()).getTime();
 		timeSpentInGroups += (end - start);
@@ -457,52 +356,7 @@ public class SiteListBean {
 		return groups.toString();
 	}
 	
-	public String getGroups(String userId, String siteId) throws SQLException {
-		long start = (new Date()).getTime();
-		StringBuilder groups = new StringBuilder();
-		String siteReference = M_site.siteReference(siteId);
-		Connection c = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try{
-			c = M_sql.borrowConnection();
-			String sql = "select SS.GROUP_ID, SS.TITLE TITLE, SS.DESCRIPTION " 
-					+ "from SAKAI_SITE_GROUP SS, SAKAI_REALM R, SAKAI_REALM_RL_GR RRG " 
-					+ "where R.REALM_ID = concat(concat('"+siteReference+"','/group/'), SS.GROUP_ID) "
-					+ "and R.REALM_KEY = RRG.REALM_KEY " 
-					+ "and RRG.USER_ID = ? "
-					+ "and SS.SITE_ID = ? "
-					+ "ORDER BY TITLE";
-			pst = c.prepareStatement(sql);
-			pst.setString(1, userId);
-			pst.setString(2, siteId);
-			rs = pst.executeQuery();
-			while (rs.next()){
-				String t = rs.getString("TITLE");
-				if(groups.length() != 0) groups.append(", ");
-				groups.append(t);
-			}
-		}catch(SQLException e){
-			LOG.error("SQL error occurred while retrieving group memberships for user: " + userId, e);
-		}finally{
-			try{
-				if(rs != null)
-					rs.close();
-			}finally{
-				try{
-					if(pst != null)
-						pst.close();
-				}finally{
-					if(c != null)
-						M_sql.returnConnection(c);
-				}
-			}
-		}
-		long end = (new Date()).getTime();
-		timeSpentInGroups += (end - start);
-		LOG.debug("getGroups("+userId+", "+siteId+") took "+((end - start)/1000)+" sec.");
-		return groups.toString();
-	}
+	
 
 	/**
 	 * Uses Sakai API for getting user role in site.
