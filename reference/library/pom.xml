@@ -236,6 +236,9 @@
 										<resource>
 										  <directory>${basedir}/src/${sakai.skin.source}/bootstrap-sass-3.3.6/assets/fonts/</directory>
 										</resource>
+										<resource>
+											<directory>${basedir}/src/${sakai.skin.source}/nyu-fonts/</directory>
+										</resource>
 									</resources>
 								</configuration>
 							</execution>
