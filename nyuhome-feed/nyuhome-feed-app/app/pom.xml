@@ -4,7 +4,7 @@
   <parent>
     <artifactId>nyuhome-feed-base</artifactId>
     <groupId>edu.nyu.classes.nyuhome</groupId>
-    <version>10.7</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>nyuhome-feed-app</name>
