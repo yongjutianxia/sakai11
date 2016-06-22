@@ -13,7 +13,7 @@
   <parent>
     <artifactId>jobtest-base</artifactId>
     <groupId>edu.nyu.classes.jobtest</groupId>
-    <version>10.7</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
