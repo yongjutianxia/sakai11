@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.sakaiproject.authz.cover.AuthzGroupService;
+import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.tool.api.Session;
@@ -37,6 +37,8 @@ import java.util.Iterator;
  */
 public class NYUCMSyncJob extends CmSynchronizer implements Job {
 	private static final Log log = LogFactory.getLog(NYUCMSyncJob.class);
+
+	protected AuthzGroupService authzGroupService;
 
 	public void init() {
 		if(log.isInfoEnabled()) log.info("init()");
@@ -78,6 +80,10 @@ public class NYUCMSyncJob extends CmSynchronizer implements Job {
 		if(log.isInfoEnabled()) log.info("NYU sync job: done!");
 	}
 		
+	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+		this.authzGroupService = authzGroupService;
+	}
+
 	protected void loginToSakai() {
 	    Session sakaiSession = SessionManager.getCurrentSession();
 		sakaiSession.setUserId("admin");
@@ -87,7 +93,7 @@ public class NYUCMSyncJob extends CmSynchronizer implements Job {
 		UsageSessionService.startSession("admin", "127.0.0.1", "CMSync");
 		
 		// update the user's externally provided realm definitions
-		AuthzGroupService.refreshUser("admin");
+		authzGroupService.refreshUser("admin");
 
 		// post the login event
 		EventTrackingService.post(EventTrackingService.newEvent(UsageSessionService.EVENT_LOGIN, null, true));
