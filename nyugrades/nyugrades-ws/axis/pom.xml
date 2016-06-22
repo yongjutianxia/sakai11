@@ -11,7 +11,7 @@
   <parent>
     <groupId>edu.nyu.classes.nyugrades</groupId>
     <artifactId>nyugrades-base</artifactId>
-    <version>10.0</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>edu.nyu.classes.nyugrades</groupId>
       <artifactId>nyugrades-api</artifactId>
-      <version>10.0</version>
+      <version>11-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
