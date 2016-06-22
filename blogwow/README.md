@@ -1,7 +1,6 @@
 BlogWow tool - a blogging tool for Sakai
 
-Source available here:
-https://source.sakaiproject.org/contrib/programmerscafe/blogwow/trunk
+Source available here!
 
 To install:
 Run the following build commands from the root source directory for the tool.
@@ -47,4 +46,4 @@ A: This plugin does not support that practice. You are welcome to split things
 apart if you like though I do not recommend that.
 
 
-Comments or questions about the plugin should go to Aaron Zeckoski (aaronz@vt.edu)
+Comments or questions about the plugin should go to Sakai Dev (sakai-dev@apereo.org)

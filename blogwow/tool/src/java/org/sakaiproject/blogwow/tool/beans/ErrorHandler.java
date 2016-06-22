@@ -1,6 +1,6 @@
 /**
- * $Id: ErrorHandler.java 51620 2008-08-01 15:05:25Z aaronz@vt.edu $
- * $URL: https://source.sakaiproject.org/contrib/programmerscafe/blogwow/branches/sakai-10.x/tool/src/java/org/sakaiproject/blogwow/tool/beans/ErrorHandler.java $
+ * $Id$
+ * $URL$
  * ErrorHandler.java - blog-wow - Aug 1, 2008 12:20:19 PM - azeckoski
  **************************************************************************
  * Copyright (c) 2008 Aaron Zeckoski

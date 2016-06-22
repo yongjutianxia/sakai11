@@ -50,7 +50,7 @@ public class BlogWowDaoImpl extends HibernateGeneralGenericDao implements BlogWo
    public List<String> getLocationsForBlogsIds(String[] blogIds) {
       String hql = "select distinct blog.location from BlogWowBlog as blog where blog.id in " + arrayToInString(blogIds)
       + " order by blog.location";
-      return getHibernateTemplate().find(hql);
+      return  (List<String>)getHibernateTemplate().find(hql);
 
       // alternate method using detached criteria
       // if (blogIds.length == 0) { return new ArrayList(); }
