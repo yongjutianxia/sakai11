@@ -76,6 +76,8 @@
         <dependency>
             <groupId>org.sakaiproject.pasystem</groupId>
             <artifactId>pasystem-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>edu.nyu.classes.externalhelp</groupId>
             <artifactId>externalhelp-api</artifactId>
             <version>${sakai.version}</version>
