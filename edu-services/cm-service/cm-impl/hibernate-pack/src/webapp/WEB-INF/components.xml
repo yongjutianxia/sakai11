@@ -244,7 +244,7 @@
 
 	<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.NYUCMSyncJob"
 	      class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-	      singleton="true" init-method="init">
+	       init-method="init">
 	  <property name="beanId">
 	    <value>CMSyncJob</value>
 	  </property>

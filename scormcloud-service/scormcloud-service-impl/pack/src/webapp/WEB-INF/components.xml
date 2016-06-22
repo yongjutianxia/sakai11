@@ -7,7 +7,7 @@
           class="org.sakaiproject.scormcloudservice.impl.ScormCloudServiceImpl"
           init-method="init"
           destroy-method="destroy"
-          singleton="true">
+          >
     </bean>
 
 </beans>

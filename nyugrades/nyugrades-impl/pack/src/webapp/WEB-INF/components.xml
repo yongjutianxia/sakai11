@@ -6,19 +6,19 @@
 	<bean id="edu.nyu.classes.nyugrades.api.DBService"
 			class="edu.nyu.classes.nyugrades.impl.DBServiceImpl"
                         init-method="init"
-			singleton="true">
+			>
 	</bean>
 
 	<bean id="edu.nyu.classes.nyugrades.api.NYUGradesSessionService"
 			class="edu.nyu.classes.nyugrades.impl.NYUGradesSessionServiceImpl"
                         init-method="init"
-			singleton="true">
+			>
 	</bean>
 
 	<bean id="edu.nyu.classes.nyugrades.api.NYUGradesService"
 			class="edu.nyu.classes.nyugrades.impl.NYUGradesServiceImpl"
                         init-method="init"
-			singleton="true">
+			>
 	</bean>
 
 </beans>

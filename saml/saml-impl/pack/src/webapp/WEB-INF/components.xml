@@ -7,14 +7,14 @@
 			class="edu.nyu.classes.saml.impl.SamlServiceImpl"
                         init-method="init"
                         destroy-method="destroy"
-			singleton="true">
+			>
 	</bean>
 
 	<bean id="edu.nyu.classes.saml.api.SamlCertificateService"
 			class="edu.nyu.classes.saml.impl.SamlCertificateServiceImpl"
                         init-method="init"
                         destroy-method="destroy"
-			singleton="true">
+			>
 	</bean>
 
 </beans>

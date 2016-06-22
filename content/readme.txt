@@ -12,7 +12,7 @@ The following is required to enable the "Print File" choice in the Resources too
 <beans> 
    <bean id="org.sakaiproject.content.api.ContentPrintService" 
 class="org.sakaiproject.content.impl.ContentPrintServiceUnivOfMichImpl" 
-singleton="true"> 
+> 
  </bean> 
 </beans> 
 

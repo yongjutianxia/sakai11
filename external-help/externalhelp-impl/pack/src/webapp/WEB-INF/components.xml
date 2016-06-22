@@ -6,6 +6,6 @@
 			class="edu.nyu.classes.externalhelp.impl.ExternalHelpSystemImpl"
                         init-method="init"
                         destroy-method="destroy"
-			singleton="true">
+			>
 	</bean>
 </beans>

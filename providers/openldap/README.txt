@@ -20,7 +20,7 @@ Delete or comment out the lines about SampleUserDirectoryProvider
 	class="org.sakaiproject.component.legacy.user.SampleUserDirectoryProvider"
 	init-method="init"
 	destroy-method="destroy"
-	singleton="true">
+	>
 </bean>
 
 Replacing by this lines, placing correct values on ldapHost, ldapPort and
@@ -30,7 +30,7 @@ basePath
 	class="es.udl.asic.user.OpenLdapUserDirectoryProvider"
 	init-method="init"
 	destroy-method="destroy"
-	singleton="true">
+	>
 	<property name="logger"><ref bean="org.sakaiproject.service.framework.log.Logger"/></property>
 	<property name="ldapHost"><value>ldap://your.ldap.server</value></property>
 	<property name="ldapPort"><value>your.ldap.port</value></property>

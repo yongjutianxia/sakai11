@@ -39,7 +39,7 @@ import org.sakaiproject.user.api.UserNotificationPreferencesRegistrationService;
  *     <bean id="org.sakaiproject.user.api.UserNotificationPreferencesRegistration.content"
  *        parent="org.sakaiproject.user.api.UserNotificationPreferencesRegistration"
  *        class="org.sakaiproject.content.user.prefs.ContentUserNotificationPreferencesRegistrationImpl"
- *        init-method="init" singleton="true">
+ *        init-method="init" >
  *     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
  *     <property name="bundleLocation"><value>org.sakaiproject.localization.bundle.content.content</value></property>
  *     <property name="sectionTitleBundleKey"><value>prefs_title</value></property>

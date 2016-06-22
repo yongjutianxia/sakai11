@@ -6,14 +6,14 @@
 	<!-- Grab the learner information from Sakai -->
 	<bean id="org.sakaiproject.scorm.dao.LearnerDao"
 		class="org.sakaiproject.scorm.dao.sakai.MockLearnerDaoImpl"
-		singleton="true">
+		>
 
 	</bean>
 	
 	
 	<!--bean id="org.sakaiproject.scorm.dao.api.DataManagerDao"
 		class="org.sakaiproject.scorm.dao.sakai.DataManagerDaoImpl"
-		singleton="true">
+		>
 		
 		<lookup-method name="contentService" bean="org.sakaiproject.content.api.ContentHostingService" /> 
 		<lookup-method name="toolManager" bean="org.sakaiproject.tool.api.ToolManager" />
@@ -24,7 +24,7 @@
 	<!--
 	<bean id="org.sakaiproject.scorm.dao.api.SeqActivityTreeDao"
 		class="org.sakaiproject.scorm.dao.standalon.StandaloneActivityTreeDaoImpl"
-		singleton="true">
+		>
 		
 	</bean>
 	-->
@@ -32,7 +32,7 @@
 	<!-- THIS ONE'S BROKEN RIGHT NOW needs to store the resourceId somewhere for later lookup  can't use 'key'
 	<bean id="org.sakaiproject.scorm.dao.api.SeqActivityTreeDao"
 		class="org.sakaiproject.scorm.dao.sakai.SakaiActivityTreeDaoImpl"
-		singleton="true">
+		>
 		
 		<lookup-method name="contentService" bean="org.sakaiproject.content.api.ContentHostingService" /> 
 		<lookup-method name="toolManager" bean="org.sakaiproject.tool.api.ToolManager" />

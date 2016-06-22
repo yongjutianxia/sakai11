@@ -14,7 +14,7 @@
 
 	<!-- This bean serves the Scorm API calls -->
 	<bean id="org.sakaiproject.scorm.service.api.ScormApplicationServiceTarget" class="org.sakaiproject.scorm.service.impl.ScormApplicationServiceImpl"
-		singleton="true">
+		>
 
 		<!-- Scorm Sequencing Service to manage navigate calls -->
 		<lookup-method name="scormSequencingService" bean="org.sakaiproject.scorm.service.api.ScormSequencingService" />
@@ -40,7 +40,7 @@
 		</property>
 	</bean>
 	<bean id="org.sakaiproject.scorm.service.api.ScormResultServiceTarget" class="org.sakaiproject.scorm.service.impl.ScormResultServiceImpl"
-		singleton="true">
+		>
 
 		<!-- Service beans -->
 		<lookup-method name="lms" bean="org.sakaiproject.scorm.service.api.LearningManagementSystem" />
@@ -64,7 +64,7 @@
 	
 	<!-- This bean manages content -->
 	<bean id="org.sakaiproject.scorm.service.api.ScormContentServiceTarget" class="org.sakaiproject.scorm.service.impl.ScormContentServiceImpl"
-		singleton="true">
+		>
 		
 		<!-- Service beans -->
 		<lookup-method name="lms" bean="org.sakaiproject.scorm.service.api.LearningManagementSystem" />
@@ -88,7 +88,7 @@
 		</property>
 	</bean>
 	<bean id="org.sakaiproject.scorm.service.api.ScormSequencingServiceTarget" class="org.sakaiproject.scorm.service.impl.ScormSequencingServiceImpl"
-		singleton="true">
+		>
 		
 		<!-- Service beans -->
 		<lookup-method name="lms" bean="org.sakaiproject.scorm.service.api.LearningManagementSystem" />
