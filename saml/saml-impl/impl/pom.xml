@@ -13,7 +13,7 @@
   <parent>
     <artifactId>saml-base</artifactId>
     <groupId>edu.nyu.classes.saml</groupId>
-    <version>10.7</version>
+    <version>11-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>edu.nyu.classes.saml</groupId>
       <artifactId>saml-api</artifactId>
-      <version>10.7</version>
+      <version>11-SNAPSHOT</version>
     </dependency>
 
   </dependencies>
