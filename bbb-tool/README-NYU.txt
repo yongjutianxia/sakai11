@@ -1,1 +1,1 @@
-This is tag v1.0.8-2014121005 (d402f3436bb1aa98a36c855da84d554792c5d57b) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git
+This is branch 11.x (9153b3b52c1832f7e38e4b4c3ae527d643bf47e6) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git
