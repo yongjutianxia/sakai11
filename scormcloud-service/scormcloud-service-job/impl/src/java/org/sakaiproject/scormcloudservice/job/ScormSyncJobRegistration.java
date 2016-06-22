@@ -47,7 +47,11 @@ public class ScormSyncJobRegistration {
 
         detail.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, this.getClass().toString());
 
-        Trigger trigger = CronScheduleBuilder.cronSchedule(cronTrigger).build();
+        Trigger trigger = TriggerBuilder.newTrigger()
+            .withIdentity(jobName + "Trigger")
+            .withSchedule(CronScheduleBuilder.cronSchedule(cronTrigger))
+            .forJob(detail)
+            .build();
 
         scheduler.scheduleJob(detail, trigger);
 

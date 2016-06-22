@@ -6,6 +6,7 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.JobDetail;
 import org.quartz.JobBuilder;
+import org.quartz.TriggerBuilder;
 import org.quartz.JobKey;
 import org.quartz.Trigger;
 import org.quartz.CronTrigger;
@@ -51,7 +52,13 @@ public class JobTestImpl {
 
             detail.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, this.getClass().toString());
 
-            Trigger trigger = CronScheduleBuilder.cronSchedule(cronTrigger).build();
+            Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity("JobTestImplTrigger")
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronTrigger))
+                .forJob(detail)
+                .build();
+
+
 
             scheduler.scheduleJob(detail, trigger);
 

@@ -4,22 +4,16 @@
 
 <beans>
 
-    <bean id="grouperSyncJob" class="edu.nyu.classes.groupersync.jobs.GrouperSyncJob"
-          init-method="init">
-    </bean>
-
     <bean id="edu.nyu.classes.groupersync.api.GrouperSyncService"
           class="edu.nyu.classes.groupersync.impl.GrouperSyncServiceImpl"
           init-method="init"
-          destroy-method="destroy"
-          >
+          destroy-method="destroy">
     </bean>
 
     <bean id="edu.nyu.classes.groupersync.jobs.GrouperSyncJob"
           class="edu.nyu.classes.groupersync.jobs.GrouperSyncJob"
           init-method="init"
-          destroy-method="destroy"
-          >
+          destroy-method="destroy">
     </bean>
 
 </beans>

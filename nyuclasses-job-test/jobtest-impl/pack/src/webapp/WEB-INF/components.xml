@@ -5,7 +5,6 @@
 	<bean id="edu.nyu.classes.jobtest.impl.JobTestImpl"
 			class="edu.nyu.classes.jobtest.impl.JobTestImpl"
                         init-method="init"
-                        destroy-method="destroy"
-			>
+                        destroy-method="destroy">
 	</bean>
 </beans>

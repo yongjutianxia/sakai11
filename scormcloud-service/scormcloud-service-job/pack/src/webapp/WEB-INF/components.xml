@@ -6,8 +6,7 @@
     <bean id="org.sakaiproject.scormcloudservice.job.ScormSyncJobRegistration"
           class="org.sakaiproject.scormcloudservice.job.ScormSyncJobRegistration"
           init-method="init"
-          destroy-method="destroy"
-          >
+          destroy-method="destroy">
     </bean>
 
 </beans>

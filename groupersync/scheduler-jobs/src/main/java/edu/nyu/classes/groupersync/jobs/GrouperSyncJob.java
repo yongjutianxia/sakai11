@@ -103,13 +103,19 @@ public class GrouperSyncJob implements StatefulJob {
     private void registerQuartzJob(Scheduler scheduler, String jobName, Class className, String cronTrigger)
             throws SchedulerException, ParseException {
         // Delete any old instances of the job
-        scheduler.deleteJob(jobName, jobName);
+        scheduler.deleteJob(new JobKey(jobName, jobName));
 
-        JobDetail detail = new JobDetail(jobName, jobName, className, false, false, false);
+        JobDetail detail = JobBuilder.newJob(className)
+            .withIdentity(jobName, jobName)
+            .build();
 
         detail.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, this.getClass().toString());
 
-        Trigger trigger = new CronTrigger(jobName + "Trigger", jobName, cronTrigger);
+        Trigger trigger = TriggerBuilder.newTrigger()
+            .withIdentity(jobName + "Trigger")
+            .withSchedule(CronScheduleBuilder.cronSchedule(cronTrigger))
+            .forJob(detail)
+            .build();
 
         scheduler.scheduleJob(detail, trigger);
 
