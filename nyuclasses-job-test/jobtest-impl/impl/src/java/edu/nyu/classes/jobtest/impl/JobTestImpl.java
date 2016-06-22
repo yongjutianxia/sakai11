@@ -2,8 +2,11 @@ package edu.nyu.classes.jobtest.impl;
 
 import java.text.ParseException;
 
+import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.JobDetail;
+import org.quartz.JobBuilder;
+import org.quartz.JobKey;
 import org.quartz.Trigger;
 import org.quartz.CronTrigger;
 import org.quartz.SchedulerException;
@@ -37,16 +40,18 @@ public class JobTestImpl {
             }
 
             // Delete any old instances of the job
-            scheduler.deleteJob(JOB_NAME, JOB_GROUP);
+            scheduler.deleteJob(new JobKey(JOB_NAME, JOB_GROUP));
 
             // Then reschedule it
             String cronTrigger = ServerConfigurationService.getString("nyu.test.job.cron", "0 */15 * * * ?");
 
-            JobDetail detail = new JobDetail(JOB_NAME, JOB_GROUP, NYUClassesTestJob.class, false, false, false);
+            JobDetail detail = JobBuilder.newJob(NYUClassesTestJob.class)
+                .withIdentity(JOB_NAME, JOB_GROUP)
+                .build();
 
             detail.getJobDataMap().put(JobBeanWrapper.SPRING_BEAN_NAME, this.getClass().toString());
 
-            Trigger trigger = new CronTrigger("NYUClassesTestJobTrigger", "NYUClassesTestJob", cronTrigger);
+            Trigger trigger = CronScheduleBuilder.cronSchedule(cronTrigger).build();
 
             scheduler.scheduleJob(detail, trigger);
 
@@ -54,8 +59,6 @@ public class JobTestImpl {
 
         } catch (SchedulerException e) {
             LOG.error("Error while scheduling Quartz test job", e);
-        } catch (ParseException e) {
-            LOG.error("Parse error when parsing cron expression", e);
         }
     }
 
