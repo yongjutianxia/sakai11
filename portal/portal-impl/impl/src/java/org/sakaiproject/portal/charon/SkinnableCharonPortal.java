@@ -731,7 +731,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			renderResult = ToolRenderService.render(this, placement, req, res, getServletContext());
 		}
 				
-		RenderResult result = ToolRenderService.render(this, placement, req, res,
+		RenderResult result = ToolRenderService.render(this,placement, req, res,
+				getServletContext());
 
                 if (externalHelpSystem.isActive()) {
 			String userRole = "student";
@@ -749,9 +750,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			toolMap.put("externalNews", news);
                 }
 
-
-		RenderResult result = ToolRenderService.render(this,placement, req, res,
-				getServletContext());
 
 		if (result.getJSR168HelpUrl() != null)
 		{
