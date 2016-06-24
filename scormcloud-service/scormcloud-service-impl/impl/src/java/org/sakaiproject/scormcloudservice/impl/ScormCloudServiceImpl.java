@@ -192,7 +192,7 @@ class ScormCloudServiceImpl implements ScormCloudService {
             String auth = service.GetReportageAuth(Enums.ReportageNavPermission.DOWNONLY, false);
 
             String baseUrl = ServerConfigurationService.getString("scormcloudservice.reportage-base-url", "https://cloud.scorm.com/Reportage/reportage.php");
-            String reportUrl = baseUrl + "?appId=" + ScormCloud.getAppId() + "&courseId=" + store.findCourseId(siteId, externalId);
+            String reportUrl = baseUrl + "?appId=" + ScormCloud.getAppId() + "&courseId=" + store.findCourseId(siteId, externalId) + "&dateRangeType=p12m";
 
             return service.GetReportUrl(auth, reportUrl);
         } catch (Exception e) {
