@@ -10,10 +10,11 @@ CKEDITOR.addTemplates('customtemplates', {imagesPath: CKEDITOR.getUrl(CKEDITOR.b
         html:'<h3><img src=" " alt="" style="margin-right: 10px" height="100" width="100" align="left" />Type the title here</h3><p>Type the text here</p>'
     },
     {
-        title:"Strange Template",
-        image:"template2.gif"
-        ,description:"A template that defines two colums, each one with a title, and some text.",
-        html:'<table cellspacing="0" cellpadding="0" style="width:100%" border="0"><thead><tr><th style="width:50%" scope="col"><h3>Title 1</h3></th><th></th><th style="width:50%" scope="col"><h3>Title 2</h3></th></tr></thead><tr><td>Text 1</td><td></td><td>Text 2</td></tr></table><p>More text goes here.</p>'    },
+        title:"Two-Column Layout",
+        image:"template2.gif",
+        description:"A template that defines two columns, each with some text.",
+        html:'<table role="presentation" cellspacing="0" cellpadding="0" style="width:100%" border="0"><tr><td style="width:49.5%;vertical-align:top;">Text 1</td><td style="width:1%">&nbsp;</td><td style="width:49.5%;vertical-align:top;">Text 2</td></tr></table><p>More text goes here.</p>'
+    },
     {
         title:"Text and Table",
         image:"template3.gif",
