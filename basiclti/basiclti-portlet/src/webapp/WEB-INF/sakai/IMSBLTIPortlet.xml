@@ -652,7 +652,7 @@
 	</tool>
 
 
-	<tool id="nyu.curriculumbuilder.libraries" title="Library eReading List" description="Library eReading List">
+	<tool id="nyu.curriculumbuilder.libraries" title="eReading List" description="eReading List">
 
           <configuration name="sakai:menuClass" value="icon-sakai-basiclti"/>
 	  <configuration name="sakai:portlet-pre-render" value="true" />
@@ -667,8 +667,8 @@
 	  <configuration name="imsti.xml" />
 	  <configuration name="imsti.secret" />
 	  <configuration name="imsti.key" />
-	  <configuration name="imsti.pagetitle" value="Library eReading List" />
-	  <configuration name="imsti.tooltitle" value="Library eReading List" />
+	  <configuration name="imsti.pagetitle" value="eReading List" />
+	  <configuration name="imsti.tooltitle" value="eReading List" />
 	  <configuration name="imsti.maximize" value="false"/>
 	  <configuration name="imsti.frameheight" value="900"/>
 	  <configuration name="imsti.debug" value="false" />
