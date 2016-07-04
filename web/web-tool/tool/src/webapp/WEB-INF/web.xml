@@ -145,22 +145,6 @@
         <load-on-startup>1</load-on-startup>
      </servlet>
 
-
-     <servlet>   
-        <servlet-name>
-           nyu.libraries    
-        </servlet-name>
-        <servlet-class>
-           org.sakaiproject.web.tool.IFrameAction
-        </servlet-class>
-        <init-param>
-           <param-name>template</param-name>
-           <param-value>web/chef_iframe</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-     </servlet>
-
-
     <listener>
         <listener-class>org.sakaiproject.util.ToolListener</listener-class>
     </listener>
