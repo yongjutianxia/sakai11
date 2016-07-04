@@ -95,4 +95,28 @@
 
     </tool>
 
+
+    <tool id="nyu.ls-music-resources"
+          title="LS Music Resources"
+          description="LS Music Resources">
+
+      <configuration name="sakai.properties.url.key" value="nyu.ls-music-resources.url" />
+      <!-- <configuration name="hide.options" value="false" /> -->
+      <!-- <configuration name="special" value="special" /> -->
+      <!-- <configuration name="height" value="800px" /> -->
+      <!-- <configuration name="reset.button" value="false" type="final" /> -->
+      <configuration name="popup" value="true" />
+
+      <category name="course" />
+      <category name="project" />
+      <category name="portfolio" />
+      <category name="myworkspace" />
+
+      <!-- Allow this to be set -->
+      <configuration name="functions.require" /> 
+
+    </tool>
+
+
+
 </registration>

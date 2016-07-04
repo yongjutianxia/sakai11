@@ -164,12 +164,21 @@ $footer-color: #414141;
     @extend .fa;
   }
 
-  .icon-nyu-libraries                   {
+  .icon-nyu-libraries {
     font-family: 'nyu-classes-icons' !important;
     &:before {
       content: '\e051';
     }
   }
+
+  .icon-nyu-ls-music-resources {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e009';
+    }
+  }
+
+
   .icon-nyu-ls-music-resources          { @extend .fa-music; }
   .icon-nyu-mediasite-poly              { @extend .fa-film; }
   .icon-nyu-mediasite-engineering       { @extend .fa-film; }
