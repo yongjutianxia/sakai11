@@ -1055,7 +1055,7 @@
           <category name="course" />
           <category name="project" />
           <category name="portfolio" />
-          <configuration name="functions.require" />
+          <configuration name="functions.require" value="site.upd" />
           <configuration name="sakai:menuClass" value="icon-sakai-basiclti"/>
           <configuration name="imsti.launch" />
           <configuration name="imsti.xml" />
