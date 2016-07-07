@@ -530,6 +530,13 @@ public class PortletIFrame extends GenericPortlet {
 			String fa_icon = placement.getPlacementConfig().getProperty("imsti.fa_icon");
 			if ( fa_icon != null ) context.put("fa_icon", fa_icon );
 			String source = placement.getPlacementConfig().getProperty(SOURCE);
+
+			String sakaiPropertiesUrlKey = config.getProperty(SAKAI_PROPERTIES_URL_KEY);
+			if ( source == null && sakaiPropertiesUrlKey != null ) {
+				// CLASSES-2220 Allow the URL to be overridden in this case
+				source = ServerConfigurationService.getString(sakaiPropertiesUrlKey);
+				context.put("source",source);
+			}
 			if ( source == null ) source = "";
 			if ( special == null ) context.put("source",source);
 			String height = placement.getPlacementConfig().getProperty(HEIGHT);
@@ -988,8 +995,11 @@ public class PortletIFrame extends GenericPortlet {
 		
 		else if (sakaiPropertiesUrlKey != null && sakaiPropertiesUrlKey.length() > 1)
 		{
-			// set the url to a string defined in sakai.properties
-			rv = StringUtils.trimToNull(ServerConfigurationService.getString(sakaiPropertiesUrlKey));
+			// CLASSES-2220 Don't use the sakai.properties entry if we already have a value set
+			if (source == null || source.isEmpty()) {
+				// set the url to a string defined in sakai.properties
+				rv = StringUtils.trimToNull(ServerConfigurationService.getString(sakaiPropertiesUrlKey));
+			}
 		}
 		
 
