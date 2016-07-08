@@ -1063,7 +1063,7 @@
           <configuration name="imsti.key" />
           <configuration name="imsti.pagetitle" value="Cerego Groups"/>
           <configuration name="imsti.tooltitle" value="Cerego Groups"/>
-          <configuration name="imsti.newpage" value="off" />
+          <configuration name="imsti.newpage" value="on" />
           <configuration name="imsti.maximize" value="on" />
           <configuration name="imsti.frameheight" value="1024" />
           <configuration name="imsti.debug" value="true" />
@@ -1112,7 +1112,7 @@
           <configuration name="imsti.key" />
           <configuration name="imsti.pagetitle" value="Cerego"/>
           <configuration name="imsti.tooltitle" value="Cerego"/>
-          <configuration name="imsti.newpage" value="off" />
+          <configuration name="imsti.newpage" value="on" />
           <configuration name="imsti.maximize" value="on" />
           <configuration name="imsti.frameheight" value="1024" />
           <configuration name="imsti.debug" value="true" />
