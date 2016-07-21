@@ -16,7 +16,9 @@ class UpdatedSites {
     private static final Log log = LogFactory.getLog(UpdatedSites.class);
     private static final Pattern SITE_ID_PATTERN = Pattern.compile("/site/([^/]*)/?");
     private static final Pattern UUID_PATTERN = Pattern.compile("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
+    private static final long MARGIN_OF_ERROR_MS = 10000;
     private final SqlService sqlService;
+
     public UpdatedSites(SqlService sqlService) {
         this.sqlService = sqlService;
     }
@@ -161,7 +163,7 @@ class UpdatedSites {
     public List<UpdatedSite> listSince(Date since) {
         List<UpdatedSite> result = new ArrayList<UpdatedSite>();
 
-        Timestamp sinceTime = new Timestamp(since.getTime());
+        Timestamp sinceTime = new Timestamp(since.getTime() - MARGIN_OF_ERROR_MS);
 
         Connection db = null;
         try {
