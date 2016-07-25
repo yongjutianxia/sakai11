@@ -210,9 +210,6 @@
 			</tr>
                         #end
 
-			#end
-
-
 			#if ($!allowUpdate)
 			<tr> 
 				<th>
@@ -236,7 +233,7 @@
 			</tr>
 			#end
 		#end
-		
+
 		## As with site email addresses, only show UUID-based site URL if that
 		## is our only option (see http://bugs.sakaiproject.org/jira/browse/SAK-10510)
 		#if ($!siteFriendlyUrls.Empty)
