@@ -367,3 +367,7 @@ body {
     }
   }
 }
+// hide the directtool action
+.Mrphs-toolTitleNav__link.Mrphs-toolTitleNav__link--directurl {
+  display:  none !important;
+}
