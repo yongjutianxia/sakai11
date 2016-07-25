@@ -372,3 +372,34 @@ body {
 .Mrphs-toolTitleNav__link.Mrphs-toolTitleNav__link--directurl {
   display:  none !important;
 }
+/* SU-95 */
+.time-picker {
+  margin-top: 27px;
+}
+#bbb_container .time-picker-field {
+  width: 60px !important;
+}
+#bbb_container .date-picker-field {
+  width: 120px !important;
+}
+#datepick-div .datepick-header {
+  height: 25px !important;
+  padding: 2px 0 !important;
+}
+#datepick-div .datepick-new-month {
+  margin-right: 4px !important;
+}
+#datepick-div .datepick-new-month,
+#datepick-div .datepick-new-year {
+  background-image: url(data:image/png;base64,R0lGODlhDQAEAIAAAAAAAP8A/yH5BAEHAAEALAAAAAANAAQAAAILhA+hG5jMDpxvhgIAOw==) !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+
+  background-color: white !important;
+  color: #444 !important;
+  border: 1px solid #888 !important;
+}
+#datepick-div .datepick-days-cell.datepick-current-day a {
+  background-color: #15A885 !important;
+  color: #FFF !important
+}
