@@ -113,13 +113,15 @@
                                 #end ## END of IF ( $toolDirectUrlEnabled && ${tool.showDirectToolUrl} )
 
                                 #if (${tool.externalNews})
-                                    <a class="external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">${tool.externalNews.label}</a>
+                                    <a class="Mrphs-toolTitleNav__link external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">
+                                        <span class="Mrphs-itemTitle">${tool.externalNews.label}</span>
+                                    </a>
                                 #end
 
 
                                 #if (${tool.toolShowHelpButton} && ${tool.usingExternalHelp})
                                     #if (${tool.externalHelp})
-                                        <a target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
+                                        <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help-popup" target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
                                             <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
                                             <span class="skip">${rloader.site_newwindow}</span>
                                         </a>
@@ -170,7 +172,7 @@
 
                                 #if (${tool.toolShowHelpButton} && ${tool.usingExternalHelp})
                                     #if (${tool.externalHelp})
-                                        <a target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
+                                        <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help-popup" target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
                                             <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
                                             <span class="skip">${rloader.site_newwindow}</span>
                                         </a>
@@ -287,7 +289,7 @@
                                 
                                 #if (${tool.toolShowHelpButton} && ${tool.usingExternalHelp})
                                     #if (${tool.externalHelp})
-                                        <a target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
+                                        <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help-popup" target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
                                             <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
                                             <span class="skip">${rloader.site_newwindow}</span>
                                         </a>
@@ -332,7 +334,7 @@
                                 
                                 #if (${tool.toolShowHelpButton} && ${tool.usingExternalHelp})
                                     #if (${tool.externalHelp})
-                                        <a target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
+                                        <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help-popup" target="_blank" href="${tool.externalHelp.url}" title="${tool.externalHelp.label}">
                                             <span class="Mrphs-itemTitle">${rloader.sit_help}</span>
                                             <span class="skip">${rloader.site_newwindow}</span>
                                         </a>
