@@ -130,3 +130,14 @@ a > img {
 	border: none;
 	outline: 1px solid #0782C1;
 }
+
+/* NYU Customisations
+
+  CLASSES-1427 Increase the minimum height of the editable area
+  so the right click menu and paste action is easier to access
+*/
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 260px;
+}
