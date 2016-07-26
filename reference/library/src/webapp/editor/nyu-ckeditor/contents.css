@@ -138,6 +138,6 @@ a > img {
 */
 body {
   margin: 0;
-  padding: 20px;
+  padding: 1px 20px 20px; /* 1px at the top so the margin of the inner elements sits within the body */
   min-height: 260px;
 }
