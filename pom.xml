@@ -93,6 +93,7 @@
                 <module>pasystem</module>
                 <module>nyugrades</module>
                 <module>nyuhome-feed</module>
+                <module>nyuroster-feed</module>
                 <module>nyuclasses-job-test</module>
                 <module>podcasts</module>
                 <module>polls</module>
