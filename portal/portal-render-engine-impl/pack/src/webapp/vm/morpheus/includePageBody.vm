@@ -113,7 +113,7 @@
                                 #end ## END of IF ( $toolDirectUrlEnabled && ${tool.showDirectToolUrl} )
 
                                 #if (${tool.externalNews})
-                                    <a class="Mrphs-toolTitleNav__link external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">
+                                    <a class="Mrphs-toolTitleNav__link Mrphs-toolTitleNav__link--help-popup external-news" target="_blank" href="${tool.externalNews.url}" title="${tool.externalNews.label}">
                                         <span class="Mrphs-itemTitle">${tool.externalNews.label}</span>
                                     </a>
                                 #end
