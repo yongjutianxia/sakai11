@@ -21,24 +21,24 @@ if [ ! -d "$tomcat" ] || [ ! -f "$tomcat/conf/server.xml" ]; then
 fi
 
 
-if [ -e "$tomcat/shared/lib/sakai-import-bb6-10.7.jar" ]; then
+if [ -e "$tomcat/shared/lib/sakai-import-bb6-11.0.jar" ]; then
     echo "Moving blackboard jar into components/import-pack/WEB-INF/lib"
-    mv "$tomcat/shared/lib/sakai-import-bb6-10.7.jar" "$tomcat/components/import-pack/WEB-INF/lib"
+    mv "$tomcat/shared/lib/sakai-import-bb6-11.0.jar" "$tomcat/components/import-pack/WEB-INF/lib"
 fi
 
-if [ -e "$tomcat/shared/lib/sakai-import-bb9-nyu-10.7.jar" ]; then
+if [ -e "$tomcat/shared/lib/sakai-import-bb9-nyu-11.0.jar" ]; then
     echo "Moving blackboard 9 jar into components/import-pack/WEB-INF/lib"
-    mv "$tomcat/shared/lib/sakai-import-bb9-nyu-10.7.jar" "$tomcat/components/import-pack/WEB-INF/lib"
+    mv "$tomcat/shared/lib/sakai-import-bb9-nyu-11.0.jar" "$tomcat/components/import-pack/WEB-INF/lib"
 fi
 
 
 
 echo "Installing Samigo jar to import-pack component directory"
-cp "$build_dir/samigo/samigo-archive/sam-handlers/target/samigo-import-10.7.jar" \
+cp "$build_dir/samigo/samigo-archive/sam-handlers/target/samigo-import-11.0.jar" \
     "$tomcat/components/import-pack/WEB-INF/lib/"
 
 echo "Moving sakai-anouncement-import [sic] jar"
-mv "$tomcat/components/sakai-anouncement-import/WEB-INF/lib/sakai-import-announcement-10.7.jar" \
+mv "$tomcat/components/sakai-anouncement-import/WEB-INF/lib/sakai-import-announcement-11.0.jar" \
     "$tomcat/components/import-pack/WEB-INF/lib/"
 
 
