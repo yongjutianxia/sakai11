@@ -1146,9 +1146,9 @@
         </tool>
 
         <tool
-            id="nyu.cengage.mindtap"
-            title="Cengage MindTap"
-            description="Cengage MindTap">
+            id="nyu.cengage.mindtap.ls"
+            title="Art Through The Ages"
+            description="Art Through The Ages">
           <configuration name="sakai:portlet-pre-render" value="true" />
           <category name="course" />
           <category name="project" />
@@ -1159,8 +1159,8 @@
           <configuration name="imsti.xml" />
           <configuration name="imsti.secret" />
           <configuration name="imsti.key" />
-          <configuration name="imsti.pagetitle" value="Cengage MindTap"/>
-          <configuration name="imsti.tooltitle" value="Cengage MindTap"/>
+          <configuration name="imsti.pagetitle" value="Art Through The Ages"/>
+          <configuration name="imsti.tooltitle" value="Art Through The Ages"/>
           <configuration name="imsti.newpage" value="on" />
           <configuration name="imsti.maximize" value="on" />
           <configuration name="imsti.frameheight" value="1024" />
