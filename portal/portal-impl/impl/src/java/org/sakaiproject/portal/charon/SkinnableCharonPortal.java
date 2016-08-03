@@ -1434,7 +1434,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		headJs.append("sakai.editor.editors.ckeditor.browser = '"+ EditorConfiguration.getCKEditorFileBrowser()+ "';\n");
 		headJs.append("</script>\n");
 
-		// CLASSES-1937 poke the site's CKEditor templates into the page if configured
+		// CLASSES-1937, CLASSES-2093 poke the site's CKEditor templates and plugins into the page if configured
 		if (placement != null) {
 			headJs.append("<script type=\"text/javascript\">\n");
 			headJs.append("sakai.editor.siteId = '" + placement.getContext() + "';\n");
@@ -1445,6 +1445,10 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 					String ckeditorTemplates = (String) rp.getProperty("ckeditor_templates");
 					if (ckeditorTemplates != null) {
 						headJs.append("sakai.editor.templates = '" + ckeditorTemplates + "';\n");
+					}
+					String ckeditorPlugins = (String) rp.getProperty("ckeditor_plugins");
+					if (ckeditorPlugins != null) {
+						headJs.append("sakai.editor.plugins = '" + ckeditorPlugins + "';\n");
 					}
 				}
 			} catch (IdUnusedException e) {

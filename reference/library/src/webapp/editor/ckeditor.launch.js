@@ -262,6 +262,18 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
               });
             }
 
+            // CLASSES-2093
+            if (sakai.editor.siteId && sakai.editor.plugins && sakai.editor.plugins.length > 0) {
+                ckconfig.extraPlugins += "," + sakai.editor.plugins;
+
+                var pluginsArray = sakai.editor.plugins.split(",");
+                ckconfig.toolbar_Full = ckconfig.toolbar_Full.concat([pluginsArray]);
+
+                pluginsArray.map(function(plugin) {
+                    CKEDITOR.plugins.addExternal(plugin, basePath + plugin + '/', 'plugin.js'); 
+                });
+            }
+
             // CLASSES-1943
             CKEDITOR.config.templates_replaceContent = false;
         }
