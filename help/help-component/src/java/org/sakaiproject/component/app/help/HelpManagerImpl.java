@@ -1272,7 +1272,7 @@ public class HelpManagerImpl extends HibernateDaoSupport implements HelpManager
 	public void registerStaticContent()
 	{
 		//  register static content
-		Set<Tool> toolSet = toolManager.findTools(null, null);
+		Set<Tool> toolSet = toolManager.findTools(null, null, null);
 
 		// find out what we want to ignore
 		List<String> hideHelp = Arrays.asList(StringUtils.split(serverConfigurationService.getString("help.hide"), ","));

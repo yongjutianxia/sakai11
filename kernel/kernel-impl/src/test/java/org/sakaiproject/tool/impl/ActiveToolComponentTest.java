@@ -130,12 +130,12 @@ public class ActiveToolComponentTest {
 		assertFalse(keywords.contains("notfound"));
 		
 		// Test it can be found ok.
-		assertEquals(1, activeToolManager.findTools(null, null).size());
-		assertEquals(1, activeToolManager.findTools(Collections.<String>emptySet(), null).size());
-		assertEquals(1, activeToolManager.findTools(Collections.singleton("project"), null).size());
-		assertEquals(1, activeToolManager.findTools(null, Collections.singleton("site")).size());
-		assertTrue(activeToolManager.findTools(Collections.singleton("other"), null).isEmpty());
-		assertTrue(activeToolManager.findTools(null, Collections.singleton("notfound")).isEmpty());
+		assertEquals(1, activeToolManager.findTools(null, null, null).size());
+		assertEquals(1, activeToolManager.findTools(Collections.<String>emptySet(), null, null).size());
+		assertEquals(1, activeToolManager.findTools(Collections.singleton("project"), null, null).size());
+		assertEquals(1, activeToolManager.findTools(null, Collections.singleton("site"), null).size());
+		assertTrue(activeToolManager.findTools(Collections.singleton("other"), null, null).isEmpty());
+		assertTrue(activeToolManager.findTools(null, Collections.singleton("notfound"), null).isEmpty());
 	}
 	
 
@@ -156,9 +156,9 @@ public class ActiveToolComponentTest {
 	@Test
 	public void testMultipleRegistrations() {
 		// Check that multiple registrations in one file work.
-		assertTrue(activeToolManager.findTools(null, null).isEmpty());
+		assertTrue(activeToolManager.findTools(null, null, null).isEmpty());
 		activeToolManager.register(getClass().getResourceAsStream("simple-multiple.xml"));
-		Set<Tool> findTools = activeToolManager.findTools(null, null);
+		Set<Tool> findTools = activeToolManager.findTools(null, null, null);
 		assertEquals(3, findTools.size());
 		Tool tool1 = activeToolManager.getTool("simple1");
 		assertNotNull(tool1);
@@ -185,7 +185,7 @@ public class ActiveToolComponentTest {
 	@Test
 	public void testEmpty() {
 		activeToolManager.register(getClass().getResourceAsStream("empty.xml"));
-		assertTrue(activeToolManager.findTools(null, null).isEmpty());
+		assertTrue(activeToolManager.findTools(null, null, null).isEmpty());
 	}
 	
 	@Test

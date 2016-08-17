@@ -22,6 +22,7 @@
 package org.sakaiproject.tool.cover;
 
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.site.api.Site;
 
 /**
  * <p>
@@ -95,12 +96,12 @@ public class ToolManager
 		return manager.getTool(param0);
 	}
 
-	public static java.util.Set findTools(java.util.Set param0, java.util.Set param1)
+	public static java.util.Set findTools(java.util.Set param0, java.util.Set param1, org.sakaiproject.tool.api.FindToolsContext param2)
 	{
 		org.sakaiproject.tool.api.ToolManager manager = getInstance();
 		if (manager == null) return null;
 
-		return manager.findTools(param0, param1);
+		return manager.findTools(param0, param1, param2);
 	}
 
 	public static org.sakaiproject.tool.api.Tool getCurrentTool()

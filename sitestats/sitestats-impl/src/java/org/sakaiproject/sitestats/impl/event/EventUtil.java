@@ -99,7 +99,7 @@ public class EventUtil {
 	
 		// search the pages
 		List<org.sakaiproject.tool.api.Tool> sakaiTools = new ArrayList<org.sakaiproject.tool.api.Tool>();
-		sakaiTools.addAll(M_tm.findTools(null, null));
+		sakaiTools.addAll(M_tm.findTools(null, null, null));
 	
 		// add only tools in both lists
 		Iterator<ToolInfo> iTED = eventRegistrySubset.iterator();

@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.tool.api.FindToolsContext;
 import org.w3c.dom.Document;
 
 /**
@@ -79,9 +80,22 @@ public interface ToolManager
 	 *                   if null or empty no category criteria is specified;
 	 *                   if an empty set, then only non-hidden tools are returned.
 	 * @param keywords A Set (String) of keyword values; if null or empty no keyword criteria is specified.
+	 * @param context The site context we are working in (or null)
 	 * @return A Set (Tool) of Tool objects that meet the criteria, or an empty set if none found.
 	 */
-	Set<Tool> findTools(Set<String> categories, Set<String> keywords);
+	Set<Tool> findTools(Set<String> categories, Set<String> keywords, FindToolsContext context);
+
+	/**
+	 * Insert a new StealthPolicy that will get the chance to decide whether
+	 * a given tool should be stealthed or not given a particular site
+	 * context.
+	 *
+	 * Policies are invoked in LIFO order (so newly added policies take
+	 * priority over older ones)
+	 *
+	 * @param policy
+	 */
+	public void addStealthPolicy(StealthPolicy policy);
 
 	/**
 	 * Access the Tool associated with the current request / thread

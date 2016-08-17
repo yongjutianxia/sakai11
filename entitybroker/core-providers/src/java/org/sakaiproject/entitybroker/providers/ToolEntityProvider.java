@@ -118,7 +118,7 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
             }
         } else if (search.getRestrictionByProperty("keywords") != null) {
             String[] keywords = (String[]) search.getRestrictionByProperty("keywords").getArrayValue();
-            Set<Tool> found = toolManager.findTools(null, new HashSet<String>(Arrays.asList(keywords)));
+            Set<Tool> found = toolManager.findTools(null, new HashSet<String>(Arrays.asList(keywords)), null);
 
             for (Tool tool : found) {
                 EntityTool entityTool = getToolEntity(tool);
@@ -128,7 +128,7 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
             }
         } else if (search.getRestrictionByProperty("categories") != null) {
             String[] categories = (String[]) search.getRestrictionByProperty("categories").getArrayValue();
-            Set<Tool> found = toolManager.findTools(new HashSet<String>(Arrays.asList(categories)), null);
+            Set<Tool> found = toolManager.findTools(new HashSet<String>(Arrays.asList(categories)), null, null);
 
             for (Tool tool : found) {
                 EntityTool entityTool = getToolEntity(tool);
@@ -137,7 +137,7 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
                 }
             }
         } else {
-            Set<Tool> found = toolManager.findTools(null, null);
+            Set<Tool> found = toolManager.findTools(null, null, null);
 
             for (Tool tool : found) {
                 EntityTool entityTool = getToolEntity(tool);
@@ -152,7 +152,7 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
 
     @EntityCustomAction(action="allToolIds",viewKey=EntityView.VIEW_LIST)
     public Object getAllToolIds(EntityReference ref) {
-        Set<Tool> tools = toolManager.findTools(null, null);
+        Set<Tool> tools = toolManager.findTools(null, null, null);
         List<String> toolIds = new ArrayList<String>(tools.size());
 
         for (Tool tool : tools) {
@@ -164,8 +164,8 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
 
     @EntityCustomAction(action="hiddenToolIds",viewKey=EntityView.VIEW_LIST)
     public Object getHiddenToolIds(EntityReference ref) {
-        Set<Tool> allTools = toolManager.findTools(null, null);
-        Set<Tool> publicTools = toolManager.findTools(Collections.<String> emptySet(), null);
+        Set<Tool> allTools = toolManager.findTools(null, null, null);
+        Set<Tool> publicTools = toolManager.findTools(Collections.<String> emptySet(), null, null);
 
         List<String> allToolIds = new ArrayList<String>(allTools.size());
         List<String> publicToolIds = new ArrayList<String>(publicTools.size());
@@ -188,7 +188,7 @@ public class ToolEntityProvider extends AbstractEntityProvider implements CoreEn
 
     @EntityCustomAction(action="publicToolIds",viewKey=EntityView.VIEW_LIST)
     public Object getPublicToolIds(EntityReference ref) {
-        Set<Tool> publicTools = toolManager.findTools(Collections.<String> emptySet(), null);
+        Set<Tool> publicTools = toolManager.findTools(Collections.<String> emptySet(), null, null);
 
         List<String> publicToolIds = new ArrayList<String>(publicTools.size());
 

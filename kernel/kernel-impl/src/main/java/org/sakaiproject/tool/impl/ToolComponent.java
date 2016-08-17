@@ -26,10 +26,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -43,8 +45,10 @@ import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.thread_local.api.ThreadLocalManager;
+import org.sakaiproject.tool.api.FindToolsContext;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.StealthPolicy;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
@@ -55,6 +59,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.component.cover.HotReloadConfigurationService;
 
 /**
  * <p>
@@ -246,6 +253,11 @@ public abstract class ToolComponent implements ToolManager
 		}
 
 		M_log.info("init(): hidden tools: " + hidden.toString());
+
+		stealthPolicies = new ArrayList();
+
+		addStealthPolicy(new DefaultPolicy());
+		addStealthPolicy(new NYUStealthPolicy());
 	}
 
 	/**
@@ -260,11 +272,165 @@ public abstract class ToolComponent implements ToolManager
 	 * Work interface
 	 *********************************************************************************************************************************************************************************************************************************************************/
 
+	public void addStealthPolicy(StealthPolicy policy) {
+		stealthPolicies.add(0, policy);
+	}
+
+	/**
+	 * Implements the original Sakai rules for stealthing
+	 */
+	private class DefaultPolicy implements StealthPolicy {
+		public Ruling classify(Tool tool, Set categories, Set keywords, FindToolsContext context) {
+			// add if not hidden (requests for no (null) category include all, even hidden items)
+			if ((categories == null) || (m_toolIdsToHide == null) || (Arrays.binarySearch(m_toolIdsToHide, tool.getId()) < 0))
+			{
+				return Ruling.VISIBLE;
+			} else {
+				return Ruling.STEALTH;
+			}
+		}
+	}
+
+	private class NYUStealthPolicy implements StealthPolicy {
+
+		private final String SCHOOL_PROPERTY = "School";
+		private final String DEPARTMENT_PROPERTY = "Department";
+		private final String LOCATION_PROPERTY = "Location";
+
+		public Ruling classify(Tool tool, Set categories, Set keywords, FindToolsContext context) {
+			try {
+				return doClassify(tool, categories, keywords, context);
+			} catch (Exception e) {
+				M_log.error("FAILURE WHEN APPLYING STEALTHING RULES: " + e);
+				return Ruling.UNKNOWN;
+			}
+		}
+
+		private Ruling doClassify(Tool tool, Set categories, Set keywords, FindToolsContext context) {
+			if (context == null) {
+				return Ruling.UNKNOWN;
+			}
+
+			String rules = HotReloadConfigurationService.getString("stealth-policy." + tool.getId(), null);
+
+			if (rules == null) {
+				return Ruling.UNKNOWN;
+			}
+
+			Site site = context.getSite();
+
+			if (site != null) {
+				ResourceProperties siteProperties = site.getProperties();
+
+                                String unstealthSiteProperty = "unstealth_tools";
+				// Rules are overriden by a site property
+				if (siteProperties.get(unstealthSiteProperty) != null &&
+						inList(tool.getId(), (String) siteProperties.get(unstealthSiteProperty))) {
+					return Ruling.VISIBLE;
+				}
+
+				return stealthStatus(tool, rules,
+						(String)siteProperties.get(SCHOOL_PROPERTY),
+						(String)siteProperties.get(DEPARTMENT_PROPERTY),
+						(String)siteProperties.get(LOCATION_PROPERTY));
+			}
+
+			return Ruling.UNKNOWN;
+		}
+
+		private boolean inList(String needle, String commaSeparatedList) {
+			if (needle == null) {
+				return false;
+			}
+
+                        // Believe it or not, this is 10x faster than splitting
+                        // the list.  Not sure if that matters here or not, but
+                        // we might end up on the critical path.
+			return (commaSeparatedList.equals(needle) ||
+					commaSeparatedList.startsWith(needle + ",") ||
+					commaSeparatedList.indexOf("," + needle + ",") >= 0 ||
+					commaSeparatedList.endsWith("," + needle));
+		}
+
+		private Ruling stealthStatus(Tool tool, String rules, String school, String department, String location) {
+			for (String ruleStr : rules.trim().split(" *; *")) {
+				NYURule rule = new NYURule(ruleStr);
+				if (rule.matches(school, department, location)) {
+					return rule.getOutcome();
+				}
+			}
+
+			return Ruling.UNKNOWN;
+		}
+
+		private class NYURule {
+			private String school;
+			private String department;
+			private String location;
+			private Ruling outcome;
+
+			private boolean ruleValid = true;
+
+			public NYURule(String rule) {
+				for (String word : rule.split(" +")) {
+					int sep = word.indexOf(":");
+
+					if (sep == -1) {
+						M_log.error("PARSE ERROR ON RULE: " + rule);
+						ruleValid = false;
+						return;
+					}
+
+					String field = word.substring(0, sep);
+					String value = word.substring(sep + 1);
+
+					if ("school".equals(field)) {
+						this.school = value;
+					} else if ("department".equals(field)) {
+						this.department = value;
+					} else if ("location".equals(field)) {
+						this.location = value;
+					} else if ("outcome".equals(field)) {
+						if ("stealth".equals(value)) {
+							this.outcome = Ruling.STEALTH;
+						} else if ("visible".equals(value)) {
+							this.outcome = Ruling.VISIBLE;
+						} else {
+							ruleValid = false;
+						}
+					} else {
+						M_log.error("UNRECOGNIZED FIELD '" + field + "' in rule "  + rule);
+					}
+				}
+			}
+
+			public boolean matches(String school, String department, String location) {
+				if (!ruleValid) {
+					return false;
+				}
+
+				return (("*".equals(this.school) || inList(school, this.school)) &&
+						("*".equals(this.department) || inList(department, this.department)) &&
+						("*".equals(this.location) || inList(location, this.location)));
+			}
+
+			public Ruling getOutcome() {
+				if (ruleValid) {
+					return this.outcome;
+				} else {
+					return Ruling.UNKNOWN;
+				}
+			}
+		}
+	}
+
+	private List<StealthPolicy> stealthPolicies;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public Set<Tool> findTools(Set categories, Set keywords)
+	public Set<Tool> findTools(Set categories, Set keywords, FindToolsContext context)
 	{
 		Set<Tool> rv = new HashSet<Tool>();
 
@@ -273,10 +439,17 @@ public abstract class ToolComponent implements ToolManager
 			Tool tool = (Tool) i.next();
 			if (matchCriteria(categories, tool.getCategories()) && matchCriteria(keywords, tool.getKeywords()))
 			{
-				// add if not hidden (requests for no (null) category include all, even hidden items)
-				if ((categories == null) || (m_toolIdsToHide == null) || (Arrays.binarySearch(m_toolIdsToHide, tool.getId()) < 0))
-				{
-					rv.add(tool);
+				for (StealthPolicy policy : stealthPolicies) {
+					StealthPolicy.Ruling ruling = policy.classify(tool, categories, keywords, context);
+
+					if (ruling.equals(StealthPolicy.Ruling.STEALTH)) {
+						break;
+					} else if (ruling.equals(StealthPolicy.Ruling.VISIBLE)) {
+						rv.add(tool);
+						break;
+					} else {
+						// Try the next policy
+					}
 				}
 			}
 		}

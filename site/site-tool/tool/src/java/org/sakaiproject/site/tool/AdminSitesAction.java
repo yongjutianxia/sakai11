@@ -874,12 +874,12 @@ public class AdminSitesAction extends PagedResourceActionII
 		}
 		
 		// get all tools
-		Set all = ToolManager.findTools(null, null);
+		Set all = ToolManager.findTools(null, null, null);
 
 		// get the helpers
 		Set categories = new HashSet();
 		categories.add("sakai.helper");
-		Set helpers = ToolManager.findTools(categories, null);
+		Set helpers = ToolManager.findTools(categories, null, null);
 
 		// remove the helpers from all
 		all.removeAll(helpers);

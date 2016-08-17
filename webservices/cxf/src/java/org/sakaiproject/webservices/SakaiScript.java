@@ -1588,7 +1588,7 @@ public class SakaiScript extends AbstractWebService {
             if (!securityService.isSuperUser(session.getUserId())) {
 
                 Set categories = new HashSet<String>();
-                Set<Tool> visibleTools = toolManager.findTools(categories, null);
+                Set<Tool> visibleTools = toolManager.findTools(categories, null, null);
 
                 boolean toolVisible = false;
                 for (Tool tool : visibleTools) {
@@ -1603,7 +1603,7 @@ public class SakaiScript extends AbstractWebService {
                 }
 
                 categories.add(siteEdit.getType());
-                Set<Tool> availableTools = toolManager.findTools(categories, null);
+                Set<Tool> availableTools = toolManager.findTools(categories, null, null);
 
                 boolean toolAvailable = false;
                 for (Tool tool : availableTools) {
@@ -3892,7 +3892,7 @@ public class SakaiScript extends AbstractWebService {
             if (!securityService.isSuperUser(session.getUserId())) {
 
                 Set categories = new HashSet<String>();
-                Set<Tool> visibleTools = toolManager.findTools(categories, null);
+                Set<Tool> visibleTools = toolManager.findTools(categories, null, null);
 
                 boolean toolVisible = false;
                 for (Tool tool : visibleTools) {
@@ -3907,7 +3907,7 @@ public class SakaiScript extends AbstractWebService {
                 }
 
                 categories.add(siteEdit.getType());
-                Set<Tool> availableTools = toolManager.findTools(categories, null);
+                Set<Tool> availableTools = toolManager.findTools(categories, null, null);
 
                 boolean toolAvailable = false;
                 for (Tool tool : availableTools) {

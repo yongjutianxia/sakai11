@@ -172,7 +172,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 		String[] toolsList = null;
 		String siteType = serverConfigurationService.getString(DelegatedAccessConstants.PROP_TOOL_LIST_TEMPLATE);
 		if(siteType != null && !"".equals(siteType)){
-			toolSet = toolManager.findTools(new HashSet<String>(Arrays.asList(siteType)), null);
+			toolSet = toolManager.findTools(new HashSet<String>(Arrays.asList(siteType)), null, null);
 		}
 		if(toolSet.size() == 0){
 			toolsList = serverConfigurationService.getStrings(DelegatedAccessConstants.PROP_TOOL_LIST);
@@ -186,7 +186,7 @@ public class SakaiProxyImpl implements SakaiProxy {
 			}
 		}
 		if(toolSet.size() == 0){
-			toolSet = toolManager.findTools(new HashSet<String>(), null);
+			toolSet = toolManager.findTools(new HashSet<String>(), null, null);
 		}
 		//exclude tools
 		String[] excludedTools = serverConfigurationService.getStrings(DelegatedAccessConstants.PROP_TOOL_LIST_EXCLUDE);		
