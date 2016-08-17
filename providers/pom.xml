@@ -23,6 +23,7 @@
     <module>openldap</module>
     <module>sample</module>
     <module>unboundid</module>
+    <module>nyudirectory</module>
   </modules>
 
 

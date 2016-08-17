@@ -1,8 +1,6 @@
 package edu.nyu.classes.providers;
 
-import edu.amc.sakai.user.JLDAPDirectoryProvider;
-import edu.amc.sakai.user.LdapUserData;
-import com.novell.ldap.LDAPException;
+import org.sakaiproject.unboundid.UnboundidDirectoryProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +22,7 @@ import org.sakaiproject.user.api.UserFactory;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 
-public class NYUDirectoryProvider extends JLDAPDirectoryProvider
+public class NYUDirectoryProvider extends UnboundidDirectoryProvider
 {
     // In test mode, we'll always hit LDAP for user information and log warnings
     // if we get any sort of mismatch.  Intended to be used to check data

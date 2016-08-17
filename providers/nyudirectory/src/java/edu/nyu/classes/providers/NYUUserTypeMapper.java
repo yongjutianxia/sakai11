@@ -16,8 +16,8 @@
 
 package edu.nyu.classes.providers;
 
-import com.novell.ldap.LDAPAttribute;
-import com.novell.ldap.LDAPEntry;
+import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPAttribute;
+import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPEntry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,8 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import edu.amc.sakai.user.EntryAttributeToUserTypeMapper;
-import edu.amc.sakai.user.LdapAttributeMapper;
+import org.sakaiproject.unboundid.EntryAttributeToUserTypeMapper;
+import org.sakaiproject.unboundid.LdapAttributeMapper;
 
 /**
  * Extends EntryAttributeToUserTypeMapper to look to the database for overrides
