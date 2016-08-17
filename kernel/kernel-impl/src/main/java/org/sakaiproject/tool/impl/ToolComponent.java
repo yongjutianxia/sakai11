@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -320,6 +321,7 @@ public abstract class ToolComponent implements ToolManager
 			Site site = context.getSite();
 
 			if (site != null) {
+				List<String> subjects = convertToSubjectList(site.getProviderGroupId());
 				ResourceProperties siteProperties = site.getProperties();
 
                                 String unstealthSiteProperty = "unstealth_tools";
@@ -332,10 +334,45 @@ public abstract class ToolComponent implements ToolManager
 				return stealthStatus(tool, rules,
 						(String)siteProperties.get(SCHOOL_PROPERTY),
 						(String)siteProperties.get(DEPARTMENT_PROPERTY),
-						(String)siteProperties.get(LOCATION_PROPERTY));
+						(String)siteProperties.get(LOCATION_PROPERTY),
+						subjects);
 			}
 
 			return Ruling.UNKNOWN;
+		}
+
+		private List<String> convertToSubjectList(String providerList) {
+			if (providerList == null || "".equals(providerList)) {
+				return Collections.EMPTY_LIST;
+			}
+
+			List<String> result = new ArrayList<String>();
+
+			for (String rosterId : providerList.split("\\+")) {
+				int sep = rosterId.indexOf("_");
+				if (sep < 0) {
+					continue;
+				}
+
+				String withoutTerm = rosterId.substring(sep + 1);
+
+				sep = withoutTerm.indexOf("_");
+				if (sep >= 0) {
+					result.add(withoutTerm.substring(0, sep));
+				}
+			}
+
+			return result;
+		}
+
+		private boolean listsOverlap(List<String> list1, List<String> list2) {
+			for (String s : list1) {
+				if (list2.indexOf(s) >= 0) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private boolean inList(String needle, String commaSeparatedList) {
@@ -352,10 +389,10 @@ public abstract class ToolComponent implements ToolManager
 					commaSeparatedList.endsWith("," + needle));
 		}
 
-		private Ruling stealthStatus(Tool tool, String rules, String school, String department, String location) {
+		private Ruling stealthStatus(Tool tool, String rules, String school, String department, String location, List<String> subjects) {
 			for (String ruleStr : rules.trim().split(" *; *")) {
 				NYURule rule = new NYURule(ruleStr);
-				if (rule.matches(school, department, location)) {
+				if (rule.matches(school, department, location, subjects)) {
 					return rule.getOutcome();
 				}
 			}
@@ -367,6 +404,7 @@ public abstract class ToolComponent implements ToolManager
 			private String school;
 			private String department;
 			private String location;
+			private List<String> subjects = Collections.EMPTY_LIST;
 			private Ruling outcome;
 
 			private boolean ruleValid = true;
@@ -390,6 +428,10 @@ public abstract class ToolComponent implements ToolManager
 						this.department = value;
 					} else if ("location".equals(field)) {
 						this.location = value;
+					} else if ("subject".equals(field)) {
+						if (!"*".equals(value)) {
+							this.subjects = Arrays.asList(value.split(", ?"));
+						}
 					} else if ("outcome".equals(field)) {
 						if ("stealth".equals(value)) {
 							this.outcome = Ruling.STEALTH;
@@ -404,14 +446,15 @@ public abstract class ToolComponent implements ToolManager
 				}
 			}
 
-			public boolean matches(String school, String department, String location) {
+			public boolean matches(String school, String department, String location, List<String> subjects) {
 				if (!ruleValid) {
 					return false;
 				}
 
 				return (("*".equals(this.school) || inList(school, this.school)) &&
 						("*".equals(this.department) || inList(department, this.department)) &&
-						("*".equals(this.location) || inList(location, this.location)));
+						("*".equals(this.location) || inList(location, this.location)) &&
+						(this.subjects.isEmpty() || listsOverlap(subjects, this.subjects)));
 			}
 
 			public Ruling getOutcome() {
