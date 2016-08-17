@@ -39,12 +39,17 @@ public class GrouperSyncServiceImpl implements GrouperSyncService {
 
                     if (rs.next()) {
                         Date updateTime = rs.getDate("update_mtime", Calendar.getInstance());
+                        long updateTimeMs = 0;
+
+                        if (updateTime != null) {
+                            updateTimeMs = updateTime.getTime();
+                        }
 
                         result[0] = new GroupInfo(rs.getString("description"),
                                 rs.getString("group_id"),
                                 rs.getString("sakai_group_id"),
                                 SYNCED_STATUS.equals(rs.getString("status")),
-                                updateTime.getTime());
+                                updateTimeMs);
                     }
 
                     rs.close();
