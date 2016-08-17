@@ -51,6 +51,10 @@ class GroupView implements Comparable<GroupView> {
         return groupInfo.getStatus().getLabel();
     }
 
+    public String getLastSyncLabel() {
+        return groupInfo.getLastSyncLabel();
+    }
+
     public String getAddress() {
         if (groupInfo.getGrouperId() != null) {
             return AddressFormatter.format(groupInfo.getGrouperId());

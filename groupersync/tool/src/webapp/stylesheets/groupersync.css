@@ -53,7 +53,12 @@ h3 {
 }
 
 .group-description {
+    margin-bottom: 0.5em;
+}
+
+.last-sync-indicator {
     margin-bottom: 1em;
+    color: #777;
 }
 
 .clipboard-help-text {

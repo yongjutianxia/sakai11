@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class GrouperSyncServiceImpl implements GrouperSyncService {
         try {
             DB.connection(new DBAction() {
                 public void execute(Connection connection) throws SQLException {
-                    PreparedStatement ps = connection.prepareStatement("select ggd.group_id, ggd.sakai_group_id, ggd.description, gss.status" +
+                    PreparedStatement ps = connection.prepareStatement("select ggd.group_id, ggd.sakai_group_id, ggd.description, gss.status, gss.update_mtime" +
                             " from grouper_group_definitions ggd" +
                             " inner join grouper_sync_status gss on gss.group_id = ggd.group_id" +
                             " where ggd.sakai_group_id = ? AND ggd.deleted != 1");
@@ -37,10 +38,13 @@ public class GrouperSyncServiceImpl implements GrouperSyncService {
                     ResultSet rs = ps.executeQuery();
 
                     if (rs.next()) {
+                        Date updateTime = rs.getDate("update_mtime", Calendar.getInstance());
+
                         result[0] = new GroupInfo(rs.getString("description"),
                                 rs.getString("group_id"),
                                 rs.getString("sakai_group_id"),
-                                SYNCED_STATUS.equals(rs.getString("status")));
+                                SYNCED_STATUS.equals(rs.getString("status")),
+                                updateTime.getTime());
                     }
 
                     rs.close();
