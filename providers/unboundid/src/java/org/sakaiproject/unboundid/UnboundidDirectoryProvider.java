@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.security.GeneralSecurityException;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,8 @@ import com.unboundid.ldap.sdk.SimpleBindRequest;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPEntry;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPException;
+import com.unboundid.util.ssl.SSLUtil;
+import com.unboundid.util.ssl.TrustAllTrustManager;
 
 /**
  * <p>
@@ -219,7 +223,22 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 
 		// Create a new LDAP connection pool with 10 connections spanning multiple
 		// servers using a server set.
-		RoundRobinServerSet serverSet = new RoundRobinServerSet(ldapHost, ldapPort);
+		RoundRobinServerSet serverSet = null;
+
+		if (isSecureConnection()) {
+			try {
+				SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
+				SSLSocketFactory sslSocketFactory = sslUtil.createSSLSocketFactory();
+
+				serverSet = new RoundRobinServerSet(ldapHost, ldapPort, sslSocketFactory);
+			} catch (GeneralSecurityException ex) {
+				M_log.error("Error while initializing LDAP SSLSocketFactory");
+				throw new RuntimeException(ex);
+			}
+		} else {
+			serverSet = new RoundRobinServerSet(ldapHost, ldapPort);
+		}
+
 		SimpleBindRequest bindRequest = new SimpleBindRequest(ldapUser, ldapPassword);
 		try {
 			connectionPool = new LDAPConnectionPool(serverSet, bindRequest, 10);
