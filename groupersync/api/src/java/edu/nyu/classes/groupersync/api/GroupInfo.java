@@ -1,5 +1,10 @@
 package edu.nyu.classes.groupersync.api;
 
+import org.sakaiproject.time.cover.TimeService;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class GroupInfo {
 
     private final GroupStatus status;
@@ -52,10 +57,33 @@ public class GroupInfo {
     }
 
     public String getLastSyncLabel() {
-        return formatDuration(System.currentTimeMillis() - this.lastSyncTime);
+        if ((System.currentTimeMillis() - this.lastSyncTime) < (24 * 60 * 60 * 1000)) {
+            return formatDuration(System.currentTimeMillis() - this.lastSyncTime);
+        } else {
+            return formatDate(this.lastSyncTime);
+        }
     }
 
-    static String formatDuration(long msDuration) {
+    private static String formatDate(long dateMs) {
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM dd 'at' h:mm a");
+        Date date = new Date(dateMs);
+
+        Calendar now = Calendar.getInstance();
+        Calendar then = Calendar.getInstance();
+        then.setTime(date);
+
+        if (now.get(Calendar.YEAR) != then.get(Calendar.YEAR)) {
+            // Include the year if it's not the current year
+            fmt = new SimpleDateFormat("MMM dd, yyyy 'at' h:mm a");
+        }
+
+        // Adjust for the user's timezone
+        fmt.setTimeZone(TimeService.getLocalTimeZone());
+
+        return fmt.format(date);
+    }
+
+    private static String formatDuration(long msDuration) {
         String[] units = new String[] {"day", "hour", "minute", "second"};
         long[] secondsPerUnit = new long[] { (24 * 60 * 60), (60 * 60), 60, 1 };
 
@@ -82,7 +110,7 @@ public class GroupInfo {
             }
         }
 
-        return sb.toString();
+        return sb.toString() + " ago";
     }
 
     public enum GroupStatus {

@@ -38,7 +38,7 @@ public class GrouperSyncServiceImpl implements GrouperSyncService {
                     ResultSet rs = ps.executeQuery();
 
                     if (rs.next()) {
-                        Date updateTime = rs.getDate("update_mtime", Calendar.getInstance());
+                        Date updateTime = rs.getTimestamp("update_mtime", Calendar.getInstance());
                         long updateTimeMs = 0;
 
                         if (updateTime != null) {
