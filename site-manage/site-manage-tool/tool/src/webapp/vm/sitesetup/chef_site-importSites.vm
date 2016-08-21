@@ -51,7 +51,10 @@
 			<table class ="table table-bordered table-hover table-striped"  summary="$tlang.getString("import.choose.list.summary")" >
 				<tr>
 					<th>
-						&nbsp;
+						<label>
+							<input type="checkbox" class="import-sites-tool-toggle"/>
+							$validator.escapeHtml($site.getTitle())
+						</label>
 					</th>
 					#foreach($site in $importSites.keys())
 						<th>
