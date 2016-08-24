@@ -432,3 +432,11 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 .external-news:before {
   content: '\f1ea' !important;
 }
+
+/* PA System */
+.pasystem-banner-alert-toggle-list-item {
+  top: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border: none !important;
+}

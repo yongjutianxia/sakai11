@@ -127,7 +127,7 @@ PASystemBannerAlerts.prototype.setupAlertBannerToggle = function() {
   }
 
   self.$toggle.hide();
-  $("#loginLinks").prepend(self.$toggle);
+  $("header.Mrphs-headerLogo").append(self.$toggle);
 
   self.$toggle.on("click", function(event) {
     event.preventDefault();
