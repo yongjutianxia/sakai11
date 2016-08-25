@@ -273,8 +273,14 @@ $footer-color: #414141;
 }
 .#{$namespace}topHeader .#{$namespace}loginNav {
   position: absolute;
-  top: 0;
+  top: 12px;
   right: 0;
+}
+#mastLogin .no-avatar {
+  padding-top: 1.4em !important;
+}
+#mastLogin .has-avatar .Mrphs-userNav__submenuitem--username {
+  top: 0.5em !important;
 }
 .#{$namespace}siteHierarchy {
   box-shadow: none !important;
