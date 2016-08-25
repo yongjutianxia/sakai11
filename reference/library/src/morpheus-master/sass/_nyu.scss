@@ -339,6 +339,10 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   #subSites ul li {
     border-bottom: 1px solid #F0F0F0;
   }
+  #toolMenu ul li a.is-invisible:after,
+  #subSites ul li a.is-invisible:after {
+    top: 13px !important;
+  }
   .#{$namespace}collapseTools {
     height: 30px !important;
   }
