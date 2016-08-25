@@ -329,7 +329,8 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   #toolMenu ul li a,
   #subSites ul li a {
     border-left: 4px solid transparent;
-    border-bottom: none!important;
+    border-bottom: none !important;
+    font-size: 0.9em !important;
   }
   #toolMenu ul li a > span,
   #subSites ul li a > span{
