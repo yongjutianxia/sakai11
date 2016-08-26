@@ -327,7 +327,8 @@ public abstract class ToolComponent implements ToolManager
                                 String unstealthSiteProperty = "unstealth_tools";
 				// Rules are overriden by a site property
 				if (siteProperties.get(unstealthSiteProperty) != null &&
-						inList(tool.getId(), (String) siteProperties.get(unstealthSiteProperty))) {
+						inList(tool.getId(),
+							((String) siteProperties.get(unstealthSiteProperty)).replace(" ", ""))) {
 					return Ruling.VISIBLE;
 				}
 
