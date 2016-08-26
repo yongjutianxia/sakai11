@@ -4,6 +4,9 @@ public class UserWithRole {
     private final String username;
     private final String role;
 
+    public final static String MANAGER = "manager";
+    public final static String VIEWER = "viewer";
+
     public UserWithRole(String username, String role) {
         this.username = username;
         this.role = normalizeRole(role);
@@ -38,26 +41,26 @@ public class UserWithRole {
     }
 
     private String normalizeRole(String role) {
-        if ("manager".equals(role) || "viewer".equals(role)) {
+        if (MANAGER.equals(role) || VIEWER.equals(role)) {
             // Already fine!
             return role;
         }
 
         if (role == null) {
-            return "viewer";
+            return VIEWER;
         }
 
         if (role.toLowerCase().equals("instructor") || role.toLowerCase().equals("i") ||
                 role.toLowerCase().equals("course site admin") || role.toLowerCase().equals("a") ||
                 role.toLowerCase().equals("maintain")) {
             // startsWith here because the CM API uses "I" and Sakai uses "Instructor".
-            return "manager";
+            return MANAGER;
         } else {
-            return "viewer";
+            return VIEWER;
         }
     }
 
     public boolean isMorePowerfulThan(UserWithRole other) {
-        return "manager".equals(role) && !"manager".equals(other.getRole());
+        return MANAGER.equals(role) && !MANAGER.equals(other.getRole());
     }
 }

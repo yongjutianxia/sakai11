@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,19 @@ class SiteGroupReader {
 
                         members.add(new UserWithRole(userId, role));
                         seenUsers.add(userId);
+                    }
+                }
+            }
+
+            if (!site.isPublished()) {
+                // For sites that aren't published, we only want to sync instructors
+                Iterator<UserWithRole> it = members.iterator();
+
+                while (it.hasNext()) {
+                    UserWithRole member = it.next();
+
+                    if (!member.getRole().equals(UserWithRole.MANAGER)) {
+                        it.remove();
                     }
                 }
             }
