@@ -126,10 +126,11 @@ ${includeLatestJQuery}
 			<img src="/basiclti-admin-tool/addons/pager/icons/next.png" class="next" alt="Next" />
 			<img src="/basiclti-admin-tool/addons/pager/icons/last.png" class="last" alt="Last" />
 			<select class="pagesize">
-				<option selected="selected" value="10">10</option>
-				<option value="20">20</option>
-				<option value="30">30</option>
-				<option value="40">40</option>
+				<option selected="selected" value="100">100</option>
+				<option value="200">200</option>
+				<option value="300">300</option>
+				<option value="400">400</option>
+				<option value="500">500</option>
 			</select>
 		</div>
 		<table id="tools_system" class="tablesorter" cellspacing="0" summary ="$tlang.getString("deploy.table")">
