@@ -59,6 +59,7 @@ h3 {
 .last-sync-indicator {
     margin-bottom: 1em;
     color: #777;
+    display: none;
 }
 
 .clipboard-help-text {
