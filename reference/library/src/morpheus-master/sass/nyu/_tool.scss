@@ -436,3 +436,13 @@ body {
     @extend .select;
   }
 }
+
+.icon-nyu-brightclass:before {
+    content: '';
+    background-image: url('images/brightclass-icon.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    width: 16px;
+    height: 16px;
+    display: block
+}

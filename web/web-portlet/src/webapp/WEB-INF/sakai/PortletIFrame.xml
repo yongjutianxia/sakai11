@@ -152,6 +152,30 @@
 
     </tool>
 
+    <tool id="nyu.brightclass"
+          title="BrightClass"
+          description="BrightClass">
 
+      <configuration name="sakai.properties.url.key" value="nyu.brightclass.url" />
+      <configuration name="height" value="800px" />
+      <configuration name="reset.button" value="false" type="final" />
+      <configuration name="hide.options" value="false" />
+      <configuration name="custom" value="true" />
+
+      <!-- We do want this site to load in a new window, butwe set
+           this to false because the X-Frame-Options delivered
+           by Google Sites will force the code to create a popup
+           anyway... -->
+      <configuration name="popup" value="false" />
+
+      <category name="course" />
+      <category name="project" />
+      <category name="portfolio" />
+      <category name="myworkspace" />
+
+      <!-- Allow this to be set -->
+      <configuration name="functions.require" /> 
+
+    </tool>
 
 </registration>
