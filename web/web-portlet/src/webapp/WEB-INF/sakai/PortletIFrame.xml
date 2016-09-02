@@ -162,7 +162,7 @@
       <configuration name="hide.options" value="false" />
       <configuration name="custom" value="true" />
 
-      <configuration name="popup" value="true" />
+      <configuration name="popup" value="false" />
 
       <category name="course" />
       <category name="project" />
