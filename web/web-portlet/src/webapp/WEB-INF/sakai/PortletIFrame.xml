@@ -162,11 +162,7 @@
       <configuration name="hide.options" value="false" />
       <configuration name="custom" value="true" />
 
-      <!-- We do want this site to load in a new window, butwe set
-           this to false because the X-Frame-Options delivered
-           by Google Sites will force the code to create a popup
-           anyway... -->
-      <configuration name="popup" value="false" />
+      <configuration name="popup" value="true" />
 
       <category name="course" />
       <category name="project" />
