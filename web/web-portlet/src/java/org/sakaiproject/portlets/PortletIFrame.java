@@ -335,8 +335,16 @@ public class PortletIFrame extends GenericPortlet {
 				}
 			}
 
-			boolean popup = "true".equals(placement.getPlacementConfig().getProperty(POPUP));
 			boolean maximize = "true".equals(placement.getPlacementConfig().getProperty(MAXIMIZE));
+			boolean popup = false;
+
+			// NYU FIX: "popup" was being ignored in PortletIFrame.xml.
+			if (placement.getPlacementConfig().getProperty(POPUP) == null) {
+			    // Take the PortletIFrame.xml value
+			    popup = "true".equals(config.getProperty(POPUP));
+			} else {
+			    popup = "true".equals(placement.getPlacementConfig().getProperty(POPUP));
+			}
 
             // set the pass_pid parameter
             String passPidStr = config.getProperty(PASS_PID, "false");
