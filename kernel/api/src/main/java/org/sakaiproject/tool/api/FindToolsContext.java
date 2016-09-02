@@ -25,6 +25,12 @@ import org.sakaiproject.site.api.Site;
 
 public class FindToolsContext {
     private Site site = null;
+    private boolean showAllTools = false;
+
+    public FindToolsContext showAllTools() {
+        showAllTools = true;
+        return this;
+    }
 
     public FindToolsContext site(Site site) {
         this.site = site;
@@ -34,4 +40,9 @@ public class FindToolsContext {
     public Site getSite() {
         return site;
     }
+
+    public boolean shouldShowAllTools() {
+        return showAllTools;
+    }
+
 }

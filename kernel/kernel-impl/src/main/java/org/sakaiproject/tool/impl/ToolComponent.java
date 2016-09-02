@@ -312,6 +312,10 @@ public abstract class ToolComponent implements ToolManager
 				return Ruling.UNKNOWN;
 			}
 
+                        if (context.shouldShowAllTools()) {
+                            return Ruling.VISIBLE;
+                        }
+
 			String rules = HotReloadConfigurationService.getString("stealth-policy." + tool.getId(), null);
 
 			if (rules == null) {
