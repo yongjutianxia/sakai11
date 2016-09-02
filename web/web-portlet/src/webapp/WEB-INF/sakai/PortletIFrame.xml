@@ -152,11 +152,11 @@
 
     </tool>
 
-    <tool id="nyu.brightclass"
-          title="BrightClass"
-          description="BrightClass">
+    <tool id="nyu.briteclass"
+          title="BriteClass"
+          description="BriteClass">
 
-      <configuration name="sakai.properties.url.key" value="nyu.brightclass.url" />
+      <configuration name="sakai.properties.url.key" value="nyu.briteclass.url" />
       <configuration name="height" value="800px" />
       <configuration name="reset.button" value="false" type="final" />
       <configuration name="hide.options" value="false" />
