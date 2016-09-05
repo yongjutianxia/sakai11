@@ -1,78 +1,77 @@
 /* Handle floating "collapse tool menu" button */
 (function (exports, $) {
 
-    function ElementFloater(element) {
+    function ElementFloater(targetElement) {
         var self = this;
 
-        this.element = element;
-        this.floating_element = undefined;
-        this.previous_visibility = undefined;
+        this.targetElement = targetElement;
+        this.floatingElement = undefined;
+        this.previousVisibility = undefined;
 
         $(window).on('DOMContentLoaded load resize scroll', function () {
-            self._handle_visibility_change();
+            self._handleVisibilityChange();
         });
 
-        this._handle_visibility_change();
+        this._handleVisibilityChange();
     }
 
-    ElementFloater.prototype._handle_visibility_change = function () {
-        var visible = isElementInViewport(this.element);
+    ElementFloater.prototype._handleVisibilityChange = function () {
+        var visible = isElementInViewport(this.targetElement);
 
-        if (visible !== this.previous_visibility) {
-            this.previous_visibility = visible;
+        if (visible !== this.previousVisibility) {
+            this.previousVisibility = visible;
 
             if (visible) {
-                this._dock_element();
+                this._dockElement();
             } else {
-                this._float_element();
+                this._floatElement();
             }
         }
     };
 
-    ElementFloater.prototype._dock_element = function () {
-        if (this.floating_element) {
-            $(this.floating_element).remove();
-            this.floating_element = undefined;
+    ElementFloater.prototype._dockElement = function () {
+        if (this.floatingElement) {
+            $(this.floatingElement).remove();
+            this.floatingElement = undefined;
         }
     };
 
-    ElementFloater.prototype._float_element = function () {
+    ElementFloater.prototype._floatElement = function () {
         /* Start by removing any previous floating element so we never end up with two :) */
-        this._dock_element();
+        this._dockElement();
 
-        this.floating_element = $('<div class="floatingToolMenu" />');
-        this.floating_element.css({
+        this.floatingElement = $('<div class="floatingToolMenu" />');
+        this.floatingElement.css({
             position: 'fixed',
             left: 0,
             bottom: 0,
-            width: $(this.element).outerWidth(),
+            width: $(this.targetElement).outerWidth(),
         });
 
-        var list = $('<ul>').append($(this.element).clone(true));
-        this.floating_element.append(list);
+        var list = $('<ul>').append($(this.targetElement).clone(true));
+        this.floatingElement.append(list);
 
         var self = this;
-        this.floating_element.on('click', function () {
-            self.previous_visibility = undefined;
-            self._handle_visibility_change();
+        this.floatingElement.on('click', function () {
+            self.previousVisibility = undefined;
+            self._handleVisibilityChange();
         });
 
-        $('body').append(this.floating_element);
+        $('body').append(this.floatingElement);
     };
 
     function isElementInViewport(el) {
         var rect = el.getBoundingClientRect();
 
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+        return (rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth));
     }
 
     exports.ElementFloater = ElementFloater;
 }(window, jQuery));
+
 
 jQuery(function () {
     var collapse = $('.Mrphs-collapseTools');
