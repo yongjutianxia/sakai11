@@ -452,3 +452,32 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
   border-top-right-radius: 0 !important;
   border: none !important;
 }
+
+/* Change the way we show the role switch link.  Unfortunately that link is an
+   <li> tag, so we have to pull some trickery to make it look like it isn't a list
+   item. */
+#roleSwitch  {
+    background-color: #3698DB !important;
+    border: 0 !important;
+    position: absolute;
+    top: 20px;
+    right: 280px;
+    list-style: none;
+    line-height: 1;
+}
+
+#roleSwitch p {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+}
+
+#roleSwitch a {
+    color: white !important;
+    min-height: 0 !important;
+    padding: 5px !important;
+}
+
+#roleSwitch .Mrphs-toolsNav__menuitem--icon {
+    display: none !important;
+}
