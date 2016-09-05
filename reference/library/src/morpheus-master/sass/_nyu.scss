@@ -316,6 +316,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     -webkit-flex-basis: 240px !important;
     flex-basis: 240px !important;
     text-align: left !important;
+    margin-bottom: 2em !important;
   }
   #toolMenuWrap .#{$namespace}collapseTools.js-toggle-nav {
     border-right-color: transparent;

@@ -131,6 +131,8 @@
 
         <script type="text/javascript" src="${pageScriptPath}settings-renamer.js$!{portalCDNQuery}"></script>
 
+        <script type="text/javascript" src="$!{portalCDNPath}/portal/scripts/floating-tool-menu-collapse.js$!{portalCDNQuery}"></script>
+
         #if ( $tutorial && $loggedIn )
             <script>$(document).ready(function(){startTutorial({'showTutorialLocationOnHide': 'true'});});</script>
         #end ## END of IF ( $tutorial && $loggedIn )

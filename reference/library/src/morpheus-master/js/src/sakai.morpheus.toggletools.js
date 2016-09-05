@@ -9,8 +9,6 @@ function toggleMinimizeNav(){
   var el = $PBJQ(this);
   var label = $PBJQ('.accessibility-btn-label' , el);
 
-  el.toggleClass('min max');
-
   if (label.text() == el.data("title-expand")) {
     label.text(el.data("text-original"));
     el.attr('title', (el.data("text-original")));
