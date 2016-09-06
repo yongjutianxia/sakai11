@@ -371,6 +371,10 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   }
   #linkNav {
     padding: 0 6px;
+
+    ul li.#{$namespace}sitesNav__menuitem ul {
+      border-top-color: #FFF !important;
+    }
   }
   //#linkNav ul.#{$namespace}sitesNav__submenu li a {
   //  border: none !important;
