@@ -318,6 +318,14 @@ nav#subSites{
 }
 
 
+.#{$namespace}collapseTools {
+	display: none !important;
+}
+
 .floatingToolMenu {
-	border-top: 2px solid darken( $tool-menu-background-color, 10% )
+	background-color: #F6F6F6 !important;
+	border-top: 2px solid darken( $tool-menu-background-color, 10% );
+	color: black !important;
+	display: inline-block !important;
+	text-align: right;
 }
