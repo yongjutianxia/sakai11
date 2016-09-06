@@ -4,7 +4,7 @@
     <parent>
         <artifactId>scormcloud-service-base</artifactId>
         <groupId>org.sakaiproject.scormcloudservice</groupId>
-        <version>11.0</version>
+        <version>11.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <name>scormcloud-service-pack</name>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.sakaiproject.scormcloudservice</groupId>
             <artifactId>scormcloud-service-impl</artifactId>
-            <version>11.0</version>
+            <version>11.1</version>
         </dependency>
     </dependencies>
     <build>
