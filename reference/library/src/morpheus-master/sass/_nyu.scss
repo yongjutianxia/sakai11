@@ -226,6 +226,8 @@ $footer-color: #414141;
 }
 .#{$namespace}mainHeader{
   .#{$namespace}headerLogo{
+    width: 240px !important;
+
     .#{$namespace}headerLogo--institution{
       background-image: none !important;
     }
@@ -287,6 +289,10 @@ $footer-color: #414141;
   border-top: 1px solid #EAEAEA;
   border-bottom: 1px solid #E6E6E6;
   //box-shadow: 0 1px 2px #CCC, 0 -1px 1px #EAEAEA !important
+
+  a.Mrphs-hierarchy--toolName {
+    margin-left: 4px !important;
+  }
 }
 .#{$namespace}mainContent{
   border-bottom: 1px solid #EEE;
@@ -322,6 +328,9 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     border-right-color: transparent;
     background-color: transparent;
     border-bottom-color: #F0F0F0;
+  }
+  #linkNav {
+    padding: 0 6px;
   }
   //#linkNav ul.#{$namespace}sitesNav__submenu li a {
   //  border: none !important;
