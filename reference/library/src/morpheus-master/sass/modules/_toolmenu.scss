@@ -328,4 +328,8 @@ nav#subSites{
 	color: black !important;
 	display: inline-block !important;
 	text-align: right;
+
+	@media #{$phone}{
+		display: none !important;
+	}
 }
