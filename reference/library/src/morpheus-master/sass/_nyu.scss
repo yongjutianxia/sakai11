@@ -226,7 +226,12 @@ $footer-color: #414141;
 }
 .#{$namespace}mainHeader{
   .#{$namespace}headerLogo{
-    width: 240px !important;
+    @media #{$nonPhone} {
+      width: 240px !important;
+    }
+    @media #{$phone} {
+      width: 160px !important;
+    }
 
     .#{$namespace}headerLogo--institution{
       background-image: none !important;
@@ -264,8 +269,8 @@ $footer-color: #414141;
   .#{$namespace}mainHeader{
     .#{$namespace}headerLogo{
       .#{$namespace}headerLogo--institution:before{
-        font-size: 45px;
-        line-height: 35px;
+        font-size: 44px;
+        line-height: 44px;
       }
     }
   }
@@ -275,14 +280,49 @@ $footer-color: #414141;
 }
 .#{$namespace}topHeader .#{$namespace}loginNav {
   position: absolute;
-  top: 12px;
+  top: 18px;
   right: 0;
+
+  @media #{$phone} {
+    top: 6px;
+    margin-right: 0px !important;
+  }
+}
+#loginLinks, .view-all-sites-btn {
+  display: table-cell !important;
+  vertical-align: middle;
+}
+.view-all-sites-btn {
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+#loginUser {
+  display: table-cell !important;
+  padding: 0 8px !important;
+
+  & > a {
+    display: table-cell !important;
+    vertical-align: middle;
+    position: initial !important;
+    padding: 0 4px;
+  }
 }
 #mastLogin .no-avatar {
-  padding-top: 1.4em !important;
-}
-#mastLogin .has-avatar .Mrphs-userNav__submenuitem--username {
-  top: 0.5em !important;
+  text-decoration: none !important;
+
+  &::after {
+    float: right;
+  }
+
+  .#{$namespace}userNav__submenuitem--username,
+  .#{$namespace}userNav__submenuitem--userid {
+    padding-top: 5px;
+  }
+
+  @media #{$phone} {
+    top: 6px;
+  }
 }
 .#{$namespace}siteHierarchy {
   box-shadow: none !important;
@@ -456,10 +496,24 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 
 /* PA System */
 .pasystem-banner-alert-toggle-list-item {
-  top: 0 !important;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border: none !important;
+
+  @media #{$nonPhone} {
+    top: 0 !important;
+    padding: 0px 8px !important;
+  }
+  @media #{$phone} {
+    top: 0 !important;
+    left: auto !important;
+    right: 80px !important;
+    padding: 0 !important;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
 }
 
 /* Change the way we show the role switch link.  Unfortunately that link is an
