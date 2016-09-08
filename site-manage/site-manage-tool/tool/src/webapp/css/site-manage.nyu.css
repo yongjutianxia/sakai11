@@ -119,6 +119,7 @@
   background-image: url(/library/skin/new-york-u/images/warn-a.gif);
   border: none;
   line-height: 16px;
+  margin-top: 0;
 }
 #multipleSectionsWarningDialog .course-listing {
   max-height: 120px;
