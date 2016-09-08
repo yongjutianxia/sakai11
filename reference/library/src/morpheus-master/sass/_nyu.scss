@@ -242,8 +242,24 @@ $footer-color: #414141;
       color: #FFFFFF;
       font-size: 70px;
       line-height: 60px;
+      height: 60px;
+      display: block;
+
+      @media #{$phone} {
+        height: auto;
+      }
     }
   }
+}
+.portletBody {
+  // some morpheus elements are sometimes clipped :?(
+  // so we need some padding/margin
+  padding: 0 14px !important;
+  margin: 6px 0 0 0 !important;
+}
+.#{$namespace}container--toolTitleNav {
+  // so container header lines up with the container body
+  padding: 0.5em 14px !important;
 }
 ##{$namespace}xlogin{
   top: 20% !important;
@@ -280,7 +296,7 @@ $footer-color: #414141;
 }
 .#{$namespace}topHeader .#{$namespace}loginNav {
   position: absolute;
-  top: 18px;
+  top: 14px;
   right: 0;
 
   @media #{$phone} {
@@ -328,6 +344,7 @@ $footer-color: #414141;
   box-shadow: none !important;
   border-top: 1px solid #EAEAEA;
   border-bottom: 1px solid #E6E6E6;
+  padding: 0.5em 0 0.5em 1em !important;
   //box-shadow: 0 1px 2px #CCC, 0 -1px 1px #EAEAEA !important
 
   a.Mrphs-hierarchy--toolName {
