@@ -70,7 +70,13 @@ public class IFrameToolRenderService implements ToolRenderService
 			ServletContext context) throws IOException, ToolRenderException
 	{
 
-		final String titleString = Web.escapeHtml(configuration.getTitle());
+		// CLASSES-2281
+		String initialTitleString = Web.escapeHtml(configuration.getTitle());
+		if (initialTitleString.equalsIgnoreCase("Message of the day")) {
+			initialTitleString = "NYU Classes Info";
+		}
+		final String titleString = initialTitleString;
+
 		String toolUrl = ServerConfigurationService.getToolUrl() + "/"
 				+ Web.escapeUrl(configuration.getId());
 		StoredState ss = portalService.getStoredState();
