@@ -3821,6 +3821,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		sstate.setAttribute(STATE_CURRENT_SORTED_BY, getCurrentOrder());
 		//sstate.setAttribute(STATE_CURRENT_SORT_ASC, Boolean.FALSE);
 
+
 		sstate.setAttribute(STATE_CURRENT_SORT_ASC, state.getCurrentSortAsc());
 		
 		// we are done with customization... back to the main (list) mode

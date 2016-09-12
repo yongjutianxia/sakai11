@@ -1,3 +1,16 @@
+(function (exports) {
+    "use strict";
+
+    exports.ModalHelper = {};
+
+    exports.ModalHelper.modal = function (elt, action) {
+        elt.css('position', 'absolute')
+           .css('top', window.parent.scrollY + 'px');
+
+        return elt.modal(action);
+    }
+}(this));
+
 // Auto populate address based on description
 (function (exports) {
     "use strict";
@@ -217,7 +230,7 @@
 
         $('#modal-area .modal-body').empty().append(template);
         $('#modal-area .modal-title').html('Create new Google Group');
-        $('#modal-area').modal();
+        ModalHelper.modal($('#modal-area'));
 
         $('#modal-area').on('shown.bs.modal', function () {
             resizeFrame();
@@ -259,7 +272,7 @@
 
         $('#modal-area .modal-body').empty().append(template);
         $('#modal-area .modal-title').html('Edit Google Group');
-        $('#modal-area').modal();
+        ModalHelper.modal($('#modal-area'));
 
         $('#modal-area').on('shown.bs.modal', function () {
             resizeFrame();
@@ -298,7 +311,7 @@
 
         $('#modal-area .modal-body').empty().append(container);
         $('#modal-area .modal-title').html('Member list');
-        $('#modal-area').modal();
+        ModalHelper.modal($('#modal-area'));
 
         $('#modal-area').on('shown.bs.modal', resizeFrame);
     };
@@ -447,9 +460,7 @@
             $modal.find('.cancel-btn').focus();
         });
 
-        $modal.modal("show");
-
-
+        ModalHelper.modal($modal, "show");
     };
 
 
