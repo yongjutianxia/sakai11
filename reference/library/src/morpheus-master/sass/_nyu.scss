@@ -99,7 +99,7 @@ $error-background-color:    #f2dede;
 $error-color:               darken($error-color, 30%);
 
 $swapped-view-primary: 		 #57068C;
-$swapped-view-text-color:        #2A94C0;
+$swapped-view-text-color:        $text-color;
 
 /* This is the gradient in the header of the page */
 $header-gradient-a: #EEE8F4;
