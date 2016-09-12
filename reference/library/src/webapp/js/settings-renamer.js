@@ -11,16 +11,13 @@ function renameSettingsToJoinable(title) {
 
 
 var findSettingsMenuLink = function () {
-    var result = undefined;
+    var elt = $('.icon-sakai-siteinfo').closest('.Mrphs-toolsNav__menuitem--link');
 
-    $('.Mrphs-toolsNav__menuitem--link').each (function (idx, link) {
-        var title = $(link).find('.Mrphs-toolsNav__menuitem--title');
-        if (title.text() === OLD_TOOL_LABEL) {
-            result = link;
-        }
-    });
-
-    return result;
+    if (elt.length > 0) {
+        return elt;
+    } else {
+        return undefined;
+    }
 };
 
 var switchToJoinableGroups = function (link) {
