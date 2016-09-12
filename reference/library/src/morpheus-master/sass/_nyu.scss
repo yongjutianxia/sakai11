@@ -439,6 +439,23 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     //box-shadow: none;
     border: none;
   }
+  #toolMenuWrap {
+    padding-top: 4px;
+  }
+  body.toolsNav--displayed #toolMenu ul li,
+  body.toolsNav--displayed ul#subSites ul li {
+    width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    display: block !important;
+  }
+  #toolMenu ul li a,
+  #subSites ul li a,
+  .floatingToolMenu ul li a {
+    text-align: left !important;
+    padding: 10px 20px !important;
+    height: auto !important;
+  }
 }
 /* Any cancel buttons should be styled as secondary buttons */
 /* The world isn't ready for this yet...
