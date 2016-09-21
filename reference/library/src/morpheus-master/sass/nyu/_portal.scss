@@ -1,0 +1,770 @@
+// --------------------------------------------------------------------------------------------------------------------
+//  Links
+// --------------------------------------------------------------------------------------------------------------------
+body a[href] {
+  text-decoration: $nyu-link-decoration;
+
+  &:hover {
+    text-decoration: $nyu-link-hover-decoration;
+  }
+}
+// --------------------------------------------------------------------------------------------------------------------
+//  Banner/Logo Header
+// --------------------------------------------------------------------------------------------------------------------
+.#{$namespace}mainHeader{
+  .#{$namespace}headerLogo{
+    height: $nyu-header-height;
+    background-color: $nyu-header-background;
+    padding: 0 !important;
+
+    @media #{$nonPhone} {
+      width: 100% !important;
+      justify-content: flex-start !important;
+      border-bottom: $nyu-divider-width solid $nyu-divider-color;
+    }
+    @media #{$phone} {
+      width: 160px !important;
+    }
+
+    .#{$namespace}headerLogo--institution{
+      background-image: none !important;
+    }
+    .#{$namespace}headerLogo--institution:before{
+      font-family: 'nyu-classes-icons';
+      content: '\e000';
+      color: $nyu-header-logo-color;
+      font-size: $nyu-header-logo-text-size;
+      line-height: 52px;
+      height: 52px;
+      display: block;
+      padding: $nyu-header-logo-padding;
+
+      @media #{$phone} {
+        height: auto;
+        padding-left: 10px;
+      }
+    }
+  }
+}
+@media #{$phone} {
+  .#{$namespace}mainHeader{
+    .#{$namespace}headerLogo{
+      .#{$namespace}headerLogo--institution:before{
+        font-size: 44px;
+        line-height: 44px;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Top Banner Actions
+// --------------------------------------------------------------------------------------------------------------------
+.is-maximized {
+  #loginLinks {
+    border-color: $nyu-header-menu-divider-color !important;
+  }
+}
+#loginLinks, .view-all-sites-btn {
+  display: table-cell !important;
+  vertical-align: middle;
+
+  a:hover i, a:active i {
+    text-shadow: none !important;
+  }
+}
+.view-all-sites-btn {
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+#loginUser {
+  display: table-cell !important;
+  padding: 0 8px !important;
+
+  & > a {
+    display: table-cell !important;
+    vertical-align: middle;
+    position: initial !important;
+    padding: 0 4px;
+  }
+}
+#mastLogin {
+  margin: $nyu-header-menu-padding;
+  font-size: $nyu-header-menu-text-size;
+
+  @media #{$nonPhone} {
+    margin-top: -40px !important;
+  }
+
+  #loginForm {
+    border-left-color: red;
+
+    label {
+      color: $text-color !important;
+    }
+    input[type="text"], input[type="password"], input[type="email"] {
+     border: 1px solid #CCC !important;
+    }
+  }
+  .no-avatar {
+    text-decoration: none !important;
+
+    &::after {
+      float: right;
+    }
+
+    .#{$namespace}userNav__submenuitem--username,
+    .#{$namespace}userNav__submenuitem--userid {
+      padding-top: 5px;
+    }
+
+    @media #{$phone} {
+      top: 6px;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Login
+// --------------------------------------------------------------------------------------------------------------------
+##{$namespace}xlogin{
+  top: 20% !important;
+  left: calc(50% - 15em) !important;
+  width: 30em !important;
+  h1 {
+    display: none;
+  }
+  .logo {
+    background-image: none !important;
+    background-color: #FFFFFF !important;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $nyu-divider-color;
+  }
+  .logo:before{
+    font-family: 'nyu-classes-icons';
+    content: '\e000';
+    color: $nyu-purple;
+    font-size: 70px;
+    line-height: 60px;
+  }
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Favorite Sites Navigation
+// --------------------------------------------------------------------------------------------------------------------
+.#{$namespace}topHeader{
+  display: block !important;
+  box-shadow: $nyu-divider-shadow;
+  z-index: 1;
+  position: relative;
+}
+.#{$namespace}topHeader {
+   .#{$namespace}loginNav {
+      @media #{$phone} {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        margin-right: 0px !important;
+      }
+  }
+}
+@media #{$nonPhone} {
+  .sitenav-dropdown-overlay {
+    // fix bug whereby sitemenu actions aren't clickable
+    z-index: 1 !important;
+  }
+  #linkNav {
+    min-height: $nyu-favorite-sites-height;
+    padding: $nyu-favorite-sites-padding;
+
+    ul {
+      li.#{$namespace}sitesNav__menuitem {
+        > a {
+          font-size: $nyu-favorite-sites-button-text-size;
+
+          &:hover {
+            background-color: $nyu-favorite-sites-button-hover-background-color !important;
+            border-color: $nyu-favorite-sites-button-hover-border-color !important;
+            color: $nyu-favorite-sites-button-hover-text-color !important;
+          }
+        }
+
+        &:not(.dropdown-is-visible) > a:hover, &:not(.dropdown-is-visible) > a:active {
+          box-shadow: none !important;
+        }
+
+        &.is-selected {
+          > a {
+            font-size: $nyu-favorite-sites-button-current-text-size;
+
+            &:hover {
+              background-color: $nyu-favorite-sites-button-current-hover-background-color !important;
+              border-color: $nyu-favorite-sites-button-current-hover-border-color !important;
+              color: $nyu-favorite-sites-button-current-hover-text-color !important;
+            }
+          }
+        }
+
+        &.dropdown-is-visible {
+          > a {
+            border-color: $nyu-favorite-sites-tool-menu-border-color !important;
+            border-bottom-color: $nyu-favorite-sites-tool-menu-topleft-border-color !important;
+          }
+        }
+        &.is-selected.dropdown-is-visible {
+          > a {
+            border-color: $nyu-favorite-sites-tool-menu-active-border-color !important;
+            border-bottom-color: $nyu-favorite-sites-tool-menu-active-topleft-border-color !important;
+          }
+        }
+
+        ul {
+          box-shadow: $nyu-favorite-sites-tool-menu-drop-shadow !important;
+          border: 1px solid $nyu-favorite-sites-tool-menu-border-color !important;
+          //  border-top-color: #FFF !important;
+          color: $nyu-favorite-sites-tool-menu-text-color !important;
+          max-width: $nyu-favorite-sites-tool-menu-max-width;
+
+          li {
+            border-left: 4px solid transparent !important;
+            &:hover {
+              background-color: $nyu-favorite-sites-tool-menu-item-hover-background-color !important;
+              border-color: $nyu-favorite-sites-tool-menu-item-hover-left-border-color !important;
+              a {
+                background-color: $nyu-favorite-sites-tool-menu-item-hover-background-color !important;
+                color: $nyu-favorite-sites-tool-menu-item-hover-text-color !important; 
+              }
+            }
+          }
+        }
+
+        &.is-selected {
+          ul {
+            border-color: $nyu-favorite-sites-tool-menu-active-border-color !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+#selectSiteModal{
+  &.dhtml_more_tabs {
+    background-color: $nyu-all-sites-background-color !important;
+    drop-shadow: $nyu-all-sites-drop-shadow !important;
+  }
+
+  #selectSite {
+    .tab-bar {
+      height: $nyu-all-sites-tab-height + 1;
+      border-bottom: 1px solid $nyu-all-sites-tab-border-color !important;
+      top: 0 !important;
+      overflow: visible !important;
+
+      .tab-btn {
+        background-color: $nyu-all-sites-tab-background-color !important;
+        border-color: $nyu-all-sites-tab-border-color !important;
+        color: $nyu-all-sites-tab-text-color !important;
+        margin-right: -5px !important;
+        height: $nyu-all-sites-tab-height !important;
+        padding: 0 2em !important;
+        padding-top: 3px !important;
+        top: 0;
+        position: relative;
+
+        .favorites-tab-label {
+          font-size: $nyu-all-sites-tab-text-size !important;
+          line-height: $nyu-all-sites-tab-height - 3;
+          margin: 0 !important;
+        }
+
+        &:hover {
+          color: $nyu-all-sites-tab-hover-text-color !important;
+          background-color: $nyu-all-sites-tab-hover-background-color !important;
+          border-top: 4px solid $nyu-all-sites-tab-hover-highlight !important;
+          padding-top: 0px !important;
+
+          .favorites-tab-label {
+            line-height: $nyu-all-sites-tab-height - 4;
+          }
+        }
+
+        &.active {
+          color: $nyu-all-sites-tab-active-text-color !important;
+          background-color: $nyu-all-sites-tab-active-background-color !important;
+          border-top: 4px solid $nyu-all-sites-tab-active-highlight-color !important;
+          height: $nyu-all-sites-tab-height + 1 !important;
+          top: 0px;
+          position: relative;
+          padding-top: 0px !important;
+
+          .favorites-tab-label {
+            font-size: $nyu-all-sites-tab-active-text-size !important;
+            line-height: $nyu-all-sites-tab-height - 4;
+          }
+        }
+      }
+    }
+    .tab-pane {
+      .tab-box {
+        border: none !important;
+      }
+
+      .favorites-term-header {
+        font-size: $nyu-all-sites-title-text-size !important;
+        font-weight: $nyu-all-sites-title-text-weight !important;
+        color: $nyu-all-sites-title-text-color !important;
+      }
+
+      ul.favoriteSiteList {
+        > li {
+          min-height: 32px !important;
+          color: $nyu-all-sites-button-text-color !important;
+          font-size: $nyu-all-sites-button-text-size !important;
+          font-weight: $nyu-all-sites-button-text-weight !important;
+          background-color: $nyu-all-sites-button-background-color !important;
+          border-color: $nyu-all-sites-button-border-color !important;
+          border-radius: $nyu-all-sites-button-border-radius !important;
+          padding: 0 !important;
+
+          > a, .fav-title {
+            line-height: 26px !important;
+          }
+
+          .site-favorite-btn,
+          .fav-title-myworkspace {
+            margin-left: 10px;
+          }
+
+          .toolMenus {
+            color: $nyu-all-sites-button-dropdown-color !important;
+          }
+
+          .site-favorite-icon {
+            color: $nyu-all-sites-button-star-empty-color !important;
+
+            &.site-favorite {
+              color: $nyu-all-sites-button-star-full-color !important;
+            }
+          }
+
+          &.is-selected {
+            color: $nyu-all-sites-button-selected-text-color !important;
+            font-size: $nyu-all-sites-button-selected-text-size !important;
+            font-weight: $nyu-all-sites-button-selected-text-weight !important;
+            background-color: $nyu-all-sites-button-selected-background-color !important;
+            border-color: $nyu-all-sites-button-selected-border-color !important;
+            border-radius: $nyu-all-sites-button-selected-border-radius !important;
+
+            .toolMenus {
+              color: $nyu-all-sites-button-selected-dropdown-color !important;
+            }
+
+            .site-favorite-icon {
+              color: $nyu-all-sites-button-selected-star-empty-color !important;
+
+              &.site-favorite {
+                color: $nyu-all-sites-button-selected-star-full-color !important;
+              }
+            }
+          }
+
+          &:hover {
+            color: $nyu-all-sites-button-hover-text-color !important;
+            font-size: $nyu-all-sites-button-hover-text-size !important;
+            font-weight: $nyu-all-sites-button-hover-text-weight !important;
+            background-color: $nyu-all-sites-button-hover-background-color !important;
+            border-color: $nyu-all-sites-button-hover-border-color !important;
+
+            .toolMenus,
+            .fav-drag-handle {
+              color: $nyu-all-sites-button-hover-dropdown-color !important;
+            }
+
+            .site-favorite-icon {
+              color: $nyu-all-sites-button-hover-star-empty-color !important;
+
+              &.site-favorite {
+                color: $nyu-all-sites-button-hover-star-full-color !important;
+              }
+            }
+          }
+
+          ul#otherSiteTools {
+            padding-top: 5px;
+            border-top: 1px solid $nyu-all-sites-tool-menu-divider-color;
+            background-color: $nyu-all-sites-tool-menu-background-color !important;
+
+            li {
+              padding: 0 !important;
+              margin: 0 !important;
+              border-radius: 0 !important;
+
+              a {
+                display: block;
+                color: $nyu-all-sites-tool-menu-text-color !important;
+                border-left: $nyu-all-sites-tool-menu-left-border !important;
+                background-color: $nyu-all-sites-tool-menu-background-color !important;
+                padding: 5px 6px !important;
+
+                .#{$namespace}toolsNav__menuitem--icon {
+                  color: $nyu-all-sites-tool-menu-icon-color !important;
+                }
+
+                &:hover {
+                  background-color: $nyu-all-sites-tool-menu-hover-background-color !important;
+                  color: $nyu-all-sites-tool-menu-hover-text-color !important;
+                  border-left: $nyu-all-sites-tool-menu-hover-left-border !important;
+
+                  .#{$namespace}toolsNav__menuitem--icon {
+                    color: $nyu-all-sites-tool-menu-hover-icon-color !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .otherSitesMenuClose {
+    a {
+      color: $nyu-all-sites-close-action-color !important;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Site Hierarchy / Reset Button
+// --------------------------------------------------------------------------------------------------------------------
+.#{$namespace}siteHierarchy {
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: #FFFFFF !important;
+
+  @media #{$desktop} {
+    border-left: 1px solid #F0F0F0;
+  }
+
+  a {
+    color: #124466 !important;
+    margin: 1em 0 0.25em 1.25em !important;
+    display: inline-block !important;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+
+    @media #{$phone} {
+      margin: 0 0 0 1.25em !important;
+    }
+  }
+
+  @media #{$phone} {
+    text-transform: uppercase !important;
+    font-size: 130% !important;
+    font-weight: bold !important;
+    top: 88px !important;
+    padding: 0.5em 0 0.5em 0.5em !important;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
+    min-height: auto !important;
+
+    &.moving{
+      top: -22em !important;
+    }
+  }
+}
+
+
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Tool Navigation
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Main Content
+// --------------------------------------------------------------------------------------------------------------------
+.portletBody {
+  // some morpheus elements are sometimes clipped :?(
+  // so we need some padding/margin
+  padding: 0 14px !important;
+  margin: 6px 0 0 0 !important;
+}
+.#{$namespace}container--toolTitleNav {
+  // so container header lines up with the container body
+  padding: 0.5em 14px !important;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Sites navigation
+// -------------------------------------------------------------------------------------------------------------------
+#topnav_container {
+  .#{$namespace}sitesNav__menuitem.is-selected > a:hover {
+    color: $sites-nav-menu-item-selected-color !important;
+  }
+  .#{$namespace}sitesNav__menuitem > a:hover {
+    border-color: #7F7F7F;
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Page Body / Main Content
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  &.#{$namespace}portalBody{
+    @media #{$phone}{
+      background: #FFFFFF !important;
+    }
+  }
+}
+#pageBody{
+  @media #{$phone}{
+    padding: 0 !important;
+  }
+}
+.#{$namespace}mainContent{
+  border-bottom: 1px solid #EEE;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  PA System
+// -------------------------------------------------------------------------------------------------------------------
+.pasystem-banner-alert-toggle-list-item {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border: none !important;
+
+  @media #{$nonPhone} {
+    top: 0 !important;
+    padding: 0px 8px !important;
+  }
+  @media #{$phone} {
+    top: 0 !important;
+    left: auto !important;
+    right: 80px !important;
+    padding: 0 !important;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Unpublished notice
+// -------------------------------------------------------------------------------------------------------------------
+.#{$namespace}siteStatus{
+  &.is-unpublished {
+    color: $text-color !important;
+    height: 41px;
+    padding: 0;
+    border-color: #E5E5E5 !important;
+
+    h4 {
+      margin: 0;
+      line-height: 30px;
+    }
+
+    button {
+      top: -2px !important;
+      line-height: 14px !important;
+      display: inline-block !important;
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Role Switcher
+//   - Change the way we show the role switch link.  Unfortunately that link is an
+//     <li> tag, so we have to pull some trickery to make it look like it isn't a list item.
+// -------------------------------------------------------------------------------------------------------------------
+#roleSwitch  {
+    background-color: #3698DB !important;
+    border: 0 !important;
+    position: absolute;
+    top: 20px;
+    right: 280px;
+    list-style: none;
+    line-height: 1;
+}
+
+#roleSwitch p {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+}
+
+#roleSwitch a {
+    color: white !important;
+    min-height: 0 !important;
+    padding: 5px !important;
+}
+
+#roleSwitch .#{$namespace}toolsNav__menuitem--icon {
+    display: none !important;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Footer
+// -------------------------------------------------------------------------------------------------------------------
+.#{$namespace}footer {
+  margin: 0 !important;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Tool navigation
+// -------------------------------------------------------------------------------------------------------------------
+.#{$namespace}toolsNav__menuitem--icon {
+  display: inline-block !important;
+  vertical-align: 0 !important;
+}
+.#{$namespace}toolsNav__menuitem--title {
+  width: auto !important;
+  display: inline-block !important;
+}
+body.#{$namespace}toolMenu-collapsed #toolMenu ul li .#{$namespace}toolsNav__menuitem--title,
+body.#{$namespace}toolMenu-collapsed ul#subSites ul li .#{$namespace}toolsNav__menuitem--title {
+  display: none !important;
+}
+body.#{$namespace}toolMenu-collapsed #toolMenu ul li a,
+body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
+  text-align: center !important;
+}
+@media #{$nonPhone} {
+  #toolMenuWrap {
+    width: 240px !important;
+    -webkit-flex-basis: 240px !important;
+    flex-basis: 240px !important;
+    text-align: left !important;
+    margin-bottom: 2em !important;
+  }
+  #toolMenuWrap .#{$namespace}collapseTools.js-toggle-nav {
+    border-right-color: transparent;
+    background-color: transparent;
+    border-bottom-color: #F0F0F0;
+  }
+  #toolMenu, #subSites, .floatingToolMenu {
+    padding: $nyu-tool-nav-padding;
+
+    ul {
+      li {
+        border-bottom: 1px solid $nyu-tool-nav-border-color;
+        min-height: $nyu-tool-nav-item-height;
+        background-color: $nyu-tool-nav-item-background-color;
+
+        a {
+          border-left: $nyu-tool-nav-item-border-left;
+          border-bottom: none !important;
+          font-size: $nyu-tool-nav-item-text-size !important;
+
+          &.is-invisible {
+            color: #9A9A9A !important;
+
+            .#{$namespace}toolsNav__menuitem--icon {
+              font-style: normal !important;
+            }
+
+            &:hover {
+              color: #808080 !important;
+            }
+            &:after {
+              top: 13px !important;
+            }
+          }
+
+          &:hover {
+            border-left: $nyu-tool-nav-item-hover-border-left;
+            color: #191919;
+          }
+
+          &.is-invisible {
+            color: $nyu-tool-nav-item-hidden-text-color !important;
+            background-color: $nyu-tool-nav-item-hidden-background-color !important;
+
+            &:hover {
+              color: $nyu-tool-nav-item-hidden-hover-color !important;
+              background-color: $nyu-tool-nav-item-hidden-hover-background-color !important;
+              border-left: $nyu-tool-nav-item-hidden-hover-border-left !important;
+            }
+          }
+
+          > span {
+            vertical-align: text-top;
+          }
+        }
+
+        &.is-current {
+          position: relative;
+          margin-right: -1px;
+
+          a, a.is-invisible {
+            color: $nyu-tool-nav-item-selected-text-color !important;
+            border-left: $nyu-tool-nav-item-selected-border-left !important;
+            background-color: $nyu-tool-nav-item-selected-background-color !important;
+            font-size: $nyu-tool-nav-item-selected-text-size !important;
+
+            &:hover {
+              color: $nyu-tool-nav-item-selected-hover-text-color !important;
+              border-left: $nyu-tool-nav-item-selected-hover-border-left !important;
+              background-color: $nyu-tool-nav-item-selected-hover-background-color !important;
+            }
+          }
+        }
+
+        &.floatingToolMenu {
+          color: $nyu-tool-nav-collapse-text-color !important;
+          background-color: $nyu-tool-nav-collapse-background-color !important;
+          border-top: $nyu-tool-nav-collapse-border-top !important;
+
+          &:hover {
+            color: $nyu-tool-nav-collapse-hover-text-color !important;
+            background-color: $nyu-tool-nav-collapse-hover-background-color !important;
+            border-top: $nyu-tool-nav-collapse-hover-border-top !important;
+          }
+        }
+      }
+    }
+  }
+  .#{$namespace}collapseTools {
+    height: 30px !important;
+  }
+  .#{$namespace}toolsNav__menuitem--link {
+    text-align: left !important;
+    padding: 0.75em 0.5em !important;
+  }
+  #content {
+    //box-shadow: inset -2px 2px 4px -2px #AAA;
+    border-left: 1px solid #F0F0F0;
+    // fix margin-top on content child causing margin above #content
+    overflow: auto;
+  }
+}
+@media #{$phone} {
+  #content {
+    //box-shadow: none;
+    border: none;
+    margin-top: 100px !important;
+  }
+  #toolMenuWrap {
+    padding-top: 4px;
+  }
+  body.toolsNav--displayed #toolMenu ul li,
+  body.toolsNav--displayed ul#subSites ul li {
+    width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    display: block !important;
+  }
+  #toolMenu ul li a,
+  #subSites ul li a,
+  .floatingToolMenu ul li a {
+    text-align: left !important;
+    padding: 10px 20px !important;
+    height: auto !important;
+  }
+}

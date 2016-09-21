@@ -1,0 +1,72 @@
+@import "font-awesome";
+@if $skin-with-icons {
+  [class^="icon-nyu"],
+  [class*=" icon-nyu"] {
+    @extend .fa-lg;
+    @extend .fa;
+  }
+
+  .icon-nyu-libraries {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e051';
+    }
+  }
+
+  .icon-nyu-ls-music-resources {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e009';
+    }
+  }
+
+
+  .icon-nyu-ls-music-resources          { @extend .fa-music; }
+  .icon-nyu-mediasite-poly              { @extend .fa-film; }
+  .icon-nyu-mediasite-engineering       { @extend .fa-film; }
+  .icon-nyu-mediasite-stern             { @extend .fa-film; }
+  .icon-nyu-mediasite-libraries         { @extend .fa-film; }
+  .icon-nyu-panopto-law                 { @extend .fa-film; }
+  .icon-nyu-panopto-poly                { @extend .fa-film; }
+  .icon-nyu-panopto-engineering         { @extend .fa-film; }
+
+  .icon-sakai-blogwow                   { @extend .fa-feed; }
+  .icon-sakai-bbb                       {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e03C';
+    }
+  }
+  .icon-sakai-rsf-evaluation            {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e046';
+    }
+  }
+  .icon-sakai-scorm-tool                {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e602';
+    }
+  }
+  .icon-sakai-scorm-singlepackage-tool  {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e602';
+    }
+  }
+  .icon-sakai-turningtool               {
+    font-family: 'nyu-classes-icons' !important;
+    &:before {
+      content: '\e054';
+    }
+  }
+  .icon-sakai-groupergoogle             { @extend .fa-google; }
+  .icon-sakai-groupersync               { @extend .fa-google; }
+  .icon-sakai-oauth-admin               { @extend .fa-key; }
+  .icon-sakai-joinable-groups           { @extend .fa-users; }
+
+  .external-news:before {
+    content: '\f1ea' !important;
+  }
+}
