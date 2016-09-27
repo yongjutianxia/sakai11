@@ -1088,7 +1088,8 @@
           <configuration name="final.debug" value="true"/>
           <configuration name="final.releasename" value="true"/>
           <configuration name="final.releaseemail" value="true"/>
-          <configuration name="final.custom" value="true"/>
+          <!-- CLASSES-2301 - instructor can edit custom launch field -->
+          <configuration name="final.custom" value="false"/>
           <configuration name="final.allowsettings" value="true"/>
           <configuration name="final.allowroster" value="true"/>
           <configuration name="final.allowoutcomes" value="true"/>
@@ -1104,7 +1105,7 @@
           <category name="course" />
           <category name="project" />
           <category name="portfolio" />
-          <configuration name="functions.require" />
+          <configuration name="functions.require" value="site.upd" />
           <configuration name="sakai:menuClass" value="icon-sakai-basiclti"/>
           <configuration name="imsti.launch" />
           <configuration name="imsti.xml" />
