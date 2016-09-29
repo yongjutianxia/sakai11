@@ -1049,8 +1049,8 @@
 
         <tool
             id="nyu.cerego.groups"
-            title="Cerego Groups"
-            description="Cerego Groups">
+            title="Cerego Reports"
+            description="Cerego Reports">
           <configuration name="sakai:portlet-pre-render" value="true" />
           <category name="course" />
           <category name="project" />
@@ -1061,8 +1061,8 @@
           <configuration name="imsti.xml" />
           <configuration name="imsti.secret" />
           <configuration name="imsti.key" />
-          <configuration name="imsti.pagetitle" value="Cerego Groups"/>
-          <configuration name="imsti.tooltitle" value="Cerego Groups"/>
+          <configuration name="imsti.pagetitle" value="Cerego Reports"/>
+          <configuration name="imsti.tooltitle" value="Cerego Reports"/>
           <configuration name="imsti.newpage" value="on" />
           <configuration name="imsti.maximize" value="on" />
           <configuration name="imsti.frameheight" value="1024" />
