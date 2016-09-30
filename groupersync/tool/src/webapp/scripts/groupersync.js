@@ -6,8 +6,11 @@
     exports.ModalHelper.modal = function (elt, action) {
         var frame = $(parent.document.getElementById(window.name));
 
+        var offset = window.parent.scrollY - $(frame).position().top;
+        offset = Math.max(0, offset);
+
         elt.css('position', 'absolute')
-           .css('top', window.parent.scrollY - $(frame).position().top + 'px');
+           .css('top', offset + 'px');
 
         return elt.modal(action);
     }
