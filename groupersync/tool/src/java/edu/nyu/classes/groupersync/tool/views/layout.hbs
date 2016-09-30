@@ -41,6 +41,14 @@
                         clientH = 600;
                     }
 
+                    // set the min height to be the portletMainWrap height so the modal
+                    // mask fills the entire portlet panel
+                    if (frame.parentElement.className.indexOf("portletMainWrap") >= 0) {
+                        if (frame.parentElement.style.minHeight) {
+                            clientH = Math.max(parseInt(frame.parentElement.style.minHeight), clientH);
+                        }
+                    }
+
                     if ($(frame).height() < clientH) {
                         $(frame).height(clientH);
                     }

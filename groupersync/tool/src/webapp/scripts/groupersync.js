@@ -4,8 +4,10 @@
     exports.ModalHelper = {};
 
     exports.ModalHelper.modal = function (elt, action) {
+        var frame = $(parent.document.getElementById(window.name));
+
         elt.css('position', 'absolute')
-           .css('top', window.parent.scrollY + 'px');
+           .css('top', window.parent.scrollY - $(frame).position().top + 'px');
 
         return elt.modal(action);
     }
