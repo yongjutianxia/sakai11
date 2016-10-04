@@ -79,14 +79,14 @@ $link-hover-color: $nyu-link-hover-color;
 //$link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-//$button-text-color:	 #777 !default;
-//$button-border-color: #C0C0C0 !default;
-//$button-background-color: #F0F0F0 !default;
+$button-text-color: $nyu-button-secondary-text-color;
+$button-border-color: $nyu-button-secondary-border-color;
+$button-background-color: $nyu-button-secondary-background-color;
 //$button-background-secondary-color: #FFF !default;
 /* General button colors */
-//$button-color-text-color: #FFF !default;
-//$button-color-border-color: #4a8db3 !default;
-//$button-color-background-color: $primary-color !default;
+$button-color-text-color: $nyu-button-primary-text-color;
+$button-color-border-color: $nyu-button-primary-border-color;
+$button-color-background-color: $nyu-button-primary-background-color;
 //$button-color-background-secondary-color: #276488 !default;
 /* ///////////// */
 

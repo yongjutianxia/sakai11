@@ -1,0 +1,131 @@
+// -------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------
+//  Buttons
+//   - override the morpheus mixins to match desired NYU styles
+//   - tool portlet button styles too
+// -------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Custom NYU Button mixins
+// -------------------------------------------------------------------------------------------------------------------
+@mixin nyu_button( $nyu-btn-text-color,
+                   $nyu-btn-icon-color,
+                   $nyu-btn-background-color,
+                   $nyu-btn-border-color,
+                   $nyu-btn-hover-text-color,
+                   $nyu-btn-hover-icon-color,
+                   $nyu-btn-hover-background-color,
+                   $nyu-btn-hover-border-color) {
+
+  color: $nyu-btn-text-color !important;
+  background: $nyu-btn-background-color !important;
+  border-color: $nyu-btn-border-color !important;
+  border-radius: $nyu-button-radius !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+
+  &:before {
+    color: $nyu-btn-icon-color !important;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: $nyu-btn-hover-text-color !important;
+    background: $nyu-btn-hover-background-color !important;
+    border-color: $nyu-btn-hover-border-color !important;
+    text-decoration: none !important;
+
+    &:before {
+      color: $nyu-btn-hover-icon-color !important;
+    }
+  }
+
+}
+
+@mixin nyu_primary_button() {
+  @include nyu_button($nyu-button-primary-text-color,
+                      $nyu-button-primary-text-color,
+                      $nyu-button-primary-background-color,
+                      $nyu-button-primary-border-color,
+                      $nyu-button-primary-hover-text-color,
+                      $nyu-button-primary-hover-text-color,
+                      $nyu-button-primary-hover-background-color,
+                      $nyu-button-primary-hover-border-color);
+}
+
+@mixin nyu_secondary_button() {
+  @include nyu_button($nyu-button-secondary-text-color,
+                      $nyu-button-secondary-icon-color,
+                      $nyu-button-secondary-background-color,
+                      $nyu-button-secondary-border-color,
+                      $nyu-button-secondary-hover-text-color,
+                      $nyu-button-secondary-hover-icon-color,
+                      $nyu-button-secondary-hover-background-color,
+                      $nyu-button-secondary-hover-border-color);
+}
+
+@mixin nyu_link_button() {
+  @include nyu_button($nyu-link-color,
+                      $nyu-link-color,
+                      transparent,
+                      transparent,
+                      $nyu-link-hover-color,
+                      $nyu-link-hover-color,
+                      transparent,
+                      transparent);
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Apply our Custom mixins to the various button selectors
+// -------------------------------------------------------------------------------------------------------------------
+a {
+  &[href] {
+    &.btn-primary {
+      @include nyu_primary_button();
+    }
+  }
+}
+.button_color, button, button.btn-primary {
+  @include nyu_primary_button();
+}
+
+.button, button.ui-state-default, .btn.btn-default {
+  @include nyu_secondary_button();
+}
+
+.button.link, a.btn-link, button.btn-link {
+  @include nyu_link_button();
+}
+
+.navIntraTool {
+  li {
+    span {
+      a {
+        @media #{$phone}{
+          @include nyu_secondary_button();
+        }
+      }
+      &.current{
+        @media #{$phone}{
+          @include nyu_primary_button();
+        }
+      }
+    }
+  }
+}
+
+@media #{$desktop} {
+  .#{$namespace}toolTitleNav{
+    .#{$namespace}toolTitleNav__link{
+      @include nyu_secondary_button();
+    }
+  }
+}

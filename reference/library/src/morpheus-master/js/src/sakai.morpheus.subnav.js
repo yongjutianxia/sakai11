@@ -14,7 +14,7 @@ var buildDropdownMenu = function(container, siteId, callback) {
   var navsubmenu = "<ul class=\"Mrphs-sitesNav__submenu\" role=\"menu\">";
   var maxToolsInt = parseInt($PBJQ('#linkNav').attr('data-max-tools-int'));
   var maxToolsText = $PBJQ('#linkNav').attr('data-max-tools-anchor');
-  var goToSite = '<li class=\"Mrphs-sitesNav__submenuitem\"><a role=\"menuitem\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\"><span class=\"toolMenuIcon icon-sakai-see-all-tools\"></span>' + maxToolsText + '</a></li>';
+  var goToSite = '<li class=\"Mrphs-sitesNav__submenuitem Mrphs-sitesNav__submenuitem__gotosite\"><a role=\"menuitem\" href=\"' + portal.portalPath + '/site/' + siteId + '\" title=\"' + maxToolsText + '\"><span class=\"toolMenuIcon icon-sakai-see-all-tools\"></span>' + maxToolsText + '</a></li>';
   var siteURL = '/direct/site/' + siteId + '/pages.json';
   var currentSite = window.location.pathname.split('/').pop();
 

@@ -184,10 +184,18 @@ body a[href] {
         > a {
           font-size: $nyu-favorite-sites-button-text-size;
 
+          i.fa {
+            color: $nyu-favorite-sites-button-icon-color !important;
+          }
+
           &:hover {
             background-color: $nyu-favorite-sites-button-hover-background-color !important;
             border-color: $nyu-favorite-sites-button-hover-border-color !important;
             color: $nyu-favorite-sites-button-hover-text-color !important;
+
+            i.fa {
+              color: $nyu-favorite-sites-button-hover-icon-color !important;
+            }
           }
         }
 
@@ -199,10 +207,18 @@ body a[href] {
           > a {
             font-size: $nyu-favorite-sites-button-current-text-size;
 
+            i.fa {
+              color: $nyu-favorite-sites-button-current-icon-color !important;
+            }
+
             &:hover {
               background-color: $nyu-favorite-sites-button-current-hover-background-color !important;
               border-color: $nyu-favorite-sites-button-current-hover-border-color !important;
               color: $nyu-favorite-sites-button-current-hover-text-color !important;
+
+              i.fa {
+                color: $nyu-favorite-sites-button-current-hover-icon-color !important;
+              }
             }
           }
         }
@@ -229,12 +245,42 @@ body a[href] {
 
           li {
             border-left: 4px solid transparent !important;
+
+            .toolMenuIcon {
+              color: $nyu-favorite-sites-tool-menu-icon-color !important;
+            }
+
             &:hover {
               background-color: $nyu-favorite-sites-tool-menu-item-hover-background-color !important;
               border-color: $nyu-favorite-sites-tool-menu-item-hover-left-border-color !important;
+
               a {
                 background-color: $nyu-favorite-sites-tool-menu-item-hover-background-color !important;
-                color: $nyu-favorite-sites-tool-menu-item-hover-text-color !important; 
+                color: $nyu-favorite-sites-tool-menu-item-hover-text-color !important;
+                text-decoration: none !important;
+
+                .toolMenuIcon {
+                  color: $nyu-favorite-sites-tool-menu-item-hover-icon-color !important;
+                }
+              }
+            }
+
+            &.#{$namespace}sitesNav__submenuitem__gotosite {
+              border-top: 1px solid $nyu-favorite-sites-tool-menu-divider-color !important;
+
+              > a:after {
+                font-family: FontAwesome;
+                content: '\f178';
+                margin-left: 10px;
+                color: $nyu-favorite-sites-tool-menu-icon-color !important;
+              }
+
+              &:hover {
+                border-top: 1px solid $nyu-favorite-sites-tool-menu-divider-color !important;
+
+                > a:after {
+                  color: $nyu-favorite-sites-tool-menu-item-hover-icon-color !important;
+                }
               }
             }
           }
@@ -446,10 +492,13 @@ body a[href] {
 
   @media #{$desktop} {
     border-left: 1px solid #F0F0F0;
+    height: $nyu-reset-button-height;
   }
 
-  a {
-    color: #124466 !important;
+  a.Mrphs-hierarchy--toolName {
+    color: $nyu-reset-button-text-color !important;
+    font-size: $nyu-reset-button-text-size !important;
+
     margin: 1em 0 0.25em 1.25em !important;
     display: inline-block !important;
     border-bottom: 1px solid transparent;
@@ -662,34 +711,40 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
           border-bottom: none !important;
           font-size: $nyu-tool-nav-item-text-size !important;
 
-          &.is-invisible {
-            color: #9A9A9A !important;
-
-            .#{$namespace}toolsNav__menuitem--icon {
-              font-style: normal !important;
-            }
-
-            &:hover {
-              color: #808080 !important;
-            }
-            &:after {
-              top: 13px !important;
-            }
+          .#{$namespace}toolsNav__menuitem--icon {
+            color: $nyu-tool-nav-item-icon-color !important;
           }
 
           &:hover {
             border-left: $nyu-tool-nav-item-hover-border-left;
-            color: #191919;
+            color: $nyu-tool-nav-item-hover-text-color;
+
+            .#{$namespace}toolsNav__menuitem--icon {
+              color: $nyu-tool-nav-item-hover-icon-color !important;
+            }
           }
 
           &.is-invisible {
             color: $nyu-tool-nav-item-hidden-text-color !important;
             background-color: $nyu-tool-nav-item-hidden-background-color !important;
 
+            .#{$namespace}toolsNav__menuitem--icon {
+              font-style: normal !important;
+              color: $nyu-tool-nav-item-hidden-icon-color !important;
+            }
+
             &:hover {
               color: $nyu-tool-nav-item-hidden-hover-color !important;
               background-color: $nyu-tool-nav-item-hidden-hover-background-color !important;
               border-left: $nyu-tool-nav-item-hidden-hover-border-left !important;
+
+              .#{$namespace}toolsNav__menuitem--icon {
+                color: $nyu-tool-nav-item-hidden-hover-icon-color !important;
+              }
+            }
+
+            &:after {
+              top: 13px !important;
             }
           }
 
@@ -708,10 +763,18 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
             background-color: $nyu-tool-nav-item-selected-background-color !important;
             font-size: $nyu-tool-nav-item-selected-text-size !important;
 
+            .#{$namespace}toolsNav__menuitem--icon {
+              color: $nyu-tool-nav-item-selected-icon-color !important;
+            }
+
             &:hover {
               color: $nyu-tool-nav-item-selected-hover-text-color !important;
               border-left: $nyu-tool-nav-item-selected-hover-border-left !important;
               background-color: $nyu-tool-nav-item-selected-hover-background-color !important;
+
+              .#{$namespace}toolsNav__menuitem--icon {
+                color: $nyu-tool-nav-item-selected-hover-icon-color !important;
+              }
             }
           }
         }
