@@ -150,6 +150,8 @@ function showToolMenu(jqObj){
 
     goToSite.find('a span').addClass('icon-sakai-see-all-tools')
 
+    goToSite.addClass("gotosite");
+
     $PBJQ.getJSON(siteURL, function(data){
       $PBJQ.each(data, function(i, item){
 
@@ -546,7 +548,8 @@ $PBJQ(document).ready(function($){
 
         // And disable the link to site so we don't accidentally hit it while
         // dragging
-        $PBJQ(favoriteItem).find('.fav-title a').attr('href', null);
+        // NYU enable this so we can purposefully hit it
+        //$PBJQ(favoriteItem).find('.fav-title a').attr('href', null);
 
         list.append(favoriteItem);
 
