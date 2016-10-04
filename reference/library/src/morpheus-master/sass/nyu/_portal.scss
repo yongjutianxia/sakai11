@@ -331,56 +331,61 @@ body a[href] {
 
   #selectSite {
     .tab-bar {
-      height: $nyu-all-sites-tab-height + 1;
-      border-bottom: 1px solid $nyu-all-sites-tab-border-color !important;
-      top: 0 !important;
-      overflow: visible !important;
-
       .tab-btn {
-        background-color: $nyu-all-sites-tab-background-color !important;
-        border-color: $nyu-all-sites-tab-border-color !important;
-        color: $nyu-all-sites-tab-text-color !important;
-        margin-right: -5px !important;
-        height: $nyu-all-sites-tab-height !important;
-        padding: 0 2em !important;
-        padding-top: 3px !important;
-        top: 0;
+        color: $nyu-tool-tab-text-color !important;
+        background-color: $nyu-tool-tab-background-color !important;
+        border-color: $nyu-tool-tab-border-color !important;
+        margin-right: -5px;
         position: relative;
+        height: $nyu-tool-tab-height;
+        border-bottom: 1px solid $nyu-tool-tab-border-color !important;
+        padding-top: 7px !important;
 
         .favorites-tab-label {
-          font-size: $nyu-all-sites-tab-text-size !important;
-          line-height: $nyu-all-sites-tab-height - 3;
-          margin: 0 !important;
+          font-size: $nyu-tool-tab-text-size !important;
         }
 
         &:hover {
-          color: $nyu-all-sites-tab-hover-text-color !important;
-          background-color: $nyu-all-sites-tab-hover-background-color !important;
-          border-top: 4px solid $nyu-all-sites-tab-hover-highlight !important;
-          padding-top: 0px !important;
+          color: $nyu-tool-tab-hover-text-color !important;
+          background-color: $nyu-tool-tab-hover-background-color !important;
 
-          .favorites-tab-label {
-            line-height: $nyu-all-sites-tab-height - 4;
+          &:before {
+            border-top: 4px solid $nyu-tool-tab-hover-highlight-color !important;
+            content: '';
+            display: block;
+            position: absolute;
+            left: -1px;
+            right: -1px;
+            top: -1px;
           }
         }
 
         &.active {
-          color: $nyu-all-sites-tab-active-text-color !important;
-          background-color: $nyu-all-sites-tab-active-background-color !important;
-          border-top: 4px solid $nyu-all-sites-tab-active-highlight-color !important;
-          height: $nyu-all-sites-tab-height + 1 !important;
+          color: $nyu-tool-tab-active-text-color !important;
+          background-color: $nyu-tool-tab-active-background-color !important;
           top: 0px;
-          position: relative;
-          padding-top: 0px !important;
+          border-bottom: none !important;
+          padding-top: 6px !important;
 
           .favorites-tab-label {
             font-size: $nyu-all-sites-tab-active-text-size !important;
-            line-height: $nyu-all-sites-tab-height - 4;
+          }
+
+          &:before {
+            border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
+            content: '';
+            display: block;
+            position: absolute;
+            left: -1px;
+            right: -1px;
+            top: -1px;
           }
         }
       }
     }
     .tab-pane {
+      border-top: 1px solid $nyu-tool-tab-border-color;
+
       .tab-box {
         border: none !important;
       }

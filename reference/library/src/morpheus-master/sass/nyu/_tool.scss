@@ -58,11 +58,20 @@ input[type='button'][value^='Cancel']{
         line-height: $nyu-tool-tab-height;
 
         &:hover {
-          border-top: 4px solid $nyu-tool-tab-hover-highlight-color !important;
           background-color: $nyu-tool-tab-hover-background-color !important;
           color: $nyu-tool-tab-hover-text-color !important;
           text-decoration: none !important;
-          line-height: $nyu-tool-tab-height - 6 !important;
+          position: relative;
+
+          &:before {
+            border-top: 4px solid $nyu-tool-tab-hover-highlight-color !important;
+            content: '';
+            display: block;
+            position: absolute;
+            left: -1px;
+            right: -1px;
+            top: -1px;
+          }
         }
       }
 
@@ -70,11 +79,20 @@ input[type='button'][value^='Cancel']{
         margin: 0 !important;
         padding: 0 10px !important;
         color: $nyu-tool-tab-active-text-color !important;
-        border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
         height: $nyu-tool-tab-height + 1;
+        line-height: $nyu-tool-tab-height + 1;
         font-size: $nyu-tool-tab-active-text-size !important;
         background-color: $nyu-tool-tab-active-background-color !important;
-        line-height: $nyu-tool-tab-height - 4 !important;
+
+        &:before {
+          border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
+          content: '';
+          display: block;
+          position: absolute;
+          left: -1px;
+          right: -1px;
+          top: -1px;
+        }
       }
 
       .formItem {
