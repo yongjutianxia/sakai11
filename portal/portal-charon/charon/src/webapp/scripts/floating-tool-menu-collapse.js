@@ -15,5 +15,7 @@ jQuery(function () {
         floatIt();
 
         collapse.on('click', floatIt);
+
+        $(window).on('resize', floatIt);
     }
 });
