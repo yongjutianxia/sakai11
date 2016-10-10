@@ -29,7 +29,7 @@ input[type='button'][value^='Cancel']{
 //   - restyle tabs with blue bar for current
 //   - ensure the new and help actions are rendered above the tabs
 // -------------------------------------------------------------------------------------------------------------------
-@media #{$desktop} {
+@media #{$nonPhone} {
   #content {
     overflow: visible !important;
   }
@@ -42,6 +42,7 @@ input[type='button'][value^='Cancel']{
       right: 0 !important;
       position: absolute !important;
       float: none !important;
+      left: initial !important;
     }
   }
   .navIntraTool {
