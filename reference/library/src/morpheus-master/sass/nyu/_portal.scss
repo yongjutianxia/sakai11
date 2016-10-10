@@ -908,9 +908,9 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
 }
 @media #{$phone} {
   #content {
-    //box-shadow: none;
     border: none;
     margin-top: 100px !important;
+    min-height: auto !important;
   }
   #toolMenuWrap {
     padding-top: 4px;
@@ -921,6 +921,10 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     margin: 0 !important;
     border: none !important;
     display: block !important;
+
+    &.#{$namespace}collapseTools {
+      display: none !important;
+    }
   }
   #toolMenu ul li a,
   #subSites ul li a,
@@ -928,5 +932,34 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     text-align: left !important;
     padding: 10px 20px !important;
     height: auto !important;
+  }
+  body.Mrphs-toolMenu-collapsed {
+    #toolMenuWrap {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #toolMenu, ul#subSites {
+      ul {
+        li {
+          a {
+            text-align: left !important;
+
+            &:hover {
+              .#{$namespace}toolsNav__menuitem--title {
+                margin: 0 !important;
+                background: transparent !important;
+                border-radius: none !important;
+                border-left: none !important;
+                position: relative !important;
+                padding: 0 !important;
+              }
+            }
+          }
+          .#{$namespace}toolsNav__menuitem--title {
+            display: inline !important;
+          }
+        }
+      }
+    }
   }
 }
