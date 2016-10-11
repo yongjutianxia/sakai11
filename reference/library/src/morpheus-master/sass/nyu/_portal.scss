@@ -407,7 +407,6 @@ body a[href] {
         > li {
           min-height: 32px !important;
           color: $nyu-all-sites-button-text-color !important;
-          font-size: $nyu-all-sites-button-text-size !important;
           background-color: $nyu-all-sites-button-background-color !important;
           border-color: $nyu-all-sites-button-border-color !important;
           border-radius: $nyu-all-sites-button-border-radius !important;
@@ -416,6 +415,7 @@ body a[href] {
           > a, .fav-title > a {
             line-height: 26px !important;
             text-decoration: none !important;
+            font-size: $nyu-all-sites-button-text-size !important;
           }
 
           .site-favorite-btn,
@@ -467,13 +467,13 @@ body a[href] {
 
           &:hover {
             color: $nyu-all-sites-button-hover-text-color !important;
-            font-size: $nyu-all-sites-button-hover-text-size !important;
-            font-weight: $nyu-all-sites-button-hover-text-weight !important;
             background-color: $nyu-all-sites-button-hover-background-color !important;
             border-color: $nyu-all-sites-button-hover-border-color !important;
 
             > a, .fav-title > a {
               color: $nyu-all-sites-button-hover-text-color !important;
+              font-size: $nyu-all-sites-button-hover-text-size !important;
+              font-weight: $nyu-all-sites-button-hover-text-weight !important;
             }
 
             .toolMenus,
@@ -507,6 +507,7 @@ body a[href] {
                 background-color: $nyu-all-sites-tool-menu-background-color !important;
                 padding: 5px 6px !important;
                 font-weight: $nyu-all-sites-tool-menu-text-weight !important;
+                font-size: $nyu-all-sites-tool-menu-text-size !important;
 
                 .#{$namespace}toolsNav__menuitem--icon {
                   color: $nyu-all-sites-tool-menu-icon-color !important;
