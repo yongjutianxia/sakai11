@@ -96,9 +96,17 @@ $nyu-tool-nav-collapse-hover-background-color:                #FAFAFA;
 $nyu-tool-nav-collapse-hover-border-top:                      none;
 $nyu-tool-nav-collapse-hover-shadow:                          0 -1px 3px rgba(0,0,0,0.3);
 
+$nyu-content-border-color:                                    #F0F0F0;
+
 $nyu-reset-button-height:                                     50px;
 $nyu-reset-button-text-color:                                 #124466;
 $nyu-reset-button-text-size:                                  15.5px;
+
+$nyu-site-status-height:                                      $nyu-reset-button-height;
+$nyu-site-status-background-color:                            #F6ECB7;
+$nyu-site-status-text-color:                                  #8a6d3b;
+$nyu-site-status-border-color:                                #E5E5E5;
+$nyu-site-status-border-radius:                               0;
 
 $nyu-button-radius:                                           3px;
 $nyu-button-primary-text-color:                               #FFFFFF;

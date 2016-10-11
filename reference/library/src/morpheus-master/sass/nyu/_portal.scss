@@ -586,9 +586,9 @@ body a[href] {
   padding: 0 !important;
   background: #FFFFFF !important;
 
-  @media #{$desktop} {
-    border-left: 1px solid #F0F0F0;
-    height: $nyu-reset-button-height;
+  @media #{$nonPhone} {
+    border-left: 1px solid $nyu-content-border-color;
+    min-height: $nyu-reset-button-height;
   }
 
   a.Mrphs-hierarchy--toolName {
@@ -605,6 +605,7 @@ body a[href] {
 
     @media #{$phone} {
       margin: 0 0 0 1.25em !important;
+      padding: 10px 0 !important;
     }
   }
 
@@ -613,7 +614,7 @@ body a[href] {
     font-size: 130% !important;
     font-weight: bold !important;
     top: 88px !important;
-    padding: 0.5em 0 0.5em 0.5em !important;
+    padding: 0 !important;
     box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
     min-height: auto !important;
 
@@ -705,20 +706,35 @@ body {
 // -------------------------------------------------------------------------------------------------------------------
 .#{$namespace}siteStatus{
   &.is-unpublished {
-    color: $text-color !important;
-    height: 41px;
-    padding: 0;
-    border-color: #E5E5E5 !important;
+    color: $nyu-site-status-text-color !important;
+    background-color: $nyu-site-status-background-color !important;
+    height: $nyu-site-status-height - 1;
+    padding: 0 !important;
+    border-color: $nyu-site-status-border-color !important;
+    border-radius: $nyu-site-status-border-radius !important;
+
+    @media #{$phone} {
+      height: $nyu-site-status-height - 10;
+    }
 
     h4 {
-      margin: 0;
-      line-height: 30px;
+      margin: 0 !important;
+      line-height: $nyu-site-status-height;
+      padding: 0 !important;
+
+      @media #{$phone} {
+        line-height: $nyu-site-status-height - 10;
+      }
     }
 
     button {
-      top: -2px !important;
+      top: 4px !important;
       line-height: 14px !important;
-      display: inline-block !important;
+      margin-left: 10px !important;
+
+      @media #{$phone} {
+        top: 0 !important;
+      }
     }
   }
 }
@@ -791,7 +807,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   #toolMenuWrap .#{$namespace}collapseTools.js-toggle-nav {
     border-right-color: transparent;
     background-color: transparent;
-    border-bottom-color: #F0F0F0;
+    border-bottom-color: $nyu-content-border-color;
   }
   #toolMenu, #subSites, .floatingToolMenu {
     padding: $nyu-tool-nav-padding;
@@ -901,7 +917,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   }
   #content {
     //box-shadow: inset -2px 2px 4px -2px #AAA;
-    border-left: 1px solid #F0F0F0;
+    border-left: 1px solid $nyu-content-border-color;
     // fix margin-top on content child causing margin above #content
     overflow: auto;
   }
