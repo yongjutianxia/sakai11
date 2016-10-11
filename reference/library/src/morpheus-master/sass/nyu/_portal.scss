@@ -745,29 +745,34 @@ body {
 //     <li> tag, so we have to pull some trickery to make it look like it isn't a list item.
 // -------------------------------------------------------------------------------------------------------------------
 #roleSwitch  {
-    background-color: #3698DB !important;
-    border: 0 !important;
-    position: absolute;
-    top: 20px;
-    right: 280px;
-    list-style: none;
-    line-height: 1;
-}
+  background-color: $nyu-role-switch-background-color !important;
+  border: 0 !important;
+  position: absolute;
+  top: 13px;
+  right: 250px;
+  list-style: none;
+  line-height: 1;
+  min-height: initial !important;
+  border-right: 1px solid $nyu-header-menu-divider-color !important;
+  padding-right: 20px;
+  height: 30px;
 
-#roleSwitch p {
+  p {
     padding: 0 !important;
     margin: 0 !important;
     border: 0 !important;
-}
+    padding-top: 3px !important;
+  }
 
-#roleSwitch a {
+  a {
     color: white !important;
     min-height: 0 !important;
     padding: 5px !important;
-}
+  }
 
-#roleSwitch .#{$namespace}toolsNav__menuitem--icon {
+  .#{$namespace}toolsNav__menuitem--icon {
     display: none !important;
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------------------
