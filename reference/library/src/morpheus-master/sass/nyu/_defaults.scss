@@ -3,13 +3,13 @@
 //$namespace : "Mrphs-";
 $skin-name : "morpheus-nyu";
 
-//$break-small-end: 	800px;
-//$break-medium-end: 	1030px;
+$break-small-end: $nyu-breakpoint-mobile;
+$break-medium-end: $nyu-breakpoint-tablet;
 
-//$phone  :       "only screen and (max-width : #{ $break-small-end })";
-//$tablet :       "only screen and (max-width : #{ $break-medium-end })";
-//$desktop:       "only screen and (min-width : #{ $break-medium-end + 1 })";
-//$nonPhone:      "only screen and (min-width : #{ $break-small-end + 1 })";
+$phone  :       "only screen and (max-width : #{ $break-small-end })";
+$tablet :       "only screen and (max-width : #{ $break-medium-end })";
+$desktop:       "only screen and (min-width : #{ $break-medium-end + 1 })";
+$nonPhone:      "only screen and (min-width : #{ $break-small-end + 1 })";
 
 // For the "More Sites" drawer, just use one column if there's not
 // enough room to show two side-by-side.
