@@ -840,9 +840,13 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	{
 		String ssoURL = ServerConfigurationService.getString("edu.nyu.classes.saml.ssoURL");
 
-                String path = req.getPathInfo();
+		String path = req.getPathInfo();
 
-                Pattern toplevelPaths = Pattern.compile("(^/$|^/site/|^/tool/)");
+		if (path == null) {
+		    path = "/";
+		}
+
+		Pattern toplevelPaths = Pattern.compile("(^/$|^/site/|^/tool/)");
 
 		if (toplevelPaths.matcher(path).find() &&
 		    ssoURL != null && !"".equals(ssoURL) &&
