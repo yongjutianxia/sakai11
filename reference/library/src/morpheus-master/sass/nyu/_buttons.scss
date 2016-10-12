@@ -86,46 +86,66 @@
 // -------------------------------------------------------------------------------------------------------------------
 //  Apply our Custom mixins to the various button selectors
 // -------------------------------------------------------------------------------------------------------------------
-a {
-  &[href] {
-    &.btn-primary {
-      @include nyu_primary_button();
-    }
-  }
-}
-.button_color, button, button.btn-primary {
-  @include nyu_primary_button();
-}
-
-.button, button.ui-state-default, .btn.btn-default {
-  @include nyu_secondary_button();
-}
-
-.button.link, a.btn-link, button.btn-link {
-  @include nyu_link_button();
-}
-
-.navIntraTool {
-  li {
-    span {
-      a {
-        @media #{$phone}{
-          @include nyu_secondary_button();
-        }
-      }
-      &.current{
-        @media #{$phone}{
-          @include nyu_primary_button();
-        }
+// Scope within body so our CSS !important apply over any Morpheus defined !important
+body {
+  a {
+    &[href] {
+      &.btn-primary {
+        @include nyu_primary_button();
       }
     }
   }
-}
 
-@media #{$desktop} {
-  .#{$namespace}toolTitleNav{
-    .#{$namespace}toolTitleNav__link{
-      @include nyu_secondary_button();
+  .button_color,
+  input[type="submit"],
+  input[type="button"].active,
+  button.btn-primary {
+    @include nyu_primary_button();
+  }
+
+  .button,
+  button,
+  button.ui-state-default,
+  .btn.btn-default,
+  input[type="reset"],
+  input[type="button"],
+  input[type='submit'][name^='cancel'],
+  input[type='submit'][name^='Cancel'],
+  input[type='submit'][value^='cancel'],
+  input[type='submit'][value^='Cancel'],
+  input[type='button'][name^='cancel'],
+  input[type='button'][name^='Cancel'],
+  input[type='button'][value^='cancel'],
+  input[type='button'][value^='Cancel'] {
+    @include nyu_secondary_button();
+  }
+
+  .button.link, a.btn-link, button.btn-link {
+    @include nyu_link_button();
+  }
+
+  .navIntraTool {
+    li {
+      span {
+        a {
+          @media #{$phone}{
+            @include nyu_secondary_button();
+          }
+        }
+        &.current{
+          @media #{$phone}{
+            @include nyu_primary_button();
+          }
+        }
+      }
+    }
+  }
+
+  @media #{$desktop} {
+    .#{$namespace}toolTitleNav{
+      .#{$namespace}toolTitleNav__link{
+        @include nyu_secondary_button();
+      }
     }
   }
 }
