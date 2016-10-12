@@ -135,9 +135,10 @@ a > img {
 
   CLASSES-1427 Increase the minimum height of the editable area
   so the right click menu and paste action is easier to access
+  CLASSES-2318 Reduce height slightly as editor has changed 
 */
 body {
   margin: 0;
-  padding: 1px 20px 20px; /* 1px at the top so the margin of the inner elements sits within the body */
-  min-height: 260px;
+  padding: 1px 20px 0; /* 1px at the top so the margin of the inner elements sits within the body */
+  min-height: 180px;
 }
