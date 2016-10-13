@@ -20,6 +20,7 @@
 			#foreach($site in $sites)
 			#set ($siteIDCounter = $siteIDCounter + 1)
 				#if ($!currentSite && ($site.Id != $!currentSite.Id))
+					<div>
 						<label for="site_$siteIDCounter">
 							<input type="checkbox" name="importSites" id="site_$siteIDCounter" value="$site.getId()" 
 								#if ($site.getType()) 

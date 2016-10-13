@@ -11,7 +11,7 @@ NYU.setupSites = function(form, academicSessions) {
     var header = $("<h4>").html(title).addClass("indnt3");
     div.append(header);
     inputs.each(function() {
-      div.append($(this).closest("p"));
+      div.append($(this).closest("div"));
     });
 
     container.append(div);
