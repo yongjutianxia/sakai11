@@ -166,6 +166,25 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+//  Changes to Overview (synoptic tools)
+// -------------------------------------------------------------------------------------------------------------------
+
+.#{$namespace}toolBody--sakai-iframe-site {
+  border-bottom: none !important;
+}
+
+form[name^='announcementListForm'] .instruction {
+  background-color: inherit !important;
+  border: 0 !important;
+}
+
+form#calendarForm > div {
+  margin-top: 0.5em !important;
+  border: solid $nyu-calendar-border-color 1px !important;
+  padding: 0.5em !important;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
 
