@@ -664,8 +664,10 @@ body a[href] {
 // -------------------------------------------------------------------------------------------------------------------
 body {
   &.#{$namespace}portalBody{
+    background: $nyu-body-background-color !important;
+
     @media #{$phone}{
-      background: #FFFFFF !important;
+      background: $nyu-mobile-body-background-color !important;
     }
   }
 }
@@ -781,6 +783,7 @@ body {
 // -------------------------------------------------------------------------------------------------------------------
 .#{$namespace}footer {
   margin: 0 !important;
+  border-left: 1px solid #f0f0f0;
 }
 
 // -------------------------------------------------------------------------------------------------------------------
