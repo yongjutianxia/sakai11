@@ -16,20 +16,12 @@
     #end ## END of IF ( $sitePages.pageNavToolsCount > 1 || ! $sitePages.pageMaxIfSingle )
 
     <div class="Mrphs-pagebody">
-        <header class="Mrphs-siteHierarchy">
+        <header>
             #parse("/vm/morpheus/snippets/siteStatus-snippet.vm")
 
-            #foreach( $page in $sitePages.pageNavTools )
-                #if (${page.current})
-                <a href="${page.pageResetUrl}" title="$rloader.sit_reset" class="Mrphs-hierarchy-item Mrphs-hierarchy--toolName">
-                    <span class="Mrphs-breadcrumb--reset-icon icon-sakai fa fa-share" aria-hidden="true"></span>
-                    <span class="Mrphs-breadcrumb--icon ${page.menuClass} $!{page.menuClassOverride}"></span>
-                    <span>${page.pageTitle}</span>
-                </a>
-                #end
-            #end
+            #parse("/vm/morpheus/includeBreadcrumb.vm")
         </header>
-       
+
         #parse("/vm/morpheus/includePageBody.vm")
         
         #parse("/vm/morpheus/includeFooter.vm")

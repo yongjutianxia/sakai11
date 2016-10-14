@@ -590,9 +590,16 @@ body a[href] {
   @media #{$nonPhone} {
     border-left: 1px solid $nyu-content-border-color;
     min-height: $nyu-reset-button-height;
+
+    // hide everything except for the reset tool
+    .#{$namespace}hierarchy--siteName,
+    .#{$namespace}hierarchy--separator,
+    .#{$namespace}breadCrumbs--link {
+      display: none !important;
+    }
   }
 
-  a.Mrphs-hierarchy--toolName {
+  a.#{$namespace}hierarchy--toolName {
     color: $nyu-reset-button-text-color !important;
     font-size: $nyu-reset-button-text-size !important;
 
@@ -621,6 +628,16 @@ body a[href] {
 
     &.moving{
       top: -22em !important;
+    }
+
+    .#{$namespace}hierarchy--siteName,
+    .#{$namespace}hierarchy--separator,
+    .#{$namespace}breadCrumbs--link {
+      color: $nyu-text-color !important;
+
+      a {
+        color: $nyu-text-color !important;
+      }
     }
   }
 }
