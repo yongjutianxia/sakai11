@@ -149,3 +149,457 @@ body {
     }
   }
 }
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Resources Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  // Site Resources
+  .#{$namespace}sakai-resources {
+    .inactive {
+      button {
+        span {
+          color: $nyu-button-secondary-text-color !important;
+        }
+      }
+    }
+  }
+
+  // Upload Files
+  #addContentForm {
+    input[type="button"] {
+      &#finish {
+        @include nyu_primary_button();
+      }
+    }
+  }
+
+  // Create Citation List
+  #citationsPortletBody {
+    #PickResource,
+    #CreateCitation,
+    #ImportCitation,
+    #addSectionButton {
+      @include nyu_secondary_button();
+    }
+    input[type="button"][value="Done"] {
+      @include nyu_primary_button();
+    }
+    .h1Editor {
+      input[type="button"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+
+  // Trash
+  #restoreForm {
+    #restore-button {
+      @include nyu_primary_button();
+    }
+  }
+
+  // Transfer Files
+  input[type="button"][value="Return"] {
+    @include nyu_secondary_button();
+  }
+
+  // Quota
+  form[name="quotaForm"] {
+    input[type="submit"][name="eventSubmit_doCancel"] {
+      @include nyu_secondary_button();
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Messages Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-messages {
+
+    // Folder navigation
+    #prefs_pvt_form {
+      .itemNav {
+        .btn-primary {
+          @include nyu_secondary_button();
+        }
+      }
+      .searchNav {
+        #adv_button {
+          input[type="submit"] {
+            @include nyu_secondary_button();
+          }
+        }
+      }
+      #adv_input {
+        input[type="submit"].button_search {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // Compose Message
+    #compose {
+      input[type="submit"][value="Add attachments"],
+      input[type="submit"][value="Preview"],
+      input[type="submit"][value="Save Draft"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Preview
+    #pvtMsgDetail {
+      input[type="submit"][value="Back"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
+// -------------------------------------------------------------------------------------------------------------------
+//  Announcements Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-announcements {
+
+    // Listing
+    form[name="firstpageForm"],
+    form[name="prevpageForm"],
+    form[name="nextpageForm"],
+    form[name="lastpageForm"] {
+      input[type="submit"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // View Announcement
+    form[name="formII"] {
+      .itemNav {
+        input[type="submit"][name="eventSubmit_doPrev_message"],
+        input[type="submit"][name="eventSubmit_doLinkcancel"],
+        input[type="submit"][name="eventSubmit_doNext_message"] {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // Preview
+    form[name="form2"] {
+      input[type="submit"][name="eventSubmit_doPreviewrevise"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Assignments Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-assignment-grades {
+
+    // Pager
+    .assignment-pager {
+      form[name="firstpageForm"],
+      form[name="prevpageForm"],
+      form[name="nextpageForm"],
+      form[name="lastpageForm"] {
+        input[type="submit"] {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // Listing
+    form[name="listAssignmentsForm"] {
+      #btnRemove {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Preview
+    #previewAssignmentsForm {
+      input[type="button"][name="revise"],
+      input[type="button"][name="done"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // View Submissions
+    #defaultGradeForm {
+      input[type="button"][name="apply"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Gradebook Classic Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-gradebook-tool {
+
+    // Gradebook Item
+    #gbForm {
+      .nav {
+        input[type="submit"] {
+          @include nyu_secondary_button();
+        }
+      }
+      .gbContainerNav {
+        input[type="submit"] {
+          @include nyu_secondary_button();
+        }
+      }
+      .gbButtonBar {
+        input[type="submit"][value="Clear Changes"] {
+          @include nyu_secondary_button();
+        }
+      }
+      .gradingTable {
+        input[type="submit"] {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // All Grades
+    #gbForm {
+      .listNav,
+      .gbListView {
+        input[type="submit"] {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // Course Grades
+    #gbForm {
+      input[type="submit"][value="Download"],
+      input[type="submit"][value="Clear Changes"],
+      input[type="submit"][value="Replace Ungraded Items"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Course Grade Options
+    #gbForm {
+      .itemName {
+        input[type="submit"][value="Change grade type"] {
+          @include nyu_secondary_button();
+        }
+      }
+    }
+
+    // Import Grades
+    #gbForm {
+      input[type="submit"][value="Choose File"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Syllabus Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+
+  // Listing/Inline Edit
+  .editable-popup {
+    .editableform {
+      button[type="submit"].editable-submit {
+        @include nyu_primary_button();
+
+        .ui-icon {
+          background-image: url(/library/webjars/jquery-ui/1.11.3/images/ui-icons_ffffff_256x240.png) !important;
+        }
+      }
+    }
+  }
+
+  .#{$namespace}sakai-syllabus {
+
+    // Edit Details
+    #readview {
+      input[type="submit"][value="Add attachments"],
+      input[type="submit"][value="Preview"],
+      input[type="submit"][value="Save Draft"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Bulk Edit
+    input[type="submit"][value="Reset"] {
+      @include nyu_secondary_button();
+    }
+
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Forums Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-forums {
+
+    // Add/Edit Forum/Topic
+    #revise {
+      input[type="submit"][value="Add attachments"],
+      input[type="submit"][value="Save Settings & Add Topic"],
+      input[type="submit"][value="Delete Forum"],
+      input[type="submit"][value="Save Draft"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Statistics and Grading
+    #dfStatisticsForm {
+      .navPanel {
+        .itemNav {
+          input[type="submit"] {
+            @include nyu_secondary_button();
+          }
+        }
+      }
+    }
+
+    // Start a Conversation
+    #dfCompose {
+      input[type="submit"][value="Add attachments"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Lessons Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  // no changes required
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Tests and Quizzes Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-samigo {
+    // Add / Edit Item
+    #itemForm {
+      input[type="submit"][value="Add Attachments"],
+      input[type="submit"][value="Upload"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Add / Edit Part
+    .attachmentEditor {
+      input[type="submit"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Publish
+    #publishAssessmentForm {
+      input[type="submit"] {
+        @include nyu_secondary_button();
+      }
+      input[type="submit"].active {
+        @include nyu_primary_button();
+      }
+    }
+
+    // Student View
+    #takeAssessmentForm {
+      input[type="submit"] {
+        @include nyu_secondary_button();
+      }
+      input[type="submit"].active {
+        @include nyu_primary_button();
+      }
+    }
+
+    // Event Log
+    #eventLogId {
+      input[type="submit"] {
+        @include nyu_secondary_button();
+      }
+      input[type="submit"].active {
+        @include nyu_primary_button();
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Calendar Tool
+//   - style secondary buttons
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-schedule {
+
+    // Calendar by Week
+    form[name="weekform"] {
+      input[type="submit"][name="eventSubmit_doPrev"],
+      input[type="submit"][name="eventSubmit_doToday"],
+      input[type="submit"][name="eventSubmit_doNext"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    .viewLinkControl {
+      padding: 0 !important;
+
+      a {
+        color: $nyu-button-secondary-text-color !important;
+        text-decoration: none !important;
+        padding: 0.4em 0.8em 0.45em 0.8em;
+        display: inline-block;
+      }
+
+      &:hover {
+        a {
+          color: $nyu-button-secondary-hover-text-color !important;
+        }
+      }
+    }
+
+    // Add/Edit Event
+    input[type="submit"][name="eventSubmit_doEditfrequency"],
+    input[type="submit"][name="eventSubmit_doAttachments"] {
+      @include nyu_secondary_button();
+    }
+
+    // Event
+    form[name="navigatorform"] {
+      input[type="submit"][name="eventSubmit_doPrev_activity"],
+      input[type="submit"][name="eventSubmit_doToday"],
+      input[type="submit"][name="eventSubmit_doNext_activity"] {
+        @include nyu_secondary_button();
+      }
+    }
+    form[name="form"] {
+      input[type="submit"][name="eventSubmit_doDelete"] {
+        @include nyu_secondary_button();
+      }
+    }
+
+    // Fields
+    form[name="Options"] {
+      input[type="submit"][name="eventSubmit_doAddfield"] {
+        @include nyu_secondary_button();
+      }
+    }
+  }
+}
