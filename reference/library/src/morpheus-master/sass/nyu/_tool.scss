@@ -46,6 +46,7 @@
         font-size: $nyu-tool-tab-text-size !important;
         padding: 0 10px !important;
         line-height: $nyu-tool-tab-height;
+        text-transform: $nyu-tool-tab-text-transform !important;
 
         &:hover {
           background-color: $nyu-tool-tab-hover-background-color !important;
@@ -73,6 +74,7 @@
         line-height: $nyu-tool-tab-height + 1;
         font-size: $nyu-tool-tab-active-text-size !important;
         background-color: $nyu-tool-tab-active-background-color !important;
+        text-transform: $nyu-tool-tab-text-transform !important;
 
         &:before {
           border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
