@@ -323,6 +323,10 @@ body a[href] {
   }
 }
 
+#portalMask {
+  background: $nyu-all-sites-mask-background !important;
+}
+
 #selectSiteModal{
   &.dhtml_more_tabs {
     background-color: $nyu-all-sites-background-color !important;
@@ -576,6 +580,19 @@ body a[href] {
         color: $nyu-all-sites-close-action-hover-color !important;
       }
     }
+  }
+}
+
+// Fix for CLASSES-2330 in Lessons
+body.active-more-sites {
+  .#{$namespace}mainHeader, .#{$namespace}skipNav__menu {
+    z-index: 100002 !important;
+  }
+  #portalMask {
+    z-index: 100003 !important;
+  }
+  #selectSiteModal {
+    z-index: 100004 !important;
   }
 }
 
