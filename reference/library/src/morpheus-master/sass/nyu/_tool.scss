@@ -187,6 +187,67 @@ form#calendarForm > div {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+//  Changes to the Chat Tool (synoptic tools)
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-chat {
+    #topForm {
+      margin-bottom: 1em;
+    }
+    .chatListHeadWrapper {
+        padding: .2em 0 .2em .5em !important;
+        margin: 0 0 .5em !important;
+        border-bottom: 1px dotted silver;
+    }
+    h3.chatListHeadWrapper {
+        margin-top: 0;
+    }
+    #chatPresenceHeadWrapper, .chatPresenceHeadWrapper {
+        margin-bottom: .5em !important;
+        padding: 0 0 .2em .2em !important;
+        border-bottom: 1px dotted silver;
+    }
+    #chatListWrapper, .chatListWrapper {
+        width: 100%;
+        padding-bottom: .5em;
+        float: left;
+        margin-top: 1em !important;
+    }
+    .chatListMonitor {
+        height: 300px;
+        overflow: auto;
+        overflow-y: auto;
+        overflow-x: visible;
+        border: none;
+        /* This overflow is for Netscape*/
+        overflow: -moz-scrollbars-vertical;
+    }
+    #chatPresenceWrapper, .chatPresenceWrapper {
+        width: 16%;
+        float: left;
+        border: none;
+        border-left: 1px dotted silver;
+        min-height: 320px;
+    }
+    #chatList, .chatList {
+        margin: 0;
+        padding-left: 1.2em;
+        list-style: none;
+        width: 96%;
+    }
+    #chatList li, .chatList li {
+        margin: .2em 0 0 2em;
+        padding: .2em 0;
+        text-indent: -3em;
+        line-height: 1.2em;
+    }
+    #chatList li .chatDate, .chatList li .chatDate {
+        font-size: .8em
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
 
