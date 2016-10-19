@@ -34,6 +34,16 @@
       left: initial !important;
     }
   }
+  .#{$namespace}multipleTools {
+    .#{$namespace}toolTitleNav__button_container {
+      top: 0 !important;
+    }
+    .#{$namespace}pageColumns--single {
+      .#{$namespace}toolTitleNav__button_container {
+        top: 0 !important;
+      }
+    }
+  }
   .navIntraTool {
     padding-left: 0 !important;
     padding-right: 1em !important;

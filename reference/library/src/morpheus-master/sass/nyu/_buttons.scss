@@ -155,6 +155,19 @@ body {
     .#{$namespace}toolTitleNav{
       .#{$namespace}toolTitleNav__link{
         @include nyu_secondary_button();
+        line-height: 18px !important;
+        padding: 0.4em 0.8em 0.45em 0.8em !important;
+        font-family: $font-family !important;
+        font-size: 12px !important;
+
+        &:before {
+          font-family: 'FontAwesome' !important;
+        }
+
+        .#{$namespace}itemTitle {
+          font-size: 12px !important;
+          -webkit-font-smoothing: auto !important;
+        }
       }
     }
   }
