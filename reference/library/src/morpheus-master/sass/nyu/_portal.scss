@@ -591,6 +591,7 @@ body.active-more-sites {
   #portalMask {
     z-index: 100003 !important;
   }
+  .#{$namespace}sitesNav__menuitem.view-all-sites-btn,
   #selectSiteModal {
     z-index: 100004 !important;
   }
