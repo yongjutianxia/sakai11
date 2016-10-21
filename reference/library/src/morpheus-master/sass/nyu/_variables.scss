@@ -1,7 +1,9 @@
 // Breakpoints for Responsive Design
 
-$nyu-breakpoint-mobile:                                       720px;
-$nyu-breakpoint-tablet:                                       1024px;
+// essentially disable the phone view
+$nyu-breakpoint-mobile:                                       1px;
+// and this becomes the one breakpoint for all small viewports
+$nyu-breakpoint-tablet:                                       720px;
 
 // Desktop / General Variables
 $nyu-purple:                                                  #57068C;

@@ -1,0 +1,244 @@
+// --------------------------------------------------------------------------------------------------------------------
+//  NYU Layout Classes
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
+@media #{$tablet} {
+  .nyu-desktop-only {
+    display: none;
+  }
+}
+@media #{$phone} {
+  .nyu-desktop-only {
+    display: none;
+  }
+}
+@media #{$desktop} {
+  .nyu-desktop-only {
+    display: block;
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Favorite Sites Navigation
+// --------------------------------------------------------------------------------------------------------------------
+@media #{$tablet} {
+  body {
+    .#{$namespace}topHeader {
+      box-shadow: none;
+    }
+
+    ##{$namespace}sites-nav {
+      height: $nyu-tablet-header-site-height !important;
+
+      .#{$namespace}sitesNav__menu {
+        li {
+          display: none;
+        }
+        li.is-selected {
+          display: block;
+
+          > a { 
+            color: $nyu-tablet-header-site-text-color !important;
+            font-size: $nyu-tablet-header-site-text-size !important;
+            border: none !important;
+            background: transparent !important;
+  
+            > i, > i:before {
+              color: $nyu-tablet-header-site-icon-color !important;
+            }
+
+            .#{$namespace}sitesNav__dropdown {
+              display: none !important;
+            }
+
+            &:hover {
+              color: $nyu-tablet-header-site-text-color !important;
+              font-size: $nyu-tablet-header-site-text-size !important;
+              border: none !important;
+              background: transparent !important;
+    
+              > i {
+                color: $nyu-tablet-header-site-icon-color !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .view-all-sites-btn {
+      position: absolute;
+      top: 68px;
+    }
+
+    #selectSiteModal {
+      width: 88% !important;
+    }
+  }
+}
+
+@media #{$phone} {
+  body {
+    
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Site Hierarchy / Reset Button
+// --------------------------------------------------------------------------------------------------------------------
+#nyuToolToggle {
+  display: none;
+}
+@media #{$tablet} {
+  .#{$namespace}portalWrapper {
+    .#{$namespace}topHeader {
+      z-index: 1;
+      box-shadow: none !important;
+      padding-top: $nyu-tablet-header-site-height;
+
+      .#{$namespace}headerLogo {
+        position: fixed;
+        top: 0;
+        z-index: 1;
+      }
+      #loginLinks {
+        position: fixed;
+        top: 13px;
+        z-index: 1;
+        right: 10px;
+        border-left: none !important;
+      }
+      .#{$namespace}userNav__subnav {
+        position: fixed;
+        top: 37px;
+      }
+    }
+    .#{$namespace}siteHierarchy {
+      background: $nyu-header-background !important;
+      border-top: $nyu-tablet-divider-width solid $nyu-tablet-divider-color  !important;
+      box-shadow: $nyu-tablet-divider-shadow !important;
+      position: relative;
+
+      #nyuToolToggle {
+        display: inline-block;
+        position: relative;
+        margin-left: 0;
+        margin-right: 20px;
+        font-size: 15px;
+
+        &:before {
+          font-family: 'FontAwesome';
+          content: '\f0c9';
+          margin-right: 6px;
+        }
+
+        &:after {
+          content: '';
+          border-right: 1px solid #E5E5E5;
+          height: 30px;
+          display: inline-block;
+          position: absolute;
+          right: -15px;
+          top: -4px;
+        }
+
+        &:hover {
+          text-decoration: none !important;
+        }
+      }
+
+      .#{$namespace}hierarchy--siteName,
+      .#{$namespace}hierarchy--siteNameSeparator {
+        display: none;
+      }
+
+      .#{$namespace}hierarchy--siteName,
+      .#{$namespace}hierarchy--separator,
+      .#{$namespace}breadCrumbs--link {
+        color: $nyu-text-color !important;
+  
+        a {
+          color: $nyu-text-color !important;
+        }
+      }
+    }
+  }
+  .#{$namespace}pageColumns--single {
+    .#{$namespace}toolTitleNav__button_container {
+      top: -50px !important;
+    }
+  }
+  
+  .#{$namespace}skipNav__menu {
+    // show the tool menu to the left of breadcrumb
+  }
+
+  .user-dropdown-overlay {
+    z-index: 1 !important;
+  }
+}
+@media #{$phone} {
+  .#{$namespace}portalWrapper {
+    .#{$namespace}siteHierarchy {
+      position: absolute;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Tool Menu
+// --------------------------------------------------------------------------------------------------------------------
+@media #{$tablet} {
+  body {
+    #toolMenuWrap,
+    #toolMenu,
+    .#{$namespace}collapseTools {
+      display: none !important;
+    }
+  
+    &.toolsNav--displayed {
+      #toolMenuWrap,
+      #toolMenu {
+        display: block !important;
+        width: 100% !important;
+        flex-basis: 100% !important;
+      }
+      .#{$namespace}pagebody {
+        display: none !important;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+//  Tool Portlet
+// --------------------------------------------------------------------------------------------------------------------
+@media #{$tablet} {
+  body {
+    .portletBody {
+      margin-top: 16px !important;
+    }
+    #content {
+      min-height: auto !important;
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Changes to Overview (synoptic tools)
+// -------------------------------------------------------------------------------------------------------------------
+
+@media #{$tablet} {
+  #content {
+    padding-top: 10px;
+  }
+
+  #jsr-edit {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    min-width: 64px;
+  }
+}

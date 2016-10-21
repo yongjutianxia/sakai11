@@ -607,61 +607,31 @@ body.active-more-sites {
 // --------------------------------------------------------------------------------------------------------------------
 //  Site Hierarchy / Reset Button
 // --------------------------------------------------------------------------------------------------------------------
-.#{$namespace}siteHierarchy {
-  box-shadow: none !important;
-  padding: 0 !important;
-  background: #FFFFFF !important;
-
-  @media #{$nonPhone} {
-    border-left: 1px solid $nyu-content-border-color;
-    min-height: $nyu-reset-button-height;
-
-    // hide everything except for the reset tool
-    .#{$namespace}hierarchy--siteName,
-    .#{$namespace}hierarchy--separator,
-    .#{$namespace}breadCrumbs--link {
-      display: none !important;
+// Hide the original breadcrumb section on desktop (we duplicate a simpler version for desktop)
+@media #{$desktop} {
+  .#{$namespace}portalWrapper {
+    > .#{$namespace}siteHierarchy {
+      display: none;
     }
   }
+}
 
-  a.#{$namespace}hierarchy--toolName {
-    color: $nyu-reset-button-text-color !important;
-    font-size: $nyu-reset-button-text-size !important;
-
-    margin: 1em 0 0.25em 1.25em !important;
-    display: inline-block !important;
-    border-bottom: 1px solid transparent;
-
-    &:hover {
-      text-decoration: none !important;
-    }
-
-    @media #{$phone} {
-      margin: 0 0 0 1.25em !important;
-      padding: 10px 0 !important;
-    }
-  }
-
-  @media #{$phone} {
-    text-transform: uppercase !important;
-    font-size: 130% !important;
-    font-weight: bold !important;
-    top: 88px !important;
+.#{$namespace}pagebody {
+  .#{$namespace}siteHierarchy {
+    box-shadow: none !important;
     padding: 0 !important;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
-    min-height: auto !important;
+    background: #FFFFFF !important;
 
-    &.moving{
-      top: -22em !important;
-    }
+    a.#{$namespace}hierarchy--toolName {
+      color: $nyu-reset-button-text-color !important;
+      font-size: $nyu-reset-button-text-size !important;
 
-    .#{$namespace}hierarchy--siteName,
-    .#{$namespace}hierarchy--separator,
-    .#{$namespace}breadCrumbs--link {
-      color: $nyu-text-color !important;
+      margin: 1em 0 0.25em 1.25em !important;
+      display: inline-block !important;
+      border-bottom: 1px solid transparent;
 
-      a {
-        color: $nyu-text-color !important;
+      &:hover {
+        text-decoration: none !important;
       }
     }
   }
