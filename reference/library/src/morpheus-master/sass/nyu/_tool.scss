@@ -180,6 +180,13 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 // -------------------------------------------------------------------------------------------------------------------
 //  Changes to Overview (synoptic tools)
 // -------------------------------------------------------------------------------------------------------------------
+.nyu-hide-tool-header-on-desktop {
+  height: 10px;
+
+  .#{$namespace}siteHierarchy {
+    display: none !important;
+  }
+}
 
 .#{$namespace}toolBody--sakai-iframe-site {
   border-bottom: none !important;

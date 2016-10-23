@@ -1,7 +1,11 @@
 <!-- START VM includeNYUDesktopToolHeader.vm -->
 
 ## Purely for desktop visual users.  The original and more useful breadcrumb is in the page but hidden.
+#if ( $sitePages.hideToolHeaderOnDesktop )
+<header class="nyu-hide-tool-header-on-desktop nyu-desktop-only" aria-hidden="true">
+#else
 <header class="nyu-desktop-only" aria-hidden="true">
+#end
 
     #parse("/vm/morpheus/snippets/siteStatus-snippet.vm")
 

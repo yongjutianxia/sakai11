@@ -241,4 +241,12 @@
     top: -5px;
     min-width: 64px;
   }
+
+  #content, .#{$namespace}container--footer {
+    #col1of2, #col2of2 {
+      display: block !important;
+      width: 100% !important;
+      margin: 0 !important;
+    }
+  }
 }

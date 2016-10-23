@@ -736,7 +736,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				// We'll consider one of these pages is generally a templated page
 				// containing more than one tool.
 				if (current && pTools.size() > 1) {
-					theMap.put("hideBreadcrumbOnDesktop", Boolean.valueOf(true));
+					theMap.put("hideToolHeaderOnDesktop", Boolean.valueOf(true));
 				}
 
 				continue;
