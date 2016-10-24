@@ -920,7 +920,7 @@ a.peer-eval-stats {
   padding:2px;
   margin:0px;
   margin-bottom:-10px;
-  display:inline-block !important;
+  display:block !important;
 }
 
 /* Dropdown Menu */
