@@ -1659,8 +1659,17 @@ span.nextprev {
 .contentButton span {
   padding: 0px !important;
 }
+
+.contentButton span a {
+  /* NYU: Added to stop the larger icons from overflowing their container and affecting the line height. */
+  overflow: hidden;
+}
+
 .fa-button-text{
   font-size:125%;
+
+  /* NYU: Added to stop the larger icons from overflowing their container and affecting the line height. */
+  float: right;
 }
 .navIntraTool li.contentButton a {
   padding-top:2px !important;
