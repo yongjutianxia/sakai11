@@ -621,6 +621,7 @@ body.active-more-sites {
     box-shadow: none !important;
     padding: 0 !important;
     background: #FFFFFF !important;
+    border-left: 1px solid $nyu-content-border-color;
 
     a.#{$namespace}hierarchy--toolName {
       color: $nyu-reset-button-text-color !important;

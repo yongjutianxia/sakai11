@@ -194,6 +194,8 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 // -------------------------------------------------------------------------------------------------------------------
 .nyu-hide-tool-header-on-desktop {
   height: 10px;
+  border-left: 1px solid $nyu-content-border-color;
+  background: #FFFFFF;
 
   .#{$namespace}siteHierarchy {
     display: none !important;
