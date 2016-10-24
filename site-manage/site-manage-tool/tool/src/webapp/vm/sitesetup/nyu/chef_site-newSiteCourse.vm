@@ -148,7 +148,7 @@ function redirectBasedOnSelection(){
 	<div class="alert site-setup-messages">
 		<p class="instruction">Please select the section(s) to be included in your course site. Selecting multiple sections will combine them into <b>one</b> course site.</p>
 		#if (!$site && $termCourseList && $termCourseList.size() > 1)
-			<p class="instruction"><b>Note:</b> You may only create one course site at one time. To create additional course sites you will need to re-enter the Setup Course Sites tool.</p>
+			<p class="instruction"><b>Note:</b> You may only create one course site at one time. To create additional course sites you will need to re-enter the Set Up Course Sites tool.</p>
 		#end
 	</div>
 	<form name = "addCourseForm" method="post" action="#toolForm($action)">
