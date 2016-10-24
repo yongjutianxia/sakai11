@@ -249,65 +249,100 @@
 </script>
 
 		<div id="addContentDiv" style="display:none" class="dropDownDiv specialLink lessonsDialog" role="menu" aria-label="Add content menu">
-		<div class="addContentMessage instruction" rsf:id="msg=simplepage.add-item-page"></div>
-		<ul>
-		  <li>
-		    <a role="menuitem button" href="#" rsf:id="add-text" class="add-text-link add-before-param" ><span rsf:id="msg.simplepage.text"></span></a>
-		  </li>
-		  <li>
-		    <a role="menuitem button" aria-haspopup="dialog" aria-controls="add-multimedia-dialog" href="#" rsf:id="add-multimedia" class="add-multimedia add-before-param"><span rsf:id="msg.simplepage.multimedia"></span></a>
-		  </li>
-		  <li>
-		    <a role="menuitem button" aria-haspopup="dialog" aria-controls="add-multimedia-dialog" href="#" rsf:id="add-resource" class="add-resource add-before-param"><span rsf:id="msg.simplepage.resource"></span></a>
-		  </li>
-		  <li>
-		    <a role="menuitem button" aria-haspopup="dialog" aria-controls="subpage-dialog" href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a>
-		  </li>
-		  <hr class="addbreak" style="border:none" rsf:id="add-break1"/>
-		  <li rsf:id="add-break2" class="addbreak">
-		    <a role="menuitem button" href="#" rsf:id="add-break3" class="add-break-section"><span rsf:id="msg=simplepage.break-items"></span></a>
-		  </li>
-		  <li rsf:id="add-break4" class="addbreak">
-		    <a role="menuitem button" href="#" rsf:id="add-break5" class="add-break-column"><span rsf:id="msg=simplepage.break-columns"></span></a>
-		  </li>
-		  <hr style="border:none"/>
-		  <li rsf:id="assignment-li">
-		    <a role="menuitem button" href="#" rsf:id="add-assignment" class="add-before-param"><span rsf:id="msg.simplepage.assignment"></span></a>
-		  </li>
-		  <li rsf:id="quiz-li">
-		    <a role="menuitem button" href="#" rsf:id="add-quiz" class="add-before-param"><span rsf:id="msg.simplepage.quiz"></span></a>
-		  </li>
-                  <li rsf:id="forum-li">
-                    <a role="menuitem button" class="add-forum-link add-before-param" href="#" rsf:id="add-forum"><span rsf:id="msg.simplepage.forum"></span></a>
-                  </li>
-		  <hr style="border:none"/>
-            <li rsf:id="checklist-li">
-                <a role="menuitem button" class="add-checklist-link add-before-param" href="#" rsf:id="add-checklist"><span rsf:id="msg.simplepage.checklist"></span></a>
-            </li>
-		  <li rsf:id="question-li">
-		    <a role="menuitem button" aria-haspopup="dialog" aria-controls="question-dialog"  href="#" rsf:id="question-link" class="question-link"><span rsf:id="msg=simplepage.questionLinkText"></span></a>
-		  </li>
-                  <li rsf:id="student-li">
-                    <a href="#" role="menuitem button" rsf:id="add-comments" class="add-before-param"><span rsf:id="msg.simplepage.comments"></span></a>
-                  </li>
-                  <li rsf:id="studentcontent-li">
-                    <a href="#" role="menuitem button" rsf:id="add-content" class="add-before-param"><span rsf:id="msg.simplepage.add-student-content"></span></a>
-                  </li>
-                  <li rsf:id="blti-tool:">
-                    <a href="#" role="menuitem button" rsf:id="add-blti-tool" class="add-before-param"><span rsf:id="msg.simplepage.blti"></span></a>
-                  </li>
-                  <li rsf:id="blti-li">
-                    <a href="#" role="menuitem button" rsf:id="add-blti" class="add-before-param"><span rsf:id="msg.simplepage.blti"></span></a>
-                  </li>
-		  <li rsf:id="scorm-li">
-		    <a role="menuitem" href="#" rsf:id="add-scorm" class="add-scorm"><span rsf:id="msg.simplepage.scorm"></span></a>
-                    <div rsf:id="msg=simplepage.scorm-descrip"></div>
-		  </li>
-		  <li>
-		    <a role="menuitem" href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a>
-                    <div rsf:id="msg=simplepage.subpage-descrip"></div>
-		  </li>
-		</ul>
+			<h1>Add Content</h1>
+
+		    <div style="display: none" class="addContentMessage instruction" rsf:id="msg=simplepage.add-item-page"></div>
+		
+		    <div class="addContentDivSubSection">
+		        <h2>General Content</h2>
+			<ul>
+			    <li>
+				<a role="menuitem" href="#" rsf:id="add-text" class="add-text-link add-before-param" ><span rsf:id="msg.simplepage.text"></span></a>
+		                <div rsf:id="msg=simplepage.addtext-descrip"></div>
+			    </li>
+			    <li>
+				<a role="menuitem" href="#" rsf:id="add-multimedia" class="add-multimedia add-before-param"><span rsf:id="msg.simplepage.multimedia"></span></a>
+		                <div rsf:id="msg=simplepage.multimedia-descrip"></div>
+			    </li>
+			    <li>
+				<a role="menuitem" href="#" rsf:id="add-resource" class="add-resource add-before-param"><span rsf:id="msg.simplepage.resource"></span></a>
+		                <div rsf:id="msg=simplepage.multimedia-descrip"></div>
+			    </li>
+			    <li>
+				<a role="menuitem" href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a>
+		                <div rsf:id="msg=simplepage.subpage-descrip"></div>
+			    </li>
+		        </ul>
+		    </div>
+		
+		    <hr style="border:none"/>
+		    <div class="addContentDivSubSection addbreak">
+		            <h2>Breaks</h2>
+			    <ul>
+				    <li rsf:id="add-break2" class="addbreak">
+					    <a role="menuitem" href="#" rsf:id="add-break3" class="add-break-section"><span rsf:id="msg=simplepage.break-items"></span></a>
+				    </li>
+				    <li rsf:id="add-break4" class="addbreak">
+					    <a role="menuitem" href="#" rsf:id="add-break5" class="add-break-column"><span rsf:id="msg=simplepage.break-columns"></span></a>
+				    </li>
+			    </ul>
+		    </div>
+
+		    <hr style="border:none"/>
+		
+		    <div class="addContentDivSubSection">
+		        <h2>Tool Content</h2>
+		        <ul>
+			    <li rsf:id="assignment-li">
+				<a role="menuitem" href="#" rsf:id="add-assignment" class="add-before-param"><span rsf:id="msg.simplepage.assignment"></span></a>
+		                <div rsf:id="msg=simplepage.assignment-descrip"></div>
+			    </li>
+			    <li rsf:id="quiz-li">
+				<a role="menuitem" href="#" rsf:id="add-quiz" class="add-before-param"><span rsf:id="msg.simplepage.quiz"></span></a>
+		                <div rsf:id="msg=simplepage.quiz-descrip"></div>
+			    </li>
+		            <li rsf:id="forum-li">
+		                <a role="menuitem" class="add-forum-link add-before-param" href="#" rsf:id="add-forum"><span rsf:id="msg.simplepage.forum"></span></a>
+		                <div rsf:id="msg=simplepage.forum-descrip"></div>
+		            </li>
+		        </ul>
+		    </div>
+		
+		    <hr style="border:none"/>
+		
+		    <div class="addContentDivSubSection">
+		            <h2>Lessons Content</h2>
+		            <ul>
+				    <li rsf:id="question-li">
+					    <a role="menuitem" href="#" rsf:id="question-link" class="question-link"><span rsf:id="msg=simplepage.questionLinkText"></span></a>
+					    <div rsf:id="msg=simplepage.question-descrip"></div>
+				    </li>
+				    <li rsf:id="student-li">
+					    <a href="#" role="menuitem" rsf:id="add-comments" class="add-before-param"><span rsf:id="msg.simplepage.comments"></span></a>
+					    <div rsf:id="msg=simplepage.comments-descrip"></div>
+				    </li>
+				    <li rsf:id="studentcontent-li">
+					    <a href="#" role="menuitem" rsf:id="add-content" class="add-before-param"><span rsf:id="msg.simplepage.add-student-content"></span></a>
+					    <div rsf:id="msg=simplepage.student-descrip"></div>
+				    </li>
+				    <li rsf:id="blti-tool:">
+					    <a href="#" role="menuitem" rsf:id="add-blti-tool" class="add-before-param"><span rsf:id="msg.simplepage.blti"></span></a>
+					    <div rsf:id="msg=simplepage.blti-descrip"></div>
+				    </li>
+				    <li rsf:id="blti-li">
+					    <a href="#" role="menuitem" rsf:id="add-blti" class="add-before-param"><span rsf:id="msg.simplepage.blti"></span></a>
+					    <div rsf:id="msg=simplepage.blti-descrip"></div>
+				    </li>
+				    <li rsf:id="scorm-li">
+					    <a role="menuitem" href="#" rsf:id="add-scorm" class="add-scorm"><span rsf:id="msg.simplepage.scorm"></span></a>
+					    <div rsf:id="msg=simplepage.scorm-descrip"></div>
+				    </li>
+				    <li>
+					    <a role="menuitem" href="#" rsf:id="subpage-link" class="subpage-link"><span rsf:id="msg=simplepage.subpage"></span></a>
+					    <div rsf:id="msg=simplepage.subpage-descrip"></div>
+				    </li>
+		            </ul>
+		    </div>
 		</div>
 
 		<div rsf:id="moreDiv" id="moreDiv" style="display:none" class="dropDownDiv specialLink lessonsDialog" role="menu" aria-label="More menu options">
@@ -375,8 +410,8 @@
 			<div rsf:id="section:" id="section" class="section">
 			<div rsf:id="column:" class="column">
 			  <div class="editsection">
-			  <span rsf:id="section-td" class="sectionedit"><h3 class="offscreen" rsf:id="break-msg"></h3><a role="button" rsf:id="section-del-link" href="#"  onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon"></span></a></span>
-			  <span rsf:id="section2" class="sectionedit sectionedit2"><a role="button" aria-haspopup="dialog" aria-controls="column-dialog" rsf:id="section3" href="#" class="columnopen"><span aria-hidden="true" class="fa-columns fa-edit-icon sectioneditfont"></span></a></span>
+			  <span rsf:id="section-td" class="sectionedit"><h3 class="offscreen" rsf:id="break-msg"></h3><a rsf:id="section-del-link" href="#"  onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon sectioneditfont"></span></a></span>
+			  <span rsf:id="section2" class="sectionedit sectionedit2"><a rsf:id="section3" href="#" class="columnopen"><span aria-hidden="true" class="fa-cog fa-edit-icon sectioneditfont"></span></a></span>
 			  </div>
 			<span rsf:id="addbottom" class="sectionedit addbottom"><a role="button" aria-haspopup="dialog" aria-controls="addContentDiv" rsf:id="addbottom2" class="add-bottom" href="#" ><span aria-hidden="true" class="fa-plus fa-edit-icon plus-edit-icon"></span></a></span>
                         <ul class="indent mainList" rsf:id="itemTable:" border="0" style="z-index: 1;" role="list" aria-labelledby="itemContainer::maintablelabel">
@@ -2053,19 +2088,21 @@
 		<div>
                   <span>
                     <input type="checkbox" id="columndouble" />
-                    <label for="columndouble"><span rsf:id="msg=simplepage.columndouble"></span></label><br />
-		    
-                    <input type="checkbox" id="columnsplit" />
-                    <label for="columnsplit" rsf:id="msg=simplepage.columnsplit"></label><br />
+                    <label for="columndouble"><span rsf:id="msg=simplepage.columndouble"></span></label>
+                    <br /><br />
+
+                    <label class="columnbackground-label" for="columnbackground" rsf:id="msg=simplepage.columnbackground"></label>
+                    <br />
 		    <select id="columnbackground">
-		      <option value="none" id="columnnone"><span rsf:id="msg=simplepage.columnnone">none</span></option>
-		      <option value="trans" id="columntrans"><span rsf:id="msg=simplepage.columntrans">transparent</span></option>
-		      <option value="gray" id="columngray"><span rsf:id="msg=simplepage.columngray">gray</span></option>
-		      <option value="red" id="columnred"><span rsf:id="msg=simplepage.columnred">red</span></option>
-		      <option value="blue" id="columnblue"><span rsf:id="msg=simplepage.columnblue">blue</span></option>
-		      <option value="green" id="columngreen"><span rsf:id="msg=simplepage.columngreen">green</span></option>
-		      <option value="yellow" id="columnyellow"><span rsf:id="msg=simplepage.columnyellow">yellow</span></option>
+		        <option value="none" id="columnnone"><span rsf:id="msg=simplepage.columnnone">none</span></option>
+		        <option value="gray" id="columngray"><span rsf:id="msg=simplepage.columngray">gray</span></option>
+		        <option value="red" id="columnred"><span rsf:id="msg=simplepage.columnred">red</span></option>
+		        <option value="blue" id="columnblue"><span rsf:id="msg=simplepage.columnblue">blue</span></option>
+		        <option value="green" id="columngreen"><span rsf:id="msg=simplepage.columngreen">green</span></option>
+		        <option value="yellow" id="columnyellow"><span rsf:id="msg=simplepage.columnyellow">yellow</span></option>
+		        <option value="trans" id="columntrans"><span rsf:id="msg=simplepage.columntrans">transparent</span></option>
 		    </select>
+
                     <label for="columnbackground" rsf:id="msg=simplepage.columnbackground"></label><br />
 
                     <br />
@@ -2112,6 +2149,5 @@
 	 <input type="hidden" rsf:id="delete-item-itemid" id="delete-item-itemid" />
          <input type="submit" rsf:id="delete-item-button" id="delete-item-button" />
        </form>
-
 </body>
 </html>

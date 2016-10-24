@@ -25,6 +25,11 @@
    font-weight: normal;
 }
 
+.ui-dialog label.columnbackground-label {
+    padding-left: 0 !important;
+    font-weight: bold !important;
+}
+
 /* end override */
 
 /* override weird setting in tool.css */
@@ -346,13 +351,19 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
     padding-top: 25px;
     list-style:none;
     background-color: white;
-    -webkit-border-radius: 7px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    border: 1px solid #222;
+    border: 1px solid #e5e5e5;
     display:inline-block;
     vertical-align: top;
 }
+
+.sectionedit, .edit-col a {
+    opacity: 0.5 !important;
+}
+
+.sectionedit:hover, .edit-col a:hover {
+    opacity: 1 !important;
+}
+
 
 /* only up to 4 cols has been tuned */
 .cols9 {
@@ -928,15 +939,8 @@ ul#toolbar li em {
 	width: 350px;
 	margin-top: 0;
 	margin-left: 0.5em;
-	background-color: #EEE;
+	background-color: #fff !important;
 	padding: 5px !important;
-	background: #eeeeee !important;
-	background: -moz-linear-gradient(top, #eeeeee 0%, #e4e4e4 100%) !important;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#e4e4e4)) !important;
-	background: -webkit-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
-	background: -o-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
-	background: -ms-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
-	background: linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
     border: 1px solid #d1d1d1 !important;
     z-index: 10;
     -webkit-box-shadow: 1px 1px 3px 2px #eeeeee;
@@ -952,6 +956,14 @@ ul#toolbar li em {
     padding-left: 7px !important;
     display:block;
 }
+.dropDownDiv li > a {
+    color: #347EB2 !important;
+}
+
+.dropDownDiv li > div {
+    padding-left: 1em;
+}
+
 .addContentMessage {
     margin-top:10px;
     margin-bottom:20px;
@@ -1967,4 +1979,23 @@ nav.Mrphs-container--toolTitleNav {
 }
 .questionCorrectAnswerMessage {
     font-weight: bold;
+}
+
+#addContentDiv {
+    border: none !important;
+}
+
+#addContentDiv h1 {
+    color: #555;
+}
+
+.addContentDivSubSection h2 {
+    padding: 5px;
+    background-color: #f0f0f0;
+    margin-bottom: 0;
+}
+
+.addContentDivSubSection ul li {
+    border: 1px solid #e5e5e5;
+    border-top: none;
 }
