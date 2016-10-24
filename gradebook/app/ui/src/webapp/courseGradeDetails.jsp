@@ -24,11 +24,6 @@
 		<h:panelGrid cellpadding="0" cellspacing="0" columns="2"
 			columnClasses="itemName"
 			styleClass="itemSummary">
-			<h:outputText id="pointsLabel" value="#{msgs.course_grade_details_points}" rendered="#{!courseGradeDetailsBean.weightingEnabled}"/>
-			<h:outputText id="points" value="#{courseGradeDetailsBean.totalPoints}" rendered="#{!courseGradeDetailsBean.weightingEnabled}">
-				<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.POINTS" />
-			</h:outputText>
-			
 			<h:outputText id="courseGradeLabel" value="#{msgs.avg_course_grade_name}" rendered="#{courseGradeDetailsBean.userAbleToGradeAll}" />
 			<h:panelGroup rendered="#{courseGradeDetailsBean.userAbleToGradeAll}">
 				<h:outputText id="letterGrade" value="#{courseGradeDetailsBean.averageCourseGrade} " />
