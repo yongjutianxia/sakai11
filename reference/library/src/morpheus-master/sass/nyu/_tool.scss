@@ -12,6 +12,18 @@
   z-index: 0 !important;
 }
 
+// exciting synoptic changes for announcements
+.nyu-synoptic-announcements.#{$namespace}multipleTools .#{$namespace}toolTitleNav {
+    padding-left: 0 !important;
+}
+
+.nyu-synoptic-announcements.#{$namespace}multipleTools .#{$namespace}toolTitleNav .#{$namespace}toolTitleNav__title {
+    padding: 0 0 20px 0 !important;
+}
+
+.#{$namespace}sakai-synoptic-announcement .#{$namespace}toolTitleNav.#{$namespace}container.#{$namespace}container--toolTitleNav {
+    display: none;
+}
 
 // -------------------------------------------------------------------------------------------------------------------
 //  Tool Tabs

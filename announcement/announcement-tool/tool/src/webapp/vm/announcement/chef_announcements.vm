@@ -45,21 +45,39 @@
 
 	
 <div class="portletBody container-fluid">
-	#if ($isOnWorkspaceTab.equals("false"))
-		#if($menu && $EnabledMenuItemExists)
-			#if ($toolId == "sakai.synoptic.announcement")
-				<ul class="navIntraTool actionToolBar" role="menu">
-					<li class="firstToolBarItem" role="menuitem"><span><a href="#" title="$tlang.getString("gen.recopt")" onclick="location = '#toolLink("$action" "doOptions")';return false;">
-						$tlang.getString("custom.options")
-						<span class="skip">$toolTitle</span>
-					</a></span></li>
-				</ul>
-			#else
-				#toolbar($menu)
+	## Special header for the synoptic announcements tool
+	#if ($toolId == "sakai.synoptic.announcement")
+		<div class="nyu-synoptic-announcements Mrphs-multipleTools">
+			<nav class="Mrphs-toolTitleNav Mrphs-container Mrphs-container--toolTitleNav">
+				<h2 class="Mrphs-toolTitleNav__title">Recent Announcements</h2>
+
+				<div class="Mrphs-toolTitleNav__button_container">
+					<span>
+						<a class="Mrphs-toolTitleNav__link" href="#" title="$tlang.getString("gen.recopt")" onclick="location = '#toolLink("$action" "doOptions")';return false;">
+							$tlang.getString("custom.options")
+						</a>
+					</span>
+                                </div>
+			</nav>
+		</div>
+
+	#else
+		#if ($isOnWorkspaceTab.equals("false"))
+			#if($menu && $EnabledMenuItemExists)
+				#if ($toolId == "sakai.synoptic.announcement")
+					<ul class="navIntraTool actionToolBar" role="menu">
+						<li class="firstToolBarItem" role="menuitem"><span><a href="#" title="$tlang.getString("gen.recopt")" onclick="location = '#toolLink("$action" "doOptions")';return false;">
+							$tlang.getString("custom.options")
+							<span class="skip">$toolTitle</span>
+						</a></span></li>
+					</ul>
+				#else
+					#toolbar($menu)
+				#end
 			#end
 		#end
 	#end
-	
+
 	#set ($SiteColumnFlag = 0)
 	#foreach ($item in $showMessagesList2)
 	#set ($ref = $entityManager.newReference($item.Reference))
@@ -357,7 +375,7 @@
 			<div class="page-header">
 			  <h1>$tlang.getString("gen.announcements") <br /><small>$tlang.getFormattedMessage("gen.viewing.days.phrase.brackets", $daysList.toArray())</small></h1>
 			</div>
-			
+
 			<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
 				#if (!$messageListVector.iterator().hasNext())
 					<div class="instruction clear">
