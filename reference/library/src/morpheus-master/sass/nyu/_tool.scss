@@ -216,7 +216,7 @@ form#calendarForm > div {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
-//  Changes to the Chat Tool (synoptic tools)
+//  Changes to the Chat Room tool
 // -------------------------------------------------------------------------------------------------------------------
 body {
   .#{$namespace}sakai-chat {
@@ -277,6 +277,101 @@ body {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+//  Changes to the Resource tool
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-resources {
+    #showForm {
+      .btn-group.btn-group-sm {
+        > button {
+          margin-right: 5px !important;
+        }
+      }
+      #saveCols {
+        margin-top: 10px;
+      }
+      th.specialLink {
+        font-weight: normal !important;
+      }
+      button.colPicker {
+        margin-left: 5px;
+      }
+      label[for="dropboxHighlight"] {
+        padding: 0.3em 0 0.3em 0.5em;
+        margin: 0;
+      }
+    }
+    #dragDropWrapper {
+      form.dropzone {
+        border: 4px dashed #DBDCDE !important;
+        background: none !important;
+        font-size: 16px;
+        min-height: 300px;
+        padding: 0;
+        position: relative;
+  
+        .dz-message {
+          margin: 0;
+          position: absolute;
+          width: 300px;
+          height: 100px;
+          left: 50%;
+          margin-left: -150px;
+          top: 50%;
+          margin-top: -50px;
+  
+          &:before {
+            content: "Choose files to upload";
+            position: absolute;
+            top: 4em;
+            width: 200px;
+            margin-left: -100px;
+            left: 50%;
+            border: 1px solid #2F7FAB;
+            background-color: #2F7FAB;
+            color: #FFF;
+            padding: 4px 8px;
+          }
+          &:hover:before {
+            background-color: #FFF;
+            color: #2F7FAB;
+          }
+          &:after {
+            content: "or";
+            position: absolute;
+            top: 2em;
+            left: 50%;
+            width: 20px;
+            margin-left: -10px;
+            color: #999;
+          }
+        }
+      }
+      #fileUploaderDesc {
+        display: none !important;
+      }
+    }
+    #navigatePanelInner {
+      height: 320px !important;
+    }
+    #addFolderForm {
+      label[for^="content_"] {
+        line-height: 1.8em;
+      }
+    }
+    #detailsForm {
+      h4 {
+        margin-top: 32px !important;
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
-
+body {
+  select.form-control{
+    @extend .select;
+  }
+}

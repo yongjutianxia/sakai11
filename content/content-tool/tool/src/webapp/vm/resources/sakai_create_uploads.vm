@@ -57,6 +57,7 @@
                         <div class="form-group">
                             <input type="radio" name="hidden" id="hidden_false" value="false" #if(!$upload_visibility_hidden)checked="checked" #end/>
                             <label for="hidden_false">$tlang.getString("avail.show40")</label>
+                            <br>
                             <input type="radio" name="hidden" id="hidden_true" value="true" #if($upload_visibility_hidden)checked="checked" #end/>
                             <label for="hidden_true">$tlang.getString("avail.hide40")</label>
                         </div>

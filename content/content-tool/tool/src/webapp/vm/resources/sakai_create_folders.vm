@@ -16,7 +16,7 @@
 			<li><span>$validator.escapeHtml($item.name)</span></li>
 		#end
 	</ol>
-		<p class="instruction">
+		<p>
 			$tlang.getString("instr.folders")
 		</p>
 
@@ -35,7 +35,7 @@
 				<div id="contentDiv${DOT}$i" class="container-fluid">
 					<input type="hidden" name="exists${DOT}$i" id="exists${DOT}$i" value="true" />
 					<div class="row">
-						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 							<label for="content${DOT}$i">$tlang.getString("label.folder")</label>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-4 col-xs-12">
