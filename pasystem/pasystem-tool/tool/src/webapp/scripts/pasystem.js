@@ -66,6 +66,8 @@ PASystemBannerAlerts.prototype.renderBannerAlerts = function(forceShowAllBanners
       self.$toggle.show();
     }
   });
+
+  $(document.body).trigger("alertshown.pasystem");
 };
 
 PASystemBannerAlerts.prototype.addBannerAlert = function(id, message, dismissible, type) {
