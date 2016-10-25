@@ -21,6 +21,41 @@
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+//  Header / Login
+// --------------------------------------------------------------------------------------------------------------------
+@media #{$tablet} {
+  .is-logged-out {
+    #mastLogin {
+      margin: 8px !important;
+
+      #loginForm {
+        label {
+          display: none;
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+          width: 35%;
+        }
+      }
+    }
+  }
+
+  ##{$namespace}xlogin{
+    width: 98% !important;
+    max-width: 30em;
+
+    fieldset {
+      label {
+        display: none !important;
+      }
+      input[type="text"], input[type="password"] {
+        min-width: 100% !important;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 //  Favorite Sites Navigation
 // --------------------------------------------------------------------------------------------------------------------
 @media #{$tablet} {
