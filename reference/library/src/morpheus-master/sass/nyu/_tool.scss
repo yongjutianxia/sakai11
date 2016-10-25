@@ -206,7 +206,7 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
 //  Changes to Overview (synoptic tools)
 // -------------------------------------------------------------------------------------------------------------------
 .nyu-hide-tool-header-on-desktop {
-  height: 10px;
+  min-height: 10px;
   border-left: 1px solid $nyu-content-border-color;
   background: #FFFFFF;
 
