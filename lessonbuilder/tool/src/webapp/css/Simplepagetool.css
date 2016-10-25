@@ -128,8 +128,7 @@ span.nextprev {
 	flex: auto;
 }
 div.action span .nextbutton, .Mrphs-siteHierarchy span .nextbutton{
-        border: solid 1px !important; 
-        padding:2px 5px !important
+	padding:2px 5px !important
 }
 .neoPortletTitleWrap {
 	padding-bottom: 4px;
@@ -356,11 +355,11 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
     vertical-align: top;
 }
 
-.sectionedit, .edit-col a {
+.sectionedit, .edit-col, .edit-col a {
     opacity: 0.5 !important;
 }
 
-.sectionedit:hover, .edit-col a:hover {
+.sectionedit:hover, .edit-col:hover, .edit-col a:hover {
     opacity: 1 !important;
 }
 
@@ -980,8 +979,23 @@ ul#toolbar li em {
 .dropDownDiv li div {
     font-size: .85em !important
 }
-.Mrphs-siteHierarchy span.nextprev {
+.Mrphs-siteHierarchy .lessons-siteHierarchy-title {
+  margin-top: 1em;
+  padding-top: 3px;
+}
 
+.Mrphs-siteHierarchy .lessons-siteHierarchy-title.bold {
+  /* Yup */
+  font-weight: normal;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--separator {
+  margin-left: 0.5em;
+  margin-top: 1.2em;
+}
+
+.Mrphs-siteHierarchy span.nextprev {
+  margin-top: 1.2em;
 }
 .lessons-siteHierarchy-title {
    font-weight: bold;
@@ -1355,6 +1369,7 @@ div[role="dialog"] {
 }
 div.navIntraTool {
   border-top:none;
+  padding-top: 1em !important;
 }
 
 /* temporary, to avoid changing old stuff for the moment */

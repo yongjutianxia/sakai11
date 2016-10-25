@@ -119,6 +119,7 @@
 			   </h2>
 		       </div>
 	     <div class="action">
+
                  <span id="expandCollapseButtons" style="display:none;">
                    <a href="#" role="button" id="expandAllSections"><span class="fa fa-toggle-down" aria-hidden="true" style="padding-right:5px;"></span><span rsf:id="msg=simplepage.expand.all"></span></a>
                    <a href="#" role="button" id="collapseAllSections" style="display:none;"><span class="fa fa-toggle-up" aria-hidden="true" style="padding-right:5px;"></span><span rsf:id="msg=simplepage.collapse.all"></span></a>
@@ -187,7 +188,6 @@
 					<span>
 					    <a aria-haspopup="true" aria-controls="addContentDiv" href="#" rsf:id="addcontent" onclick="return false;" class="add-at-end" role="menuitem button">
 						<span rsf:id="msg=simplepage.add-content"></span>&nbsp;&nbsp;
-					        <span aria-hidden="true" class="fa-button-text fa-plus"></span>
 					    </a>				
 					</span>
 				</li>
@@ -203,50 +203,59 @@
                 
 		<li rsf:id="remove-student" class="contentButton"><span><a role="menuitem button" href="#" rsf:id="remove-page-student" class="add-at-end remove-page"><span rsf:id="msg=simplepage.remove-page" role="menuitem"></span></a></span></li>
 
-                <li class="contentButton"><span><a role="menuitem button" class="add-at-end" href="#" rsf:id="reorder"><span aria-hidden="true" class="fa-button-text"></span></a></span></li>
-                <li  class="contentButton"><span><a role="menuitem button" href="#" rsf:id="help" target="_blank"></a></span></li>
+                <li class="contentButton"><span><a role="menuitem" class="add-at-end" href="#" rsf:id="reorder"><span class="fa-button-text"></span></a></span></li>
                 <li  class="contentButton">
                     <span rsf:id="title-descrip">
-                    <a role="menuitem button" aria-haspopup="dialog" aria-controls="edit-title-dialog" href="#" rsf:id="edit-title" id="edit-title"><span aria-hidden="true" class="fa-button-text fa-cog"></span><span class="offscreen" rsf:id="edit-title-text"></span></a>
+                    <a role="menuitem" href="#" rsf:id="edit-title" id="edit-title">Page Settings<span class="offscreen" rsf:id="edit-title-text"></span></a>
                     </span>
                 </li>
 			</ul>                
 
 		</div>
 		
-<script type="text/javascript">
-	var breadcrumbs = jQuery(".breadcrumbs span");
-	// if we're in morpheus, move breadcrums into top bar, and generate an H2 with the title
-	if (jQuery(".oldPortal").size() === 0) {
-	    var title = jQuery(".title span:last").text();
-	    if (breadcrumbs.size() > 0) {
-		jQuery(".Mrphs-siteHierarchy").append(jQuery(".breadcrumbs span").slice(1));
-	    }
-	    jQuery(".Mrphs-siteHierarchy").children().wrapAll('<div class="hierarchyWrap" />');
-	    jQuery(".Mrphs-siteHierarchy").append(jQuery("span.nextprev"));
-	    jQuery(".neoPortletTitleWrap").before('<h2 class="genTitle"></h2>');
-	    jQuery(".genTitle").text(title);
-	    // the top is position:fixed. The rest of the page is position static, put below the
-	    // fixed by a magic margin. However if the siteHierarchy is large, the magic margin
-	    // has to be adjusted.
-	    function resizeContent() {
-	      if (window.matchMedia("only screen and (max-width: 800px)").matches) {
-		jQuery("#content").css('margin-top',jQuery(".Mrphs-siteHierarchy").height() + 60);
-	      } else {
-		jQuery("#content").css('margin-top','0px');
-	      }
-	    }
-            resizeContent();
-	    jQuery(window).load(resizeContent);
-	    jQuery(window).resize(resizeContent);
-         }
-	 if (jQuery(".navIntraTool").size() > 0)
-  	   jQuery(".navIntraTool").append(jQuery(".action"));
-	 else
-	   jQuery(".neoPortletTitleWrap").before(jQuery(".action"));
+		<script type="text/javascript">
+		 // Move the action links up alongside help
+		 if (jQuery('.Mrphs-toolTitleNav__link--help-popup')) {
+			 jQuery('.Mrphs-toolTitleNav__link--help-popup').before(jQuery('.action .Mrphs-toolTitleNav__link').detach().css('display', 'inline-block'));
+		 }
+
+		 function ohGod() {
+			 var breadcrumbs = jQuery(".breadcrumbs span");
+			 // if we're in morpheus, move breadcrums into top bar, and generate an H2 with the title
+			 if (jQuery(".oldPortal").size() === 0) {
+				 var title = jQuery(".title span:last").text();
+				 if (breadcrumbs.size() > 0) {
+					 jQuery(".Mrphs-siteHierarchy").append(jQuery(".breadcrumbs span").slice(1));
+				 }
+				 // jQuery(".Mrphs-siteHierarchy").children().wrapAll('<div class="hierarchyWrap" />');
+				 jQuery(".Mrphs-siteHierarchy").append(jQuery("span.nextprev"));
+				 // jQuery(".neoPortletTitleWrap").before('<h2 class="genTitle"></h2>');
+				 // jQuery(".genTitle").text(title);
+				 // the top is position:fixed. The rest of the page is position static, put below the
+				 // fixed by a magic margin. However if the siteHierarchy is large, the magic margin
+				 // has to be adjusted.
+					 function resizeContent() {
+						 if (window.matchMedia("only screen and (max-width: 800px)").matches) {
+							 jQuery("#content").css('margin-top',jQuery(".Mrphs-siteHierarchy").height() + 60);
+						 } else {
+							 jQuery("#content").css('margin-top','0px');
+						 }
+					 }
+				 resizeContent();
+				 jQuery(window).load(resizeContent);
+				 jQuery(window).resize(resizeContent);
+			 }
+		 }
+
+		 ohGod();
+		 if (jQuery(".navIntraTool").size() > 0)
+  			 jQuery(".navIntraTool").append(jQuery(".action"));
+		 else
+			 jQuery(".neoPortletTitleWrap").before(jQuery(".action"));
 
 
-</script>
+		</script>
+
 
 		<div id="addContentDiv" style="display:none" class="dropDownDiv specialLink lessonsDialog" role="menu" aria-label="Add content menu">
 			<h1>Add Content</h1>
