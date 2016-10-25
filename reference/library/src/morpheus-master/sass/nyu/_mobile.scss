@@ -31,6 +31,7 @@
 
     ##{$namespace}sites-nav {
       height: $nyu-tablet-header-site-height !important;
+      display: block !important;
 
       .#{$namespace}sitesNav__menu {
         li {
@@ -69,8 +70,7 @@
     }
 
     .view-all-sites-btn {
-      position: absolute;
-      top: 68px;
+      margin-top: 55px;
     }
 
     #selectSiteModal {
@@ -222,6 +222,32 @@
     }
     #content {
       min-height: auto !important;
+
+      > #siteStatus {
+       display: block;
+      }
+    }
+    .pasystem-banner-alerts {
+      position: fixed !important;
+      top: 0 !important;
+      width: 100% !important;
+      z-index: 2;
+
+      .pasystem-banner-alert {
+        margin: 0 !important;
+        border-radius: 0 !important;
+      }
+    }
+    .pasystem-banner-alert-toggle-list-item {
+      top: 0 !important;
+      position: absolute !important;
+      left: 50% !important;
+
+      .pasystem-banner-alert-toggle {
+        .pasystem-banner-alert-toggle-text {
+          display: none;
+        }
+      }
     }
   }
 }

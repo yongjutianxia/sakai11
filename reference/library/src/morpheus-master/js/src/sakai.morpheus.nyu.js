@@ -39,3 +39,20 @@ $(function() {
     }
   });
 });
+
+// Ensure PASystem messages are visible on mobile
+$(function() {
+  var $pasystem = $(".pasystem-banner-alerts");
+
+  function repositionHeaderBits() {
+    $(".Mrphs-headerLogo").css("top", $pasystem.height());
+    $(".Mrphs-portalWrapper .Mrphs-topHeader #loginLinks").css("top", $pasystem.height() + 13);
+    $(".Mrphs-topHeader").css("paddingTop", $pasystem.height() + $(".Mrphs-headerLogo").height());
+  }
+
+  if ($(".pasystem-banner-alert", $pasystem).length > 0) {
+    repositionHeaderBits();
+    // resize upon show/hide of alerts
+    $(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
+  }
+});

@@ -35,6 +35,7 @@ PASystemBannerAlerts.prototype.handleBannerAlertClose = function($alert) {
       self.acknowledge(alertId);
       self.$toggle.show();
     }
+    $(document.body).trigger("alerthidden.pasystem");
   });
 };
 
@@ -134,6 +135,10 @@ PASystemBannerAlerts.prototype.setupAlertBannerToggle = function() {
 
     self.showAllAlerts();
     self.$toggle.slideUp();
+
+    setTimeout(function() {
+      $(document.body).trigger("alertshown.pasystem");
+    });
 
     return false;
   });

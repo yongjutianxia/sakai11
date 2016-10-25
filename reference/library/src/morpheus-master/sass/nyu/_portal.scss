@@ -177,6 +177,10 @@ body a[href] {
   display: block !important;
   box-shadow: $nyu-divider-shadow;
   position: relative;
+
+  @media #{$desktop} {
+    padding-top: 0 !important;
+  }
 }
 .#{$namespace}topHeader {
    .#{$namespace}loginNav {
