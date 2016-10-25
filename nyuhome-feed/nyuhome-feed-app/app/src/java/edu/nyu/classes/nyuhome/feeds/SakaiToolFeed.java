@@ -17,7 +17,12 @@ abstract class SakaiToolFeed implements DataFeed {
             Site site = SiteService.getSite(siteId);
             ToolConfiguration toolConfiguration = site.getToolForCommonId(toolId);
 
-            return ("/portal/directtool/" + toolConfiguration.getId());
+            if (toolConfiguration == null) {
+                // If the tool wasn't found in the site, we'll just link to the site itself.
+                return ("/portal/site/" + siteId);
+            } else {
+                return ("/portal/directtool/" + toolConfiguration.getId());
+            }
         } catch (IdUnusedException e) {
             return null;
         }
