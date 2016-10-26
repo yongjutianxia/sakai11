@@ -20,7 +20,7 @@ body a[href] {
     @media #{$nonPhone} {
       width: 100% !important;
       justify-content: flex-start !important;
-      border-bottom: $nyu-divider-width solid $nyu-divider-color;
+      border-bottom: $nyu-divider-width solid $nyu-purple;
     }
     @media #{$phone} {
       width: 160px !important;
@@ -74,6 +74,11 @@ body a[href] {
   }
 }
 .view-all-sites-btn {
+  .all-sites-icon,
+  .all-sites-label {
+    color: $nyu-all-sites-link-color !important;
+  }
+
   @media #{$phone} {
     display: none !important;
   }

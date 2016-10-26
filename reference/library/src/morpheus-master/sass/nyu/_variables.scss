@@ -17,14 +17,14 @@ $nyu-link-hover-decoration:                                   underline;
 $nyu-body-background-color:                                   #FAFAFA;
 
 $nyu-header-height:                                           52px;
-$nyu-header-background:                                       #FFFFFF;
+$nyu-header-background:                                       $nyu-purple;
 $nyu-header-logo-text-size:                                   50px;
 $nyu-header-logo-padding:                                     0;
-$nyu-header-logo-color:                                       $nyu-purple;
-$nyu-header-menu-color:                                       $nyu-text-color;
+$nyu-header-logo-color:                                       #FFFFFF;
+$nyu-header-menu-color:                                       #FFFFFF;
 $nyu-header-menu-padding:                                     0 5px 0 0;
 $nyu-header-menu-text-size:                                   14.5px;
-$nyu-header-menu-divider-color:                               $nyu-text-color;
+$nyu-header-menu-divider-color:                               #FFFFFF;
 
 $nyu-divider-color:                                           #E5E5E5;
 $nyu-divider-width:                                           1px;
@@ -154,6 +154,7 @@ $nyu-tool-tab-active-highlight-color:                         #1E80B5;
 $nyu-timeout-alert-shadow:                                    0px 0px 10px rgba(0,0,0,.6);
 $nyu-timeout-alert-background-color:                          #F0F0F0;
 
+$nyu-all-sites-link-color:                                    #FFFFFF;
 $nyu-all-sites-mask-background:                               rgba(255,255,255,.8);
 $nyu-all-sites-background-color:                              #FFFFFF;
 $nyu-all-sites-drop-shadow:                                   1px 2px 3px rgba(0,0,0,.3);
@@ -248,6 +249,9 @@ $nyu-tablet-header-tool-help-icon-color:                      #666666;
 $nyu-tablet-header-tool-help-text-color:                      #4C4C4C;
 $nyu-tablet-header-tool-help-text-size:                       14px;
 
+$nyu-tablet-breadcrumb-background-color:                      #FFFFFF;
+
+$nyu-tablet-all-sites-link-color:                             $nyu-text-color;
 
 $nyu-calendar-border-color:                                   $nyu-tool-tab-border-color;
 

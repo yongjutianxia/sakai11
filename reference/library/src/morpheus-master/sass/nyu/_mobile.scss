@@ -110,6 +110,11 @@
 
     .view-all-sites-btn {
       margin-top: 55px;
+
+      .all-sites-icon,
+      .all-sites-label {
+        color: $nyu-tablet-all-sites-link-color !important;
+      }
     }
 
     #selectSiteModal {
@@ -155,7 +160,7 @@
       }
     }
     .#{$namespace}siteHierarchy {
-      background: $nyu-header-background !important;
+      background: $nyu-tablet-breadcrumb-background-color !important;
       border-top: $nyu-tablet-divider-width solid $nyu-tablet-divider-color  !important;
       box-shadow: $nyu-tablet-divider-shadow !important;
       position: relative;
