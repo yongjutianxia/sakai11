@@ -443,6 +443,8 @@ body a[href] {
           .fav-title > a {
             color: $nyu-all-sites-button-text-color !important;
             font-weight: $nyu-all-sites-button-text-weight !important;
+            width: 100%;
+            display: inline-block;
 
             &:hover {
               color: $nyu-all-sites-button-hover-text-color !important;
