@@ -52,7 +52,8 @@ $(function() {
 
   if ($(".pasystem-banner-alert", $pasystem).length > 0) {
     repositionHeaderBits();
-    // resize upon show/hide of alerts
-    $(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
   }
+
+  // resize upon show/hide of alerts
+  $(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
 });
