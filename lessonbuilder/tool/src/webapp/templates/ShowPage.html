@@ -195,7 +195,6 @@
 					<span>
 					    <a aria-haspopup="true" aria-controls="moreDiv" role="menuitem button" href="#" onclick="return false;">
 					        <span rsf:id="msg=simplepage.more-tools" ></span>
-                            &nbsp;&nbsp;<img rsf:id="icondrop" src="/library/image/sakai/icon-dropdn.gif" style="height:15px" alt="" />
 					    </a>				
 					</span>
 				</li>
@@ -204,6 +203,10 @@
 		<li rsf:id="remove-student" class="contentButton"><span><a role="menuitem button" href="#" rsf:id="remove-page-student" class="add-at-end remove-page"><span rsf:id="msg=simplepage.remove-page" role="menuitem"></span></a></span></li>
 
                 <li class="contentButton"><span><a role="menuitem" class="add-at-end" href="#" rsf:id="reorder"><span class="fa-button-text"></span></a></span></li>
+
+		<!-- permissions -->
+                <li class="contentButton"><span><a href="#" role="menuitem"  rsf:id="permissions" id="permissions"><span rsf:id="msg=simplepage.permissions"></span></a></span></li>
+
                 <li  class="contentButton">
                     <span rsf:id="title-descrip">
                     <a role="menuitem" href="#" rsf:id="edit-title" id="edit-title">Page Settings<span class="offscreen" rsf:id="edit-title-text"></span></a>
@@ -363,10 +366,6 @@
                     <!-- remove page -->
                     <li rsf:id="remove-li">
                       <a href="#" role="menuitem button" rsf:id="remove-page" id="remove-page" class="remove-page"><span rsf:id="msg=simplepage.remove-page"></span></a>
-                    </li>
-		    <!-- permissions --> 		
-                    <li>
-                      <a href="#" role="menuitem button"  rsf:id="permissions" id="permissions"><span rsf:id="msg=simplepage.permissions"></span></a>
                     </li>
                     <li rsf:id="delete-orphan-li">
                       <form action="#" rsf:id="delete-orphan-form" method="post" enctype="multipart/form-data">
