@@ -38,10 +38,12 @@ body a[href] {
       height: 52px;
       display: block;
       padding: $nyu-header-logo-padding;
+      margin-left: 2px;
 
       @media #{$phone} {
         height: auto;
         padding-left: 10px;
+        margin-left: 0;
       }
     }
   }
@@ -859,6 +861,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
 
           .#{$namespace}toolsNav__menuitem--icon {
             color: $nyu-tool-nav-item-icon-color !important;
+            width: 24px;
           }
 
           &:hover {
@@ -895,7 +898,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
           }
 
           > span {
-            vertical-align: text-top;
+            vertical-align: text-bottom;
           }
         }
 
@@ -946,7 +949,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
   }
   .#{$namespace}toolsNav__menuitem--link {
     text-align: left !important;
-    padding: 0.75em 0.5em !important;
+    padding: 0.75em 7px !important;
   }
   #content {
     //box-shadow: inset -2px 2px 4px -2px #AAA;
