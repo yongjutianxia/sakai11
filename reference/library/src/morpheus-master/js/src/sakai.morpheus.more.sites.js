@@ -579,6 +579,18 @@ $PBJQ(document).ready(function($){
     return false;
   });
 
+
+  // CLASSES-2353 clicks outside of site button/tool dropdown
+  // should close the tool menu
+  $PBJQ(container).on('click', function(event) {
+    console.log(event);
+    if ($(event.target).closest("li.fav-sites-entry").length == 0) {
+      $PBJQ('.toolMenus.toolMenusActive').removeClass('toolMenusActive');
+      $PBJQ('#otherSiteTools').remove();
+    }
+  });
+
+
   $PBJQ(organizePane).on('click', '.site-favorite-btn', function () {
     var self = this;
 

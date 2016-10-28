@@ -440,6 +440,12 @@ body a[href] {
 
           .toolMenus {
             color: $nyu-all-sites-button-dropdown-color !important;
+
+            &.toolMenusActive {
+              .fa.fa-chevron-down:before {
+                content: '\f077' !important;
+              }
+            }
           }
 
           .fav-title > a {
