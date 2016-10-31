@@ -122,8 +122,25 @@
       }
     }
 
+    &.active-more-sites {
+      overflow: auto !important;
+
+      #content {
+        display: none;
+      }
+    }
+
     #selectSiteModal {
-      width: 88% !important;
+      width: 100% !important;
+      right: 0 !important;
+      height: auto !important;
+      min-height: 100% !important;
+      max-height: none !important;
+      position: absolute !important;
+
+      .tab-pane {
+        max-height: none !important;
+      }
     }
   }
 }
