@@ -10,27 +10,23 @@
 	<form name="importSelectionForm" action="#toolForm("$action")" method="post">
 		## import is possible when use has maintain rights on at least one site other than the current one
 		#if ($!sites && $sites.size()>1)
-			<p class="instruction">
+			<p>
 				$tlang.getString("sitinfimp.selection")
 			</p>
 			<br>
-			<div class="indnt2">
-				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import")" title ="$tlang.getString('sitinfimp.import')">
-				$tlang.getString("sitinfimp.import")
+			<div class="alert alert-info">
+				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import")" title ="$tlang.getString('sitinfimp.import')" class="button">
+					$tlang.getString("sitinfimp.import")
 				</a>
+				<p>$tlang.getString("sitinfimp.import.info")</p>
 			</div>
-			<p class="indnt2">
-				$tlang.getString("sitinfimp.import.info")
-			</p>
 			<p></p>
-			<div class="indnt2">
-				<a href="#toolLink("SiteAction" "doMenu_siteInfo_importMigrate")" title ="$tlang.getString('sitinfimp.migrate')">
-				$tlang.getString("sitinfimp.migrate")
+			<div class="alert alert-warning">
+				<a href="#toolLink("SiteAction" "doMenu_siteInfo_importMigrate")" title ="$tlang.getString('sitinfimp.migrate')" class="button">
+					$tlang.getString("sitinfimp.migrate")
 				</a>
+				<p>$tlang.getString("sitinfimp.migrate.info")</p>
 			</div>
-			<p class="indnt2">
-				$tlang.getString("sitinfimp.migrate.info")
-			</p>
 			<p></p>
 			<!-- div class="indnt2">
 				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import_user")" title ="$tlang.getString('sitinfimp.import.user')">
