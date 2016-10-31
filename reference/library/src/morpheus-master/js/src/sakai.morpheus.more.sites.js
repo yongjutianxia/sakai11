@@ -79,6 +79,7 @@ var dhtml_view_sites = function(){
       $PBJQ('#selectSite').attr('tabindex', '-1');
       removeDHTMLMask()
       $PBJQ('#otherSiteTools').remove();
+      $PBJQ('.toolMenus.toolMenusActive').removeClass('toolMenusActive');
       $PBJQ('.selectedTab').unbind('click');
     }
   }
