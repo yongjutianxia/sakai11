@@ -1,0 +1,503 @@
+/*
+ *  Copyright (c) 2016, University of Dayton
+ *
+ *  Licensed under the Educational Community License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *              http://opensource.org/licenses/ecl2
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+body {
+    color: #111;
+}
+
+/* style the Wicket FeedbackPanel to remove the list */
+.alertMessage ul, .success ul {
+    list-style-type: none !important;
+    margin-left: -40px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.itemListTable a, .itemListTable a:link, .itemListTable a:visited, .itemListTable a:hover, .itemListTable a:focus, .itemListTable a:active{
+    color: #0064cd;
+}
+
+.overviewTable a, .overviewTable a:link, .overviewTable a:visited, .overviewTable a:hover, .overviewTable a:focus, .overviewTable a:active{
+    color: #0064cd;
+}
+
+.attendanceBreadcrumbs a, .attendanceBreadcrumbs a:link, .attendanceBreadcrumbs a:visited, .attendanceBreadcrumbs a:hover, .attendanceBreadcrumbs a:focus, .attendanceBreadcrumbs a:active{
+    color: #0064cd;
+}
+
+h1.overviewHeader, h1.itemsHeader, h1.settingsHeader {
+    background: url("../images/attendance_icon_32.png") no-repeat left center;
+    padding-left: 32px;
+    color: #555;
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;
+    min-height: 32px;
+}
+
+span.overHeaderSpan, span.itemsHeaderSpan, span.settingsHeaderSpan {
+    margin: 0 .5em;
+}
+
+p.overviewInstructions, p.addEditInstructions {
+    font-size: 1.2em;
+    line-height: 1.5em;
+    margin-left: 70px;
+}
+
+p.addEditInstructions {
+    width: 70%;
+}
+
+img.overviewInfo, div.attendanceBreadcrumbs img, th.takeAttendanceDateHeader, .vertAlignMiddle {
+    vertical-align: middle;
+}
+
+img.overviewInfo:hover, img.statisticsInfo:hover {
+    cursor: help;
+}
+
+img.overviewInfo:hover + div.overviewInfo {
+    display: block;
+    position: absolute;
+    padding: .5em;
+    width: 400px;
+    background: #fff;
+    border: 1px solid #004b8d;
+    color: #004b8d;
+    font-size: .6em;
+    line-height: 1.5em;
+    left: 25%;
+    font-weight: normal;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+}
+
+div.overviewInfo, div.statisticsInfo, .printHidden {
+    display: none;
+}
+
+img.statisticsInfo {
+    vertical-align: middle;
+    height: 16px;
+}
+
+img.statisticsInfo:hover + div.statisticsInfo, a.statisticsInfo:hover + div.statisticsInfo {
+    display: block;
+    position: absolute;
+    padding: .5em;
+    width: 400px;
+    background: #fff;
+    border: 1px solid #004b8d;
+    color: #004b8d;
+    font-size: 1em;
+    line-height: 1.5em;
+    left: 10%;
+    font-weight: normal;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+}
+
+a.statisticsInfo:hover + div.statisticsInfo {
+    left: 300px;
+}
+
+img.refreshImage {
+    vertical-align: text-top;
+    height: 1.4em;
+}
+
+table.overviewTable, table.itemListTable, table.eventViewTable, table.takeAttendanceTable {
+    border: 2px solid #ccc;
+    border-collapse: collapse;
+    padding: .5em;
+    margin-left: 70px;
+}
+
+table.overviewTable thead tr .header, table.itemListTable thead tr .header, table.takeAttendanceTable thead tr .header  {
+    background: url(../images/bg.gif) no-repeat bottom .5em right;
+    cursor: pointer;
+    padding-right: 24px;
+}
+
+table.overviewTable thead tr .headerSortUp, table.itemListTable thead tr .headerSortUp, table.takeAttendanceTable thead tr .headerSortUp {
+    background-image: url(../images/asc.gif);
+}
+table.overviewTable thead tr .headerSortDown, table.itemListTable thead tr .headerSortDown, table.takeAttendanceTable thead tr .headerSortDown {
+    background-image: url(../images/desc.gif);
+}
+
+table.itemListTable, table.eventViewTable, table.takeAttendanceTable, div.eventFormContainer, form.addEditForm, .addComment h3, form.takeAttendanceNowForm, td.overviewGradeCol form {
+    margin: 0;
+}
+
+.overviewTable td, .overviewTable th, .itemListTable td, .itemListTable th, .eventViewTable td, .eventViewTable th, .takeAttendanceTable td, .takeAttendanceTable th {
+    border: 1px solid #ccc;
+    padding: .5em;
+    text-align: left;
+}
+
+.overviewTable th, .itemListTable th, .eventViewTable th, .takeAttendanceTable th {
+    text-align: center;
+    border-bottom-width: 2px;
+    font-size: 1.2em;
+    vertical-align: bottom;
+}
+
+.overviewTable thead tr, .itemListTable thead tr, .eventViewTable thead tr, .takeAttendanceTable thead tr, .div-table-row-header, li.statusItemDisabled  {
+    background-color: #eee;
+}
+
+.overviewTable tbody tr:hover, .itemListTable tbody tr:hover, .eventViewTable tbody tr:hover, .takeAttendanceTable tbody tr:hover, .div-table-row:hover {
+    background-color: #deeeff;
+}
+
+th.overviewDateCol, td.overviewDateCol, td.takeAttendanceDateHeader, th.takeAttendanceDateHeader, td.studentNameCol, th.studentOverviewNameHeader {
+    border-right-width: 3px;
+}
+
+.eventViewTable td {
+    text-align: right;
+    font-size: 1.2em;
+}
+
+.eventViewTable td, .eventViewTable th {
+    min-width: 84px;
+}
+
+th.overviewEditCol, td.overviewEditCol, th.itemListEditCol, td.itemListEditCol, td.overviewGradeCol, th.overviewGradeCol {
+    border-left-width: 3px;
+    text-align: center;
+    width: 42px;
+}
+
+td.overviewGradeCol, th.overviewGradeCol {
+    width: 104px;
+}
+
+td.overviewGradeCol {
+    vertical-align: middle;
+}
+
+th.overviewStatusCol, td.overviewStatusCol {
+    width: 84px;
+}
+
+td.overviewStatusCol {
+    text-align: right;
+}
+
+th.overviewStatusCol, th.takeAttendanceStatusCol {
+    background-color: #e0f7e0 !important;
+}
+
+td.itemListRemoveCol, td.overviewPrintCol, p.printAction {
+    text-align: center;
+}
+
+td.itemNameCol, td.studentNameCol {
+    font-size: 1.2em;
+}
+
+th.takeAttendanceNameHeader {
+    min-width: 160px;
+    vertical-align: middle;
+}
+
+div.addEditContainer, div.itemListContainer, div.takeAttendanceContainer, div.itemInfoContainer, div.activeStatusContainer, div.container {
+    border:1px solid #ccc;
+    padding: 2.5em 2em 2em;
+    vertical-align: top;
+    position:relative;
+    display: block;
+    margin: 2em 2em 2em 70px;
+}
+
+div.gradeContainer {
+    border:1px solid #ccc;
+    padding: 1.5em 2em 0.5em;
+    vertical-align: top;
+    position:relative;
+    display: block;
+    margin: 2em 2em 2em 70px;
+}
+
+div.takeAttendanceContainer, div.itemInfoContainer, div.gradeContainer {
+    margin: 2em;
+}
+
+div.itemInfoContainer {
+    display: flex;
+}
+
+div.addEditHeader, div.itemListHeader, div.takeAttendanceHeader, div.itemInfoHeader, div.activeStatusHeader, div.containerHeader {
+    background-color:#fff;
+    position:absolute;
+    top:-1em;
+    left:.5em;
+}
+
+h3.addEditHeader, h3.itemListHeader, h3.takeAttendanceHeader, h3.itemInfoHeader, h3.activeStatusHeader, h3.containerHeading {
+    margin: 0;
+    padding: 0 .5em;
+    font-size: 1.4em;
+    font-weight: normal;
+}
+
+span.addEditReq {
+    color: red;
+    font-size: 1.2em;
+}
+
+td.noEventsCol, td.noStudentsCol {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.4em;
+    line-height: 1.7em;
+    background: #ffffff;
+    color: #555;
+}
+
+table.addEditFormTable, div.info, .addComment textarea {
+    margin-bottom: 1em;
+}
+
+.addEditFormTable {
+    text-align: left;
+    font-size: 1.2em;
+}
+
+.addEditFormTable td {
+    padding-right: 4em;
+}
+
+div.addEditDeleteLinkDiv {
+    background: url("../images/remove.png") no-repeat left center;
+    background-size: 12px;
+    padding-left: 16px;
+    margin-top: 1em;
+}
+
+div.attendanceBreadcrumbs h2 {
+    margin-left: 70px;
+}
+
+div.attendanceBreadcrumbs span {
+    padding-right: .5em;
+}
+
+.div-table-row {
+    width:auto;
+    clear:both;
+}
+
+.div-table-col {
+    float:left;/*fix for  buggy browsers*/
+    width:80px;
+    text-align: center;
+    padding: 0 .5em;
+}
+
+.div-table{
+    display:table;
+    width:auto;
+    background-color:#fff;
+    border:1px solid  #ccc;
+    font-size: 1.2em;
+    margin-left: 70px;
+}
+
+.div-table-row2 {
+    display:table-row;
+    width:auto;
+    clear:both;
+}
+
+.div-table-col {
+    float:left;/*fix for  buggy browsers*/
+    display:table-cell;
+    width:80px;
+    text-align: center;
+    padding: .5em;
+}
+
+.divHeader {
+    font-weight: bold;
+}
+
+.divTableName {
+    width: 160px;
+    text-align: left;
+}
+
+p.setAll {
+    font-size: 1.2em;
+    color: #555;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.addComment {
+    position:absolute;
+    top:-130px;
+    left:-200px;
+    background-color:#fff;
+    border: 1px solid #555;
+    width:200px;
+    height:auto;
+    padding:1em;
+    text-align: left;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+}
+
+div.printContainer {
+    position: absolute;
+    min-width: 300px;
+    padding: .5em 1em;
+    background: #fff;
+    border: 1px solid #004b8d;
+    line-height: 1.5em;
+    left: 25%;
+    top: 150px;
+    font-weight: normal;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+    z-index: 999;
+}
+
+.printTable td {
+    vertical-align: top;
+    padding:.5em;
+}
+
+.printTable td:nth-child(odd) {
+    font-weight: bold;
+    text-align: right;
+    color: #111;
+}
+
+h2.printHeader {
+    margin: .5em 0;
+    padding: 0;
+}
+
+div.printMask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    z-index: 900;
+    opacity: 0.75;
+}
+
+div.printMask:hover, img.printImage:hover, .commentToggle:hover, .div-table-col input:hover {
+    cursor: pointer;
+}
+
+span.cancelPrint, span.cancelAddComment {
+    color: #0064cd;
+    padding-left: .5em;
+}
+
+span.cancelPrint:hover, span.cancelAddComment:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+input.grade {
+    width: 4.5em;
+}
+
+img.loadingGif {
+    width: 24px;
+    position:absolute;
+}
+
+img.settings {
+    vertical-align: middle;
+    width: 24px;
+    margin-left: 4px;
+}
+
+ul.statusList {
+    list-style: none;
+    margin: 1.5em;
+    padding: 0;
+}
+
+li.statusItem, li.statusItemPlaceholder {
+    background: url("../images/drag-handle.png") no-repeat right center #e0f7e0;
+    border: 1px solid #ccc;
+    font-size: 1.2em;
+    line-height: 1.7em;
+    margin: .5em 0;
+    padding: .5em;
+    width: 240px;
+}
+
+li.statusItemPlaceholder {
+    background: #fff;
+    border: 1px dashed #ccc;
+    height: 1.2em;
+}
+
+li.statusItem:hover {
+    cursor: move;
+}
+
+li.statusItem span {
+    padding-left: 2em;
+}
+
+p.editStatusInfo, p.editGradeInfo {
+    width: 60%;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    margin: 0;
+}
+
+form.studentOverviewFilterForm {
+    margin-left: 70px;
+}
+
+th.overviewGradeCol img.settings {
+    vertical-align: text-bottom;
+}
+
+ul.gradeSettings {
+    list-style: none;
+    margin: 1em 0 1em 1em;
+    padding: 0;
+}
+
+ul.gradeSettings li {
+    margin: .5em 0;
+}
+
+label.gradeSettingsLabel {
+    font-size: 1.2em;
+    line-height: 1.7em;
+}
+
+.printVisible {
+    display: block;
+}
