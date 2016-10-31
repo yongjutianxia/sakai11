@@ -50,7 +50,7 @@ public class DropboxSiteVolumeFactory extends ContentSiteVolumeFactory{
             String id = asId(fsi);
             if (rootId.equals(id)) {
                 // Todo this needs i18n
-                return "Dropbox";
+                return "File Exchange";
             }
             try {
                 //ask ContentHostingService for name
