@@ -29,7 +29,7 @@ h3 {
 
 .subtable table {
     margin: 10px;
-    width: 880px;
+    max-width: 880px;
     background-color: white;
 }
 

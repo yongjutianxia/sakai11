@@ -2,7 +2,6 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="/groupersync-tool/stylesheets/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="{{{skinRepo}}}/tool_base.css" />
 
         {{{randomSakaiHeadStuff}}}
@@ -15,8 +14,8 @@
             {{{subpage this subpage}}}
         </div>
 
-        <script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="/groupersync-tool/scripts/bootstrap.min.js"></script>
+        <script>includeLatestJQuery('layout.hbs');</script>
+
         <script type="text/javascript" src="/groupersync-tool/scripts/groupersync.js"></script>
         <script>
          var config = {
