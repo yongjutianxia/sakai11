@@ -416,6 +416,20 @@ body a[href] {
       #otherSiteSearch {
         text-align: left !important;
         margin: 1em 0;
+        position: relative;
+
+        &:before {
+          content: '\f002';
+          position: absolute;
+          color: #AAA;
+          top: 4px;
+          left: 8px;
+          font-family: FontAwesome;
+        }
+
+        #txtSearch {
+          padding-left: 28px;
+        }
       }
 
       ul.favoriteSiteList {
