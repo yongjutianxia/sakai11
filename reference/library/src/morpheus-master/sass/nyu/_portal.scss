@@ -782,15 +782,10 @@ body {
 #roleSwitch  {
   background-color: $nyu-role-switch-background-color !important;
   border: 0 !important;
-  position: absolute;
-  top: 13px;
-  right: 250px;
-  list-style: none;
-  line-height: 1;
   min-height: initial !important;
   border-right: 1px solid $nyu-header-menu-divider-color !important;
   padding-right: 20px;
-  height: 30px;
+  display: table-cell;
 
   p {
     padding: 0 !important;

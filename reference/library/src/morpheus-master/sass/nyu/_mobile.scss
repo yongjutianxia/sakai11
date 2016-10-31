@@ -24,6 +24,10 @@
 //  Header / Login
 // --------------------------------------------------------------------------------------------------------------------
 @media #{$tablet} {
+  #roleSwitch {
+    display: none !important;
+  }
+
   .is-logged-out {
     #mastLogin {
       margin: 8px !important;

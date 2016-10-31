@@ -1,6 +1,6 @@
-## Adds $viewAsStudentLink options from includeTabs.vm
+## Adds $viewAsStudentLink options
 
-<li id="roleSwitch" class="Mrphs-roleSwitch Mrphs-toolsNav__menuitem">
+<div id="roleSwitch" class="Mrphs-roleSwitch">
     #if ($roleSwitchState)
         <a href="$switchRoleUrl" id="roleSwitchAnchor" class="Mrphs-roleSwitch__anchor Mrphs-toolsNav__menuitem--link">
             <i class="Mrphs-toolsNav__menuitem--icon fa fa-user-secret exit"></i>
@@ -24,5 +24,5 @@
             </a>
         #end ## END OF IF ($roleswapdropdown)
     #end ## END of IF ($roleSwitchState)
-</li>
+</div>
 
