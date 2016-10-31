@@ -20,7 +20,7 @@
 
   color: $nyu-btn-text-color !important;
   background: $nyu-btn-background-color !important;
-  border-color: $nyu-btn-border-color !important;
+  border: 1px solid $nyu-btn-border-color !important;
   border-radius: $nyu-button-radius !important;
   box-shadow: none !important;
   text-decoration: none !important;
@@ -148,6 +148,7 @@ body {
 
       .#{$namespace}itemTitle {
         text-transform: $nyu-button-text-transform !important;
+        letter-spacing: normal !important;
       }
     }
   }
@@ -168,6 +169,28 @@ body {
           font-size: 12px !important;
           -webkit-font-smoothing: auto !important;
         }
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Synoptic Tools and Help/News buttons (tool title actions)
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  @media #{$tablet} {
+    .#{$namespace}toolTitleNav {
+      .#{$namespace}toolTitleNav__link {
+        @include nyu_secondary_button();
+        font-size: 12px !important;
+      }
+    }
+    sakai-iframe-myworkspace,
+    .#{$namespace}sakai-iframe-site,
+    .nyu-synoptic-announcements {
+      .#{$namespace}itemTitle {
+        display: inline !important;
+        font-size: 12px !important;
       }
     }
   }

@@ -310,7 +310,7 @@
     position: absolute;
     right: 0;
     top: -5px;
-    min-width: 64px;
+    white-space: nowrap;
   }
 
   #content, .#{$namespace}container--footer {
