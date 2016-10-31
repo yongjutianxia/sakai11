@@ -48,6 +48,7 @@
                 <module>announcement</module>
                 <module>archive</module>
                 <module>assignment</module>
+                <module>attendance</module>
                 <module>authz</module>
                 <module>basiclti</module>
                 <module>bbb-tool</module>
