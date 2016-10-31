@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -192,6 +193,15 @@ public class AddOrEditGradeItemPanel extends Panel {
 
 		// feedback panel
 		form.add(new GbFeedbackPanel("addGradeFeedback"));
+
+		if (this.mode == Mode.ADD) {
+			int remainingGradableItems = AddOrEditGradeItemPanel.this.businessService.getRemainingGradableItems();
+			String itemsLabel = remainingGradableItems == 1 ? "item" : "items";
+
+			form.add(new Label("remainingGradableItems", remainingGradableItems + " gradable " + itemsLabel).setVisible(true));
+		} else {
+			form.add(new Label("remainingGradableItems", "").setVisible(false));
+		}
 
 		// cancel button
 		final GbAjaxButton cancel = new GbAjaxButton("cancel") {

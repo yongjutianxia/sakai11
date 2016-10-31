@@ -15,7 +15,13 @@
 					<button wicket:id="cancel" type="button"><wicket:message key="button.cancel" /></button>
 				</div>
 			</div>
-		
+			<div wicket:enclosure="remainingGradableItems">
+			    <div class="form-group form-group-sm">
+				<div class="col-xs-push-3 col-xs-7">
+					<p><small><strong>Note:</strong> You can add another <span wicket:id="remainingGradableItems"></span></small></p>
+				</div>
+			    </div>
+			</div>
 		</form>
 
 	</wicket:panel>

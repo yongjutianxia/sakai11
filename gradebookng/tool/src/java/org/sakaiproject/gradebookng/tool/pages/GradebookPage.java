@@ -179,6 +179,10 @@ public class GradebookPage extends BasePage {
 
 			@Override
 			public boolean isVisible() {
+				if (GradebookPage.this.businessService.getRemainingGradableItems() == 0) {
+					return false;
+				}
+
 				if (GradebookPage.this.role != GbRole.INSTRUCTOR) {
 					return false;
 				}
@@ -188,6 +192,14 @@ public class GradebookPage extends BasePage {
 		addGradeItem.setDefaultFormProcessing(false);
 		addGradeItem.setOutputMarkupId(true);
 		this.form.add(addGradeItem);
+
+		final WebMarkupContainer maxGradableItemsReached = new WebMarkupContainer("maxGradableItemsReached");
+		maxGradableItemsReached.setVisible(false);
+		this.form.add(maxGradableItemsReached);
+
+		if (GradebookPage.this.businessService.getRemainingGradableItems() == 0) {
+			maxGradableItemsReached.setVisible(true);
+		}
 
 		// first get any settings data from the session
 		final GradebookUiSettings settings = getUiSettings();

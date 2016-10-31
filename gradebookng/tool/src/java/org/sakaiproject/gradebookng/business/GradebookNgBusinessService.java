@@ -27,6 +27,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.math.NumberUtils;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
@@ -248,6 +249,11 @@ public class GradebookNgBusinessService {
 			log.error("No gradebook in site: " + siteId);
 			return null;
 		}
+	}
+
+	public int getRemainingGradableItems() {
+		int maxItems = ServerConfigurationService.getInt("gradebookng.max-gradable-items", 3);
+		return Math.max((maxItems - getGradebookAssignments().size()), 0);
 	}
 
 	/**
