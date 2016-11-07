@@ -81,4 +81,8 @@
       }
     }
   }
+
+  .icon-sakai-attendance {
+    @extend .fa-hand-paper-o;
+  }
 }
