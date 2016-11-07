@@ -20,6 +20,10 @@
     }
   }
 
+  .icon-sakai-motd:before,
+  .icon-sakai-iframe-site:before {
+    content: '\f0ac' !important;
+  }
 
   .icon-nyu-ls-music-resources          { @extend .fa-music; }
   .icon-nyu-mediasite-poly              { @extend .fa-film; }
