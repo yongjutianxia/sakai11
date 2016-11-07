@@ -428,6 +428,34 @@ body {
   }
 }
 
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Changes to the Site Manage tool
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-siteinfo {
+    // import from site
+    .site-manage-import-sessions,
+    .site-manage-import-other {
+      display: block;
+      width: 50%;
+      float: left;
+
+      @media #{$tablet} {
+        width: auto;
+        float: none;
+      }
+
+      label {
+        font-weight: normal !important;
+      }
+    }
+  }
+  .act {
+    clear: both;
+  }
+}
+
 // -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
@@ -435,14 +463,4 @@ body {
   select.form-control{
     @extend .select;
   }
-}
-
-.icon-nyu-briteclass:before {
-    content: '';
-    background-image: url('images/briteclass-icon.png');
-    background-repeat: no-repeat;
-    background-position-x: center;
-    width: 16px;
-    height: 16px;
-    display: block
 }

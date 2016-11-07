@@ -85,4 +85,14 @@
   .icon-sakai-attendance {
     @extend .fa-hand-paper-o;
   }
+
+  .icon-nyu-briteclass:before {
+      content: '';
+      background-image: url('images/briteclass-icon.png');
+      background-repeat: no-repeat;
+      background-position-x: center;
+      width: 16px;
+      height: 16px;
+      display: block
+  }
 }
