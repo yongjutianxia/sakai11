@@ -70,7 +70,15 @@
   .icon-sakai-oauth-admin               { @extend .fa-key; }
   .icon-sakai-joinable-groups           { @extend .fa-users; }
 
-  .external-news:before {
-    content: '\f1ea' !important;
+  .#{$namespace}toolTitleNav__link--help-popup {
+    &:before {
+      content: '\f059' !important;
+    }
+
+    &.external-news {
+      &:before {
+        content: '\f1ea' !important;
+      }
+    }
   }
 }
