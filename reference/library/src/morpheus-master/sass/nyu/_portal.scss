@@ -184,7 +184,6 @@ body a[href] {
   display: block !important;
   box-shadow: $nyu-divider-shadow;
   position: relative;
-  z-index: 1;
 
   @media #{$desktop} {
     padding-top: 0 !important;
@@ -864,16 +863,6 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     padding: $nyu-tool-nav-padding;
 
     ul {
-      li:first-child {
-        a {
-          padding-top: 15px !important;
-        }
-
-        a.is-invisible:after {
-          padding-top: 4px !important;
-        }
-      }
-
       li {
         border-bottom: 1px solid $nyu-tool-nav-border-color;
         min-height: $nyu-tool-nav-item-height;
