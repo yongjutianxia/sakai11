@@ -328,8 +328,16 @@ public abstract class ToolComponent implements ToolManager
 				List<String> subjects = convertToSubjectList(site.getProviderGroupId());
 				ResourceProperties siteProperties = site.getProperties();
 
+                                String stealthSiteProperty = "stealth_tools";
                                 String unstealthSiteProperty = "unstealth_tools";
+
 				// Rules are overriden by a site property
+				if (siteProperties.get(stealthSiteProperty) != null &&
+						inList(tool.getId(),
+							((String) siteProperties.get(stealthSiteProperty)).replace(" ", ""))) {
+					return Ruling.STEALTH;
+				}
+
 				if (siteProperties.get(unstealthSiteProperty) != null &&
 						inList(tool.getId(),
 							((String) siteProperties.get(unstealthSiteProperty)).replace(" ", ""))) {
