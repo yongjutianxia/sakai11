@@ -225,7 +225,7 @@ form[name^='announcementListForm'] .instruction {
       border-left: none;
       border-right: none;
       box-shadow: none;
-      margin-bottom: 0;
+      margin: 0 !important;
     }
 
     .#{$namespace}container--toolTitleNav {

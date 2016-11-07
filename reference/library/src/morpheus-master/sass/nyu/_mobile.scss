@@ -327,11 +327,25 @@
     padding-top: 10px;
   }
 
+  .#{$namespace}pageColumns--single {
+    margin: 0 !important;
+  }
+
+  .#{$namespace}multipleTools {
+    .#{$namespace}container {
+      margin: 0 7px 10px !important;
+    }
+  }
+
   #jsr-edit {
     position: absolute;
     right: 0;
-    top: -5px;
+    top: 3px;
     white-space: nowrap;
+  }
+
+  #synopticCalendarOptions {
+    display: block;
   }
 
   #content, .#{$namespace}container--footer {
