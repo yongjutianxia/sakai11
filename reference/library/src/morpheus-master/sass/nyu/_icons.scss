@@ -20,10 +20,15 @@
     }
   }
 
+  // Workspace Home - globe icon
+  .icon-sakai-motd:before {
+     content: '\f0ac' !important;
+   }
+
+  // Site Overview/Home - dot point list
   .icon-sakai-home:before,
-  .icon-sakai-motd:before,
   .icon-sakai-iframe-site:before {
-    content: '\f0ac' !important;
+    content: '\f0ca' !important;
   }
 
   .icon-nyu-ls-music-resources          { @extend .fa-music; }
