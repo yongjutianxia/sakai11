@@ -160,6 +160,7 @@ body {
         padding: 0.4em 0.8em 0.45em 0.8em !important;
         font-family: $font-family !important;
         font-size: 12px !important;
+        display: inline-block;
 
         &:before {
           font-family: 'FontAwesome' !important;

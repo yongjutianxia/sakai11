@@ -15,7 +15,7 @@
 	
 	<h:outputText value="#{CalBean.initValues}"/>
 
-	<h:form id="calendarForm">
+	<h:form id="calendarForm" styleClass="nyu-synoptic-calendar-summary">
 	<h:panelGroup>
 		<sakai:tool_bar rendered="#{CalBean.userId ne null && CalBean.preferencesVisible}">
 			<h:commandLink action="#{MenuBean.processPreferences}" >

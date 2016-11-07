@@ -12,19 +12,6 @@
   z-index: 0 !important;
 }
 
-// exciting synoptic changes for announcements
-.nyu-synoptic-announcements.#{$namespace}multipleTools .#{$namespace}toolTitleNav {
-    padding-left: 0 !important;
-}
-
-.nyu-synoptic-announcements.#{$namespace}multipleTools .#{$namespace}toolTitleNav .#{$namespace}toolTitleNav__title {
-    padding: 0 0 20px 0 !important;
-}
-
-.#{$namespace}sakai-synoptic-announcement .#{$namespace}toolTitleNav.#{$namespace}container.#{$namespace}container--toolTitleNav {
-    display: none;
-}
-
 // -------------------------------------------------------------------------------------------------------------------
 //  Tool Tabs
 //   - restyle tabs with blue bar for current
@@ -48,11 +35,13 @@
   }
   .#{$namespace}multipleTools {
     .#{$namespace}toolTitleNav__button_container {
-      top: 0 !important;
+      top: -4px !important;
+      right: -11px !important;
     }
     .#{$namespace}pageColumns--single {
       .#{$namespace}toolTitleNav__button_container {
-        top: 0 !important;
+        top: 5px !important;
+        right: 5px !important;
       }
     }
   }
@@ -224,10 +213,67 @@ form[name^='announcementListForm'] .instruction {
   border: 0 !important;
 }
 
-form#calendarForm > div {
-  margin-top: 0.5em !important;
-  border: solid $nyu-calendar-border-color 1px !important;
-  padding: 0.5em !important;
+.#{$namespace}multipleTools {
+  .#{$namespace}container {
+    border: 1px solid $nyu-overview-portlet-border-color;
+    box-shadow: $nyu-overview-portlet-shadow;
+    margin-bottom: 20px;
+
+    &.#{$namespace}toolTitleNav.#{$namespace}container.#{$namespace}container--toolTitleNav {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      box-shadow: none;
+      margin-bottom: 0;
+    }
+
+    .#{$namespace}container--toolTitleNav {
+      background-color: $nyu-overview-portlet-title-background-color;
+      border-bottom: 1px solid $nyu-overview-portlet-border-color;
+
+      .#{$namespace}toolTitleNav__title {
+        color: $nyu-overview-portlet-title-color !important;
+        text-transform: none !important;
+        font-size: $nyu-overview-portlet-title-text-size !important;
+        letter-spacing: $nyu-overview-portlet-title-letter-spacing !important;
+      }
+    }
+  }
+
+  // exciting synoptic changes for announcements
+  .#{$namespace}sakai-synoptic-announcement {
+    .#{$namespace}toolTitleNav.#{$namespace}container--toolTitleNav {
+        display: none;
+    }
+  }
+  &.nyu-synoptic-announcements {
+    margin: -14px -14px 10px -14px;
+
+    .#{$namespace}toolTitleNav.#{$namespace}container.#{$namespace}container--toolTitleNav {
+      background-color: $nyu-overview-portlet-title-background-color;
+      border-bottom: 1px solid $nyu-overview-portlet-border-color;
+
+      .#{$namespace}toolTitleNav__title {
+        color: $nyu-overview-portlet-title-color !important;
+        text-transform: none !important;
+        font-size: $nyu-overview-portlet-title-text-size !important;
+        letter-spacing: $nyu-overview-portlet-title-letter-spacing !important;
+      }
+    }
+
+    .#{$namespace}toolTitleNav__button_container {
+      font-size: inherit !important;
+
+      > span, > span > a {
+        display: inline-block;
+      }
+    }
+  }
+}
+.nyu-synoptic-calendar-summary {
+  .navIntraTool.actionToolbar {
+    display: none !important;
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------------------

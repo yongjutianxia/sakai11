@@ -145,6 +145,12 @@
 
                                 #end ## END of IF (${tool.toolShowHelpButton})
 
+                                #if ($toolTitleClass == "sakai-summary-calendar")
+                                  <a id="synopticCalendarOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
+                                #end
+
                                 </div>
 
                             </nav> ## END nav.Mrphs-toolTitleNav.Mrphs-container.Mrphs-container--toolTitleNav
@@ -313,6 +319,11 @@
 
                                 #end ## END of IF (${tool.toolShowHelpButton})
 
+                                #if ($toolTitleClass == "sakai-summary-calendar")
+                                  <a id="synopticCalendarOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
+                                #end
                                 </div>
                                 
                             </nav> ## END nav.Mrphs-toolTitleNav.Mrphs-container.Mrphs-container--toolTitleNav

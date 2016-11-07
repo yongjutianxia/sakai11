@@ -57,3 +57,16 @@ $(function() {
   // resize upon show/hide of alerts
   $(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
 });
+
+
+// Introduce Option button for calendar synoptic tool that invokes option link within the tool
+$(function() {
+  $("#synopticCalendarOptions").on("click", function() {
+    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-summary-calendar");
+    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-summary-calendar iframe", $portlet);
+    var $iframeBody = $($iframe[0].contentWindow.document.body);
+
+    // trigger the options link
+    $("#calendarForm .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
+  });
+});
