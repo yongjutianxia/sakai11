@@ -766,7 +766,7 @@ function includeLatestJQuery(where) {
 		window.console && console.log("jQuery+migrate+BootStrap+UI Loaded by "+where+" from "+webjars);
 	}
 
-	document.write('\x3Cscript type="text/javascript" src="'+webjars+'jquery-ui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'+ver+'\x3C/script>');
+	document.write('\x3Cscript type="text/javascript" src="'+webjars+'jquery-ui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'+ver+'">' + '\x3C/script>');
 	window.console && console.log('Portal adding jQuery UI Touch Punch for touch device support');
 }
 
