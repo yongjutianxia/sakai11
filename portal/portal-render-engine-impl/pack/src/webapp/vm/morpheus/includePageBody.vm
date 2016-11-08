@@ -149,6 +149,14 @@
                                   <a id="synopticCalendarOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
                                     Options
                                   </a>
+                                #elseif ($pageSiteType == "workspace" && $toolTitleClass == "sakai-synoptic-messagecenter")
+                                  <a id="synopticMessageCenterOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
+                                #elseif ($toolTitleClass == "sakai-synoptic-chat")
+                                  <a id="synopticChatOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
                                 #end
 
                                 </div>
@@ -321,6 +329,14 @@
 
                                 #if ($toolTitleClass == "sakai-summary-calendar")
                                   <a id="synopticCalendarOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
+                                #elseif ($pageSiteType == "workspace" && $toolTitleClass == "sakai-synoptic-messagecenter")
+                                  <a id="synopticMessageCenterOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
+                                    Options
+                                  </a>
+                                #elseif ($toolTitleClass == "sakai-synoptic-chat")
+                                  <a id="synopticChatOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
                                     Options
                                   </a>
                                 #end

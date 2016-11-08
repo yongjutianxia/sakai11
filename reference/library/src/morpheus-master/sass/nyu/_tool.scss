@@ -271,10 +271,25 @@ form[name^='announcementListForm'] .instruction {
     }
   }
 }
+// hide tool tab menu for calendar
+// and message center synoptic tools
 .nyu-synoptic-calendar-summary {
   .navIntraTool.actionToolbar {
     display: none !important;
   }
+}
+#synopticForm {
+  #showOptions {
+    display: none !important;
+  }
+}
+.nyu-synoptic-chat-form {
+  .navIntraTool.actionToolbar {
+    display: none !important;
+  }
+}
+.#{$namespace}toolBody.#{$namespace}toolBody--sakai-iframe-site {
+  padding: 10px 0;
 }
 
 // -------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <f:view>
    <sakai:view title="#{msgs['custom.chatroom']}">
-      <h:form>     
+      <h:form styleClass="nyu-synoptic-chat-form">     
          <sakai:tool_bar>
             <h:commandLink action="#{ChatTool.processActionSynopticOptions}" rendered="#{ChatTool.maintainer}">
                <h:outputText value="#{ChatTool.accessibleOptionsLink}" escape="false"/>

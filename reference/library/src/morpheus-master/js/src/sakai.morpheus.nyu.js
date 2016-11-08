@@ -59,7 +59,8 @@ $(function() {
 });
 
 
-// Introduce Option button for calendar synoptic tool that invokes option link within the tool
+// Introduce Option button for calendar and messages synoptic tool
+// that invokes option link within the tool
 $(function() {
   $("#synopticCalendarOptions").on("click", function() {
     var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-summary-calendar");
@@ -68,5 +69,23 @@ $(function() {
 
     // trigger the options link
     $("#calendarForm .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
+  });
+
+  $("#synopticMessageCenterOptions").on("click", function() {
+    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-messagecenter");
+    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-messagecenter iframe", $portlet);
+    var $iframeBody = $($iframe[0].contentWindow.document.body);
+
+    // trigger the options link
+    $("#synopticForm #showOptions", $iframeBody).trigger("click");
+  });
+
+  $("#synopticChatOptions").on("click", function() {
+    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-chat");
+    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-chat iframe", $portlet);
+    var $iframeBody = $($iframe[0].contentWindow.document.body);
+
+    // trigger the options link
+    $("#_id1 .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
   });
 });
