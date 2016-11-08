@@ -765,6 +765,9 @@ function includeLatestJQuery(where) {
 		document.write('\x3Clink rel="stylesheet" href="'+webjars+'jquery-ui/1.11.3/jquery-ui.min.css'+ver+'"/>');
 		window.console && console.log("jQuery+migrate+BootStrap+UI Loaded by "+where+" from "+webjars);
 	}
+
+	document.write('\x3Cscript type="text/javascript" src="'+webjars+'jquery-ui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js'+ver+'\x3C/script>');
+	window.console && console.log('Portal adding jQuery UI Touch Punch for touch device support');
 }
 
 // Return the breakpoint between small and medium sized displays - for morpheus currently the same
