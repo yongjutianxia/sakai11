@@ -331,7 +331,7 @@
                                   <a id="synopticCalendarOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
                                     Options
                                   </a>
-                                #elseif ($pageSiteType == "workspace" && $toolTitleClass == "sakai-synoptic-messagecenter")
+                                #elseif ($pageSiteType.contains("workspace") && $toolTitleClass == "sakai-synoptic-messagecenter")
                                   <a id="synopticMessageCenterOptions" class="Mrphs-toolTitleNav__link" href="javascript:void(0);">
                                     Options
                                   </a>
