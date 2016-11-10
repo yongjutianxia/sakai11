@@ -979,7 +979,8 @@ ul#toolbar li em {
 .dropDownDiv li div {
     font-size: .85em !important
 }
-.Mrphs-siteHierarchy .lessons-siteHierarchy-title {
+.Mrphs-siteHierarchy .breadcrumb-link, .Mrphs-siteHierarchy .lessons-siteHierarchy-title {
+  display: inline-block;
   margin-top: 1em;
   padding-top: 3px;
 }
