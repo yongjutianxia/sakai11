@@ -473,6 +473,44 @@ body {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+//  Changes to the Forums/Messages tool
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .authorImage {
+    display: block;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    overflow: hidden;
+    position: relative;
+
+    a {
+      display: block;
+    }
+
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      min-height: 60px;
+      min-width: 60px;
+    }
+  }
+
+  #pvtMsgDetail {
+    .authorImage {
+      margin: 30px auto;
+    }
+  }
+  #msgForum {
+    .authorImage {
+      margin: 5px 15px 10px 0;
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
 body {
