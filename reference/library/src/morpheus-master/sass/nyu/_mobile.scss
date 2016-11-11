@@ -233,8 +233,41 @@
   }
   .#{$namespace}pageColumns--single {
     .#{$namespace}toolTitleNav__button_container {
-      top: -55px !important;
+      top: -52px !important;
       right: 10px !important;
+
+      .external-news {
+        display: none !important;
+      }
+      .#{$namespace}toolTitleNav__link--help-popup {
+        border: none !important;
+        background-color: #FFFFFF !important;
+        color: $nyu-tablet-all-sites-link-color !important;
+
+        &:before {
+          color: $nyu-tablet-all-sites-link-color !important;
+          font-size: 16pt;
+        }
+
+        &:hover {
+          border: none !important;
+          background-color: #FFFFFF !important;
+          color: $nyu-tablet-all-sites-link-color !important;
+
+          &:before {
+            color: $nyu-tablet-all-sites-link-color !important;
+          }
+        }
+
+        &:after {
+          content: 'Help';
+          display: inline-block;
+          vertical-align: middle;
+          font-size: 14.5px;
+          font-family: $font-family;
+          padding: 0 4px 8px 2px;
+        }
+      }
     }
   }
   
