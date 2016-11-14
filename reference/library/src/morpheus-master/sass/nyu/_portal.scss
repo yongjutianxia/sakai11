@@ -565,6 +565,21 @@ body a[href] {
         }
       }
     }
+
+    .fav-drag-handle {
+      right: 0px !important;
+      top: 1px !important;
+      display: inline-block;
+      padding: 5px 6px;
+
+      &:before {
+        content: "\f142 \202F \f142 \202F" !important;
+        font-size: 14px !important;
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+    }
   }
   #otherSitesMenu {
     position: absolute;
