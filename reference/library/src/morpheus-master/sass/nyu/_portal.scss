@@ -27,24 +27,26 @@ body a[href] {
     }
 
     .#{$namespace}headerLogo--institution{
-      background-image: none !important;
+      background-size: 60% 100% !important;
+      background-position: 10px center !important;
+      background-repeat: no-repeat !important;
     }
     .#{$namespace}headerLogo--institution:before{
-      font-family: 'nyu-classes-icons';
-      content: '\e000';
-      color: $nyu-header-logo-color;
-      font-size: $nyu-header-logo-text-size;
-      line-height: 52px;
-      height: 52px;
-      display: block;
-      padding: $nyu-header-logo-padding;
-      margin-left: 2px;
+      //font-family: 'nyu-classes-icons';
+      //content: '\e000';
+      //color: $nyu-header-logo-color;
+      //font-size: $nyu-header-logo-text-size;
+      //line-height: 52px;
+      //height: 52px;
+      //display: block;
+      //padding: $nyu-header-logo-padding;
+      //margin-left: 2px;
 
-      @media #{$phone} {
-        height: auto;
-        padding-left: 10px;
-        margin-left: 0;
-      }
+      //@media #{$phone} {
+      //  height: auto;
+      //  padding-left: 10px;
+      //  margin-left: 0;
+      //}
     }
   }
 }
@@ -162,18 +164,22 @@ body a[href] {
     display: none;
   }
   .logo {
-    background-image: none !important;
-    background: $nyu-header-background !important;
+    //background-image: none !important;
+    background-color: $nyu-header-background !important;
     margin-bottom: 20px;
     border-bottom: 1px solid $nyu-divider-color;
+
+    background-size: 60% 100% !important;
+    background-position: 10px center !important;
+    background-repeat: no-repeat !important;
   }
-  .logo:before{
-    font-family: 'nyu-classes-icons';
-    content: '\e000';
-    color: $nyu-header-logo-color;
-    font-size: 70px;
-    line-height: 60px;
-  }
+  //.logo:before{
+    //font-family: 'nyu-classes-icons';
+    //content: '\e000';
+    //color: $nyu-header-logo-color;
+    //font-size: 70px;
+    //line-height: 60px;
+  //}
 }
 
 
