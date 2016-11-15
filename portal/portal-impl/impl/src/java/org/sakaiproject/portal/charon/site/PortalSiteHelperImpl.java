@@ -38,6 +38,7 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.sakaiproject.entitybroker.util.PageTitleHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sakaiproject.alias.api.Alias;
@@ -682,12 +683,8 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				m.put("ispopup", Boolean.valueOf(p.isPopUp()));
 				m.put("pagePopupUrl", pagePopupUrl);
 
-                                // CLASSES-1445 Prefix certain workspace tools with "My"
-                                String displayTitle = p.getTitle();
-
-                                if (SiteService.isUserSite(site.getId()) && needsMyPrefix(displayTitle)) {
-                                    displayTitle = "My " + displayTitle;
-                                }
+				// CLASSES-1445 Prefix certain workspace tools with "My"
+				String displayTitle = PageTitleHelper.prefixTitle(site.getId(), p.getTitle());
 
 				m.put("pageTitle", Web.escapeHtml(displayTitle));
 				m.put("jsPageTitle", Web.escapeJavascript(displayTitle));
@@ -859,12 +856,6 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			ServerConfigurationService.getInt("display.users.present.time.delay", 3000)) );
 
 		return theMap;
-	}
-
-	private static List<String> prefixableTitles = Arrays.asList(new String[] { "Calendar", "Resources", "Announcements" });
-
-	private boolean needsMyPrefix(String title) {
-		return prefixableTitles.contains(title);
 	}
 
 	/**

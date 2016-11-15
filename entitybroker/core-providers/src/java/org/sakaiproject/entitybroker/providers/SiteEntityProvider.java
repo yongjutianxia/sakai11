@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.sakaiproject.entitybroker.util.PageTitleHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.azeckoski.reflectutils.ReflectUtils;
@@ -520,7 +521,7 @@ RESTful, ActionsExecutable, Redirectable, RequestStorable, DepthLimitable {
             pageData.put("position", page.getPosition());
             pageData.put("siteId", page.getSiteId());
             pageData.put("skin", page.getSkin());
-            pageData.put("title", page.getTitle());
+            pageData.put("title", PageTitleHelper.prefixTitle(siteId, page.getTitle()));
             pageData.put("url", page.getUrl());
             if (includeProps) {
                 // get the properties
