@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>11.1</version>
+        <version>11.2</version>
 	<relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>Blog Wow!</name>
     <groupId>org.sakaiproject.blogwow</groupId>
     <artifactId>sakai-blogwow-base</artifactId>
-    <version>11.1</version>
+    <version>11.2</version>
     <packaging>pom</packaging>
 
     <!-- handles the management of all related dependencies -->
@@ -21,14 +21,14 @@
             <dependency>
                 <groupId>org.sakaiproject.blogwow</groupId>
                 <artifactId>sakai-blogwow-api</artifactId>
-                <version>11.1</version>
+                <version>11.2</version>
                 <scope>provided</scope>
                 <type>jar</type>
             </dependency>
             <dependency>
                 <groupId>org.sakaiproject.blogwow</groupId>
                 <artifactId>sakai-blogwow-impl</artifactId>
-                <version>11.1</version>
+                <version>11.2</version>
                 <type>jar</type>
             </dependency>
         </dependencies>

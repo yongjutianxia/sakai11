@@ -37,6 +37,10 @@
       <artifactId>nyudirectory-provider</artifactId>
       <version>11.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>sakai-unboundid-provider</artifactId>
+    </dependency>
 <!--
       This has been relocated to sakai-kernel-util
       org.sakaiproject.kernel.utilsakai-util-->

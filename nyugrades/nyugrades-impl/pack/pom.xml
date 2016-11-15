@@ -4,7 +4,7 @@
   <parent>
     <artifactId>nyugrades-base</artifactId>
     <groupId>edu.nyu.classes.nyugrades</groupId>
-    <version>11.1</version>
+    <version>11.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>nyugrades-pack</name>
@@ -18,7 +18,7 @@
     <dependency>
       <groupId>edu.nyu.classes.nyugrades</groupId>
       <artifactId>nyugrades-impl</artifactId>
-      <version>11.1</version>
+      <version>11.2</version>
     </dependency>
   </dependencies>
   <build>
