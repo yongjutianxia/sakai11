@@ -240,6 +240,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ckconfig.extraPlugins+=",audio,kalturaflash,magicembed,youtube";
             ckconfig.extraPlugins+=",ckeditor_wiris";
             ckconfig.extraPlugins+=",Mediasite";
+            ckconfig.extraPlugins+=",autolink";
+
 
             // CLASSES-1937
             if (sakai.editor.siteId && sakai.editor.templates) {
