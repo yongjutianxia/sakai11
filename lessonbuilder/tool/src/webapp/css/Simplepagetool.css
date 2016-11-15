@@ -1685,7 +1685,6 @@ span.nextprev {
   float: right;
 }
 .navIntraTool li.contentButton a {
-  padding-top:2px !important;
   padding-bottom:2px !important;
 }
 .navIntraTool li.contentButton a .fa-button-text, .fa-fw {
