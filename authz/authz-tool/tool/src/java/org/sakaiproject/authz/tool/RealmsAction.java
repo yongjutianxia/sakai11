@@ -149,12 +149,12 @@ public class RealmsAction extends PagedResourceActionII
 		String adminSite = ServerConfigurationService.getString("nyu.serviceteam.adminSite");
 		
                if (adminSite == null) {
-                       Log.warn("chef", "nyu.serviceteam.adminSite property wasn't set.  Granting FULL permission!");
+                       logger.warn("chef", "nyu.serviceteam.adminSite property wasn't set.  Granting FULL permission!");
                        return false;
                }
 
                if (serviceTeamRole == null) {
-                       Log.warn("chef", "nyu.serviceteam.role property wasn't set.  Granting FULL permission!");
+                       logger.warn("chef", "nyu.serviceteam.role property wasn't set.  Granting FULL permission!");
                        return false;
                }
 
