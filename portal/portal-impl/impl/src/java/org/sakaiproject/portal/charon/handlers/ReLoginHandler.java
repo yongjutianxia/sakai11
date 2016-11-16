@@ -59,13 +59,13 @@ public class ReLoginHandler extends BasePortalHandler
 		{
 			try
 			{
+				LoginHelper.resetNavMinimizedCookie(res);
+
 				// Note: here we send a null path, meaning we will NOT set it as
 				// a possible return path
 				// we expect we are in the middle of a login screen processing,
 				// and it's already set (user login button is "ulogin") -ggolden
 				portal.doLogin(req, res, session, null, false);
-
-				LoginHelper.resetNavMinimizedCookie(res);
 
 				return END;
 			}
