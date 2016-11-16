@@ -51,10 +51,16 @@
           mathjaxIncludes = mathjaxIncludes + $("script[src*='MathJax.js']")[0].outerHTML;
         }
 
+        var baseURL = location.protocol + "//" + location.hostname;
+        if (location.port != "") {
+          baseURL = baseURL + ":" + location.port
+        }
+
 				sHTML = editor.config.docType + '<html dir="' + editor.config.contentsLangDirection + '">' +
 					'<head>' +
 						baseTag +
 						'<title>' + editor.lang.preview.preview + '</title>' +
+						'<base href="'+ baseURL +'"/>' +
 						CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
 						sakaiStylesheets + 
 						mathjaxIncludes +
