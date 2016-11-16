@@ -1367,7 +1367,7 @@ div[role="dialog"] {
 }
 div.navIntraTool {
   border-top:none;
-  padding-top: 1em !important;
+  padding-top: 0 !important;
 }
 
 /* temporary, to avoid changing old stuff for the moment */
