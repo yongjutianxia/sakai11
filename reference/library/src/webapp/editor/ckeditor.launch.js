@@ -142,7 +142,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         ],
         toolbar_Full:
         [
-            ['Source','-','Templates','-','Preview'],
+            ['Source','-','Templates','-','NYUPreview'],
             // Uncomment the next line and comment the following to enable the default spell checker.
             // Note that it uses spellchecker.net, displays ads and sends content to remote servers without additional setup.
             //['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
@@ -210,6 +210,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('youtube',basePath+'youtube/', 'plugin.js');
             CKEDITOR.plugins.addExternal('ckeditor_wiris',basePath+'ckeditor_wiris/', 'plugin.js');
             CKEDITOR.plugins.addExternal('Mediasite', basePath + 'Mediasite/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('nyupreview', basePath + 'nyupreview/', 'plugin.js');
 
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
@@ -241,6 +242,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ckconfig.extraPlugins+=",ckeditor_wiris";
             ckconfig.extraPlugins+=",Mediasite";
             ckconfig.extraPlugins+=",autolink";
+            ckconfig.extraPlugins+=",nyupreview";
 
 
             // CLASSES-1937
