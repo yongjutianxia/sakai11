@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sakaiproject.portal.api.PortalHandlerException;
+import org.sakaiproject.portal.charon.LoginHelper;
 import org.sakaiproject.tool.api.Session;
 
 /**
@@ -63,6 +64,9 @@ public class ReLoginHandler extends BasePortalHandler
 				// we expect we are in the middle of a login screen processing,
 				// and it's already set (user login button is "ulogin") -ggolden
 				portal.doLogin(req, res, session, null, false);
+
+				LoginHelper.resetNavMinimizedCookie(res);
+
 				return END;
 			}
 			catch (Exception ex)

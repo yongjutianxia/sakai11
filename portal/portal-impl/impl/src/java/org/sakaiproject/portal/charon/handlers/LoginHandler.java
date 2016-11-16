@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sakaiproject.portal.api.PortalHandlerException;
+import org.sakaiproject.portal.charon.LoginHelper;
 import org.sakaiproject.tool.api.Session;
 
 /**
@@ -52,7 +53,10 @@ public class LoginHandler extends BasePortalHandler
 		{
 			try
 			{
+				LoginHelper.resetNavMinimizedCookie(res);
+
 				portal.doLogin(req, res, session, "", false);
+
 				return END;
 			}
 			catch (Exception ex)

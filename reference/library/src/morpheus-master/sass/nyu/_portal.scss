@@ -940,6 +940,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
         }
 
         &.floatingToolMenu {
+          line-height: 40px;
           color: $nyu-tool-nav-collapse-text-color !important;
           background-color: $nyu-tool-nav-collapse-background-color !important;
           border-top: $nyu-tool-nav-collapse-border-top !important;
@@ -967,6 +968,27 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     border-left: 1px solid $nyu-content-border-color;
     // fix margin-top on content child causing margin above #content
     overflow: auto;
+  }
+  body.#{$namespace}toolMenu-collapsed {
+    #toolMenu, #subSites, .floatingToolMenu {
+      ul {
+        li {
+          &.floatingToolMenu {
+            color: $nyu-tool-nav-collapse-active-text-color !important;
+            background-color: $nyu-tool-nav-collapse-active-background-color !important;
+            border-top: $nyu-tool-nav-collapse-active-border-top !important;
+            box-shadow: $nyu-tool-nav-collapse-active-shadow !important;
+
+            &:hover {
+              color: $nyu-tool-nav-collapse-active-hover-text-color !important;
+              background-color: $nyu-tool-nav-collapse-active-hover-background-color !important;
+              border-top: $nyu-tool-nav-collapse-active-hover-border-top !important;
+              box-shadow: $nyu-tool-nav-collapse-active-hover-shadow !important;
+            }
+          }
+        }
+      }
+    }
   }
 }
 @media #{$phone} {

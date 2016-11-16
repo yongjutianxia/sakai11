@@ -1,9 +1,11 @@
 package org.sakaiproject.portal.charon.handlers;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sakaiproject.portal.api.PortalHandlerException;
+import org.sakaiproject.portal.charon.LoginHelper;
 import org.sakaiproject.tool.api.Session;
 
 import org.sakaiproject.util.ExternalTrustedEvidence;
@@ -70,6 +72,8 @@ public class SamlLoginHandler extends BasePortalHandler
           if (auth.getDestination() != null) {
             destination = auth.getDestination();
           }
+
+          LoginHelper.resetNavMinimizedCookie(res);
 
           res.sendRedirect(destination);
 
