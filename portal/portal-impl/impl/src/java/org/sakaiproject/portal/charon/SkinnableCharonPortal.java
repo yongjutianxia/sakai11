@@ -1380,6 +1380,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		StringBuilder headJs = new StringBuilder();
         
         // SAK-22384
+        boolean mathJaxIncluded = false;
         if (placement != null && MATHJAX_ENABLED_AT_SYSTEM_LEVEL)
         {  
             ToolConfiguration toolConfig = SiteService.findTool(placement.getId());
@@ -1409,6 +1410,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
                             // this call to MathJax.Hub.Config seems to be needed for MathJax to work in IE
                             headJs.append("<script type=\"text/x-mathjax-config\">\nMathJax.Hub.Config({\ntex2jax: { inlineMath: [['\\\\(','\\\\)']] }\n});\n</script>\n");
                             headJs.append("<script src=\"").append(MATHJAX_SRC_PATH).append("\"  language=\"JavaScript\" type=\"text/javascript\"></script>\n");
+                            mathJaxIncluded = true;
                         }                     
                     }
                 }
@@ -1432,6 +1434,10 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		headJs.append("sakai.editor.siteToolSkin = '" + CSSUtils.getCssToolSkin(skin) + "';\n");
 		headJs.append("sakai.editor.sitePrintSkin = '" + CSSUtils.getCssPrintSkin(skin) + "';\n");
 		headJs.append("sakai.editor.editors.ckeditor.browser = '"+ EditorConfiguration.getCKEditorFileBrowser()+ "';\n");
+		if (mathJaxIncluded) {
+			headJs.append("sakai.editor.enableMathJax = true;\n");
+			headJs.append("sakai.editor.mathJaxPath = '" + MATHJAX_SRC_PATH + "';\n");
+		}
 		headJs.append("</script>\n");
 
 		// CLASSES-1937, CLASSES-2093 poke the site's CKEditor templates and plugins into the page if configured
