@@ -48,7 +48,9 @@
         var mathjaxIncludes = "";
         if ($("script[type*='mathjax-config']").length > 0) {
           mathjaxIncludes = mathjaxIncludes + $("script[type*='mathjax-config']")[0].outerHTML;
-          mathjaxIncludes = mathjaxIncludes + $("script[src*='MathJax.js']")[0].outerHTML;
+          $("script[src*='/js/mathjax/']").each(function() {
+            mathjaxIncludes = mathjaxIncludes + this.outerHTML;
+          });
         }
 
         var baseURL = location.protocol + "//" + location.hostname;
