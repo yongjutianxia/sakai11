@@ -58,17 +58,50 @@
           baseURL = baseURL + ":" + location.port
         }
 
-				sHTML = editor.config.docType + '<html dir="' + editor.config.contentsLangDirection + '">' +
-					'<head>' +
-						baseTag +
-						'<title>' + editor.lang.preview.preview + '</title>' +
-						'<base href="'+ baseURL +'"/>' +
-						CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
-						sakaiStylesheets + 
-						mathjaxIncludes +
-					'</head>' + bodyHtml +
-						editor.getData() +
-					'</body></html>';
+        // Content to preview: the entire document or just what is highlighted?
+        var previewHighlightedOnly = false;
+        var contentToPreview = editor.getData();
+        var selectedText = "";
+        var selection = editor.getSelection();
+
+        function getPreviewContentHTML(contentToPreview) {
+            return editor.config.docType + '<html dir="' + editor.config.contentsLangDirection + '">' +
+                    '<head>' +
+                        baseTag +
+                        '<title>' + editor.lang.preview.preview + '</title>' +
+                        '<base href="'+ baseURL +'"/>' +
+                        CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
+                        sakaiStylesheets +
+                        mathjaxIncludes +
+                    '</head>'+
+                    bodyHtml +
+                    contentToPreview +
+                    '</body></html>';
+        }
+
+        function getIframe(html) {
+            var $iframe = $('<iframe>');
+            $iframe.attr('src', 'data:text/html;charset=utf-8,' + encodeURI(html));
+            $iframe.attr('frameborder', '0');
+            $iframe.attr('width', '100%');
+            $iframe.attr('height', $(window).height() - 240 + "px");
+            return $iframe;
+        }
+
+        if (selection.getType() == CKEDITOR.SELECTION_TEXT) {
+          if (CKEDITOR.env.ie) {
+            selection.unlock(true);
+            selectedText = selection.getNative().createRange().text;
+          } else {
+            selectedText = selection.getNative().toString();
+          }
+        }
+        if (selectedText.length > 0) {
+            previewHighlightedOnly = true;
+            contentToPreview = selectedText;
+        }
+
+        sHTML = getPreviewContentHTML(contentToPreview);
 			}
 
 			var iWidth = 640,
@@ -93,16 +126,28 @@
             if ($.fn.modal) {
                 var $modal = $('<div class="modal fade" id="ckeditorPreview" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="button pull-right" data-dismiss="modal">Close</button><h4 class="modal-title">Preview</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="button" data-dismiss="modal">Close</button></div></div></div></div>');
 
-                var $iframe = $('<iframe>');
-                $iframe.attr('src', 'data:text/html;charset=utf-8,' + encodeURI(sHTML));
-                $iframe.attr('frameborder', '0');
-                $iframe.attr('width', '100%');
-                $iframe.attr('height', $(window).height() - 240 + "px");
+                if (previewHighlightedOnly) {
+                    var $message = $("<div>").addClass("alert alert-info").
+                                              text("Previewing hightlighted text only - ").
+                                              css("margin", "20px 0 0");
+
+                    var $previewAll =  $("<a>").attr("href", "javascript:void(0);").
+                                              text("Preview Entire Document");
+
+                    $previewAll.on("click", function() {
+                        $modal.find(".modal-body").html(getIframe(getPreviewContentHTML(editor.getData())));
+                        $message.remove();
+                    });
+
+                    $message.append($previewAll);
+
+                    $modal.find(".modal-header").append($message);
+                }
 
                 $(document.body).append($modal);
                 $modal.modal();
 
-                $modal.find(".modal-body").append($iframe);
+                $modal.find(".modal-body").append(getIframe(sHTML));
                 $modal.on("hidden.bs.modal", function() {
                     $modal.remove();
                 });
