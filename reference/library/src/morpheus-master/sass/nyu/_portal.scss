@@ -137,6 +137,58 @@ body a[href] {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+//  Profile Picture Upload
+// --------------------------------------------------------------------------------------------------------------------
+body {
+  span.#{$namespace}userNav__submenuitem--profilepicture {
+    overflow: hidden;
+    position: relative;
+
+    &:hover {
+      &:after {
+        content: 'Change';
+        background: $nyu-profile-picture-change-background-color;
+        color: $nyu-profile-picture-change-color;
+        position: absolute;
+        bottom: 0px;
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 0 0 4px;
+        opacity: $nyu-profile-picture-change-opacity;
+        box-shadow: -1px 0 3px #666;
+      }
+    }
+  }
+}
+#profileImageUpload {
+  .modal-dialog {
+    width: 332px !important;
+  }
+
+  #upload {
+    position: relative;
+
+    input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+  #croppie {
+    height: 300px;
+    width: 300px;
+
+    .cr-viewport {
+      border-radius: 50% !important;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 //  Login
 // --------------------------------------------------------------------------------------------------------------------
 ##{$namespace}xlogin{
