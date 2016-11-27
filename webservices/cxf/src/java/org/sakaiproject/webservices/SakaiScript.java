@@ -1388,6 +1388,36 @@ public class SakaiScript extends AbstractWebService {
     }
 
     /**
+     * Remove a bunch of sites
+     *
+     * @param sessionid the id of a valid session
+     * @param siteid    the id of the site to remove
+     * @return success or exception message
+     */
+    @WebMethod
+    @Path("/removeSites")
+    @Produces("text/plain")
+    @GET
+    public String removeSites(
+            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+            @WebParam(name = "siteids", partName = "siteids") @QueryParam("siteids") List<String> siteids) {
+        Session session = establishSession(sessionid);
+
+        for (String siteid : siteids) {
+            try {
+                Site siteEdit = null;
+                siteEdit = siteService.getSite(siteid);
+                siteService.removeSite(siteEdit);
+            } catch (Exception e) {
+                LOG.error("WS removeSites(): " + e.getClass().getName() + " : " + e.getMessage());
+                return e.getClass().getName() + " : " + e.getMessage();
+            }
+        }
+
+        return "success";
+    }
+
+    /**
      * Create a new site based on another site. This will copy its tool structure, but not its content
      *
      * @param sessionid    the id of a valid session

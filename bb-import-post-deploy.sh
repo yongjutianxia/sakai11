@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# We can ultimately remove this script if we never find we need it...
+echo "$0 seems no longer needed.  Exiting"
+exit
+
+
 set -e
 
 build_dir="$1"
@@ -21,29 +26,31 @@ if [ ! -d "$tomcat" ] || [ ! -f "$tomcat/conf/server.xml" ]; then
 fi
 
 
-if [ -e "$tomcat/shared/lib/sakai-import-bb6-11.0.jar" ]; then
+if [ -e "$tomcat/shared/lib/sakai-import-bb6-11.2.jar" ]; then
     echo "Moving blackboard jar into components/import-pack/WEB-INF/lib"
-    mv "$tomcat/shared/lib/sakai-import-bb6-11.0.jar" "$tomcat/components/import-pack/WEB-INF/lib"
+    mv "$tomcat/shared/lib/sakai-import-bb6-11.2.jar" "$tomcat/components/import-pack/WEB-INF/lib"
 fi
 
-if [ -e "$tomcat/shared/lib/sakai-import-bb9-nyu-11.0.jar" ]; then
+if [ -e "$tomcat/shared/lib/sakai-import-bb9-nyu-11.2.jar" ]; then
     echo "Moving blackboard 9 jar into components/import-pack/WEB-INF/lib"
-    mv "$tomcat/shared/lib/sakai-import-bb9-nyu-11.0.jar" "$tomcat/components/import-pack/WEB-INF/lib"
+    mv "$tomcat/shared/lib/sakai-import-bb9-nyu-11.2.jar" "$tomcat/components/import-pack/WEB-INF/lib"
 fi
 
 
 
-echo "Installing Samigo jar to import-pack component directory"
-cp "$build_dir/samigo/samigo-archive/sam-handlers/target/samigo-import-11.0.jar" \
-    "$tomcat/components/import-pack/WEB-INF/lib/"
+# echo "Installing Samigo jar to import-pack component directory"
+# cp "$build_dir/samigo/samigo-archive/sam-handlers/target/samigo-import-11.2.jar" \
+#     "$tomcat/components/import-pack/WEB-INF/lib/"
 
 echo "Moving sakai-anouncement-import [sic] jar"
-mv "$tomcat/components/sakai-anouncement-import/WEB-INF/lib/sakai-import-announcement-11.0.jar" \
+mv "$tomcat/components/sakai-anouncement-import/WEB-INF/lib/sakai-import-announcement-11.2.jar" \
     "$tomcat/components/import-pack/WEB-INF/lib/"
 
 
 echo "Merging components/sakai-anouncement-import/WEB-INF/components.xml with components/import-pack/WEB-INF/components.xml"
-known_good="e39bc40e8486cabd177a2e70c6c249bd34faa5e7"
+
+# As of Sakai 11.2 the components.xml seems empty...
+known_good="9ac547f6c720ea6a39d36e1fa5972f0add2aeada"
 
 hash=$(sha1sum "$tomcat/components/sakai-anouncement-import/WEB-INF/components.xml" | cut -d' ' -f1)
 

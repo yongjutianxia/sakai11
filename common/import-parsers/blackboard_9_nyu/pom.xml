@@ -17,11 +17,9 @@
   <inceptionYear>2005</inceptionYear>
   <packaging>jar</packaging>
   <properties>
-    <deploy.target>shared</deploy.target>
+    <deploy.target>components</deploy.target>
   </properties>
     <dependencies>
-
-
       <dependency>
           <groupId>org.sakaiproject.common</groupId>
           <artifactId>import-impl</artifactId>
