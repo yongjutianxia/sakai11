@@ -735,7 +735,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		RenderResult result = ToolRenderService.render(this,placement, req, res,
 				getServletContext());
 
-                if (externalHelpSystem.isActive()) {
+                if (externalHelpSystem.isActive() && site != null) {
 			String userRole = "student";
 			if (securityService.unlock(SiteService.SECURE_UPDATE_SITE, site
 						   .getReference())) {
