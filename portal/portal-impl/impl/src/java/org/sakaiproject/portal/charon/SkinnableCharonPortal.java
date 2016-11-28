@@ -97,6 +97,7 @@ import org.sakaiproject.portal.charon.handlers.WorksiteHandler;
 import org.sakaiproject.portal.charon.handlers.WorksiteResetHandler;
 import org.sakaiproject.portal.charon.handlers.XLoginHandler;
 import org.sakaiproject.portal.charon.handlers.SamlLoginHandler;
+import org.sakaiproject.portal.charon.handlers.TestEmailHandler;
 import org.sakaiproject.portal.charon.handlers.YouTubeHandler;
 import org.sakaiproject.portal.charon.site.PortalSiteHelperImpl;
 import org.sakaiproject.portal.render.api.RenderResult;
@@ -2149,6 +2150,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		addHandler(new LoginHandler());
 		addHandler(new XLoginHandler());
 		addHandler(new SamlLoginHandler());
+		addHandler(new TestEmailHandler());
 		addHandler(new LogoutHandler());
 		addHandler(new ErrorDoneHandler());
 		addHandler(new ErrorReportHandler());

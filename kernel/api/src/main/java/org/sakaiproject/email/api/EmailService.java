@@ -164,4 +164,8 @@ public interface EmailService
 
 	List<EmailAddress> send(EmailMessage message, boolean messagingException) throws AddressValidationException,
 			NoRecipientsException, MessagingException;
+
+
+	// NYU extension
+	String getTestMessages();
 }

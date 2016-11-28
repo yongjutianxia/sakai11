@@ -795,6 +795,17 @@ public class BasicEmailService implements EmailService
 		if (m_testMode)
 		{
 			M_log.info("sendToUsers: users: " + usersToStr(users) + " headers: " + listToStr(headers) + " message:\n" + message);
+
+			TestEmailStore
+				.newEntry()
+				.from("")
+				.to("")
+				.subject("")
+				.headerTo("")
+				.replyTo("")
+				.content("sendToUsers: users: " + usersToStr(users) + " headers: " + listToStr(headers) + " message:\n" + message)
+				.store();
+
 			return;
 		}
 
@@ -1391,6 +1402,17 @@ public class BasicEmailService implements EmailService
 		M_log.info("sendMail: from: " + from + " to: " + arrayToStr(to) + " subject: " + subject + " headerTo: "
 				+ mapToStr(headerTo) + " replyTo: " + arrayToStr(replyTo) + " content: " + content + " additionalHeaders: "
 				+ listToStr(additionalHeaders));
+
+                TestEmailStore
+                        .newEntry()
+                        .from(from.toString())
+                        .to(to.toString())
+                        .subject(subject)
+                        .headerTo(headerTo.toString())
+                        .replyTo(replyTo.toString())
+                        .content(content)
+                        .additionalHeaders(additionalHeaders)
+                        .store();
 	}
 
 	/**
@@ -1401,6 +1423,18 @@ public class BasicEmailService implements EmailService
 	{
 		M_log.info("send: from: " + fromStr + " to: " + toStr + " subject: " + subject + " headerTo: " + headerToStr + " replyTo: "
 				+ replyToStr + " content: " + content + " additionalHeaders: " + listToStr(additionalHeaders));
+
+                TestEmailStore
+                        .newEntry()
+                        .from(fromStr)
+                        .to(toStr)
+                        .subject(subject)
+                        .headerTo(headerToStr)
+                        .replyTo(replyToStr)
+                        .content(content)
+                        .additionalHeaders(additionalHeaders)
+                        .store();
+
 	}
 
 	/** Returns true if the given content String can be encoded in the given charset */
@@ -1788,5 +1822,109 @@ public class BasicEmailService implements EmailService
 	{
 		String formattedName = String.format(propNameTemplate, protocol);
 		return formattedName;
+	}
+
+	// NYU extension: store the last few test emails we've logged
+	public String getTestMessages() {
+		return TestEmailStore.allEmails();
+	}
+
+	private static class TestEmailStore {
+		private static final int EMAIL_COUNT = 10;
+		private static int nextPosition = 0;
+
+		private static TestEmail[] storedEmails = new TestEmail[EMAIL_COUNT];
+
+		public static TestEmailBuilder newEntry() {
+			return new TestEmailBuilder();
+		}
+
+		protected synchronized static void store(TestEmail email) {
+			storedEmails[nextPosition] = email;
+			nextPosition = (nextPosition + 1) % EMAIL_COUNT;
+		}
+
+		protected synchronized static String allEmails() {
+			StringBuilder result = new StringBuilder();
+			for (int i = 0; i < EMAIL_COUNT; i++) {
+				// (a % b + b) % b wraps negatives back around to positive
+				int idx = ((nextPosition - 1 - i) % EMAIL_COUNT + EMAIL_COUNT) % EMAIL_COUNT;
+
+				TestEmail email = storedEmails[idx];
+				if (email != null) {
+					result.append(email.toString());
+				}
+			}
+
+			return result.toString();
+		}
+
+		private static class TestEmail {
+			private String from;
+			private String to;
+			private String subject;
+			private String headerTo;
+			private String replyTo;
+			private String content;
+			private List<String> additionalHeaders;
+			private Date date;
+
+			public TestEmail(String from, String to, String subject, String headerTo, String replyTo, String content, List<String> additionalHeaders) {
+				this.from = from;
+				this.to = to;
+				this.subject = subject;
+				this.headerTo = headerTo;
+				this.replyTo = replyTo;
+				this.content = content;
+				this.additionalHeaders = additionalHeaders;
+				this.date = new Date();
+			}
+
+			public String toString() {
+				StringBuilder result = new StringBuilder();
+
+				result.append("===== BEGIN TEST EMAIL =====\n");
+				result.append("Date: " + date + "\n");
+				result.append("From: " + from + "\n");
+				result.append("To: " + to + "\n");
+				result.append("Subject: " + subject + "\n");
+				result.append("HeaderTo: " + headerTo + "\n");
+				result.append("ReplyTo: " + replyTo + "\n");
+
+				if (additionalHeaders != null) {
+					result.append("Additional headers: ");
+					for (String header : additionalHeaders) {
+						result.append("  " + header + "\n");
+					}
+				}
+
+				result.append("\nContent: " + content + "\n");
+				result.append("===== END TEST EMAIL =====\n");
+
+				return result.toString();
+			}
+		}
+
+		private static class TestEmailBuilder {
+			private String from;
+			private String to;
+			private String subject;
+			private String headerTo;
+			private String replyTo;
+			private String content;
+			private List<String> additionalHeaders;
+
+			public TestEmailBuilder from(String value) { this.from = value; return this; };
+			public TestEmailBuilder to(String value) { this.to = value; return this; };
+			public TestEmailBuilder subject(String value) { this.subject = value; return this; };
+			public TestEmailBuilder headerTo(String value) { this.headerTo = value; return this; };
+			public TestEmailBuilder replyTo(String value) { this.replyTo = value; return this; };
+			public TestEmailBuilder content(String value) { this.content = value; return this; };
+			public TestEmailBuilder additionalHeaders(List<String> value) { this.additionalHeaders = value; return this; };
+
+			public void store() {
+				TestEmailStore.store(new TestEmail(from, to, subject, headerTo, replyTo, content, additionalHeaders));
+			}
+		}
 	}
 }
