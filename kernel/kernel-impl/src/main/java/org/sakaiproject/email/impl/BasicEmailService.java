@@ -1899,7 +1899,7 @@ public class BasicEmailService implements EmailService
 				}
 
 				result.append("\nContent: " + content + "\n");
-				result.append("===== END TEST EMAIL =====\n");
+				result.append("===== END TEST EMAIL =====\n\n\n\n");
 
 				return result.toString();
 			}
