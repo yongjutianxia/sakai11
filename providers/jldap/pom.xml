@@ -35,7 +35,7 @@
     <dependency>
       <groupId>edu.nyu.clases</groupId>
       <artifactId>nyudirectory-provider</artifactId>
-      <version>11.1</version>
+      <version>${sakai.version}</version>
     </dependency>
     <dependency>
       <groupId>org.sakaiproject</groupId>
