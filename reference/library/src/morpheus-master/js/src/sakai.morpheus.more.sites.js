@@ -55,7 +55,12 @@ var dhtml_view_sites = function(){
       $PBJQ('.tab-pane').css('max-height', paneHeight);
 
 
-      $PBJQ('#txtSearch').focus();
+      // CLASSES-2396 only focus the search field on desktop
+      if ($("#nyuToolToggle").is(":not(:visible)")) {
+        // the toggle is only visible on smaller/mobile viewports
+        $PBJQ('#txtSearch').focus();
+      }
+
       createDHTMLMask(dhtml_view_sites);
 
       $PBJQ('.selectedTab').bind('click', function(e){

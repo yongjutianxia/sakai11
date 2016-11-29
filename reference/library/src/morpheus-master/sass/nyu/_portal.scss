@@ -375,6 +375,10 @@ body {
   &.dhtml_more_tabs {
     background-color: $nyu-all-sites-background-color !important;
     drop-shadow: $nyu-all-sites-drop-shadow !important;
+
+    @media #{$desktop} {
+      position: absolute !important;
+    }
   }
 
   #selectSite {
