@@ -215,7 +215,8 @@ $PBJQ(function() {
       $save.on('click', function (ev) {
         $croppie.croppie('result', {
           type: 'base64',
-          size: 'viewport'
+          size: 'viewport',
+          format: 'png'
         }).then(function (src) {
           uploadProfileImage(src.replace(/^data:image\/(png|jpg);base64,/, ''));
         });
