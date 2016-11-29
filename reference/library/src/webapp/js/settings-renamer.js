@@ -31,6 +31,7 @@ var switchToJoinableGroups = function (link) {
 
 var markAsHidden = function (elt) {
     $(elt).addClass("is-invisible");
+    $(elt).attr("title", $(elt).attr("title") + " (Hidden from site members)");
 };
 
 
