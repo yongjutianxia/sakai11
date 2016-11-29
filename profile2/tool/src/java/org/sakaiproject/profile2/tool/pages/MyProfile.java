@@ -22,6 +22,8 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.sakaiproject.tool.cover.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.wicket.AttributeModifier;
@@ -283,7 +285,8 @@ public class MyProfile extends BasePage {
 			changePictureLink.setEnabled(false);
 			changePictureLink.setVisible(false);
 		}
-		
+
+		changePictureLink.add(new AttributeAppender("data-csrf-token", (String) SessionManager.getCurrentSession().getAttribute("sakai.csrf.token")));
 		
 		add(changePictureLink);
 		
