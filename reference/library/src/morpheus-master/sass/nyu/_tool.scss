@@ -570,6 +570,29 @@ body {
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+//  Changes to the Samigo / Tests and Quizes
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-samigo {
+    // CLASSES-2382 Banner for all users on mobile
+    @media #{$tablet} {
+      .#{$namespace}toolTitleNav.#{$namespace}container--toolTitleNav {
+        &:before {
+          content: 'Taking high-stakes tests on mobile is not recommended. Please use the desktop interface.';
+          width: 100%;
+          background: $info-background-color;
+          padding: 10px;
+          color: $info-color;
+          border: 1px solid lighten($info-color, 25%);
+          text-align: center;
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Random Bits and Bobs
 // -------------------------------------------------------------------------------------------------------------------
 body {
