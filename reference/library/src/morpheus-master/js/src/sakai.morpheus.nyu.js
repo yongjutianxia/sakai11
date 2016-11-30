@@ -170,17 +170,29 @@ $PBJQ(function() {
         });
       }
 
+      function showCroppie(url) {
+        $croppie.show();
+        $croppie.croppie("bind", {
+          url: url
+        }).then(function () {
+          $save.removeProp("disabled");
+          $croppie.croppie("setZoom", 0);
+        });
+
+        if ($modal.find(".rotate-profile-image").length == 0) {
+          var $rotate = $("<a>").attr("href", "javascript:void(0);").addClass("rotate-profile-image");
+          $rotate.on("click", function() {
+            $croppie.croppie("rotate", 90);
+          });
+          $croppie.after($rotate);
+        }
+      }
+
       function loadExtistingProfileImage() {
         $PBJQ.getJSON("/direct/profile-image/details?_=" + new Date().getTime(), function(json) {
           if (json.status == "SUCCESS") {
             if (!json.isDefault) {
-              $croppie.show();
-              $croppie.croppie("bind", {
-                url: json.url + "?_=" + new Date().getTime() // cache bust!
-              }).then(function () {
-                $save.removeProp("disabled");
-                $croppie.croppie("setZoom", 0);
-              });
+              showCroppie(json.url + "?_=" + new Date().getTime());
   
               var $remove = $PBJQ("<button>").addClass("btn btn-link remove-profile-image").addClass("pull-right").text("Remove");
               $modal.find(".modal-footer").append($remove);
@@ -257,7 +269,8 @@ $PBJQ(function() {
           width: 200,
           height: 200
         },
-        enableExif: true
+        enableExif: true,
+        enableOrientation: true
       });
 
       $fileUpload.on("change", function() {
@@ -265,11 +278,7 @@ $PBJQ(function() {
           if (this.files && this.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-              $croppie.show();
-              $croppie.croppie('bind', {
-                url: e.target.result
-              });
-              $save.removeProp("disabled");
+              showCroppie(e.target.result);
             };
                   
             reader.readAsDataURL(this.files[0]);

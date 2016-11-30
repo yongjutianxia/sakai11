@@ -181,9 +181,21 @@ body {
   #croppie {
     height: 300px;
     width: 300px;
+    margin-bottom: 20px;
 
     .cr-viewport {
       border-radius: 50% !important;
+    }
+  }
+
+  .rotate-profile-image {
+    position: absolute;
+    right: 20px;
+    bottom: 8px;
+
+    &:before {
+      font-family: 'FontAwesome';
+      content: '\f01e';
     }
   }
 }
