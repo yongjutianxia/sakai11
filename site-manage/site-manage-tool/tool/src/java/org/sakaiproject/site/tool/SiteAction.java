@@ -16335,8 +16335,20 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		//put back into state
 		state.setAttribute(STATE_SITE_INFO, siteInfo);
 
-		//CLASSES-494, get template site if it exists
-		String templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school);
+		String templateSiteId = null;
+
+		// CLASSES-2410 EPOLY sites will use a template based on their location
+		final String epolyCode = "EPOLY";
+		if (epolyCode.equals(prop_location)) {
+			// EPOLY isn't a real school code, but we just need a
+			// unique key for the table.
+			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(epolyCode);
+		}
+
+		if (templateSiteId == null) {
+			//CLASSES-494, get template site if it exists
+			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school);
+		}
 
 		//check siteid supplied is an actual site
 		if(SiteService.siteExists(templateSiteId)) {
