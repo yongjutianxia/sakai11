@@ -1,7 +1,7 @@
 /* CLASSES-2264 CLASSES-1319 NYU When neo templates are used,
    ensure the content pane matches the tool menu height
 */
-$(function() {
+$PBJQ(function() {
   var $toolMenu = $PBJQ("#toolMenu");
   var $portlet = $PBJQ("#content");
 
@@ -24,16 +24,16 @@ $(function() {
 });
 
 // Allow custom tool button to toggle tool nav too
-$(function() {
+$PBJQ(function() {
   $PBJQ(".Mrphs-siteHierarchy").prepend("<a href='javascript:void' aria-hidden='true' id='nyuToolToggle'>Tools</a>");
   $PBJQ("#nyuToolToggle").on("click", toggleToolsNav);
 });
 
 // Setup banner logo to return to top of page upon click
-$(function() {
+$PBJQ(function() {
   $PBJQ(".Mrphs-headerLogo").on("click", function() {
     // only do this if in mobile view
-    if ($(".nyu-desktop-only:first").is(":not(:visible)")) {
+    if ($PBJQ(".nyu-desktop-only:first").is(":not(:visible)")) {
       document.body.scrollTop = 0;
       document.body.scrollLeft = 0;
     }
@@ -41,52 +41,52 @@ $(function() {
 });
 
 // Ensure PASystem messages are visible on mobile
-$(function() {
-  var $pasystem = $(".pasystem-banner-alerts");
+$PBJQ(function() {
+  var $pasystem = $PBJQ(".pasystem-banner-alerts");
 
   function repositionHeaderBits() {
-    $(".Mrphs-headerLogo").css("top", $pasystem.height());
-    $(".Mrphs-portalWrapper .Mrphs-topHeader #loginLinks").css("top", $pasystem.height() + 13);
-    $(".Mrphs-topHeader").css("paddingTop", $pasystem.height() + $(".Mrphs-headerLogo").height());
+    $PBJQ(".Mrphs-headerLogo").css("top", $pasystem.height());
+    $PBJQ(".Mrphs-portalWrapper .Mrphs-topHeader #loginLinks").css("top", $pasystem.height() + 13);
+    $PBJQ(".Mrphs-topHeader").css("paddingTop", $pasystem.height() + $PBJQ(".Mrphs-headerLogo").height());
   }
 
-  if ($(".pasystem-banner-alert", $pasystem).length > 0) {
+  if ($PBJQ(".pasystem-banner-alert", $pasystem).length > 0) {
     repositionHeaderBits();
   }
 
   // resize upon show/hide of alerts
-  $(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
+  $PBJQ(document.body).on("alertshown.pasystem alerthidden.pasystem", repositionHeaderBits);
 });
 
 
 // Introduce Option button for calendar and messages synoptic tool
 // that invokes option link within the tool
-$(function() {
-  $("#synopticCalendarOptions").on("click", function() {
-    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-summary-calendar");
-    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-summary-calendar iframe", $portlet);
-    var $iframeBody = $($iframe[0].contentWindow.document.body);
+$PBJQ(function() {
+  $PBJQ("#synopticCalendarOptions").on("click", function() {
+    var $portlet = $PBJQ(this).closest(".Mrphs-container.Mrphs-sakai-summary-calendar");
+    var $iframe = $PBJQ(".Mrphs-toolBody.Mrphs-toolBody--sakai-summary-calendar iframe", $portlet);
+    var $iframeBody = $PBJQ($iframe[0].contentWindow.document.body);
 
     // trigger the options link
-    $("#calendarForm .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
+    $PBJQ("#calendarForm .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
   });
 
-  $("#synopticMessageCenterOptions").on("click", function() {
-    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-messagecenter");
-    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-messagecenter iframe", $portlet);
-    var $iframeBody = $($iframe[0].contentWindow.document.body);
+  $PBJQ("#synopticMessageCenterOptions").on("click", function() {
+    var $portlet = $PBJQ(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-messagecenter");
+    var $iframe = $PBJQ(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-messagecenter iframe", $portlet);
+    var $iframeBody = $PBJQ($iframe[0].contentWindow.document.body);
 
     // trigger the options link
-    $("#synopticForm #showOptions", $iframeBody).trigger("click");
+    $PBJQ("#synopticForm #showOptions", $iframeBody).trigger("click");
   });
 
-  $("#synopticChatOptions").on("click", function() {
-    var $portlet = $(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-chat");
-    var $iframe = $(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-chat iframe", $portlet);
-    var $iframeBody = $($iframe[0].contentWindow.document.body);
+  $PBJQ("#synopticChatOptions").on("click", function() {
+    var $portlet = $PBJQ(this).closest(".Mrphs-container.Mrphs-sakai-synoptic-chat");
+    var $iframe = $PBJQ(".Mrphs-toolBody.Mrphs-toolBody--sakai-synoptic-chat iframe", $portlet);
+    var $iframeBody = $PBJQ($iframe[0].contentWindow.document.body);
 
     // trigger the options link
-    $("#_id1 .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
+    $PBJQ("#_id1 .actionToolbar .firstToolBarItem a", $iframeBody).trigger("click");
   });
 });
 
@@ -98,18 +98,33 @@ $PBJQ(document).on("touchstart", function() { return true; });
 // Profile Image Edit/Upload Widget
 $PBJQ(function() {
   $PBJQ(".Mrphs-userNav__submenuitem--profilelink, .edit-image-button").each(function() {
-    var $profileLink = $(this);
+    var $profileLink = $PBJQ(this);
+
+    var sakai_csrf_token = $PBJQ(this).data("csrf-token");
+
+    // To avoid messing with Profile2 wicket javascript events,
+    // create a dummy link that proxies to the original as a fallback
+    // when needed.
+    if ($profileLink.is(".edit-image-button")) {
+      var $replacementLink = $PBJQ("<a>").attr("href", "javascript:void(0);").addClass("dummy-edit-image-button");
+      $profileLink.after($replacementLink);
+      $replacementLink.data("profileLink", $profileLink[0]);
+      $profileLink.hide();
+      $profileLink = $replacementLink;
+    }
 
     $profileLink.on("click", function(event) {
       if (!window.FileReader) {
         // we need FileReader support to load the image for croppie
         // when browser doesn't support it, then fallback to old upload method
+        $PBJQ($profileLink.data("profileLink")).trigger("click");
         return true;
       }
 
       if (!$PBJQ.fn.modal) {
         // we need Bootstrap
         // when not loaded fallback to the old upload method
+        $PBJQ($profileLink.data("profileLink")).trigger("click");
         return true;
       }
 
@@ -131,33 +146,108 @@ $PBJQ(function() {
         $PBJQ("head").append(l);
       }
 
+      function resetProfileImage() {
+        $modal.find(".modal-body .alert").remove();
+  
+        $PBJQ.ajax("/direct/profile-image/remove", {
+          data: {
+            sakai_csrf_token: sakai_csrf_token
+          },
+          type: 'POST',
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR) {
+            if (data.status == "SUCCESS") {
+              var $success = $PBJQ("<div>").addClass("alert alert-success").text("Profile image successful removed. Please refresh the page for changes to take effect.");
+              $modal.find(".modal-body").html($success);
+              $save.remove();
+              $modal.find(".modal-footer button.remove-profile-image").remove();
+              $modal.find(".modal-footer button").text("Close");
+            } else {
+              var $error = $PBJQ("<div>").addClass("alert alert-danger").text("Error removing image");
+              $modal.find(".modal-body").prepend($error);
+            }
+          }
+        });
+      }
+
+      function loadExtistingProfileImage() {
+        $PBJQ.getJSON("/direct/profile-image/details?_=" + new Date().getTime(), function(json) {
+          if (json.status == "SUCCESS") {
+            if (!json.isDefault) {
+              $croppie.show();
+              $croppie.croppie("bind", {
+                url: json.url + "?_=" + new Date().getTime() // cache bust!
+              }).then(function () {
+                $save.removeProp("disabled");
+                $croppie.croppie("setZoom", 0);
+              });
+  
+              var $remove = $PBJQ("<button>").addClass("btn btn-link remove-profile-image").addClass("pull-right").text("Remove");
+              $modal.find(".modal-footer").append($remove);
+              $remove.on("click", function() {
+                resetProfileImage();
+              });
+            }
+          }
+        });
+      };
+
+      function uploadProfileImage(imageByteSrc) {
+        $modal.find(".modal-body .alert").remove();
+  
+        $PBJQ.ajax("/direct/profile-image/upload", {
+          data: {
+            sakai_csrf_token: sakai_csrf_token,
+            base64: imageByteSrc
+          },
+          type: 'POST',
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR) {
+            if (data.status == "SUCCESS") {
+              var $success = $PBJQ("<div>").addClass("alert alert-success").text("Upload Successful. Please refresh the page for changes to take effect.");
+              $modal.find(".modal-body").html($success);
+              $save.remove();
+              $modal.find(".modal-footer button.btn-danger").remove();
+              $modal.find(".modal-footer button").text("Close");
+            } else {
+              var $error = $PBJQ("<div>").addClass("alert alert-danger").text("Error uploading image");
+              $modal.find(".modal-body").prepend($error);
+            }
+          }
+        });
+      }
+
       // show popup!
-      var $modal = $('<div class="modal fade" id="profileImageUpload" tabindex="-1" role="dialog">'
+      var $modal = $PBJQ('<div class="modal fade" id="profileImageUpload" tabindex="-1" role="dialog">'
                      +  '<div class="modal-dialog" role="document">'
                      +    '<div class="modal-content">'
                      +      '<div class="modal-header"><h3>Change Profile Picture</h3></div>'
                      +      '<div class="modal-body"></div>'
                      +      '<div class="modal-footer">'
-                     +        '<button type="button" class="button_color" id="save" disabled="disabled">Save</button>'
-                     +        '<button type="button" class="button" data-dismiss="modal">Cancel</button>'
+                     +        '<button type="button" class="button_color pull-left" id="save" disabled="disabled">Save</button>'
+                     +        '<button type="button" class="button pull-left" data-dismiss="modal">Cancel</button>'
                      +      '</div>'
                      +    '</div>'
                      +  '</div>'
                      +'</div>');
       $PBJQ(document.body).append($modal);
+      var modalVisible = false;
+      $modal.on("shown.bs.modal", function() {
+        loadExtistingProfileImage();
+      });
       $modal.modal({
         width: 320
       });
 
       var $save = $modal.find("#save");
 
-      var $upload = $('<a id="upload" class="button">'
+      var $upload = $PBJQ('<a id="upload" class="button">'
                       + 'Upload'
                       +'</a>');
-      var $fileUpload = $('<input type="file" id="file" value="Choose a file" accept="image/*">');
+      var $fileUpload = $PBJQ('<input type="file" id="file" value="Choose a file" accept="image/*">');
       $upload.append($fileUpload);
 
-      var $croppie = $('<div id="croppie"></div>').hide();
+      var $croppie = $PBJQ('<div id="croppie"></div>').hide();
 
       $modal.find(".modal-body").append($upload);
       $modal.find(".modal-body").append($croppie);
@@ -170,32 +260,8 @@ $PBJQ(function() {
         enableExif: true
       });
 
-      function uploadProfileImage(imageByteSrc) {
-        $modal.find(".modal-body .alert").remove();
-  
-        $.ajax("/direct/profile-image/upload", {
-          data: {
-            sakai_csrf_token: $profileLink.data("csrf-token"),
-            base64: imageByteSrc
-          },
-          type: 'POST',
-          dataType: 'json',
-          success: function(data, textStatus, jqXHR) {
-            if (data.status == "SUCCESS") {
-              var $success = $("<div>").addClass("alert alert-success").text("Upload Successful. Please refresh the page for changes to take effect.");
-              $modal.find(".modal-body").html($success);
-              $save.remove();
-              $modal.find(".modal-footer button").text("Close");
-            } else {
-              var $error = $("<div>").addClass("alert alert-danger").text("Error uploading image");
-              $modal.find(".modal-body").prepend($error);
-            }
-          }
-        });
-      }
-
       $fileUpload.on("change", function() {
-        var $this = $(this);
+        var $this = $PBJQ(this);
           if (this.files && this.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {

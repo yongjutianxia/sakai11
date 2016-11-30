@@ -551,6 +551,30 @@ body {
     opacity: $nyu-profile-picture-change-opacity !important;
     border: none !important;
   }
+
+  .dummy-edit-image-button {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    &:hover {
+      &:after {
+        content: 'Change';
+        background: $nyu-profile-picture-change-background-color;
+        color: $nyu-profile-picture-change-color;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+        padding: 5px 5px 10px;
+        opacity: $nyu-profile-picture-change-opacity;
+        box-shadow: -1px 0 3px #666;
+      }
+    }
+  }
 }
 // -------------------------------------------------------------------------------------------------------------------
 //  Changes to the Forums/Messages tool
