@@ -471,23 +471,23 @@ body {
     clear: both;
   }
 
-  #page-order-body {
-    li.sortable_item {
-      &:before {
-        font-family: 'nyu-classes-icons' !important;
-        content: '\f1c5' !important;
-        font-size: 18px;
-        line-height: 18px;
-        display: inline-block;
-        width: 15px;
-        margin: 0 0 0 4px;
-        color: $nyu-all-sites-button-drag-color !important;
-      }
+  // Tool Order
+  // needs to be after body, so drag clone pick up styles
+  li.sortable_item.ui-draggable {
+    &:before {
+      font-family: 'nyu-classes-icons' !important;
+      content: '\f1c5' !important;
+      font-size: 18px;
+      line-height: 18px;
+      display: inline-block;
+      width: 15px;
+      margin: 0 0 0 4px;
+      color: $nyu-all-sites-button-drag-color !important;
+    }
 
-      &:hover {
-        &:before {
-          color: $nyu-all-sites-button-drag-hover-color !important;
-        }
+    &:hover {
+      &:before {
+        color: $nyu-all-sites-button-drag-hover-color !important;
       }
     }
   }
