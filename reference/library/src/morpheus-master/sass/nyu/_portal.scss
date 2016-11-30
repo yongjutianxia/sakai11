@@ -627,16 +627,9 @@ body {
             color: $nyu-all-sites-button-drag-color !important;
 
             &:before {
-              content: "\f142 \202F \f142 \202F" !important;
-              font-size: 10px !important;
-              display: block;
-            }
-
-            &:after {
-              content: "\f142 \202F \f142 \202F" !important;
-              font-size: 10px !important;
-              display: block;
-              margin-top: -1px;
+              font-family: 'nyu-classes-icons' !important;
+              content: '\f1c5' !important;
+              font-size: 18px;
             }
 
             &:hover {
