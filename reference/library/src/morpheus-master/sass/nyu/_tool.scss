@@ -483,12 +483,17 @@ body {
       width: 15px;
       margin: 0 0 0 4px;
       color: $nyu-all-sites-button-drag-color !important;
+      vertical-align: middle;
     }
 
     &:hover {
       &:before {
         color: $nyu-all-sites-button-drag-hover-color !important;
       }
+    }
+    .item_control_box.dropdown > a {
+      padding: 0 10px !important;
+      line-height: 32px !important;
     }
   }
 }
