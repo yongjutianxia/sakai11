@@ -2063,7 +2063,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("loginUserDispName", loginUserDispName);
 				rcontext.put("loginUserFirstName", loginUserFirstName);
 				rcontext.put("loginUserDispId", loginUserDispId);
-				rcontext.put("profileUploadCSRFToken", SessionManager.getCurrentSession().getAttribute("sakai.csrf.token"));
 			}
 			rcontext.put("displayUserloginInfo", displayUserloginInfo && loginUserDispId != null);
 		}

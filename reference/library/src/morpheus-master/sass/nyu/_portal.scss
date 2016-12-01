@@ -178,24 +178,57 @@ body {
       opacity: 0;
     }
   }
-  #croppie {
+  #cropme {
     height: 300px;
     width: 300px;
     margin-bottom: 20px;
 
-    .cr-viewport {
+    .cropper-view-box {
       border-radius: 50% !important;
     }
   }
-
-  .rotate-profile-image {
-    position: absolute;
-    right: 20px;
-    bottom: 8px;
-
-    &:before {
-      font-family: 'FontAwesome';
-      content: '\f01e';
+  #cropToolbar {
+    .profile-image-zoom-in {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f00e';
+      }
+    }
+    .profile-image-zoom-out {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f010';
+      }
+    }
+    .profile-image-pan-left {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f060';
+      }
+    }
+    .profile-image-pan-right {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f061';
+      }
+    }
+    .profile-image-pan-up {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f062';
+      }
+    }
+    .profile-image-pan-down {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f063';
+      }
+    }
+    .profile-image-rotate {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f01e';
+      }
     }
   }
 }

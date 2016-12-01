@@ -100,7 +100,7 @@ $PBJQ(function() {
   $PBJQ(".Mrphs-userNav__submenuitem--profilelink, .edit-image-button").each(function() {
     var $profileLink = $PBJQ(this);
 
-    var sakai_csrf_token = $PBJQ(this).data("csrf-token");
+    var sakai_csrf_token; // loaded in via AJAX below
 
     // To avoid messing with Profile2 wicket javascript events,
     // create a dummy link that proxies to the original as a fallback
@@ -131,18 +131,18 @@ $PBJQ(function() {
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      // include croppie (unless already added)
-      if (!$PBJQ.fn.croppie) {
+      // include cropper (unless already added)
+      if (!$.fn.cropper) {
         var s = document.createElement("script");
         s.type = "text/javascript";
-        s.src = "/library/js/croppie/croppie.min.js?_=2.4.0";
+        s.src = "/library/js/cropper/cropper.js?_=2.3.4";
         $PBJQ("head").append(s);
 
         //<link rel="Stylesheet" type="text/css" href="croppie.css">
         var l = document.createElement("link");
         l.type = "text/css";
         l.rel = "Stylesheet";
-        l.href = "/library/js/croppie/croppie.css?_=2.4.0";
+        l.href = "/library/js/cropper/cropper.css?_=2.3.4";
         $PBJQ("head").append(l);
       }
 
@@ -170,30 +170,85 @@ $PBJQ(function() {
         });
       }
 
-      function showCroppie(url) {
-        $croppie.show();
-        $croppie.croppie("bind", {
-          url: url
-        }).then(function () {
-          $save.removeProp("disabled");
-          $croppie.croppie("setZoom", 0);
-        });
-
-        if ($modal.find(".rotate-profile-image").length == 0) {
-          var $rotate = $("<a>").attr("href", "javascript:void(0);").addClass("rotate-profile-image");
-          $rotate.on("click", function() {
-            $croppie.croppie("rotate", 90);
+      function initCropWidget() {
+          $cropWidget.append($("<img>").css("maxWidth", "100%"));
+          $cropWidget.find("> img").cropper({
+            aspectRatio: 1 / 1,
+            checkCrossOrigin: false,
+            guides: true,
+            minContainerWidth: 300,
+            minContainerHeight: 300,
+            autoCropArea: 1,
+            viewMode: 1,
+            dragMode: 'move'
           });
-          $croppie.after($rotate);
+      }
+
+      function initCropWidgetToolBar() {
+        // only do it once
+        if ($modal.find("#cropToolbar").length == 0) {
+          var $toolbar = $("<div id='cropToolbar' class='btn-toolbar'>" +
+                              "<div class='btn-group'>" +
+                                "<a class='profile-image-zoom-in btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                                "<a class='profile-image-zoom-out btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                              "</div>" +
+
+                              "<div class='btn-group'>" +
+                                "<a class='profile-image-pan-up btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                                "<a class='profile-image-pan-down btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                                "<a class='profile-image-pan-left btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                                "<a class='profile-image-pan-right btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                              "</div>" +
+
+                              "<div class='btn-group'>" +
+                                "<a class='profile-image-rotate btn btn-sm btn-default' href='javascript:void(0)'></a>" +
+                              "</div>" +
+                           "</div>"
+          );
+
+          $(".profile-image-zoom-in", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('zoom', 0.1);
+          });
+          $(".profile-image-zoom-out", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('zoom', -0.1);
+          });
+          $(".profile-image-pan-up", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('move', 0, -10);
+          });
+          $(".profile-image-pan-down", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('move', 0, 10);
+          });
+          $(".profile-image-pan-left", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('move', 10, 0);
+          });
+          $(".profile-image-pan-right", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('move', -10, 0);
+          });
+          $(".profile-image-rotate", $toolbar).on("click", function() {
+            $cropWidget.find("> img").cropper('clear');
+            $cropWidget.find("> img").cropper('rotate', 90);
+            $cropWidget.find("> img").cropper('crop');
+          });
+
+          $cropWidget.after($toolbar);
         }
+      }
+
+      function setCropWidgetURL(url) {
+        $cropWidget.show();
+        $cropWidget.find("> img").cropper('clear');
+        $cropWidget.find("> img").cropper('replace', url);
+        $save.removeProp("disabled");
+
+        initCropWidgetToolBar();
       }
 
       function loadExtistingProfileImage() {
         $PBJQ.getJSON("/direct/profile-image/details?_=" + new Date().getTime(), function(json) {
           if (json.status == "SUCCESS") {
             if (!json.isDefault) {
-              showCroppie(json.url + "?_=" + new Date().getTime());
-  
+              setCropWidgetURL(json.url + "?_=" + new Date().getTime());
+
               var $remove = $PBJQ("<button>").addClass("btn btn-link remove-profile-image").addClass("pull-right").text("Remove");
               $modal.find(".modal-footer").append($remove);
               $remove.on("click", function() {
@@ -201,8 +256,15 @@ $PBJQ(function() {
               });
             }
           }
+          sakai_csrf_token = json.csrf_token;
         });
       };
+
+      function getCropWidgetResultAsPromise() {
+        return new Promise(function(resolve) {
+          resolve($cropWidget.find("> img").cropper('getCroppedCanvas', {width: 200, height: 200}).toDataURL());
+        });
+      }
 
       function uploadProfileImage(imageByteSrc) {
         $modal.find(".modal-body .alert").remove();
@@ -219,7 +281,7 @@ $PBJQ(function() {
               var $success = $PBJQ("<div>").addClass("alert alert-success").text("Upload Successful. Please refresh the page for changes to take effect.");
               $modal.find(".modal-body").html($success);
               $save.remove();
-              $modal.find(".modal-footer button.btn-danger").remove();
+              $modal.find(".modal-footer button.remove-profile-image").remove();
               $modal.find(".modal-footer button").text("Close");
             } else {
               var $error = $PBJQ("<div>").addClass("alert alert-danger").text("Error uploading image");
@@ -259,26 +321,19 @@ $PBJQ(function() {
       var $fileUpload = $PBJQ('<input type="file" id="file" value="Choose a file" accept="image/*">');
       $upload.append($fileUpload);
 
-      var $croppie = $PBJQ('<div id="croppie"></div>').hide();
+      var $cropWidget = $PBJQ('<div id="cropme"></div>').hide();
 
       $modal.find(".modal-body").append($upload);
-      $modal.find(".modal-body").append($croppie);
+      $modal.find(".modal-body").append($cropWidget);
 
-      $croppie.croppie({
-        viewport: {
-          width: 200,
-          height: 200
-        },
-        enableExif: true,
-        enableOrientation: true
-      });
+      initCropWidget();
 
       $fileUpload.on("change", function() {
         var $this = $PBJQ(this);
           if (this.files && this.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-              showCroppie(e.target.result);
+              setCropWidgetURL(e.target.result);
             };
                   
             reader.readAsDataURL(this.files[0]);
@@ -288,11 +343,7 @@ $PBJQ(function() {
       });
 
       $save.on('click', function (ev) {
-        $croppie.croppie('result', {
-          type: 'base64',
-          size: 'viewport',
-          format: 'png'
-        }).then(function (src) {
+        getCropWidgetResultAsPromise().then(function (src) {
           uploadProfileImage(src.replace(/^data:image\/(png|jpg);base64,/, ''));
         });
       });

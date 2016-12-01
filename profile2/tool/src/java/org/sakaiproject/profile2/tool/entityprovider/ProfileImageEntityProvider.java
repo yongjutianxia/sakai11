@@ -93,6 +93,7 @@ public class ProfileImageEntityProvider extends AbstractEntityProvider implement
 
         result.put("url", imageUrl);
         result.put("isDefault", imageLogic.profileImageIsDefault(currentUserId));
+        result.put("csrf_token", SessionManager.getCurrentSession().getAttribute("sakai.csrf.token"));
         result.put("status", "SUCCESS");
 
         return result.toJSONString();

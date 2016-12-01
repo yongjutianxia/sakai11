@@ -285,8 +285,6 @@ public class MyProfile extends BasePage {
 			changePictureLink.setEnabled(false);
 			changePictureLink.setVisible(false);
 		}
-
-		changePictureLink.add(new AttributeAppender("data-csrf-token", (String) SessionManager.getCurrentSession().getAttribute("sakai.csrf.token")));
 		
 		add(changePictureLink);
 		
