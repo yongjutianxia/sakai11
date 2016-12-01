@@ -562,20 +562,21 @@ alter table qrtz_fired_triggers add sched_time NUMBER(19,0) default 0 not null;
 --
 -- drop all foreign key constraints, so that we can define new ones
 --
--- begin
---     for r in ( select table_name,constraint_name
---                 from user_constraints
---                 where table_name in (upper('qrtz_triggers'),upper('qrtz_blob_triggers'),upper('qrtz_cron_triggers'),upper('qrtz_simple_triggers'))
---                 and constraint_type='R')
---     loop
---         execute immediate 'alter table '||r.table_name||' drop constraint '||r.constraint_name;
---     end loop;
--- end;
+begin
+    for r in ( select table_name,constraint_name
+                from user_constraints
+                where table_name in (upper('qrtz_triggers'),upper('qrtz_blob_triggers'),upper('qrtz_cron_triggers'),upper('qrtz_simple_triggers'))
+                and constraint_type='R')
+    loop
+        execute immediate 'alter table '||r.table_name||' drop constraint '||r.constraint_name;
+    end loop;
+end;
+/
 -- unrolling the failed loop above
-alter table QRTZ_BLOB_TRIGGERS drop constraint SYS_C00101071;
-alter table QRTZ_CRON_TRIGGERS drop constraint SYS_C00101030;
-alter table QRTZ_SIMPLE_TRIGGERS drop constraint SYS_C00101029;
-alter table QRTZ_TRIGGERS drop constraint SYS_C00101041;
+-- alter table QRTZ_BLOB_TRIGGERS drop constraint SYS_C00101071;
+-- alter table QRTZ_CRON_TRIGGERS drop constraint SYS_C00101030;
+-- alter table QRTZ_SIMPLE_TRIGGERS drop constraint SYS_C00101029;
+-- alter table QRTZ_TRIGGERS drop constraint SYS_C00101041;
 
 --
 -- add all primary and foreign key constraints, based on new columns
