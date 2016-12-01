@@ -61,7 +61,7 @@ document.getElementsByTagName('head')[0].appendChild(script);
 // var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
 // Vars
-var _wrs_int_editorIcon = CKEDITOR.basePath + '/../../ckextraplugins/ckeditor_wiris/icons/formula.gif';
+var _wrs_int_editorIcon = CKEDITOR.basePath + '/../../ckextraplugins/ckeditor_wiris/icons/formula.png';
 var _wrs_int_CASIcon = CKEDITOR.basePath + '/../../ckextraplugins/ckeditor_wiris/icons/cas.png';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
