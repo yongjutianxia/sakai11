@@ -47,6 +47,7 @@
 				class="org.sakaiproject.profile2.tool.entityprovider.ProfileImageEntityProvider">
 		<property name="imageLogic" ref="org.sakaiproject.profile2.logic.ProfileImageLogic" />
 		<property name="sakaiProxy" ref="org.sakaiproject.profile2.logic.SakaiProxy" />
+		<property name="profileImageService" ref="org.sakaiproject.profile2.service.ProfileImageService" />
 	</bean>
 	<!-- ENTITY PROVIDERS END -->
        

@@ -14,6 +14,7 @@ import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.profile2.logic.ProfileImageLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
+import org.sakaiproject.profile2.service.ProfileImageService;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.User;
@@ -34,6 +35,9 @@ public class ProfileImageEntityProvider extends AbstractEntityProvider implement
 
     @Setter
     private SakaiProxy sakaiProxy;
+
+    @Setter
+    private ProfileImageService profileImageService;
 
     @Override
     public String[] getHandledOutputFormats() {
@@ -69,6 +73,7 @@ public class ProfileImageEntityProvider extends AbstractEntityProvider implement
         byte[] imageBytes = Base64.decodeBase64(base64.getBytes());
 
         if (imageLogic.setUploadedProfileImage(currentUserId, imageBytes, mimeType, fileName)) {
+            profileImageService.resetCachedProfileImageId(currentUserId);
             result.put("status", "SUCCESS");
         }
 

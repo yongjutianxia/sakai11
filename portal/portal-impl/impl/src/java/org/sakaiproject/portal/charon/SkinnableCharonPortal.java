@@ -111,6 +111,7 @@ import org.sakaiproject.portal.util.URLUtils;
 import org.sakaiproject.portal.util.PortalUtils;
 import edu.nyu.classes.externalhelp.api.ExternalHelpSystem;
 import edu.nyu.classes.externalhelp.api.ExternalHelp;
+import org.sakaiproject.profile2.service.ProfileImageService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
@@ -2063,6 +2064,10 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("loginUserDispName", loginUserDispName);
 				rcontext.put("loginUserFirstName", loginUserFirstName);
 				rcontext.put("loginUserDispId", loginUserDispId);
+
+				ProfileImageService profileImageService = (ProfileImageService) ComponentManager.get("org.sakaiproject.profile2.service.ProfileImageService");
+				String profileImageURL = profileImageService.getProfileImageURL(session.getUserId(), loginUserDispId, true);
+				rcontext.put("profileImageURL", profileImageURL);
 			}
 			rcontext.put("displayUserloginInfo", displayUserloginInfo && loginUserDispId != null);
 		}

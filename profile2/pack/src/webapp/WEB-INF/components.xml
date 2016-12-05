@@ -286,4 +286,8 @@
     	<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
 	</bean>
 
+	<bean id="org.sakaiproject.profile2.service.ProfileImageService"
+				class="org.sakaiproject.profile2.service.ProfileImageServiceImpl">
+			<property name="dao" ref="org.sakaiproject.profile2.dao.ProfileDao" />
+	</bean>
 </beans>
