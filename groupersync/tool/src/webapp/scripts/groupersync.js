@@ -4,13 +4,12 @@
     exports.ModalHelper = {};
 
     exports.ModalHelper.modal = function (elt, action) {
-        var frame = $(parent.document.getElementById(window.name));
+        var contentFrame = $(".Mrphs-container.Mrphs-sakai-groupersync");
 
-        var offset = window.parent.scrollY - $(frame).position().top;
-        offset = Math.max(0, offset);
-
-        elt.css('position', 'absolute')
-           .css('top', offset + 'px');
+        if (elt.parent()[0].tagName != "BODY") {
+          // move model to the body so it isn't bound to the tool's overflow
+          elt.appendTo($(document.body));
+        }
 
         return elt.modal(action);
     }
@@ -238,7 +237,6 @@
         ModalHelper.modal($('#modal-area'));
 
         $('#modal-area').on('shown.bs.modal', function () {
-            resizeFrame();
             template.find('.description').focus();
             new AutoPopulateHandler(template, self.config);
             new CharacterCountHandler(template.find(":input.description"), template.find(".description-character-count"));
@@ -280,7 +278,6 @@
         ModalHelper.modal($('#modal-area'));
 
         $('#modal-area').on('shown.bs.modal', function () {
-            resizeFrame();
             template.find('.description').focus();
             new CharacterCountHandler(template.find(":input.description"), template.find(".description-character-count"));
             new DeleteHandler(template.find("form.delete-group-form"), template.find('.create-group-form :input.address').val());
@@ -317,8 +314,6 @@
         $('#modal-area .modal-body').empty().append(container);
         $('#modal-area .modal-title').html('Member list');
         ModalHelper.modal($('#modal-area'));
-
-        $('#modal-area').on('shown.bs.modal', resizeFrame);
     };
 
 
