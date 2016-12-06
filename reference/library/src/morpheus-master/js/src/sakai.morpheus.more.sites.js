@@ -313,7 +313,10 @@ $PBJQ(document).ready(function(){
 
 $PBJQ(document).ready(function($){
   // The list of favorites currently stored
+  var autoFavoritesEnabled = true;
   var favoritesList = [];
+
+  var maxFavoriteEntries = $PBJQ('#max-favorite-entries').text().trim();
 
   // True if we've finished fetching and displaying the initial list
   //
@@ -348,9 +351,11 @@ $PBJQ(document).ready(function($){
     $PBJQ.ajax({
       url: '/portal/favorites/list',
       method: 'GET',
-      dataType: 'text',
+      dataType: 'json',
       success: function (data) {
-        favoritesList = data.split(';').filter(function (e, i) {
+        autoFavoritesEnabled = data.autoFavoritesEnabled;
+
+        favoritesList = data.favoriteSiteIds.filter(function (e, i) {
           return e != '';
         });
 
@@ -380,10 +385,10 @@ $PBJQ(document).ready(function($){
 
     $PBJQ('.favoriteCount', container).text('(' + favoriteCount + ')');
 
-    if (favoriteCount < 2) {
-      $PBJQ('.organizeFavorites', container).addClass('tab-disabled');
+    if (favoriteCount > maxFavoriteEntries) {
+      $PBJQ('.favoriteCountAndWarning').addClass('maxFavoritesReached');
     } else {
-      $PBJQ('.organizeFavorites', container).removeClass('tab-disabled');
+      $PBJQ('.favoriteCountAndWarning').removeClass('maxFavoritesReached');
     }
   };
 
@@ -459,7 +464,10 @@ $PBJQ(document).ready(function($){
       url: '/portal/favorites/update',
       method: 'POST',
       data: {
-        favorites: newFavorites.join(';')
+        userFavorites: JSON.stringify({
+          favoriteSiteIds: newFavorites,
+          autoFavoritesEnabled: autoFavoritesEnabled,
+        }),
       },
       error: onError
     });
@@ -498,10 +506,6 @@ $PBJQ(document).ready(function($){
   });
 
   $PBJQ(container).on('click', '.tab-btn', function () {
-    if ($PBJQ(this).hasClass('tab-disabled')) {
-      return false;
-    }
-
     $PBJQ('.tab-btn', container).removeClass('active');
     $PBJQ(this).addClass('active');
 
@@ -522,6 +526,8 @@ $PBJQ(document).ready(function($){
       // favorites
       var list = $PBJQ('#organizeFavoritesList');
       list.empty();
+
+      $('#noFavoritesToShow').hide();
 
       // Collapse any visible tool menus
       $PBJQ('#otherSiteTools').remove();
@@ -563,8 +569,36 @@ $PBJQ(document).ready(function($){
         favoriteItem.show();
       });
 
+      if (list.find('li').length == 0) {
+        // No favorites are present
+        $('#noFavoritesToShow').show();
+      }
+
+      var highlightMaxItems = function () {
+        var items = $('.organize-favorite-item');
+
+        items.removeClass('site-favorite-is-past-max');
+        $PBJQ('.favorites-max-marker').remove();
+
+        $PBJQ.each(items, function (idx, li) {
+          if (idx >= maxFavoriteEntries) {
+            $(li).addClass('site-favorite-is-past-max');
+          }
+
+          if (idx == maxFavoriteEntries) {
+            $(li).before($PBJQ('<li class="favorites-max-marker"><i class="fa fa-warning warning-icon"></i> Only the first ' + maxFavoriteEntries + ' sites (above) will display in your favorites bar.</li>'));
+          }
+        });
+      };
+
+      highlightMaxItems();
+
       list.sortable({
+        items: "li:not(.favorites-max-marker)",
         stop: function () {
+          // Rehighlight the first N items
+          highlightMaxItems();
+
           // Update our ordering based on the new selection
           favoritesList = list.find('.organize-favorite-item').map(function () {
             return $PBJQ(this).data('site-id');
@@ -576,6 +610,9 @@ $PBJQ(document).ready(function($){
       });
 
       list.disableSelection();
+
+      $('#autoFavoritesEnabled').prop('checked', autoFavoritesEnabled)
+      $('#organizeFavorites .onoffswitch').show();
     }
   });
 
@@ -589,11 +626,12 @@ $PBJQ(document).ready(function($){
   // CLASSES-2353 clicks outside of site button/tool dropdown
   // should close the tool menu
   $PBJQ(container).on('click', function(event) {
-    console.log(event);
     if ($(event.target).closest("li.fav-sites-entry").length == 0) {
       $PBJQ('.toolMenus.toolMenusActive').removeClass('toolMenusActive');
       $PBJQ('#otherSiteTools').remove();
     }
+
+    return true;
   });
 
 
@@ -633,7 +671,14 @@ $PBJQ(document).ready(function($){
       // If anything goes wrong while saving, refresh from the server.
       loadFromServer();
     });
+
   });
+
+  $PBJQ('#autoFavoritesEnabled').on('change', function () {
+    autoFavoritesEnabled = this.checked;
+    syncWithServer();
+    return true;
+  })
 
   $PBJQ('.otherSitesMenuClose').on('click', function () {
     // Close the pane

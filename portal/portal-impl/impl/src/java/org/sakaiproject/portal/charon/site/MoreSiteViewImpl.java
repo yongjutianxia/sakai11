@@ -189,7 +189,18 @@ public class MoreSiteViewImpl extends AbstractSiteViewImpl
 						.getString(Portal.CONFIG_AUTO_RESET)),
 				/* doPages */true, /* toolContextPath */null, loggedIn);
 
-		renderContextMap.put("tabsSites", l);
+		int tabsToDisplay = serverConfigurationService.getInt(Portal.CONFIG_DEFAULT_TABS, 15);
+
+                renderContextMap.put("maxFavoritesShown", tabsToDisplay);
+
+                // Bump it up by one to make room for the user's workspace
+                tabsToDisplay++;
+
+		if (l.size() > tabsToDisplay) {
+		    renderContextMap.put("tabsSites", l.subList(0, tabsToDisplay));
+		} else {
+		    renderContextMap.put("tabsSites", l);
+		}
 
 		boolean displayActive = serverConfigurationService.getBoolean("portal.always.display.active_sites",false);
 		//If we don't always want to display it anyway, check to see if we need to display it
