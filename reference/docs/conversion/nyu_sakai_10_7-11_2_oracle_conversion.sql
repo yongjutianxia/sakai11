@@ -562,21 +562,21 @@ alter table qrtz_fired_triggers add sched_time NUMBER(19,0) default 0 not null;
 --
 -- drop all foreign key constraints, so that we can define new ones
 --
-begin
-    for r in ( select table_name,constraint_name
-                from user_constraints
-                where table_name in (upper('qrtz_triggers'),upper('qrtz_blob_triggers'),upper('qrtz_cron_triggers'),upper('qrtz_simple_triggers'))
-                and constraint_type='R')
-    loop
-        execute immediate 'alter table '||r.table_name||' drop constraint '||r.constraint_name;
-    end loop;
-end;
-/
+-- begin
+--     for r in ( select table_name,constraint_name
+--                 from user_constraints
+--                 where table_name in (upper('qrtz_triggers'),upper('qrtz_blob_triggers'),upper('qrtz_cron_triggers'),upper('qrtz_simple_triggers'))
+--                 and constraint_type='R')
+--     loop
+--         execute immediate 'alter table '||r.table_name||' drop constraint '||r.constraint_name;
+--     end loop;
+-- end;
+-- /
 -- unrolling the failed loop above
--- alter table QRTZ_BLOB_TRIGGERS drop constraint SYS_C00101071;
--- alter table QRTZ_CRON_TRIGGERS drop constraint SYS_C00101030;
--- alter table QRTZ_SIMPLE_TRIGGERS drop constraint SYS_C00101029;
--- alter table QRTZ_TRIGGERS drop constraint SYS_C00101041;
+alter table QRTZ_BLOB_TRIGGERS drop constraint SYS_C00112189;
+alter table QRTZ_CRON_TRIGGERS drop constraint SYS_C00111975;
+alter table QRTZ_SIMPLE_TRIGGERS drop constraint SYS_C00111974;
+alter table QRTZ_TRIGGERS drop constraint SYS_C00112154;
 
 --
 -- add all primary and foreign key constraints, based on new columns
@@ -1123,8 +1123,8 @@ CREATE INDEX SAM_PUBMETADATA_IDX ON SAM_PUBLISHEDMETADATA_T (LABEL, ENTRY);
 -- END SAM-3040
 
 -- SAK-31276 remove unncecessary keys because there is a composite key that handles this
-DROP INDEX SST_PRESENCE_SITE_ID_IX ON SST_PRESENCES;
-DROP INDEX SST_EVENTS_USER_ID_IX ON SST_EVENTS;
+DROP INDEX SST_PRESENCE_SITE_ID_IDX;
+DROP INDEX SST_EVENTS_USER_ID_IDX;
 -- END SAK-31276
 
 -- SAK-31905
