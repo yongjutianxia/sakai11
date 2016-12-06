@@ -1,3 +1,14 @@
+-- ------------------------------
+-- 10.8 Conversion stuff
+-- ------------------------------
+-- LSNBLDR-500
+alter table lesson_builder_pages add folder varchar2(250);
+create index lb_page_folder on lesson_builder_pages(siteId, folder);
+
+-- ------------------------------
+-- 11.0 Conversion stuff
+-- ------------------------------
+
 -- SAK-25784 Convert News to RSS Portlet
 -- ---------------------------
 -- Add the titles from all existing news tools
