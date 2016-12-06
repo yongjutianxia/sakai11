@@ -153,7 +153,7 @@ public class FavoritesHandler extends BasePortalHandler
 		List<String> newFavorites = new ArrayList<String>();
 
 		for (Site userSite : userSites) {
-			if (!oldSiteList.contains(userSite.getId())) {
+			if (!oldSiteList.contains(userSite.getId()) && !existingFavorites.contains(userSite.getId())) {
 				newFavorites.add(userSite.getId());
 			}
 		}
