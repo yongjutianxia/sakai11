@@ -1203,6 +1203,9 @@
 	//this function needs jquery  - it resizes the parent iframe without bringing the scroll to the top
 	function resizeFrame(updown) 
 	{
+    // welcome to the new iframe-less world... did you not get the memo?
+    return;
+
 		var frame = parent.document.getElementById( window.name );
 	
 		if( frame ) 
@@ -1593,9 +1596,12 @@
 	
 	
 	attachEventHandlers();
-	
-#if($calendarcounter > 0)	
-	document.calendars = new Array();
+
+  // default these values always
+  document.calendars = new Array();
+  document.calendarcounter = 0;
+
+#if($calendarcounter > 0)
 	document.calendarcounter = $calendarcounter;
 #set($n = $calendarcounter - 1)
 #foreach($i in [0 .. $n])
