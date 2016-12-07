@@ -28,6 +28,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Handler for manipulating the list of favorite sites for the current user.
@@ -42,6 +45,9 @@ public class FavoritesHandler extends BasePortalHandler
 	private static final String FAVORITES_PROPERTY = "order";
 	private static final String AUTO_FAVORITE_ENABLED_PROPERTY = "autoFavoriteEnabled";
 	private static final String SEEN_SITES_PROPERTY = "autoFavoritesSeenSites";
+
+	private static final Logger log = LoggerFactory.getLogger(FavoritesHandler.class);
+
 
 	public FavoritesHandler()
 	{
@@ -142,6 +148,8 @@ public class FavoritesHandler extends BasePortalHandler
 	private static List<String> applyAutoFavorites(String userId, ResourceProperties existingProps, List<String> existingFavorites)
 		throws PermissionException, PortalHandlerException, InUseException {
 
+		long startTime = System.currentTimeMillis();
+
 		// The site list as when we last checked
 		List<String> oldSiteList = (List<String>)existingProps.getPropertyList(SEEN_SITES_PROPERTY);
 
@@ -160,6 +168,7 @@ public class FavoritesHandler extends BasePortalHandler
 
 		if (newFavorites.isEmpty()) {
 			// No change!  Don't bother writing back to the DB
+			reportAutoFavoritesTiming(userId, startTime);
 			return existingFavorites;
 		}
 
@@ -183,7 +192,14 @@ public class FavoritesHandler extends BasePortalHandler
 
 		PreferencesService.commit(edit);
 
+		reportAutoFavoritesTiming(userId, startTime);
+
 		return newFavorites;
+	}
+
+	private static void reportAutoFavoritesTiming(String userId, long startTime) {
+		log.info("Time required to apply auto favorites for user " + userId + ": " +
+				String.valueOf(System.currentTimeMillis() - startTime) + "ms");
 	}
 
 	private static PreferencesEdit getOrCreatePreferences(String userId) throws PermissionException, PortalHandlerException, InUseException {
