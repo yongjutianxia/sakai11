@@ -1926,6 +1926,19 @@ nav.Mrphs-container--toolTitleNav {
 }
 
 /* Styles for the poll's new horizontal bar graph */
+.multipleChoiceAnswers {
+  min-width: 600px;
+}
+@media only screen and (max-width: 720px) {
+  .multipleChoiceAnswers {
+    min-width: 320px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .multipleChoiceAnswers {
+    min-width: none;
+  }
+}
 .question-submit {
   margin-top: 10px;
 }
