@@ -41,14 +41,14 @@
 				bodyHtml += '>';
 
         var sakaiStylesheets = "";
-        $("link[rel='stylesheet']").each(function(){
+        $PBJQ("link[rel='stylesheet']").each(function(){
           sakaiStylesheets = sakaiStylesheets + this.outerHTML;
         });
 
         var mathjaxIncludes = "";
-        if ($("script[type*='mathjax-config']").length > 0) {
-          mathjaxIncludes = mathjaxIncludes + $("script[type*='mathjax-config']")[0].outerHTML;
-          $("script[src*='/js/mathjax/']").each(function() {
+        if ($PBJQ("script[type*='mathjax-config']").length > 0) {
+          mathjaxIncludes = mathjaxIncludes + $PBJQ("script[type*='mathjax-config']")[0].outerHTML;
+          $PBJQ("script[src*='/js/mathjax/']").each(function() {
             mathjaxIncludes = mathjaxIncludes + this.outerHTML;
           });
         }
@@ -80,11 +80,11 @@
         }
 
         function getIframe(html) {
-            var $iframe = $('<iframe>');
+            var $iframe = $PBJQ('<iframe>');
             $iframe.attr('src', 'data:text/html;charset=utf-8,' + encodeURI(html));
             $iframe.attr('frameborder', '0');
             $iframe.attr('width', '100%');
-            $iframe.attr('height', $(window).height() - 240 + "px");
+            $iframe.attr('height', $PBJQ(window).height() - 240 + "px");
             return $iframe;
         }
 
@@ -121,17 +121,16 @@
 			if ( editor.fire( 'contentPreview', eventData = { dataValue: sHTML } ) === false )
 				return false;
 
-
             // Let's try and open a modal!
-            if ($.fn.modal) {
-                var $modal = $('<div class="modal fade" id="ckeditorPreview" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="button pull-right" data-dismiss="modal">Close</button><h4 class="modal-title">Preview</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="button" data-dismiss="modal">Close</button></div></div></div></div>');
+            if ($PBJQ.fn.modal) {
+                var $modal = $PBJQ('<div class="modal fade" id="ckeditorPreview" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="button pull-right" data-dismiss="modal">Close</button><h4 class="modal-title">Preview</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="button" data-dismiss="modal">Close</button></div></div></div></div>');
 
                 if (previewHighlightedOnly) {
-                    var $message = $("<div>").addClass("alert alert-info").
+                    var $message = $PBJQ("<div>").addClass("alert alert-info").
                                               text("Previewing hightlighted text only - ").
                                               css("margin", "20px 0 0");
 
-                    var $previewAll =  $("<a>").attr("href", "javascript:void(0);").
+                    var $previewAll =  $PBJQ("<a>").attr("href", "javascript:void(0);").
                                               text("Preview Entire Document");
 
                     $previewAll.on("click", function() {
@@ -144,7 +143,7 @@
                     $modal.find(".modal-header").append($message);
                 }
 
-                $(document.body).append($modal);
+                $PBJQ(document.body).append($modal);
                 $modal.modal();
 
                 $modal.find(".modal-body").append(getIframe(sHTML));
