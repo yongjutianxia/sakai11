@@ -314,6 +314,12 @@ $PBJQ(document).ready(function(){
 $PBJQ(document).ready(function($){
   // The list of favorites currently stored
   var autoFavoritesEnabled = true;
+
+  // Keep a copy of the favoritesList as it was before any changes were made.
+  // If the user makes a set of changes that ultimately revert us back to where we
+  // started, we don't need to show the indicator to reload the page.
+  var initialFavoritesList = undefined;
+
   var favoritesList = [];
 
   var maxFavoriteEntries = $PBJQ('#max-favorite-entries').text().trim();
@@ -358,6 +364,10 @@ $PBJQ(document).ready(function($){
         favoritesList = data.favoriteSiteIds.filter(function (e, i) {
           return e != '';
         });
+
+        if (initialFavoritesList == undefined) {
+          initialFavoritesList = favoritesList;
+        }
 
         callback(favoritesList);
       }
@@ -423,7 +433,28 @@ $PBJQ(document).ready(function($){
     getUserFavorites(renderFavorites);
   }
 
+  var arrayEqual = function (a1, a2) {
+    if (a1.length != a2.length) {
+      return false;
+    }
+
+    for (var i = 0; i < a1.length; i++) {
+      if (a1[i] != a2[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   var showRefreshNotification = function () {
+
+    if (arrayEqual(favoritesList, initialFavoritesList)) {
+      // The user is back to where they started!
+      $PBJQ('.moresites-refresh-notification').remove();
+      return;
+    }
+
     if ($PBJQ('.moresites-refresh-notification').length > 0) {
       // Already got it
       return;
@@ -477,6 +508,40 @@ $PBJQ(document).ready(function($){
     showRefreshNotification();
   };
 
+  var returnElementToOriginalPositionIfPossible = function (siteId) {
+    if (initialFavoritesList && initialFavoritesList.includes(siteId)) {
+      var idx = initialFavoritesList.indexOf(siteId);
+
+      // We'll attempt to place our item to the right its original left
+      // neighbor.  If the left neighbor was removed too, keep scanning left
+      // until we find one of the original elements and place it to the right.
+      // Otherwise, insert at the beginning of the array.
+      //
+      // The intention here is to allow multiple elements to be removed and
+      // re-added in arbitrary order, and to reproduce the original ordering.
+
+      var placed = false;
+
+      for (var neighborIdx = idx - 1; neighborIdx >= 0; neighborIdx--) {
+        var neighbor = initialFavoritesList[neighborIdx];
+
+        var neighborCurrentIndex = favoritesList.indexOf(neighbor);
+
+        if (neighborCurrentIndex >= 0 && neighborCurrentIndex < idx) {
+          /* Place our element after it */
+          favoritesList.splice(neighborCurrentIndex + 1, 0, siteId)
+          placed = true;
+          break;
+        }
+      }
+
+      if (!placed) {
+        // place at the beginning
+        favoritesList.splice(idx, 0, siteId)
+      }
+    }
+  };
+
   $PBJQ(favoritesPane).on('click', '.site-favorite-btn', function () {
     var self = this;
 
@@ -494,6 +559,13 @@ $PBJQ(document).ready(function($){
       newState = 'nonfavorite';
     } else {
       newState = 'favorite';
+    }
+
+    // If a favorite has been added that was removed and re-added during this
+    // same session, put it back in the same slot rather than sending it to the
+    // end
+    if (newState == 'favorite') {
+      returnElementToOriginalPositionIfPossible(siteId);
     }
 
     setButton(self, newState);
@@ -651,13 +723,28 @@ $PBJQ(document).ready(function($){
       // The clicked item was currently in "purgatory", having been unfavorited
       // in the process of organizing favorites.  This click will promote it
       // back to a favorite
-      $PBJQ('#organizeFavoritesList').append(li);
+      var siteId = $PBJQ(self).data('site-id');
+      returnElementToOriginalPositionIfPossible(siteId)
+
+      var newIndex = favoritesList.indexOf(siteId);
+
+      if (newIndex == 0) {
+        $PBJQ('#organizeFavoritesList').prepend(li);
+      } else if (newIndex > 0) {
+        // Put it into the right position (note: nth-child starts indexing at 1)
+        $PBJQ('#organizeFavoritesList li:nth-child(' + newIndex + ')').after(li);
+      } else {
+        // Just tack it on the end
+        $PBJQ('#organizeFavoritesList').append(li);
+      }
+
       buttonState = 'favorite';
     } else {
       // This item has just been unfavorited.  To purgatory!
       $PBJQ('#organizeFavoritesPurgatoryList').append(li);
       buttonState = 'nonfavorite';
     }
+
 
     // Set the favorite state for both the entry under "Organize" and the
     // original entry under "Sites"

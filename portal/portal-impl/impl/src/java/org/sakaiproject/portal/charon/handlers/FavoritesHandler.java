@@ -84,7 +84,9 @@ public class FavoritesHandler extends BasePortalHandler
 			try {
 				UserFavorites favorites = UserFavorites.fromJSON(req.getParameter("userFavorites"));
 
-				saveUserFavorites(session.getUserId(), favorites);
+				synchronized (session) {
+					saveUserFavorites(session.getUserId(), favorites);
+				}
 
 				return END;
 			} catch (Exception e) {
