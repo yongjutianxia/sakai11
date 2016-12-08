@@ -105,6 +105,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         };
     }
 
+    var extraToolbarButtons = [];
+
+    if (sakai.editor.enableResourceSearch) {
+      extraToolbarButtons.push('ResourceSearch');
+    } 
+
     var ckconfig = {
 	//Some defaults for audio recorder
         audiorecorder : {
@@ -142,28 +148,27 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         ],
         toolbar_Full:
         [
-            ['Source','-','Templates','-','NYUPreview'],
+            ['Undo','Redo','-','Find'],
             // Uncomment the next line and comment the following to enable the default spell checker.
             // Note that it uses spellchecker.net, displays ads and sends content to remote servers without additional setup.
             //['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
-            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','RemoveFormat'],
+            ['Image','AudioRecorder','Audio','magicembed','kalturaflash','Youtube','-','fmath_formula','ckeditor_wiris_formulaEditor','ckeditor_wiris_CAS','-','NYUPreview'],
+            extraToolbarButtons,
+            ['Maximize'],
             '/',
-            ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-						['atd-ckeditor'],
+            ['Bold','Italic','Underline','Strike','Subscript','Superscript'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
             ['BidiLtr', 'BidiRtl' ],
-            ['Link','Unlink','Anchor'],
-            (sakai.editor.enableResourceSearch
-                ? ['AudioRecorder','ResourceSearch', 'Image','Movie','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']
-                : ['AudioRecorder','Image','Movie','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']),
+            ['Link','Unlink'],
+            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','-','Table','HorizontalRule','SpecialChar'],
             '/',
-            ['Styles','Format','Font','FontSize'],
+            ['Format'],
+            ['Font'],
+            ['FontSize'],
             ['TextColor','BGColor'],
-            ['Maximize', 'ShowBlocks'],
-            ['Audio', 'kalturaflash', 'magicembed', 'Youtube'],
-            ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_CAS']
+            ['Source','-','Templates'],
+            ['Print']
         ],
         toolbar: 'Full',
         resize_dir: 'both',
@@ -227,6 +232,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //ckconfig.atd_rpc='//localhost/proxy/spellcheck';
             //ckconfig.extraPlugins+="atd-ckeditor,";
             //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
+            //extraToolbarButtons.push('atd-ckeditor');
 
             ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification";
 
@@ -247,7 +253,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             if (sakai.editor.enableMathJax) {
               ckconfig.mathJaxLib = sakai.editor.mathJaxPath;
               ckconfig.extraPlugins+=",mathjax";
-              ckconfig.toolbar_Full = ckconfig.toolbar_Full.concat([["Mathjax"]]);
             }
 
             // CLASSES-1937

@@ -1,0 +1,86 @@
+@mixin font_awesome_button_icon( $unicodeChar ) {
+  font-family: 'FontAwesome';
+  content: $unicodeChar;
+  font-size: 14px;
+  color: #444;
+  text-shadow: 1px 1px 0 #FFF;
+  width: 16px;
+  display: inline-block;
+  line-height: 16px;
+  text-align: center;
+}
+
+@mixin nyu_classes_icon_button_icon( $unicodeChar ) {
+  font-family: 'nyu-classes-icons';
+  content: $unicodeChar;
+  font-size: 16px;
+  color: #444;
+  text-shadow: 1px 1px 0 #FFF;
+  width: 16px;
+  display: inline-block;
+  text-align: center;
+}
+
+body {
+  .cke {
+    // NYUPreview plugin
+    .cke_button__nyupreview {
+      .cke_button_icon {
+        display: none;
+      }
+      .cke_button_label {
+        display: inline;
+      }
+    }
+    // Audio Recorder plugin
+    .cke_button__audiorecorder {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f130');
+        }
+      }
+    }
+    // Audio plugin
+    .cke_button__audio {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f1c7');
+        }
+      }
+    }
+    // KalturaFlash(NYUStream) plugin
+    .cke_button__kalturaflash {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f008');
+        }
+      }
+    }
+    // YouTube plugin
+    .cke_button__youtube {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f167');
+        }
+      }
+    }
+    // iFrame(magicembed) plugin
+    .cke_button__magicembed {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include nyu_classes_icon_button_icon('\f1c6');
+        }
+      }
+    }
+  }
+}
