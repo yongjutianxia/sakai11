@@ -391,7 +391,7 @@ $PBJQ(document).ready(function($){
   };
 
   var renderFavoriteCount = function () {
-    var favoriteCount = $PBJQ('.site-favorite', favoritesPane).length;
+    var favoriteCount = $PBJQ('.fav-sites-entry .site-favorite', favoritesPane).length;
 
     $PBJQ('.favoriteCount', container).text('(' + favoriteCount + ')');
 
@@ -400,6 +400,35 @@ $PBJQ(document).ready(function($){
     } else {
       $PBJQ('.favoriteCountAndWarning').removeClass('maxFavoritesReached');
     }
+  };
+
+  var setAllOrNoneStarStates = function () {
+    $PBJQ('.favorites-select-all-none', favoritesPane).each(function (idx, selectAllNone) {
+      var termContainer = $(selectAllNone).closest('.fav-sites-term');
+
+      var siteCount = termContainer.find('.fav-sites-entry:not(.my-workspace)').length;
+      var favoritedSiteCount = termContainer.find('.fav-sites-entry .site-favorite').length;
+
+      if (siteCount == 0) {
+        // No favoritable sites under this section
+        $(selectAllNone).hide();
+      } else {
+        if (favoritedSiteCount == siteCount) {
+          $(selectAllNone).data('favorite-state', 'favorite');
+          $(selectAllNone).html(button_states.favorite.markup);
+        } else {
+          $(selectAllNone).data('favorite-state', 'nonfavorite');
+          $(selectAllNone).html(button_states.nonfavorite.markup);
+        }
+
+        $(selectAllNone).show();
+      }
+    });
+  };
+
+  var hideFavoriteButtons = function () {
+    $PBJQ('.site-favorite-btn', favoritesPane).empty();
+    $PBJQ('.favorites-select-all-none', favoritesPane).empty();
   };
 
   var renderFavorites = function (favorites) {
@@ -417,6 +446,15 @@ $PBJQ(document).ready(function($){
       }
     });
 
+    $('.favorites-help-text').hide();
+
+    if (autoFavoritesEnabled) {
+      $('.favorites-help-text.autofavorite-enabled').show();
+    } else {
+      $('.favorites-help-text.autofavorite-disabled').show();
+    }
+
+    setAllOrNoneStarStates();
     renderFavoriteCount();
 
     favoritesLoaded = true;
@@ -429,9 +467,26 @@ $PBJQ(document).ready(function($){
     }).toArray();
   }
 
-  var loadFromServer = function () {
-    getUserFavorites(renderFavorites);
-  }
+  var loadFromServer = function (attempt) {
+    if (syncInProgress) {
+      // Don't let the user edit the current state if we know it's going to be invalidated.
+      favoritesLoaded = false;
+      hideFavoriteButtons();
+    }
+
+    if (!attempt) {
+      attempt = 0;
+    }
+
+    if (syncInProgress && attempt < 100) {
+      setTimeout(function () {
+        /* console.log("Waiting for update to server to complete...");*/
+        loadFromServer(attempt + 1);
+      }, 50);
+    } else {
+      getUserFavorites(renderFavorites);
+    }
+  };
 
   var arrayEqual = function (a1, a2) {
     if (a1.length != a2.length) {
@@ -468,6 +523,35 @@ $PBJQ(document).ready(function($){
     notification.css('top', ($PBJQ('.Mrphs-siteHierarchy').offset().top) + 'px');
   };
 
+  var syncInProgress = false;
+  var nextToSync = [];
+
+  // The user might go crazy with the clicky, so queue our updates so they run
+  // in a defined order.
+  var runNextServerUpdate = function (onError) {
+    var newState;
+
+    // we can skip intermediate updates because they'll just get overwritten anyway.
+    while (nextToSync.length > 0) {
+      newState = nextToSync.shift();
+    }
+
+    if (newState) {
+      $PBJQ.ajax({
+        url: '/portal/favorites/update',
+        method: 'POST',
+        data: {
+          userFavorites: JSON.stringify(newState),
+        },
+        error: onError,
+        complete: runNextServerUpdate
+      });
+    } else {
+      // All done!
+      syncInProgress = false;
+    }
+  };
+
   var syncWithServer = function (onError) {
     if (!favoritesLoaded) {
       console.log("Can't update favorites as they haven't been loaded yet.");
@@ -491,17 +575,19 @@ $PBJQ(document).ready(function($){
       }
     });
 
-    $PBJQ.ajax({
-      url: '/portal/favorites/update',
-      method: 'POST',
-      data: {
-        userFavorites: JSON.stringify({
-          favoriteSiteIds: newFavorites,
-          autoFavoritesEnabled: autoFavoritesEnabled,
-        }),
-      },
-      error: onError
-    });
+    var newState = {
+      favoriteSiteIds: newFavorites,
+      autoFavoritesEnabled: autoFavoritesEnabled,
+    };
+
+    nextToSync.push(newState);
+
+    if (syncInProgress) {
+      /* It'll up our next state when it next runs */
+    } else {
+      syncInProgress = true;
+      runNextServerUpdate(onError);
+    };
 
     // Finally, update our stored list of favorites
     favoritesList = newFavorites;
@@ -569,7 +655,33 @@ $PBJQ(document).ready(function($){
     }
 
     setButton(self, newState);
+    setAllOrNoneStarStates();
     renderFavoriteCount();
+
+    syncWithServer(function () {
+      // If anything goes wrong while saving, refresh from the server.
+      loadFromServer();
+    });
+  });
+
+  $PBJQ(favoritesPane).on('click', '.favorites-select-all-none', function () {
+    var state = $(this).data('favorite-state');
+    var buttons = $(this).closest('.fav-sites-term').find('.fav-sites-entry:not(.my-workspace) .site-favorite-btn');
+
+    var newState;
+
+    if (state == 'favorite') {
+      newState = 'nonfavorite';
+    } else {
+      newState = 'favorite';
+    }
+
+    buttons.each(function (idx, button) {
+      setButton($(button), newState);
+    });
+
+    renderFavoriteCount();
+    setAllOrNoneStarStates();
 
     syncWithServer(function () {
       // If anything goes wrong while saving, refresh from the server.
@@ -600,6 +712,7 @@ $PBJQ(document).ready(function($){
       list.empty();
 
       $('#noFavoritesToShow').hide();
+      $('#favoritesToShow').hide();
 
       // Collapse any visible tool menus
       $PBJQ('#otherSiteTools').remove();
@@ -644,6 +757,8 @@ $PBJQ(document).ready(function($){
       if (list.find('li').length == 0) {
         // No favorites are present
         $('#noFavoritesToShow').show();
+      } else {
+        $('#favoritesToShow').show();
       }
 
       var highlightMaxItems = function () {
@@ -752,6 +867,7 @@ $PBJQ(document).ready(function($){
     setButton(itemsBySiteId[$PBJQ(self).data('site-id')].find('.site-favorite-btn'),
               buttonState);
 
+    setAllOrNoneStarStates();
     renderFavoriteCount();
 
     syncWithServer(function () {
@@ -763,6 +879,15 @@ $PBJQ(document).ready(function($){
 
   $PBJQ('#autoFavoritesEnabled').on('change', function () {
     autoFavoritesEnabled = this.checked;
+
+    $('.favorites-help-text').hide();
+
+    if (this.checked) {
+      $('.favorites-help-text.autofavorite-enabled').show();
+    } else {
+      $('.favorites-help-text.autofavorite-disabled').show();
+    }
+
     syncWithServer();
     return true;
   })

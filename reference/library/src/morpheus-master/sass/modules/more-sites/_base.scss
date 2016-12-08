@@ -11,6 +11,7 @@ body.active-more-sites{
 	position: fixed;
         z-index: 1005;
 	overflow:visible;
+	outline: none;
 	@include transition( left 0.4s linear 0s );
 	&.dhtml_more_tabs{
 		background: $tool-menu-background-color;
@@ -263,8 +264,8 @@ ul.otherSitesCategorList{
 
 	.other-site-search-clear:before{
 		position: absolute;
-		top: -3px;
-		right: 8px;
+		top: -5px;
+		right: 14px;
 		content: '\f057';
 		font-family: 'FontAwesome';
 		color: #ccc;
@@ -491,6 +492,19 @@ li.organizeFavorites:not(.active) .favoriteCountAndWarning.maxFavoritesReached {
 	display: inline-block;
 	position: relative;
 	top: 2px;
+}
+
+.favorites-select-all-none {
+    margin-left: 14px;
+    margin-right: 6px;
+
+    .site-favorite-icon {
+        font-size: 100%;
+    }
+}
+
+.favorites-help-text {
+    margin-top: 1em;
 }
 
 .site-favorite-icon.site-favorite:hover{

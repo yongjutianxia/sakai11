@@ -24,6 +24,11 @@
             <div class="tab-pane">
                 <div class="tab-box" id="otherSitesCategorWrap">
 
+                    <p style="display: none" class="favorites-help-text autofavorite-enabled">Star sites below to add them to your favorites bar. New sites will be automatically added to your favorites.</p>
+                    <p style="display: none" class="favorites-help-text autofavorite-disabled">Star sites below to add them to your favorites bar.</p>
+
+                    <hr />
+
                     <div id="otherSiteSearch">
                         <label class="sr-only" for="txtSearch">${rloader.sit_search}"</label>
                         <input type="text" id="txtSearch" name="txtSearch" maxlength="50" placeholder=" ${rloader.sit_search}">
@@ -37,7 +42,7 @@
                             #if (!${site.isMyWorkspace})
                             	<a class="site-favorite-btn" data-site-id="${site.siteId}" href="javascript:void(0);"></a>
                             #end
-							
+
                             <div class="fav-title #if (${site.isMyWorkspace}) fav-title-myworkspace #end">
                             	<a href="${site.siteUrl}" title="${site.siteTitleNotTruncated}">
                                     #if (${site.isMyWorkspace})
@@ -58,9 +63,9 @@
                             #if ($tabsSites.tabsMoreTermsLeftPane.get($termKey).size() > 0)
                                 <div class="fav-sites-term">
                                     #if ( !$termKey || $termKey == "" )
-                                        <h3 class="favorites-term-header">${rloader.sit_notermkey}</h3>
+                                        <h3 class="favorites-term-header"><span class="favorites-select-all-none"></span>${rloader.sit_notermkey}</h3>
                                     #else
-                                        <h3 class="favorites-term-header">$termKey</h3>
+                                        <h3 class="favorites-term-header"><span class="favorites-select-all-none"></span>$termKey</h3>
                                     #end
 
                                     <ul class="otherSitesCategorList favoriteSiteList">
@@ -78,7 +83,7 @@
                             #if ($tabsSites.tabsMoreTermsRightPane.get($termKey).size() > 0)
                                 <div class="fav-sites-term">
                                     #if ( $termKey && $termKey != "" )
-                                        <h3 class="favorites-term-header">$termKey</h3>
+                                        <h3 class="favorites-term-header"><span class="favorites-select-all-none"></span>$termKey</h3>
 
                                         <ul class="otherSitesCategorList favoriteSiteList">
                                             <!-- anchor "my workspace" to the top of the list -->
@@ -105,6 +110,8 @@
                 <div style="display: none" class="tab-box" id="organizeFavorites">
                     <div id="organize-favorites-pane">
                         <h2 class="heading">${rloader.moresite_organize_favorites}</h2>
+
+                        <p style="display: none" id="favoritesToShow">Drag sites to reorder them. Up to ${tabsSites.maxFavoritesShown} sites can be displayed in your favorites bar.</p>
 
                         <p style="display: none" id="noFavoritesToShow">You do not have any favorite sites. Star sites in the "My Sites" menu to add them to your favorites.</p>
 

@@ -78,7 +78,6 @@ public class FavoritesHandler extends BasePortalHandler
 	public int doPost(String[] parts, HttpServletRequest req,
 			HttpServletResponse res, Session session)
 			throws PortalHandlerException {
-
 		if ((parts.length == 3) && (parts[1].equals(URL_FRAGMENT)))
 		{
 			try {

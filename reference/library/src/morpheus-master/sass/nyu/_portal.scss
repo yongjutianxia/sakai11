@@ -500,17 +500,14 @@ body {
         margin: 1em 0;
         position: relative;
 
-        &:before {
-          content: '\f002';
-          position: absolute;
-          color: #AAA;
-          top: 4px;
-          left: 8px;
-          font-family: FontAwesome;
+        #txtSearch {
+          padding: 0 5px 0 5px;
+          border-radius: 50px !important;
+          border: 1px solid #e5e5e5;
         }
 
-        #txtSearch {
-          padding-left: 28px;
+        #txtSearch:focus {
+          outline: none;
         }
       }
 
