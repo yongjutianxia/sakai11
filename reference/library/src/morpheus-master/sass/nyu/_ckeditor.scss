@@ -22,6 +22,15 @@
 }
 
 body {
+  // NYUPreview plugin
+  #ckeditorPreview.modal {
+    .modal-dialog {
+      width: 94%;
+      max-width: 1200px;
+    }
+  }
+
+  // CKEditor context
   .cke {
     // NYUPreview plugin
     .cke_button__nyupreview {
