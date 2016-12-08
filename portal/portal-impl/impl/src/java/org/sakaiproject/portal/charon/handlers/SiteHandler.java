@@ -397,7 +397,8 @@ public class SiteHandler extends WorksiteHandler
 		// if no page id, see if there was a last page visited for this site
 		if (pageId == null)
 		{
-			pageId = (String) session.getAttribute(Portal.ATTR_SITE_PAGE + siteId);
+			//CLASSES-2445 don't got to last visited, go to site's homepage
+			//pageId = (String) session.getAttribute(Portal.ATTR_SITE_PAGE + siteId);
 		}
 
 		// If the page is the mutable page name then look up the 
