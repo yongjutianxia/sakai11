@@ -497,6 +497,7 @@ li.organizeFavorites:not(.active) .favoriteCountAndWarning.maxFavoritesReached {
 .favorites-select-all-none {
     margin-left: 14px;
     margin-right: 6px;
+    cursor: pointer;
 
     .site-favorite-icon {
         font-size: 100%;
