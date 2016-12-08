@@ -1405,7 +1405,7 @@ function setupImportSitesForm($form) {
 };
 
 $(document).ready(function() {
-  var $form = $("form[name='importSitesForm'");
+  var $form = $("form[name='importSitesForm']");
   if ($form.length > 0) {
     setupImportSitesForm($form);
   }
