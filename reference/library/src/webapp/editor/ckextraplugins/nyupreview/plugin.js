@@ -47,7 +47,7 @@
 
         var mathjaxIncludes = "";
         if ($PBJQ("script[type*='mathjax-config']").length > 0) {
-          mathjaxIncludes = mathjaxIncludes + $PBJQ("script[type*='mathjax-config']")[0].outerHTML;
+          mathjaxIncludes = mathjaxIncludes + $PBJQ("script[type*='mathjax-config']")[0].outerHTML.replace(";executed=true", "");
           $PBJQ("script[src*='/js/mathjax/']").each(function() {
             mathjaxIncludes = mathjaxIncludes + this.outerHTML;
           });
