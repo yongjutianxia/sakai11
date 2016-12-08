@@ -88,7 +88,10 @@
 										space = getSpaceElement(editor);
 										//use getSnapshot because WIRIS is listening for getData. It looks like getData(true) actually doesn't return anything! Hmm!
 										editordata = editor.getSnapshot();
-										space.setHtml( editor.lang.wordcount.CharCountTxt + " : " + getCharCount(editordata) + " " + editor.lang.wordcount.WordCountTxt + " : " + getWordCount(editordata) );
+										// character count + word count
+										//space.setHtml( editor.lang.wordcount.CharCountTxt + " : " + getCharCount(editordata) + " " + editor.lang.wordcount.WordCountTxt + " : " + getWordCount(editordata) );
+										// word count only
+										space.setHtml( editor.lang.wordcount.WordCountTxt + " : " + getWordCount(editordata) );
 									}
 								}
 						}
