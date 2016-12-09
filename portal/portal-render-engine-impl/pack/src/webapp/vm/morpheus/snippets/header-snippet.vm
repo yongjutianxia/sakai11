@@ -1,6 +1,10 @@
 ## Header that shows institution and/or banner logos
 
 <header role="banner" class="Mrphs-headerLogo">
-    <span class="Mrphs-headerLogo--institution"></span>
+    #if ($userIsLoggedIn && $loginUserDispId)
+      <a href="/portal/site/~${loginUserDispId}" class="Mrphs-headerLogo--institution"></a>
+    #else
+      <span class="Mrphs-headerLogo--institution"></span>
+    #end
     <span class="Mrphs-headerLogo--banner"></span>
 </header>
