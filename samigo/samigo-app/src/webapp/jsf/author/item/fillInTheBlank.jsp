@@ -117,6 +117,15 @@
     <h:outputText value="#{authorMessages.fib_note_1}<br /><br />" escape="false"/>
     <h:outputText value="#{authorMessages.fib_note_2}<br /><br />" escape="false"/>
     <h:outputText value="#{authorMessages.fib_note_3}<br /><br />" escape="false"/>
+    
+    <div class="mathjax-warning" style="display: none;">
+      <strong>Acceptable Characters</strong>
+      <div class="alert alert-warning">
+        <strong>NOTE</strong>: LaTeX and AsciiMath markup may conflict with notation required for this question type.
+        We recommend using the WIRIS or MathML plugins in the editor for these question types.
+      </div>
+    </div>
+    
     <h:panelGrid>
         <samigo:wysiwyg
                  rows="140" value="#{itemauthor.currentItem.itemText}" hasToggle="yes" mode="author">

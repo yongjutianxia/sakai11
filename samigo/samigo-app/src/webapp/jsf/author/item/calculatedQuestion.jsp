@@ -145,6 +145,13 @@ confirmation dialog
 				<li><h:outputText value="#{authorMessages.calc_question_simple_instructions_step_3b}" /></li>
 			</ol>
 		</ol>
+    <div class="mathjax-warning" style="display: none;">
+      <strong>Acceptable Characters</strong>
+      <div class="alert alert-warning">
+        <strong>NOTE</strong>: LaTeX and AsciiMath markup may conflict with notation required for this question type.
+        We recommend using the WIRIS or MathML plugins in the editor for these question types.
+      </div>
+    </div>
 		<label><h:outputText value="#{authorMessages.calc_question_example_label}"/></label>
 		<p class="tier2"><h:outputText value="#{authorMessages.calc_question_example1}"/></p>
 		<p class="tier2"><h:outputText value="#{authorMessages.calc_question_example1_formula}"/></p>

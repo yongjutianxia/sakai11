@@ -692,6 +692,12 @@ body {
         }
       }
     }
+    .mathjax-warning {
+      &.alert, .alert {
+        margin: 0;
+        padding: 6px 12px;
+      }
+    }
   }
 }
 
