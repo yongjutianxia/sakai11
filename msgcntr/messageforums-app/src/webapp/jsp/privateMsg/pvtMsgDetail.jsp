@@ -105,7 +105,7 @@
          
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-2">
+                <div>
                     <%-- author image --%>
                     <f:subview id="authorImage" rendered="#{PrivateMessagesTool.showProfileInfoMsg}">
                         <h:panelGroup styleClass="authorImage">
@@ -116,7 +116,7 @@
                         </h:panelGroup>
                     </f:subview>
                 </div>
-                <div class="col-md-10">
+                <div>
                     <table class="itemSummary">
                     <tr>
                         <th>

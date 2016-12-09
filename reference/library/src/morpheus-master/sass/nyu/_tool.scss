@@ -640,10 +640,11 @@ body {
   .authorImage {
     display: block;
     border-radius: 50%;
-    height: 80px;
-    width: 80px;
+    height: 32px;
+    width: 32px;
     overflow: hidden;
     position: relative;
+    border: 1px solid #E5E5E5;
 
     a {
       display: block;
@@ -654,14 +655,14 @@ body {
       top: 50%;
       left: 50%;
       transform: translateY(-50%) translateX(-50%);
-      min-height: 80px;
-      min-width: 80px;
+      max-height: 32px;
     }
   }
 
   #pvtMsgDetail {
     .authorImage {
-      margin: 30px auto;
+      margin: 15px;
+      float: left;
     }
   }
   #msgForum {
