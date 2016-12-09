@@ -525,6 +525,19 @@ body {
         @include nyu_secondary_button();
       }
     }
+
+    // Forum Settings
+    #revise {
+      .permissionRow {
+        .permissionCustomize {
+          @include nyu_secondary_button();
+
+          &.ui-state-active {
+            @include nyu_primary_button();
+          }
+        }
+      }
+    }
   }
 }
 
