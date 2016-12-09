@@ -32,7 +32,7 @@
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{authorMessages.item_display_author}"/></title>
-      <samigo:script path="/js/authoring.js"/>
+      <samigo:script path="/js/authoring.js?_=1481259675"/>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
 
