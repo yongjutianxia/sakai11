@@ -123,7 +123,21 @@
 
             // Let's try and open a modal!
             if ($PBJQ.fn.modal) {
-                var $modal = $PBJQ('<div class="modal fade" id="ckeditorPreview" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="button pull-right" data-dismiss="modal">Close</button><h4 class="modal-title">Preview</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="button" data-dismiss="modal">Close</button></div></div></div></div>');
+                var $modal = $PBJQ('<div class="modal fade" id="ckeditorPreview" tabindex="-1" role="dialog">'+
+                                     '<div class="modal-dialog" role="document">'+
+                                       '<div class="modal-content">'+
+                                         '<div class="modal-header">'+
+                                           '<button type="button" class="button pull-right" data-dismiss="modal">Close</button>'+
+                                           '<button type="button" class="button pull-right nyupreview-print"></button>'+
+                                           '<h4 class="modal-title">Preview</h4>'+
+                                         '</div>'+
+                                         '<div class="modal-body"></div>'+
+                                         '<div class="modal-footer">'+
+                                           '<button type="button" class="button" data-dismiss="modal">Close</button>'+
+                                         '</div>'+
+                                       '</div>'+
+                                     '</div>'+
+                                   '</div>');
 
                 if (previewHighlightedOnly) {
                     var $message = $PBJQ("<div>").addClass("alert alert-info").
@@ -144,6 +158,21 @@
                 }
 
                 $PBJQ(document.body).append($modal);
+
+                $modal.find(".nyupreview-print").on("click", function() {
+                  // we need to get the editor HTML again and tack on some
+                  // javascript to do the printing for us!
+                  var html = getPreviewContentHTML(editor.getData());
+                  html = html + "<script type='text/javascript/'>"+
+                                 "setTimeout(function() {"+
+                                  "console.log(window);"+
+                                  "console.log(document);"+
+                                   "window.print();"+
+                                 "}, 1000);"+
+                              "</script>";
+                  $modal.find(".modal-body").html(getIframe(html));
+                });
+
                 $modal.modal();
 
                 $modal.find(".modal-body").append(getIframe(sHTML));

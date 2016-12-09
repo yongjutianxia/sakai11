@@ -28,6 +28,12 @@ body {
       width: 94%;
       max-width: 1200px;
     }
+    .nyupreview-print {
+      &:before {
+        font-family: 'FontAwesome';
+        content: '\f02f';
+      }
+    }
   }
 
   // CKEditor context
