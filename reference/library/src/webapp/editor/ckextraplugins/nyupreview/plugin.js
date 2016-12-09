@@ -160,17 +160,28 @@
                 $PBJQ(document.body).append($modal);
 
                 $modal.find(".nyupreview-print").on("click", function() {
+                  $modal.find(".nyupreview-print").prop("disabled", true);
                   // we need to get the editor HTML again and tack on some
                   // javascript to do the printing for us!
                   var html = getPreviewContentHTML(editor.getData());
-                  html = html + "<script type='text/javascript/'>"+
-                                 "setTimeout(function() {"+
-                                  "console.log(window);"+
-                                  "console.log(document);"+
-                                   "window.print();"+
-                                 "}, 1000);"+
-                              "</script>";
+                  if (typeof MathJax != "undefined") {
+                    // print after MathJax has finished rendering
+                    html = html + "<script type='text/javascript'>"+
+                                    "MathJax.Hub.Queue(function () {"+
+                                      "window.print();"+
+                                    "});"+
+                                  "</script>";
+                    } else {
+                      // just print!
+                      html = html + "<script type='text/javascript/'>"+
+                                      "window.print();"+
+                                    "</script>";
+                    }
                   $modal.find(".modal-body").html(getIframe(html));
+
+                  setTimeout(function() {
+                    $modal.find(".nyupreview-print").prop("disabled", false);
+                  }, 3000);
                 });
 
                 $modal.modal();
