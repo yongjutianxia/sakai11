@@ -193,7 +193,7 @@
                                   "</script>";
                     } else {
                       // just print!
-                      html = html + "<script type='text/javascript/'>"+
+                      html = html + "<script type='text/javascript'>"+
                                       "window.print();"+
                                     "</script>";
                     }
