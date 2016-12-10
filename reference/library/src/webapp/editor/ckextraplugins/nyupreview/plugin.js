@@ -58,11 +58,31 @@
           baseURL = baseURL + ":" + location.port
         }
 
+        var highlightedText = false;
+        function getHighlightedText() {
+          if (typeof highlightedText == 'string') {
+            return highlightedText;
+          }
+
+          var selection = editor.getSelection();
+          if (selection.getType() == CKEDITOR.SELECTION_TEXT) {
+            if (CKEDITOR.env.ie) {
+              selection.unlock(true);
+              highlightedText = selection.getNative().createRange().text;
+            } else {
+              highlightedText = selection.getNative().toString();
+            }
+          }
+
+          return highlightedText;
+        }
+
+        function isHighlight() {
+          return getHighlightedText().length > 0;
+        }
         // Content to preview: the entire document or just what is highlighted?
-        var previewHighlightedOnly = false;
-        var contentToPreview = editor.getData();
-        var selectedText = "";
-        var selection = editor.getSelection();
+        var previewHighlightedOnly = isHighlight();
+
 
         function getPreviewContentHTML(contentToPreview) {
             return editor.config.docType + '<html dir="' + editor.config.contentsLangDirection + '">' +
@@ -88,20 +108,18 @@
             return $iframe;
         }
 
-        if (selection.getType() == CKEDITOR.SELECTION_TEXT) {
-          if (CKEDITOR.env.ie) {
-            selection.unlock(true);
-            selectedText = selection.getNative().createRange().text;
-          } else {
-            selectedText = selection.getNative().toString();
+        function getEditorContent() {
+          var selectedText = "";
+          var selection = editor.getSelection();
+
+          if (previewHighlightedOnly && isHighlight()) {
+            return getHighlightedText();
           }
-        }
-        if (selectedText.length > 0) {
-            previewHighlightedOnly = true;
-            contentToPreview = selectedText;
+
+          return editor.getData();
         }
 
-        sHTML = getPreviewContentHTML(contentToPreview);
+        sHTML = getPreviewContentHTML(getEditorContent());
 			}
 
 			var iWidth = 640,
@@ -145,10 +163,12 @@
                                               css("margin", "20px 0 0");
 
                     var $previewAll =  $PBJQ("<a>").attr("href", "javascript:void(0);").
+                                              addClass("btn btn-xs btn-default").
                                               text("Preview Entire Document");
 
                     $previewAll.on("click", function() {
-                        $modal.find(".modal-body").html(getIframe(getPreviewContentHTML(editor.getData())));
+                        previewHighlightedOnly = false;
+                        $modal.find(".modal-body").html(getIframe(getPreviewContentHTML(getEditorContent())));
                         $message.remove();
                     });
 
@@ -163,7 +183,7 @@
                   $modal.find(".nyupreview-print").prop("disabled", true);
                   // we need to get the editor HTML again and tack on some
                   // javascript to do the printing for us!
-                  var html = getPreviewContentHTML(editor.getData());
+                  var html = getPreviewContentHTML(getEditorContent());
                   if (typeof MathJax != "undefined") {
                     // print after MathJax has finished rendering
                     html = html + "<script type='text/javascript'>"+
