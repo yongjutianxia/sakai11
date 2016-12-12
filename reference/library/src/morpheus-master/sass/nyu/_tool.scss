@@ -548,6 +548,16 @@ body {
       line-height: 32px !important;
     }
   }
+
+  // Add/Edit Tools form
+  #toolHolderWW {
+    .mathJaxToggleArea {
+      border: 1px solid #DDDDDD;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 20px 0 0 0;
+    }
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------------------

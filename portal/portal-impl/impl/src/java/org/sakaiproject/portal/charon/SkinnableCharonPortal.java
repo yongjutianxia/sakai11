@@ -202,6 +202,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
     // SAK-22384
     private static final String MATHJAX_ENABLED = "mathJaxEnabled";
+    private static final String MATHJAX_ALLOWED = "mathJaxAllowed";
     private static final String MATHJAX_SRC_PATH_SAKAI_PROP = "portal.mathjax.src.path";
     private static final String MATHJAX_ENABLED_SAKAI_PROP = "portal.mathjax.enabled";
     private static final boolean ENABLED_SAKAI_PROP_DEFAULT = true;
@@ -1401,13 +1402,15 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
                 if (site != null)
                 {                           
-                    String strMathJaxEnabled = site.getProperties().getProperty(MATHJAX_ENABLED);                    
-                    if (!StringUtils.isBlank(strMathJaxEnabled))
+                    String strMathJaxAllowed = site.getProperties().getProperty(MATHJAX_ALLOWED);
+                    if (!StringUtils.isBlank(strMathJaxAllowed))
                     {
-                        String[] mathJaxTools = strMathJaxEnabled.split(",");
+                        //String[] mathJaxTools = strMathJaxEnabled.split(",");
                         
-                        String toolId = toolConfig.getTool().getId();
-                        if (toolId != null && ArrayUtils.contains(mathJaxTools, toolId))
+                        //String toolId = toolConfig.getTool().getId();
+                        //if (toolId != null && ArrayUtils.contains(mathJaxTools, toolId))
+                        // NYU add MathJax for all tools if allowed for site
+                        if (Boolean.valueOf(strMathJaxAllowed))
                         {
                             // this call to MathJax.Hub.Config seems to be needed for MathJax to work in IE
                             headJs.append("<script type=\"text/x-mathjax-config\">\n"+
