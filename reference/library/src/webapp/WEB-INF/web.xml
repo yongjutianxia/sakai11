@@ -68,6 +68,21 @@
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 
+	<filter>
+		<description>Response Header Filter to allow Cross Origin access</description>
+		<display-name>Allow Cross Origin access</display-name>
+		<filter-name>CrossOriginAccess</filter-name>
+		<filter-class>org.sakaiproject.util.ResponseHeaderFilter</filter-class>
+		<init-param>
+			<param-name>Access-Control-Allow-Origin</param-name>
+			<param-value>*</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CrossOriginAccess</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>Connector</servlet-name>
 		<servlet-class>org.sakaiproject.connector.fck.FCKConnectorServlet</servlet-class>
