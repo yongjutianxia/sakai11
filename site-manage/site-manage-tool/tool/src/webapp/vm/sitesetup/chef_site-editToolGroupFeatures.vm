@@ -24,11 +24,11 @@
     </p>
 
     ## SAK-22384
-    #if ($!isMathJaxInstalled)
-    <p class="step">
-    $tlang.getFormattedMessage("sinfo.mathjax.instructions",$!sakaiService)
-    </p>
-    #end    
+    ##if ($!isMathJaxInstalled)
+    ##<p class="step">
+    ##$tlang.getFormattedMessage("sinfo.mathjax.instructions",$!sakaiService)
+    ##</p>
+    ##end    
 
     <form name="featuresForm" action="#toolForm("$action")" method="post">
         <input type="hidden" name="option" value="add" />

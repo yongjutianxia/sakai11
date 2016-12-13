@@ -1,6 +1,7 @@
 <script type="text/javascript">
       // SAK-22384
-      #if ($isMathJaxInstalled)
+      // NYU disable the javascript as we do our own thing
+      #if (false && $isMathJaxInstalled)
       MATHJAX.isInstalled = true;
       MATHJAX.initialEnabledTools = [
       #foreach ($toolId in $toolRegistrationMathJaxEnabledList)
@@ -166,17 +167,29 @@
         #end
     </div>
     <div class="col-md-1 separator"></div>
-    <div id="toolSelectionList" class="col-md-4">
+    <div class="col-md-4">
+    <div id="toolSelectionList">
     <div id="toolSelectionListMessage" style="display:none" class="instruction">$tlang.getString("feat.selected.tools.none")</div>
     <ul>
         <li id="toolSelectionListHeader">
           <h3 id="toolSelectionListToolHeader">$tlang.getString("feat.selected.tools")</h3>
-          #if ($isMathJaxInstalled)
-          <h3 id="toolSelectionListMathJaxHeader">$tlang.getString("sinfo.mathjax.name")</h3>
-          #end
+          ##if ($isMathJaxInstalled)
+          ##<h3 id="toolSelectionListMathJaxHeader">$tlang.getString("sinfo.mathjax.name")</h3>
+          ##end
           <h3 id="toolSelectionListRemoveHeader">$tlang.getString("feat.removeHeading")</h3>
         </li>
     </ul>
+    </div>
+    <div class="mathJaxToggleArea">
+      <p>Enable MathJax for automatic rendering of LaTeX and AsciiMath in this site. <a href="http://www.nyu.edu/servicelink/KB0015165" target="_blank">Learn More</a>.
+      <div class="onoffswitch">
+          <input type="checkbox" name="isMathJaxAllowedInSite" class="onoffswitch-checkbox" id="isMathJaxAllowedInSite" #if($isMathJaxAllowedInSite)checked="checked"#end>
+          <label class="onoffswitch-label" for="isMathJaxAllowedInSite">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+      </div>
+    </div>
     </div>
   </div> <!-- row -->
 </div> <!-- toolHolderWW -->

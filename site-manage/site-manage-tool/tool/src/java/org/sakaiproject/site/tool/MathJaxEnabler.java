@@ -125,6 +125,13 @@ public class MathJaxEnabler
                 }
             }
         }
+
+        // NYU show a message on the confirmation screen if MathJax is enabled for the site
+        boolean isMathJaxEnabledForSite = (Boolean) state.getAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE);
+        if (isMathJaxEnabledForSite) {
+            context.put(CONTEXT_IS_MATHJAX_INSTALLED_KEY, Boolean.TRUE);
+            context.put(CONTEXT_DO_ENABLE_MATHJAX_KEY, Boolean.TRUE);
+        }
         return true;
     }
     
@@ -156,21 +163,18 @@ public class MathJaxEnabler
      */
     public static boolean prepareMathJaxToolSettingsForSave(Site site, SessionState state)
     {   
-        if (!ENABLED_AT_SYSTEM_LEVEL || site == null || state == null || !isMathJaxAllowedForSite(site, state))
+        if (!ENABLED_AT_SYSTEM_LEVEL || site == null || state == null)
         {
             return false;
         }
 
-        Set<String> mathJaxEnabledTools = (Set<String>) state.getAttribute(STATE_KEY_TOOL_REGISTRATION_MATHJAX_ENABLED_LIST);
-        String mathJaxEnabledToolString = StringUtils.join(mathJaxEnabledTools, TOOL_DELIM);
+        // NYU MathJax is either on or off for the entire site (all tools)
+        boolean isMathJaxEnabledForSite = (Boolean) state.getAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE);
         ResourcePropertiesEdit props = site.getPropertiesEdit();
-        if (mathJaxEnabledTools != null && !mathJaxEnabledTools.isEmpty())
-        {
-            props.addProperty(SITE_PROP_MATHJAX_ENABLED, mathJaxEnabledToolString);
-        }
-        else
-        {
-            props.removeProperty(SITE_PROP_MATHJAX_ENABLED);
+        if (isMathJaxEnabledForSite) {
+            props.addProperty(SITE_PROP_MATHJAX_ALLOWED, Boolean.TRUE.toString());
+        } else {
+            props.removeProperty(SITE_PROP_MATHJAX_ALLOWED);
         }
 
         return true;
@@ -251,18 +255,19 @@ public class MathJaxEnabler
      */
     public static boolean applyToolSettingsToState(SessionState state, Site site, ParameterParser params)
     {
-        if (!ENABLED_AT_SYSTEM_LEVEL || state == null || params == null || !isMathJaxAllowedForSite(site, state))
+        if (!ENABLED_AT_SYSTEM_LEVEL || state == null || params == null)
         {
             return false;
         }
 
-        Set<String> mathJaxEnabledTools = new HashSet<String>();
-        String[] mathJaxEnabledToolsArray = params.getStrings(PARAM_MATHJAX_ENABLED_TOOLS_KEY);
-        if (mathJaxEnabledToolsArray != null)
+        // NYU allow checkbox to set the isMathJaxAllowedInSite site property
+        // If checked, add this to the state
+        if ("on".equals(params.getString("isMathJaxAllowedInSite")))
         {
-            mathJaxEnabledTools.addAll(Arrays.asList(mathJaxEnabledToolsArray)); 
+            state.setAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE, true);
+        } else {
+            state.setAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE, false);
         }
-        state.setAttribute(STATE_KEY_TOOL_REGISTRATION_MATHJAX_ENABLED_LIST, mathJaxEnabledTools);
 
         return true;
     }
