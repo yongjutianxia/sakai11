@@ -484,6 +484,7 @@ body {
     }
     .tab-pane {
       border-top: 1px solid $nyu-tool-tab-border-color;
+      outline: none;
 
       .tab-box {
         border: none !important;
