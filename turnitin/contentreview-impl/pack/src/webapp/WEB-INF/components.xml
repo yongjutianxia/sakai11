@@ -51,6 +51,9 @@
 		-->
 	</bean>
 
+        <alias alias="org.sakaiproject.contentreview.service.ContentReviewService" name="org.sakaiproject.contentreview.service.ContentReviewServiceTii"/>
+
+
 	<!--  Uncomment this to allow all sites to use Turnitin regardless of site type or property -->
 	<!--
 	<bean
