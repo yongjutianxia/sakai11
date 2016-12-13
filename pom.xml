@@ -125,6 +125,7 @@
                 <module>taggable</module>
                 <module>textarea</module>
                 <module>tool</module>
+                <module>turnitin/contentreview-impl</module>
                 <module>user</module>
                 <module>userauditservice</module>
                 <module>usermembership</module>
