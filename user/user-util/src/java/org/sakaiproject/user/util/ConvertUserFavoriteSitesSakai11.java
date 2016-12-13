@@ -52,8 +52,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -133,6 +135,8 @@ class ConvertUserFavoriteSitesSakai11 {
 
         db.setAutoCommit(false);
 
+        ActiveSites activeSites = new ActiveSites(db);
+
         try {
             countPreferences = db.prepareStatement("select count(1) from SAKAI_PREFERENCES");
 
@@ -175,7 +179,7 @@ class ConvertUserFavoriteSitesSakai11 {
 
             updatePreference = db.prepareStatement("update SAKAI_PREFERENCES set xml = ? where preferences_id = ?");
 
-            PreferenceMigrator migrator = new PreferenceMigrator();
+            PreferenceMigrator migrator = new PreferenceMigrator(activeSites);
 
             rs = usersSiteMemberships.executeQuery();
 
@@ -239,6 +243,57 @@ class ConvertUserFavoriteSitesSakai11 {
 
         info("\nIf the properties file containing your database connection details is stored in a non-standard location, you can explicitly select it with:\n");
         info("  java -cp \"lib\\*\" -Ddb.properties=my_database.properties org.sakaiproject.user.util.ConvertUserFavoriteSitesSakai11\n");
+
+    }
+
+
+    private static class ActiveSites {
+
+        private static String[] currentTerms = new String[] { "Spring_2017", "Winter_2016" };
+
+        private HashSet<String> activeSites;
+
+        public ActiveSites(Connection db) {
+            activeSites = new HashSet<>();
+
+            try {
+                PreparedStatement selectActiveSites = null;
+
+                String dbFamily = db.getMetaData().getDatabaseProductName().toLowerCase(Locale.ROOT);
+
+                if ("mysql".equals(dbFamily)) {
+                    selectActiveSites = db.prepareStatement("select site_id from SAKAI_SITE_PROPERTY" +
+                            " where name = 'term_eid' AND value = ?");
+                } else if ("oracle".equals("dbFamily")) {
+                    selectActiveSites = db.prepareStatement("select site_id from SAKAI_SITE_PROPERTY" +
+                            " where name = 'term_eid' AND to_char(value) = ?");
+                } else {
+                    throw new RuntimeException("Unrecognized database family: " + dbFamily);
+                }
+
+                for (String term : currentTerms) {
+                    selectActiveSites.clearParameters();
+                    selectActiveSites.setString(1, term);
+
+                    ResultSet sites = selectActiveSites.executeQuery();
+
+                    while (sites.next()) {
+                        String activeSite = sites.getString(1);
+
+                        activeSites.add(activeSite);
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            ConvertUserFavoriteSitesSakai11.info("Found " + activeSites.size() + " active course sites");
+        }
+
+        public boolean isActiveSite(String siteId) {
+            return activeSites.contains(siteId);
+        }
 
     }
 
@@ -457,9 +512,12 @@ class ConvertUserFavoriteSitesSakai11 {
 
         private DocumentBuilder documentBuilder;
         private XPath xpath;
+        private ActiveSites activeSites;
         String prefsPrefix = "/preferences/prefs[@key='sakai:portal:sitenav']";
 
-        public PreferenceMigrator() {
+        public PreferenceMigrator(ActiveSites activeSites) {
+            this.activeSites = activeSites;
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
             try {
@@ -482,13 +540,22 @@ class ConvertUserFavoriteSitesSakai11 {
                 // tabCount is the number of entries in orderSiteIds that are "real" favorites
                 int tabCount = tabsValue.isEmpty() ? orderSiteIds.size() : Integer.valueOf(tabsValue.get(0));
 
-                List<String> finalUserFavorites = new ArrayList<String>(5);
+                ArrayList<String> finalUserFavorites = new ArrayList<String>(5);
 
                 // Start with any favorite sites the user already has
                 finalUserFavorites.addAll(orderSiteIds.subList(0, Math.min(tabCount, orderSiteIds.size())));
 
-                // If that didn't yield any favorites (because they've never set
-                // any), give them up to FAVORITES_TO_GRANT automatically.
+                // If the user is a member of any active sites that haven't yet
+                // been favorited, add those now too
+                for (String siteId : userSites) {
+                    if (this.activeSites.isActiveSite(siteId) && finalUserFavorites.indexOf(siteId) < 0) {
+                        // add it if it wasn't already there...
+                        finalUserFavorites.add(0, siteId);
+                    }
+                }
+
+                // After all that, if we still don't have enough favorites,
+                // round them up to FAVORITES_TO_GRANT automatically.
                 if (tabsValue.isEmpty() && finalUserFavorites.isEmpty()) {
                     for (String siteId : userSites) {
                         if (finalUserFavorites.size() == FAVORITES_TO_GRANT) {
@@ -502,7 +569,7 @@ class ConvertUserFavoriteSitesSakai11 {
                 }
 
                 // Finally, patch the new favorites into our preferences XML
-                replaceOrderList(doc, finalUserFavorites);
+                writeFavoritesBlob(doc, finalUserFavorites, userSites);
 
                 debug("===========================================================================");
                 debug("Previously:");
@@ -518,7 +585,7 @@ class ConvertUserFavoriteSitesSakai11 {
             }
         }
 
-        private void replaceOrderList(Document doc, List<String> userFavorites) throws Exception {
+        private void writeFavoritesBlob(Document doc, List<String> userFavorites, List<String> userSites) throws Exception {
 
             NodeList nodesToDelete = (NodeList)xpath.evaluate(prefsPrefix + "/properties/property[@name='order' or @name='tabs']", doc, XPathConstants.NODESET);
 
@@ -558,12 +625,23 @@ class ConvertUserFavoriteSitesSakai11 {
                 existingSiteNavProperties = (Node) xpath.evaluate(prefsPrefix + "/properties", doc, XPathConstants.NODE);
             }
 
-            // Create new ones
+            // Add the favorite properties
             for (String siteId : userFavorites) {
                 Element newProperty = doc.createElement("property");
                 newProperty.setAttribute("enc", "BASE64");
                 newProperty.setAttribute("list", "list");
                 newProperty.setAttribute("name", "order");
+                newProperty.setAttribute("value", encodeBase64(siteId));
+
+                existingSiteNavProperties.appendChild(newProperty);
+            }
+
+            // and record all seen sites to record the fact that we've handled the auto-favorites already
+            for (String siteId : userSites) {
+                Element newProperty = doc.createElement("property");
+                newProperty.setAttribute("enc", "BASE64");
+                newProperty.setAttribute("list", "list");
+                newProperty.setAttribute("name", "autoFavoritesSeenSites");
                 newProperty.setAttribute("value", encodeBase64(siteId));
 
                 existingSiteNavProperties.appendChild(newProperty);
