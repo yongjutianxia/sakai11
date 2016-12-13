@@ -544,7 +544,12 @@ public class SiteHandler extends WorksiteHandler
                     Collection<Group> userGroups = site.getGroupsWithMember(userId);
                     if (!isInstructor && userGroups != null && !userGroups.isEmpty()) {
                         // If the user is already in a group, show the tool
-                        rcontext.put("showJoinableGroups", "true");
+                        for (Group g : userGroups) {
+                            if (g.getProperties().getProperty(Group.GROUP_PROP_JOINABLE_SET) != null) {
+                                rcontext.put("showJoinableGroups", "true");
+                                break;
+                            }
+                        }
                     } else {
                         // Or if there are joinable groups they may want to join, show it.
                         for (Group g : site.getGroups()) {
