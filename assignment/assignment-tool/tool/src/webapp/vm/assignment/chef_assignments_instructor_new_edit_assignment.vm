@@ -1007,6 +1007,11 @@
 		#end
 
 		#if ($group_submissions_enabled)
+			#if( !$!groupsList )
+				<div class="messageInformation indnt2" style="width: 80% !important;">
+					There are currently no groups present in this site. You must first create group(s) before you can enable Group Submissions.
+				</div>
+			#end
 			<div class="radio">
 				<label for="$name_CheckIsGroupSubmission" class="$class">
 					<input id="$name_CheckIsGroupSubmission" name="$name_additionalOptions" type="radio" value="group" onclick="ASN.toggleAddOptions('group');"
