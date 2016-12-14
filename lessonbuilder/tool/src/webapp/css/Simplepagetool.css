@@ -2041,3 +2041,9 @@ li.canEdit span.fa-plus.fa-edit-icon.plus-edit-icon:before {
     font-family: "nyu-classes-icons" !important;
     content: "\f1c7" !important;
 }
+
+
+
+#pageBody div.Mrphs-pagebody .Mrphs-toolTitleNav .Mrphs-toolTitleNav__button_container {
+    top: 28px !important;
+}
