@@ -280,13 +280,28 @@ public class SiteCacheSafe extends BasicCache<String, Object> implements SiteCac
         // clear the tool ids for this site
         //noinspection ConstantConditions
         if (site != null && site instanceof Site) {
+
+            // "SITE REMOVED FROM CACHE: " + site.getId();
+            System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:285 21f15f]: " + "\n    'SITE REMOVED FROM CACHE: ' + site.getId(); => " + ("SITE REMOVED FROM CACHE: " + site.getId()) + "\n");
+
             for (SitePage page : site.getPages()) {
+
+                // "WORKING ON PAGE " + page
+                System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:290 a31685]: " + "\n    'WORKING ON PAGE ' + page => " + ("WORKING ON PAGE " + page) + "\n");
+
                 m_cachePages.remove(page.getId());
                 for (ToolConfiguration tool : page.getTools()) {
+
+                    // "WORKING ON TOOL: " + tool.getId()
+                    System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:296 b2585c]: " + "\n    'WORKING ON TOOL: ' + tool.getId() => " + ("WORKING ON TOOL: " + tool.getId()) + "\n");
+
                     m_cacheTools.remove(tool.getId());
                 }
             }
             for (Group group : site.getGroups()) {
+                // "REMOVING GROUP: " + group
+                System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:304 c5f84c]: " + "\n    'REMOVING GROUP: ' + group => " + ("REMOVING GROUP: " + group) + "\n");
+
                 m_cacheGroups.remove(group.getId());
             }
         }
