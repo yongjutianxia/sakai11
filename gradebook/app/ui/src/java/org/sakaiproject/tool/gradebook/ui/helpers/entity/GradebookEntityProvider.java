@@ -3,13 +3,16 @@ package org.sakaiproject.tool.gradebook.ui.helpers.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
@@ -27,6 +30,7 @@ import org.sakaiproject.service.gradebook.shared.CommentDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.gradebook.ui.helpers.params.GradebookItemViewParams;
 import org.sakaiproject.tool.gradebook.ui.helpers.producers.AuthorizationFailedProducer;
 import org.sakaiproject.tool.gradebook.ui.helpers.producers.GradebookItemProducer;
@@ -117,13 +121,17 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 		if (userId == null) {
 			throw new SecurityException("Only logged in users can access");
 		}
-
+		
 		Site site;
 		try {
 			site = siteService.getSite(siteId);
 		} catch (IdUnusedException e) {
 			throw new IllegalArgumentException(String.format(
 					"Invalid siteId %s", siteId));
+		}
+		
+		if(!isToolAccessible(site)) {
+			throw new SecurityException("Gradebook is not accessible for site: "+ siteId);
 		}
 
 		// The gradebookUID is the siteId, the gradebookID is a long
@@ -234,6 +242,10 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 			if (!gradebookService.isGradebookDefined(siteId)) {
 				continue;
 			}
+			
+			if(!isToolAccessible(site)) {
+				continue; //skip site if not accessible
+			}
 
 			GradeCourse course = new GradeCourse(site);
 
@@ -278,6 +290,18 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 							"assignment name must be set in order to get the details of a gradebook item, via the URL /%s/item/{siteId}/{assignmentName}",
 							ENTITY_PREFIX));
 		}
+		
+		Site site;
+		try {
+			site = siteService.getSite(siteId);
+		} catch (IdUnusedException e) {
+			throw new IllegalArgumentException(String.format(
+					"Invalid siteId %s", siteId));
+		}
+		
+		if(!isToolAccessible(site)) {
+			throw new SecurityException("Gradebook is not accessible for site: "+ siteId);
+		}
 
 		if (!gradebookService.isGradebookDefined(siteId)) {
 			throw new IllegalArgumentException(String.format(
@@ -307,5 +331,51 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 		throw new IllegalArgumentException(String.format(
 				"No assignment %s for site %s", assignmentName, siteId));
 	}
+
+        /**
+         * Check if the tool is accessible (ie not hidden or disabled)
+         * @param s the site.
+         * @return
+         */
+        private boolean isToolAccessible(Site site) {
+
+                if(securityService.isSuperUser()) {
+                        return true;
+                }
+
+                String userId = developerHelperService.getCurrentUserId();
+
+                //lookup tool in site.
+                //lookup properties and see if its been hidden or disabled
+                ToolConfiguration toolConfig = site.getToolForCommonId("sakai.gradebook.tool");
+                Properties props = toolConfig.getConfig();
+
+                String disabled = props.getProperty("functions.require");
+                if(StringUtils.contains(disabled, "site.upd")) {
+                        //tool is disabled, check if user has the perm
+                        String siteRef = site.getId();
+                        if(site.getId() != null && !site.getId().startsWith(SiteService.REFERENCE_ROOT)) {
+                                siteRef = SiteService.REFERENCE_ROOT + Entity.SEPARATOR + site.getId();
+                        }
+                        if(securityService.unlock(userId, "site.upd", siteRef)) {
+                                log.debug("User has site.upd, access granted");
+                                return true; //this trumps hiding as maintainers have this permission so can see hidden tools
+                        } else {
+                                log.debug("User does not have site.upd and this tool requires it, access denied.");
+                                return false;
+                        }
+                }
+
+                //check if hidden from normal view sakai-portal:visible false
+                //new for Sakai 10
+                String hidden = props.getProperty("sakai-portal:visible");
+                if(StringUtils.equals(hidden, "false")) {
+                        //tool is not visible. not a maintainer.
+                        log.debug("Tool is hidden and user is not a maintainer, access denied.");
+                        return false;
+                }
+
+                return true;
+        }
 
 }
