@@ -679,7 +679,16 @@ body {
     .authorImage {
       margin: 5px 15px 10px 0;
     }
-  }
+
+    @media #{$tablet} {
+      .itemNav {
+        position: relative !important;
+        right: 0 !important;
+        top: 0 !important;
+        margin: 5px 0 0 !important;
+      }
+    }
+  } 
 }
 
 // -------------------------------------------------------------------------------------------------------------------
