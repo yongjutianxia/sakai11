@@ -279,32 +279,25 @@ public class SiteCacheSafe extends BasicCache<String, Object> implements SiteCac
     private void notifyCacheRemove(@SuppressWarnings("UnusedParameters") String key, Site site) {
         // clear the tool ids for this site
         //noinspection ConstantConditions
-        if (site != null && site instanceof Site) {
 
-            // "SITE REMOVED FROM CACHE: " + site.getId();
-            System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:285 21f15f]: " + "\n    'SITE REMOVED FROM CACHE: ' + site.getId(); => " + ("SITE REMOVED FROM CACHE: " + site.getId()) + "\n");
+        // NYU: This adds a lot of overhead to adding things to the cache and
+        // seems unnecessary anyway.  It's not clear why it's necessary to
+        // explicitly remove things from the cache, unless the goal was to keep
+        // these three caches roughly in sync.  It seems unlikely that they
+        // would sync up in practice, since the different caches could easily
+        // turn over at different rates.
 
-            for (SitePage page : site.getPages()) {
-
-                // "WORKING ON PAGE " + page
-                System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:290 a31685]: " + "\n    'WORKING ON PAGE ' + page => " + ("WORKING ON PAGE " + page) + "\n");
-
-                m_cachePages.remove(page.getId());
-                for (ToolConfiguration tool : page.getTools()) {
-
-                    // "WORKING ON TOOL: " + tool.getId()
-                    System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:296 b2585c]: " + "\n    'WORKING ON TOOL: ' + tool.getId() => " + ("WORKING ON TOOL: " + tool.getId()) + "\n");
-
-                    m_cacheTools.remove(tool.getId());
-                }
-            }
-            for (Group group : site.getGroups()) {
-                // "REMOVING GROUP: " + group
-                System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[SiteCacheSafe.java:304 c5f84c]: " + "\n    'REMOVING GROUP: ' + group => " + ("REMOVING GROUP: " + group) + "\n");
-
-                m_cacheGroups.remove(group.getId());
-            }
-        }
+        // if (site != null && site instanceof Site) {
+        //     for (SitePage page : site.getPages()) {
+        //         m_cachePages.remove(page.getId());
+        //         for (ToolConfiguration tool : page.getTools()) {
+        //             m_cacheTools.remove(tool.getId());
+        //         }
+        //     }
+        //     for (Group group : site.getGroups()) {
+        //         m_cacheGroups.remove(group.getId());
+        //     }
+        // }
     }
 
     // CACHE LISTENER METHODS
