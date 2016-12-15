@@ -82,7 +82,7 @@
 		<%-- reply and other actions panel --%>
 		<%-- If message actually deleted, don't display links --%>
 		
-		<f:verbatim><div></f:verbatim> <%-- Grouping buttons --%>
+		<f:verbatim><div class="itemToolBarWrapper"></f:verbatim> <%-- Grouping buttons --%>
 		
 		<h:panelGroup rendered="#{!message.deleted}" styleClass="itemToolBar">
 				<%-- mark as read link --%>

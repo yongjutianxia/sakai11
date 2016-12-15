@@ -647,11 +647,15 @@ body {
 //  Changes to the Forums/Messages tool
 // -------------------------------------------------------------------------------------------------------------------
 body {
+  .itemToolBarWrapper {
+    clear: both;
+  }
+
   .authorImage {
     display: block;
     border-radius: 50%;
-    height: 32px;
-    width: 32px;
+    height: 48px;
+    width: 48px;
     overflow: hidden;
     position: relative;
     border: 1px solid #E5E5E5;
@@ -665,7 +669,7 @@ body {
       top: 50%;
       left: 50%;
       transform: translateY(-50%) translateX(-50%);
-      max-height: 32px;
+      max-height: 48px;
     }
   }
 
@@ -673,11 +677,18 @@ body {
     .authorImage {
       margin: 15px;
       float: left;
+      height: 64px;
+      width: 64px;
+
+      img {
+        max-height: 64px;
+      }
     }
+    
   }
   #msgForum {
     .authorImage {
-      margin: 5px 15px 10px 0;
+      margin: 0 15px 0 0;
     }
 
     @media #{$tablet} {
