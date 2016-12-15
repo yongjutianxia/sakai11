@@ -880,6 +880,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			properties.put(propName, p.getProperties().get(propName));
 		}
 
+		// NYU disable tool categories
+		if (properties.containsKey(SitePage.PAGE_CATEGORY_PROP)) {
+			properties.remove(SitePage.PAGE_CATEGORY_PROP);
+		}
+
 		return properties;
 	}
 
