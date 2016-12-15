@@ -19,12 +19,12 @@
 				<tr>
 					<th>
 						<label>
-							<input type="checkbox" class="import-sites-tool-toggle"/>
-							$validator.escapeHtml($site.getTitle())
+							&nbsp;
 						</label>
 					</th>
 					#foreach($site in $importSites.keys())
 						<th>
+							<input type="checkbox" class="import-sites-tool-toggle"/>
 							$validator.escapeHtml($site.getTitle())
 						</th>
 					#end
