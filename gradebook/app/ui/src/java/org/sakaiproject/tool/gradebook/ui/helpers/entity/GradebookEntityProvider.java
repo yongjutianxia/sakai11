@@ -338,44 +338,52 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
          * @return
          */
         private boolean isToolAccessible(Site site) {
-
-                if(securityService.isSuperUser()) {
-                        return true;
-                }
-
-                String userId = developerHelperService.getCurrentUserId();
-
-                //lookup tool in site.
-                //lookup properties and see if its been hidden or disabled
-                ToolConfiguration toolConfig = site.getToolForCommonId("sakai.gradebook.tool");
-                Properties props = toolConfig.getConfig();
-
-                String disabled = props.getProperty("functions.require");
-                if(StringUtils.contains(disabled, "site.upd")) {
-                        //tool is disabled, check if user has the perm
-                        String siteRef = site.getId();
-                        if(site.getId() != null && !site.getId().startsWith(SiteService.REFERENCE_ROOT)) {
-                                siteRef = SiteService.REFERENCE_ROOT + Entity.SEPARATOR + site.getId();
+                try {
+                        if(securityService.isSuperUser()) {
+                                return true;
                         }
-                        if(securityService.unlock(userId, "site.upd", siteRef)) {
-                                log.debug("User has site.upd, access granted");
-                                return true; //this trumps hiding as maintainers have this permission so can see hidden tools
-                        } else {
-                                log.debug("User does not have site.upd and this tool requires it, access denied.");
+
+                        String userId = developerHelperService.getCurrentUserId();
+
+                        //lookup tool in site.
+                        //lookup properties and see if its been hidden or disabled
+                        ToolConfiguration toolConfig = site.getToolForCommonId("sakai.gradebook.tool");
+                        Properties props = toolConfig.getConfig();
+
+                        if (toolConfig == null || props == null) {
                                 return false;
                         }
-                }
 
-                //check if hidden from normal view sakai-portal:visible false
-                //new for Sakai 10
-                String hidden = props.getProperty("sakai-portal:visible");
-                if(StringUtils.equals(hidden, "false")) {
-                        //tool is not visible. not a maintainer.
-                        log.debug("Tool is hidden and user is not a maintainer, access denied.");
+                        String disabled = props.getProperty("functions.require");
+                        if(StringUtils.contains(disabled, "site.upd")) {
+                                //tool is disabled, check if user has the perm
+                                String siteRef = site.getId();
+                                if(site.getId() != null && !site.getId().startsWith(SiteService.REFERENCE_ROOT)) {
+                                        siteRef = SiteService.REFERENCE_ROOT + Entity.SEPARATOR + site.getId();
+                                }
+                                if(securityService.unlock(userId, "site.upd", siteRef)) {
+                                        log.debug("User has site.upd, access granted");
+                                        return true; //this trumps hiding as maintainers have this permission so can see hidden tools
+                                } else {
+                                        log.debug("User does not have site.upd and this tool requires it, access denied.");
+                                        return false;
+                                }
+                        }
+
+                        //check if hidden from normal view sakai-portal:visible false
+                        //new for Sakai 10
+                        String hidden = props.getProperty("sakai-portal:visible");
+                        if(StringUtils.equals(hidden, "false")) {
+                                //tool is not visible. not a maintainer.
+                                log.debug("Tool is hidden and user is not a maintainer, access denied.");
+                                return false;
+                        }
+
+                        return true;
+                } catch (Exception ex) {
+                        log.info("Failure in isToolAccessible: " + ex);
                         return false;
                 }
-
-                return true;
         }
 
 }
