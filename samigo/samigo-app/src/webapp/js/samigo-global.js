@@ -34,7 +34,12 @@ function chef_setupformattedtextarea(client_id, shouldToggle, frame_id) {
 		input_text.value = input_text_encoded;
 	}
 
-	sakai.editor.launch(textarea_id,'','450','240');
+	// Enable the encodedImage plugin for CKEditor in Samigo only
+	var config = {
+		encodedImage: true
+	};
+
+	sakai.editor.launch(textarea_id,config,'450','240');
 	setMainFrameHeight(frame_id);
 }
 
