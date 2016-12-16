@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source /Users/payten/Development/nyu/cle/11/apache-tomcat-8.0.21/bin/setenv.sh
-/Users/payten/Development/apache-maven-3.2.1/bin/mvn clean install sakai:deploy -Dsakai.skin.target=morpheus-nyu -Dsakai.skin.customization.file=/Users/payten/Development/nyu/cle/11/sakai11/reference/library/src/morpheus-master/sass/_nyu.scss -DskipTests=true -Dmaven.tomcat.home=/Users/payten/Development/nyu/cle/11/apache-tomcat-8.0.21  -Dsakai.cleanup=true
+/Users/payten/Development/apache-maven-3.2.1/bin/mvn clean install sakai:deploy -Dsakai.skin.target=morpheus-nyu -Dsakai.skin.customization.file=/Users/payten/Development/nyu/cle/11/sakai11/reference/library/src/morpheus-master/sass/_nyu.scss -Dmaven.tomcat.home=/Users/payten/Development/nyu/cle/11/apache-tomcat-8.0.21  -Dsakai.cleanup=true
 
 
 
