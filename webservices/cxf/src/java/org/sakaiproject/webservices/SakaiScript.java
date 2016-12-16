@@ -36,6 +36,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -85,6 +86,16 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.io.*;
+import org.sakaiproject.content.cover.ContentHostingService;
+import org.sakaiproject.db.cover.SqlService;
+import org.sakaiproject.content.api.ContentResource;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import org.sakaiproject.content.api.ContentResourceEdit;
+import java.security.MessageDigest;
 
 /**
  * SakaiScript.jws
@@ -5170,4 +5181,186 @@ public class SakaiScript extends AbstractWebService {
         return "success";
 
     }
+
+    ///
+    // NYU: Lessons CSS migration
+    ///
+
+    private static class LessonMigration {
+
+        public String filename;
+        public byte[] replacementContent;
+
+        public int expectedSize;
+        public String expectedSha1;
+
+        public LessonMigration(String filename, int expectedSize, String expectedSha1, String replacementResourceName)
+            throws Exception{
+            this.filename = filename;
+            this.expectedSize = expectedSize;
+            this.expectedSha1 = expectedSha1;
+
+            this.replacementContent = readLessonsCSS(replacementResourceName);
+        }
+
+        public boolean matches(String filename) {
+            int idx = filename.lastIndexOf("/");
+
+            if (idx >= 0) {
+                // Skip over the /
+                idx++;
+            } else {
+                idx = 0;
+            }
+
+            return this.filename.equals(filename.substring(idx));
+        }
+
+        private byte[] readLessonsCSS(String path) throws IOException {
+            InputStream in = new FileInputStream(org.sakaiproject.component.cover.ServerConfigurationService.getSakaiHomePath() + "/lessonsCSS/" + path);
+
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+
+            int len;
+            while ((len = in.read(buf)) >= 0) {
+                result.write(buf, 0, len);
+            }
+
+            System.err.println("Read " + result.size() + " bytes for " + path);
+
+            return result.toByteArray();
+        }
+    }
+
+
+    private static List<String> findContentNeedingMigrating(List<LessonMigration> lessonMigrations)
+        throws Exception {
+        StringBuilder clauses = new StringBuilder();
+
+        for (LessonMigration migration : lessonMigrations) {
+            if (clauses.length() > 0) { clauses.append(" OR "); }
+            clauses.append("resource_id like '%LB-CSS%/" + migration.filename + "'");
+        }
+
+        String sql = "select resource_id from content_resource where " + clauses.toString();
+
+        Connection connection = SqlService.borrowConnection();
+
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        List<String> result = new ArrayList<>();
+
+        while (rs.next()) {
+            result.add(rs.getString(1));
+        }
+
+        ps.close();
+
+        return result;
+    }
+
+    private static String sha1(byte[] content) throws Exception {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
+        byte[] result = sha1.digest(content);
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 256,
+                    16).substring(1));
+        }
+
+        return sb.toString();
+    }
+
+    private static void applyUpdate(ContentResource resource, LessonMigration migration, boolean dryRun)
+        throws Exception {
+        if (resource.getContentLength() != migration.expectedSize) {
+            System.err.println("Resource " + resource.getId() +
+                    " didn't match expected size of " + migration.expectedSize +
+                    " (instead we got " + resource.getContentLength() + ")");
+            return;
+        }
+
+        if (!sha1(resource.getContent()).equals(migration.expectedSha1)) {
+            System.err.println("Resource " + resource.getId() +
+                    " didn't match our expected SHA-1");
+            return;
+        }
+
+        if (dryRun) {
+            System.err.println("Resource " + resource.getId() + " looking good.");
+            return;
+        } else {
+            ContentResourceEdit edit = ContentHostingService.editResource(resource.getId());
+            edit.setContent(migration.replacementContent);
+            edit.setContentLength(migration.replacementContent.length);
+
+            ContentHostingService.commitResource(edit);
+        }
+    }
+
+    private static LessonMigration findMatchingMigration(String contentId, List<LessonMigration> lessonMigrations) {
+        for (LessonMigration migration : lessonMigrations) {
+            if (migration.matches(contentId)) {
+                return migration;
+            }
+        }
+
+        return null;
+    }
+
+    @WebMethod
+    @Path("/nyuMigrateLessonsCSS")
+    @Produces("text/plain")
+    @POST
+    public String nyuMigrateLessonsCSS(
+            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+            @WebParam(name = "dryRun", partName = "dryRun") @QueryParam("dryRun") String dryRun){
+        Session session = establishSession(sessionid);
+
+        List<LessonMigration> lessonMigrations = new ArrayList<>();
+
+        try {
+            lessonMigrations.add(new LessonMigration("GLICSS.css", 0, "", "GLI.css"));
+            lessonMigrations.add(new LessonMigration("buttons.css", 0, "", "buttons.css"));
+            lessonMigrations.add(new LessonMigration("default.css", 0, "", "default.css"));
+            lessonMigrations.add(new LessonMigration("default_temp-11.css", 0, "", "default_temp-11.css"));
+            lessonMigrations.add(new LessonMigration("Landingpage_importantdates.css", 0, "", "Landingpage_importantdates.css"));
+            lessonMigrations.add(new LessonMigration("LandingPage_purple.css", 0, "", "LandingPage_purple.css"));
+            lessonMigrations.add(new LessonMigration("Landingpage_sidebar.css", 0, "", "Landingpage_sidebar.css"));
+            lessonMigrations.add(new LessonMigration("LessonsataGlance_purple.css", 0, "", "LessonsataGlance_purple.css"));
+            lessonMigrations.add(new LessonMigration("PSnew.css", 0, "", "PSnew.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_4images_purple.css", 0, "", "Subpage_4images_purple.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_twocolum_purple.css", 0, "", "Subpage_twocolum_purple.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_video_image_purple.css", 0, "", "Subpage_video_image_purple.css"));
+            lessonMigrations.add(new LessonMigration("Weeklylessons_rectangleimages.css", 0, "", "Weeklylessons_rectangleimages.css"));
+
+            for (String contentId : findContentNeedingMigrating(lessonMigrations)) {
+                System.err.println("Working on content migration for: " + contentId);
+
+                ContentResource resource = ContentHostingService.getResource(contentId);
+                LessonMigration migration = findMatchingMigration(contentId, lessonMigrations);
+
+                if (migration != null) {
+                    try {
+                        applyUpdate(resource, migration, !("false".equals(dryRun)));
+                    } catch (Exception e) {
+                        System.err.println("Update failed for resource " + resource.getId());
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.err.println("Failed to find a matching migration for: " + contentId);
+                }
+            }
+
+        } catch (Exception e) {
+            LOG.error("WS nyuMigrateLessonsCSS(): " + e.getClass().getName() + " : " + e.getMessage(), e);
+            return e.getClass().getName() + " : " + e.getMessage();
+        }
+        return "success";
+
+    }
+
 }
