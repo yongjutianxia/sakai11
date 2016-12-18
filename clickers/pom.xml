@@ -59,8 +59,8 @@
   		
               	<!-- shared/lib -->
               	<echo message="Deploying jars" />
-              	<copy file="shared/lib/turningtool-api-0.1.jar" todir="${maven.tomcat.home}/shared/lib"/>
-              	<copy file="shared/lib/turningtool-webservices-0.1.jar" todir="${maven.tomcat.home}/shared/lib"/>
+              	<copy file="shared/lib/turningtool-api-0.1.jar" todir="${maven.tomcat.home}/lib"/>
+              	<copy file="shared/lib/turningtool-webservices-0.1.jar" todir="${maven.tomcat.home}/lib"/>
 
               	<!-- webapps -->
               	<echo message="Deploying war" />
