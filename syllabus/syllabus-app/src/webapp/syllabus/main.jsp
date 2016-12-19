@@ -219,7 +219,7 @@
 						<f:verbatim>"><h3></f:verbatim>
 						<f:subview id="actionIcons" rendered="#{SyllabusTool.editAble == 'true'}">
 							<h:graphicImage url="/images/cursor_drag_arrow.png" title="#{msgs.dragToReorder}"  styleClass="actionIcon"/>
-							<h:commandLink action="#{eachEntry.processListRead}" title="#{msgs.goToItem} #{eachEntry.entry.title}" styleClass="actionIcon">
+							<h:commandLink action="#{eachEntry.processListRead}" title="#{msgs.edit_details}" styleClass="actionIcon">
                                                           <f:param name="returnToMain" value="true"></f:param>
 							  <h:graphicImage url="/images/pencil.png"/>
 							</h:commandLink>
@@ -252,10 +252,10 @@
 							</f:subview>
 							<f:subview id="dateInstructor" rendered="#{SyllabusTool.editAble == 'nyu_says_no'}">
 								<f:verbatim><span style="font-weight: normal; color: grey; float: right"></f:verbatim>
-									<h:outputText styleClass="editItem startTimeInput" value="#{eachEntry.entry.startDate}">
+									<h:outputText styleClass="startTimeInput" value="#{eachEntry.entry.startDate}">
 										<f:convertDateTime type="date" pattern="yyyy/MM/dd h:mm a"/>
 									</h:outputText>
-									<h:outputText styleClass="editItem endTimeInput" value="#{eachEntry.entry.endDate}">
+									<h:outputText styleClass="endTimeInput" value="#{eachEntry.entry.endDate}">
 								  		<f:convertDateTime type="date" pattern="yyyy/MM/dd h:mm a"/>
 									</h:outputText>
 								<f:verbatim></span></f:verbatim>
@@ -265,7 +265,7 @@
 							</h3>
 						</f:verbatim>
 						<f:verbatim><div></f:verbatim>
-							<f:verbatim><div class="editItem bodyInput" data-tpl='<textarea cols="120" id="textAreaWysiwyg" style="display:none"></textarea><img id="loading" style="margin: 2em;" src="images/loading.gif"/>'></f:verbatim>
+							<f:verbatim><div class="bodyInput" data-tpl='<textarea cols="120" id="textAreaWysiwyg" style="display:none"></textarea><img id="loading" style="margin: 2em;" src="images/loading.gif"/>'></f:verbatim>
 							<h:outputText value="#{eachEntry.entry.asset}" escape="false"/>
 							<f:verbatim></div></f:verbatim>
 							

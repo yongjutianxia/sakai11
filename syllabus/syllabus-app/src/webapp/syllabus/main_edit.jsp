@@ -267,7 +267,7 @@
 							</f:facet>
 							<h:inputText value="#{eachEntry.entry.title}"/>
 							<f:verbatim><br/></f:verbatim>
-							<h:commandLink action="#{eachEntry.processListRead}" value="#{msgs.edit_details}" title="#{msgs.goToItem} #{eachEntry.entry.title}" onmousedown="assignWarningClick(this);"/>
+							<h:commandLink action="#{eachEntry.processListRead}" value="#{msgs.edit_details}" title="#{msgs.edit_details}" onmousedown="assignWarningClick(this);"/>
 							
 							
 						</h:column>
