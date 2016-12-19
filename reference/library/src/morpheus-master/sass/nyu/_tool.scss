@@ -699,7 +699,23 @@ body {
         margin: 5px 0 0 !important;
       }
     }
-  } 
+  }
+
+  .#{$namespace}sakai-messages {
+    form#compose {
+      .jsfFormTable {
+        table-layout: fixed;
+
+        td:first-child {
+          width: 180px;
+
+          @media #{$tablet} {
+            width: 100px;
+          }
+        }
+      }
+    }
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------------------
