@@ -235,7 +235,7 @@
 							</f:subview>
 							<f:verbatim>></f:verbatim>
 							<h:outputText styleClass="draftTitlePrefix" rendered="#{eachEntry.status == eachEntry.draftStatus}" value="#{msgs.draftTitlePrefix}" />
-							<h:outputText styleClass="editItem editItemTitle" value="#{eachEntry.entry.title}" />
+							<h:outputText styleClass="editItemTitle" value="#{eachEntry.entry.title}" />
 							<f:subview id="dateStudent" rendered="#{(eachEntry.entry.startDate != null || eachEntry.entry.endDate != null)}">
 								<f:verbatim><span style="font-weight: normal; color: grey; float: right"></f:verbatim>
 									<h:outputText value="#{eachEntry.entry.startDate}">
