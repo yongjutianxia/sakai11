@@ -116,7 +116,7 @@
     vertical-align: middle !important;
 }
 #courseConfirmSubmitMessage .alertMessage {
-  background-image: url(/library/skin/new-york-u/images/warn-a.gif);
+  background-image: url(/library/image/sakai/warn.gif);
   border: none;
   line-height: 16px;
   margin-top: 0;
