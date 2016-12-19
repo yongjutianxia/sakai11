@@ -5191,14 +5191,14 @@ public class SakaiScript extends AbstractWebService {
         public String filename;
         public byte[] replacementContent;
 
-        public int expectedSize;
-        public String expectedSha1;
+        public long minSize;
+        public long maxSize;
 
-        public LessonMigration(String filename, int expectedSize, String expectedSha1, String replacementResourceName)
+        public LessonMigration(String filename, long minSize, long maxSize, String replacementResourceName)
             throws Exception{
             this.filename = filename;
-            this.expectedSize = expectedSize;
-            this.expectedSha1 = expectedSha1;
+            this.minSize = minSize;
+            this.maxSize = maxSize;
 
             this.replacementContent = readLessonsCSS(replacementResourceName);
         }
@@ -5214,6 +5214,14 @@ public class SakaiScript extends AbstractWebService {
             }
 
             return this.filename.equals(filename.substring(idx));
+        }
+
+        public boolean matchesSize(long size) {
+            return (size >= minSize) && (size <= maxSize);
+        }
+
+        public String sizeString() {
+            return minSize + " -- " + maxSize;
         }
 
         private byte[] readLessonsCSS(String path) throws IOException {
@@ -5261,31 +5269,13 @@ public class SakaiScript extends AbstractWebService {
         return result;
     }
 
-    private static String sha1(byte[] content) throws Exception {
-        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-        byte[] result = sha1.digest(content);
-
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < result.length; i++) {
-            sb.append(Integer.toString((result[i] & 0xff) + 256,
-                    16).substring(1));
-        }
-
-        return sb.toString();
-    }
 
     private static void applyUpdate(ContentResource resource, LessonMigration migration, boolean dryRun)
         throws Exception {
-        if (resource.getContentLength() != migration.expectedSize) {
+        if (!migration.matchesSize(resource.getContentLength())) {
             System.err.println("Resource " + resource.getId() +
-                    " didn't match expected size of " + migration.expectedSize +
+                    " didn't match expected size of " + migration.sizeString() +
                     " (instead we got " + resource.getContentLength() + ")");
-            return;
-        }
-
-        if (!sha1(resource.getContent()).equals(migration.expectedSha1)) {
-            System.err.println("Resource " + resource.getId() +
-                    " didn't match our expected SHA-1");
             return;
         }
 
@@ -5316,42 +5306,52 @@ public class SakaiScript extends AbstractWebService {
     @Produces("text/plain")
     @POST
     public String nyuMigrateLessonsCSS(
-            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
-            @WebParam(name = "dryRun", partName = "dryRun") @QueryParam("dryRun") String dryRun){
+                                       @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+                                       @WebParam(name = "dryRun", partName = "dryRun") @QueryParam("dryRun") String dryRun){
         Session session = establishSession(sessionid);
 
         List<LessonMigration> lessonMigrations = new ArrayList<>();
 
         try {
-            lessonMigrations.add(new LessonMigration("GLICSS.css", 0, "", "GLI.css"));
-            lessonMigrations.add(new LessonMigration("buttons.css", 0, "", "buttons.css"));
-            lessonMigrations.add(new LessonMigration("default.css", 0, "", "default.css"));
-            lessonMigrations.add(new LessonMigration("default_temp-11.css", 0, "", "default_temp-11.css"));
-            lessonMigrations.add(new LessonMigration("Landingpage_importantdates.css", 0, "", "Landingpage_importantdates.css"));
-            lessonMigrations.add(new LessonMigration("LandingPage_purple.css", 0, "", "LandingPage_purple.css"));
-            lessonMigrations.add(new LessonMigration("Landingpage_sidebar.css", 0, "", "Landingpage_sidebar.css"));
-            lessonMigrations.add(new LessonMigration("LessonsataGlance_purple.css", 0, "", "LessonsataGlance_purple.css"));
-            lessonMigrations.add(new LessonMigration("PSnew.css", 0, "", "PSnew.css"));
-            lessonMigrations.add(new LessonMigration("Subpage_4images_purple.css", 0, "", "Subpage_4images_purple.css"));
-            lessonMigrations.add(new LessonMigration("Subpage_twocolum_purple.css", 0, "", "Subpage_twocolum_purple.css"));
-            lessonMigrations.add(new LessonMigration("Subpage_video_image_purple.css", 0, "", "Subpage_video_image_purple.css"));
-            lessonMigrations.add(new LessonMigration("Weeklylessons_rectangleimages.css", 0, "", "Weeklylessons_rectangleimages.css"));
+            lessonMigrations.add(new LessonMigration("GLICSS.css", (5 * 1024), (7 * 1024), "GLI.css"));
+            lessonMigrations.add(new LessonMigration("buttons.css", 0, Long.MAX_VALUE, "buttons.css"));
+            lessonMigrations.add(new LessonMigration("default.css", 0, Long.MAX_VALUE, "default.css"));
+            lessonMigrations.add(new LessonMigration("default_temp-11.css", 0, Long.MAX_VALUE, "default_temp-11.css"));
+            lessonMigrations.add(new LessonMigration("Landingpage_importantdates.css", 0, Long.MAX_VALUE, "Landingpage_importantdates.css"));
+            lessonMigrations.add(new LessonMigration("LandingPage_purple.css", 0, Long.MAX_VALUE, "LandingPage_purple.css"));
+            lessonMigrations.add(new LessonMigration("Landingpage_sidebar.css", 0, Long.MAX_VALUE, "Landingpage_sidebar.css"));
+            lessonMigrations.add(new LessonMigration("LessonsataGlance_purple.css", 0, Long.MAX_VALUE, "LessonsataGlance_purple.css"));
+            lessonMigrations.add(new LessonMigration("PSnew.css", 0, Long.MAX_VALUE, "PSnew.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_4images_purple.css", 0, Long.MAX_VALUE, "Subpage_4images_purple.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_twocolum_purple.css", 0, Long.MAX_VALUE, "Subpage_twocolum_purple.css"));
+            lessonMigrations.add(new LessonMigration("Subpage_video_image_purple.css", 0, Long.MAX_VALUE, "Subpage_video_image_purple.css"));
+            lessonMigrations.add(new LessonMigration("Weeklylessons_rectangleimages.css", 0, Long.MAX_VALUE, "Weeklylessons_rectangleimages.css"));
 
             for (String contentId : findContentNeedingMigrating(lessonMigrations)) {
                 System.err.println("Working on content migration for: " + contentId);
 
-                ContentResource resource = ContentHostingService.getResource(contentId);
-                LessonMigration migration = findMatchingMigration(contentId, lessonMigrations);
+                try {
+                    ContentResource resource = ContentHostingService.getResource(contentId);
 
-                if (migration != null) {
-                    try {
-                        applyUpdate(resource, migration, !("false".equals(dryRun)));
-                    } catch (Exception e) {
-                        System.err.println("Update failed for resource " + resource.getId());
-                        e.printStackTrace();
+                    if (resource == null) {
+                        System.err.println("Failed to find resource!");
+                        continue;
                     }
-                } else {
-                    System.err.println("Failed to find a matching migration for: " + contentId);
+
+                    LessonMigration migration = findMatchingMigration(contentId, lessonMigrations);
+
+                    if (migration != null) {
+                        try {
+                            applyUpdate(resource, migration, !("false".equals(dryRun)));
+                        } catch (Exception e) {
+                            System.err.println("Update failed for resource " + resource.getId());
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("Failed to find a matching migration for: " + contentId);
+                    }
+                } catch (Exception outerEx) {
+                    System.err.println("Failed while processing: " + outerEx);
                 }
             }
 
