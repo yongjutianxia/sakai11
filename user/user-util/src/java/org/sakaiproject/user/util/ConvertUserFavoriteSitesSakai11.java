@@ -264,7 +264,7 @@ class ConvertUserFavoriteSitesSakai11 {
                 if ("mysql".equals(dbFamily)) {
                     selectActiveSites = db.prepareStatement("select site_id from SAKAI_SITE_PROPERTY" +
                             " where name = 'term_eid' AND value = ?");
-                } else if ("oracle".equals("dbFamily")) {
+                } else if ("oracle".equals(dbFamily)) {
                     selectActiveSites = db.prepareStatement("select site_id from SAKAI_SITE_PROPERTY" +
                             " where name = 'term_eid' AND to_char(value) = ?");
                 } else {
