@@ -3845,8 +3845,16 @@ public class SiteAction extends PagedResourceActionII {
 			M_log.debug("siteUrl: " + siteUrl);
 
 			//create the url to reste the tool so we can make more sites
+
 			String toolPlacementId = SessionManager.getCurrentToolSession().getPlacementId();
-			String resetUrl = getRelativeUrlToResetTool(toolPlacementId);
+                        ToolConfiguration toolConfiguration = SiteService.findTool(toolPlacementId);
+
+                        String resetUrl = "/portal";
+
+                        if (toolConfiguration != null) {
+                            resetUrl = getRelativeUrlToResetTool(toolConfiguration.getSiteId(), toolPlacementId);
+                        }
+
 			context.put("finish_site_reset", resetUrl);
 			M_log.debug("resetUrl: " + resetUrl);
 
@@ -16407,9 +16415,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	 * @param toolId
 	 * @return
 	 */
-	private String getRelativeUrlToResetTool(String toolPlacementId) {
+    private String getRelativeUrlToResetTool(String siteId, String toolPlacementId) {
 		StringBuilder url = new StringBuilder();
+
 		url.append(ServerConfigurationService.getString("portalPath", "/portal"));
+		url.append("/site/");
+		url.append(siteId);
 		url.append("/tool-reset/");
 		url.append(toolPlacementId);
 		return url.toString();
