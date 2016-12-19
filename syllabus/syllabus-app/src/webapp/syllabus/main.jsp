@@ -127,10 +127,11 @@
 				<f:verbatim>
 				<li class="firstToolBarItem">
 					<span>
-							<a href="javascript:void(0)" onclick="showConfirmAddHelper();">
-								</f:verbatim><h:outputText value="#{msgs.addItemTitle}"/><f:verbatim>
-							</a>
-							<input type="hidden" id="siteId" value="</f:verbatim><h:outputText value="#{SyllabusTool.siteId}"/><f:verbatim>">
+					</f:verbatim>
+						<h:commandLink action="#{SyllabusTool.processListNew}">
+							<h:outputText value="#{msgs.bar_new}"/>
+						</h:commandLink>
+					<f:verbatim>
 					</span>
 				</li></f:verbatim>
 				</c:if>

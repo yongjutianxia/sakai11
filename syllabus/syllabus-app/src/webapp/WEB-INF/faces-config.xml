@@ -120,6 +120,11 @@
   <navigation-rule>
     <from-view-id>/syllabus/main.jsp</from-view-id>
     <navigation-case>
+      <from-outcome>edit</from-outcome>
+      <to-view-id>/syllabus/edit.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
       <from-outcome>main_edit</from-outcome>
       <to-view-id>/syllabus/main_edit.jsp</to-view-id>
       <redirect/>
@@ -238,6 +243,11 @@
 
   <navigation-rule>
     <from-view-id>/syllabus/edit.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>main</from-outcome>
+      <to-view-id>/syllabus/main.jsp</to-view-id>
+      <redirect/>
+    </navigation-case>
     <navigation-case>
       <from-outcome>main_edit</from-outcome>
       <to-view-id>/syllabus/main_edit.jsp</to-view-id>
