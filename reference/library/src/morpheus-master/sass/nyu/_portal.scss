@@ -1005,11 +1005,12 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
 }
 @media #{$nonPhone} {
   #toolMenuWrap {
-    width: 240px !important;
-    -webkit-flex-basis: 240px !important;
-    flex-basis: 240px !important;
+    width: 200px !important;
+    -webkit-flex-basis: 200px !important;
+    flex-basis: 200px !important;
     text-align: left !important;
     margin-bottom: 2em !important;
+    flex-shrink: 0;
   }
   #toolMenuWrap .#{$namespace}collapseTools.js-toggle-nav {
     border-right-color: transparent;
