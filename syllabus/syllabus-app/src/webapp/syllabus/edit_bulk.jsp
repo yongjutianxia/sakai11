@@ -232,12 +232,6 @@
 							<h:inputText styleClass="timeInput timeInputEnd" value="#{SyllabusTool.bulkEntry.endTimeString}" id="dataEndTime"/>
 							<f:verbatim><img src="/library/image/silk/calendar_view_month.png" onclick="$('.timeInputEnd').focus();"/></f:verbatim>
 						</h:panelGroup>
-						<h:panelGroup styleClass="shorttext" rendered="#{SyllabusTool.calendarExistsForSite}">
-							<h:selectBooleanCheckbox id="linkCalendar" value="#{SyllabusTool.bulkEntry.linkCalendar}" />
-							<h:outputLabel for="linkCalendar">
-								<h:outputText value="#{msgs.linkcalendartitle}"/>
-							</h:outputLabel>
-						</h:panelGroup>
 						<h:panelGroup styleClass="shorttext">
 							<h:selectBooleanCheckbox id="monday" value="#{SyllabusTool.bulkEntry.monday}" />
 							<h:outputText value="#{msgs.monday}"/>

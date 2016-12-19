@@ -303,18 +303,6 @@
 							</h:inputText>
 							<f:verbatim><img src="/library/image/silk/calendar_view_month.png" onclick="$(this).prev().focus();"/></f:verbatim>
 						</h:column>
-						<h:column rendered="#{! SyllabusTool.displayNoEntryMsg && SyllabusTool.calendarExistsForSite}">
-							<f:facet name="header">
-								<h:panelGroup>
-									<h:outputText value="#{msgs.mainEditHeaderInCalendar}"/>
-									<f:verbatim>
-										<br/>
-										<input type="checkbox" onchange="toggleAllCalendarOptions(this);"/>
-									</f:verbatim>
-								</h:panelGroup>
-							</f:facet>
-							<h:selectBooleanCheckbox styleClass="calendarBox" value="#{eachEntry.entry.linkCalendar}" title="#{msgs.selectThisCheckBoxCal}" onchange="checkStartEndDates(this)"/>
-						</h:column>
 						<h:column rendered="#{! SyllabusTool.displayNoEntryMsg}">
 							<f:facet name="header">
 								<h:panelGroup>

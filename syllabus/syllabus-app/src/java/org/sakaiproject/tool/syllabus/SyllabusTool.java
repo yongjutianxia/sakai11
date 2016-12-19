@@ -162,6 +162,10 @@ public class SyllabusTool
       
       attachments.clear();
 
+      ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
+      returnToMain = "true".equals(context.getRequestParameterMap().get("returnToMain"));
+
       SyllabusData sd = syllabusManager.getSyllabusData(in_entry.getSyllabusId().toString());
       Set tempAttach = syllabusManager.getSyllabusAttachmentsForSyllabusData(sd);
       
@@ -373,6 +377,8 @@ public class SyllabusTool
   
   private ArrayList allAttachments = new ArrayList();
   
+  private boolean returnToMain = false;
+
   private ArrayList prepareRemoveAttach = new ArrayList();
   
   private List filePickerList;
@@ -1462,6 +1468,8 @@ public class SyllabusTool
 
   public String processReadCancel()
   {
+    ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
     //logger.info(this + ".processReadCancel() in SyllabusTool");
 
     try
@@ -1490,7 +1498,11 @@ public class SyllabusTool
     attachments.clear();
     oldAttachments.clear();
 
-    return "main_edit";
+    if ("true".equals(context.getRequestParameterMap().get("returnToMain"))) {
+      return "main";
+    } else {
+      return "main_edit";
+    }
   }
 
   public String processReadSave() throws PermissionException
@@ -1577,7 +1589,12 @@ public class SyllabusTool
       attachments.clear();
       oldAttachments.clear();
 
-      return "main_edit";
+      ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+      if ("true".equals(context.getRequestParameterMap().get("returnToMain"))) {
+        return "main";
+      } else {
+        return "main_edit";
+      }
     }
     catch (Exception e)
     {
@@ -1675,7 +1692,12 @@ public class SyllabusTool
           attachments.clear();
           oldAttachments.clear();
 
-          return "main_edit";
+          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+          if ("true".equals(context.getRequestParameterMap().get("returnToMain"))) {
+            return "main";
+          } else {
+            return "main_edit";
+          }
         }
       }
     }
@@ -2442,6 +2464,10 @@ public class SyllabusTool
       displayTitleErroMsg = false;
       return "add_attach";
     }
+  }
+
+  public final boolean isReturnToMain() {
+    return returnToMain;
   }
 
   public final ArrayList getAllAttachments()
