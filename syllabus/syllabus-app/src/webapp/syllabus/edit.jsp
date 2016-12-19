@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
 <%@ taglib uri="http://sakaiproject.org/jsf/syllabus" prefix="syllabus" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
 <f:view>
 <jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
@@ -188,7 +189,11 @@
 						</h:selectOneListbox>
 					</h:panelGroup>
 				</h:panelGrid>
-				
+
+				<c:if test="${SyllabusTool.returnToMain}">
+					<f:verbatim><input type="hidden" name="returnToMain" value="true" /></f:verbatim>
+				</c:if>
+
 				<sakai:button_bar>
 					<h:commandButton
 						action="#{SyllabusTool.processEditPost}"

@@ -95,7 +95,7 @@
 				</label>
 				<sakai:inputRichText textareaOnly="#{SyllabusTool.mobileSession}" rows="20" cols="120" id="syllabus_compose_read" value="#{SyllabusTool.syllabusDataAsset}" />
 			</p>	
-			<div class="checkbox">
+			<div class="checkbox" style="display: none">
 				<h:selectOneRadio value="#{SyllabusTool.syllabusDataView}"  layout="pageDirection" title="#{msgs.publicPrivate}">
 					<f:selectItem itemValue="no" itemLabel="#{msgs.noPrivate}"/>
 					<f:selectItem itemValue="yes" itemLabel="#{msgs.yesPublic}"/>
@@ -185,12 +185,6 @@
 							</h:outputLabel>
 							<h:inputText styleClass="dateInput datInputEnd" value="#{SyllabusTool.syllabusDataEndDate}" id="dataEndDate"/>
 							<f:verbatim><img src="/library/image/silk/calendar_view_month.png" onclick="$('.datInputEnd').focus();"/></f:verbatim>
-						</h:panelGroup>
-						<h:panelGroup styleClass="shorttext" rendered="#{SyllabusTool.calendarExistsForSite}">
-							<h:selectBooleanCheckbox id="linkCalendar" value="#{SyllabusTool.syllabusDataLinkCalendar}" />
-							<h:outputLabel for="linkCalendar">
-								<h:outputText value="#{msgs.linkcalendartitle}"/>
-							</h:outputLabel>
 						</h:panelGroup>
 					</h:panelGrid>
 
