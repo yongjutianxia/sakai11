@@ -5313,9 +5313,9 @@ public class SakaiScript extends AbstractWebService {
         List<LessonMigration> lessonMigrations = new ArrayList<>();
 
         try {
-            lessonMigrations.add(new LessonMigration("GLICSS.css", (5 * 1024), (7 * 1024), "GLI.css"));
+            lessonMigrations.add(new LessonMigration("GLICSS.css", 0, Long.MAX_VALUE, "GLI.css"));
             lessonMigrations.add(new LessonMigration("buttons.css", 0, Long.MAX_VALUE, "buttons.css"));
-            lessonMigrations.add(new LessonMigration("default.css", 0, Long.MAX_VALUE, "default.css"));
+            lessonMigrations.add(new LessonMigration("default.css", (5 * 1024), (7 * 1024), "default.css"));
             lessonMigrations.add(new LessonMigration("default_temp-11.css", 0, Long.MAX_VALUE, "default_temp-11.css"));
             lessonMigrations.add(new LessonMigration("Landingpage_importantdates.css", 0, Long.MAX_VALUE, "Landingpage_importantdates.css"));
             lessonMigrations.add(new LessonMigration("LandingPage_purple.css", 0, Long.MAX_VALUE, "LandingPage_purple.css"));
