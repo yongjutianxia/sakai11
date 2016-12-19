@@ -72,9 +72,9 @@
 				addItemTitle: $("#messages #addItemTitle").html(),
 				draftTitlePrefix: $("#messages #draftTitlePrefix").html()
 			};
-		setupAccordion('<%= org.sakaiproject.util.Web.escapeJavascript(thisId)%>',<h:outputText value="#{SyllabusTool.editAble == 'true' ? true : false}"/>, msgs, 
+		setupAccordion('<%= org.sakaiproject.util.Web.escapeJavascript(thisId)%>',<h:outputText value="#{SyllabusTool.editAble == 'nyu_says_no' ? true : false}"/>, msgs, 
 							'<h:outputText value="#{SyllabusTool.openDataId}"/>');
-		if(<h:outputText value="#{SyllabusTool.editAble == 'true'}"/>){
+		if(<h:outputText value="#{SyllabusTool.editAble == 'nyu_says_no'}"/>){
 			setupEditable(msgs, '<%= org.sakaiproject.util.Web.escapeJavascript(thisId)%>');
 			//draft/publish toggle:
 			setupToggleImages("publish", "publish", "publishOn", "publishOff", msgs);
@@ -218,12 +218,11 @@
 						<f:verbatim>"><h3></f:verbatim>
 						<f:subview id="actionIcons" rendered="#{SyllabusTool.editAble == 'true'}">
 							<h:graphicImage url="/images/cursor_drag_arrow.png" title="#{msgs.dragToReorder}"  styleClass="actionIcon"/>
+							<h:commandLink action="#{eachEntry.processListRead}" title="#{msgs.goToItem} #{eachEntry.entry.title}" styleClass="actionIcon">
+							  <h:graphicImage url="/images/pencil.png"/>
+							</h:commandLink>
 							<h:graphicImage url="/images/lightbulb.gif" styleClass="actionIcon publish publishOn" title="#{msgs.clickToUnpublish}" style="#{eachEntry.status == eachEntry.draftStatus ? 'display:none' : ''}"/>
 							<h:graphicImage url="/images/lightbulb_off.gif" styleClass="actionIcon publish publishOff" title="#{msgs.clickToPublish}" style="#{eachEntry.status == eachEntry.draftStatus ? '' : 'display:none'}"/>
-							<h:graphicImage url="/images/calendar_view_month.png" rendered="#{SyllabusTool.calendarExistsForSite}" title="#{msgs.clickToRemoveCal}" styleClass="actionIcon linkCal linkCalOn" style="#{eachEntry.entry.linkCalendar ? '' : 'display:none'}"/>
-							<h:graphicImage url="/images/calendar_view_month_no.png" rendered="#{SyllabusTool.calendarExistsForSite}" title="#{msgs.clickToAddCal}" styleClass="actionIcon linkCal linkCalOff" style="#{eachEntry.entry.linkCalendar ? 'display:none' : ''}"/>
-							<h:graphicImage url="/images/world.png" title="#{msgs.clickToHideWorld}" styleClass="actionIcon linkWorld linkWorldOn" style="#{eachEntry.entry.view == 'yes' ? '' : 'display:none'}"/>
-							<h:graphicImage url="/images/world_off.png" title="#{msgs.clickToAddWorld}" styleClass="actionIcon linkWorld linkWorldOff" style="#{eachEntry.entry.view == 'no' ? '' : 'display:none'}"/>
 							<f:verbatim>
 								<img src="/library/image/silk/cross.png" class="actionImage delete" onclick="showConfirmDeleteHelper(this, event);" title="</f:verbatim><h:outputText value="#{msgs.clickToDelete}"/><f:verbatim>">
 							</f:verbatim>
@@ -249,7 +248,7 @@
 									</h:outputText>
 								<f:verbatim></span></f:verbatim>
 							</f:subview>
-							<f:subview id="dateInstructor" rendered="#{SyllabusTool.editAble == 'true'}">
+							<f:subview id="dateInstructor" rendered="#{SyllabusTool.editAble == 'nyu_says_no'}">
 								<f:verbatim><span style="font-weight: normal; color: grey; float: right"></f:verbatim>
 									<h:outputText styleClass="editItem startTimeInput" value="#{eachEntry.entry.startDate}">
 										<f:convertDateTime type="date" pattern="yyyy/MM/dd h:mm a"/>
@@ -279,7 +278,7 @@
 									<h:outputLink styleClass="attachment" value="#{eachAttach.url}" target="_blank" title="#{msgs.openLinkNewWindow}">
 										<h:outputText value=" "/><h:outputText value="#{eachAttach.name}"/>
 									</h:outputLink>
-									<f:subview id="removeItem" rendered="#{SyllabusTool.editAble == 'true'}">
+									<f:subview id="removeItem" rendered="#{SyllabusTool.editAble == 'nyu_says_no'}">
 										<f:verbatim>
 										&nbsp;
 											<a attachmentId='</f:verbatim><h:outputText value="#{eachAttach.syllabusAttachId}"/><f:verbatim>' 
@@ -290,7 +289,7 @@
 									</f:subview>
 								</h:column>
 							</h:dataTable>
-							<f:subview id="instructorAddAttach" rendered="#{SyllabusTool.editAble == 'true'}">
+							<f:subview id="instructorAddAttach" rendered="#{SyllabusTool.editAble == 'nyu_says_no'}">
 								<f:verbatim>
 									<br/>
 								</f:verbatim>

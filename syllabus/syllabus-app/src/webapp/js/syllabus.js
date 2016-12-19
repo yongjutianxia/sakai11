@@ -22,10 +22,10 @@ function setupAccordion(iframId, isInstructor, msgs, openDataId){
 			if(ui.newHeader[0]){
 				if($("#" + iframId, window.parent.document).parents('html, body').size() > 0){
 					//we are in the portal, grab parent
-					$("#" + iframId, window.parent.document).parents('html, body').animate({scrollTop: $(ui.newHeader[0]).offset().top});
+					//$("#" + iframId, window.parent.document).parents('html, body').animate({scrollTop: $(ui.newHeader[0]).offset().top});
 				}else{
 					//we are in tool view w/o portal, grab html/body
-					$('html, body').animate({scrollTop: $(ui.newHeader[0]).offset().top});
+					//$('html, body').animate({scrollTop: $(ui.newHeader[0]).offset().top});
 				}
 			}
 		}
