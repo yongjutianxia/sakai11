@@ -111,7 +111,7 @@ public class ShowScormProducer implements ViewComponentProducer, NavigationCaseR
 			view.setSendingPage(backpath.pageId);
 			view.setItemId(backpath.pageItemId);
 
-			UIInternalLink.make(tofill, "return", messageLocator.getMessage("simplepage.return"), view);
+			UIInternalLink.make(tofill, "return", messageLocator.getMessage("simplepage.go-back"), view);
 		} catch (IndexOutOfBoundsException e) {
 		}
 

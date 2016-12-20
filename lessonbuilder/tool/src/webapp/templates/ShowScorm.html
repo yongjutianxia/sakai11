@@ -13,18 +13,7 @@
     </head>
     <body rsf:id="scr=sakai-body">
 	<div class="portletBody" id="outer" role="application" style="z-index:1">
-            <div class="neoPortletTitleWrap">
-                <div class="portletTitle">
-                    <div class="title">
-                        <a href="#" rsf:id="resetbutton" class="reload">
-                            <img rsf:id="resetimage" src="/library/image/transparent.gif"/>
-                        </a>
-                	<h2>
-                	    <span rsf:id="pagetitle"></span>
-                        </h2>
-                    </div>
-                </div>
-            </div>
+            <h2 style="display: block"><span rsf:id="pagetitle"></span></h2>
 
             <p rsf:id="scorm-player-not-available"><span rsf:id="msg=simplepage.scorm.not-available"></span></p>
             <p rsf:id="scorm-item-status"></p>
@@ -44,7 +33,11 @@
                 <a target="_blank" class="scorm-reportage-link scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" id="scorm-reportage-link" rsf:id="scorm-reportage-link"></a>
             </div>
 
-	    <a href="#" id="scorm-return-btn" rsf:id="return" class="scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span rsf:id="msg=simplepage.go-back"></span></a>
+            <ul class="navIntraTool">
+                <li class="bottomButtons">
+                    <a href="#" id="scorm-return-btn" rsf:id="return" class="scorm-button usebutton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span rsf:id="msg=simplepage.go-back"></span></a>
+                </li>
+            </ul>
 
             <span id="scorm-player-link" rsf:id="scorm-player-link" style="display: none"></span>
         </div>

@@ -1895,10 +1895,9 @@ $(document).ready(function() {
 			$("#scorm-item-id").val(-1);
 			var position =  $(this).position();
 			$("#add-scorm-dialog").prev().children(".ui-dialog-title").text($(this).text());
-			$("#add-scorm-dialog").dialog("option", "position", [position.left, position.top]);
 			$("#scorm-error-container").hide();
 			$("#add-scorm-dialog").dialog('open');
-			checksize($("#add-scorm-dialog"));
+			setupdialog($("#add-scorm-dialog"));
 			return false;
 		});
 
