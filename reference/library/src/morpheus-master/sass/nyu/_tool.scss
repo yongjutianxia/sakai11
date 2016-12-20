@@ -291,6 +291,41 @@ form[name^='announcementListForm'] .instruction {
 .#{$namespace}toolBody.#{$namespace}toolBody--sakai-iframe-site {
   padding: 10px 0;
 }
+// allow synoptic tables to wrap and ensure content can fit within a narrow viewport
+body {
+  #synopticForm,
+  .sakai-synoptic-announcements #announcementListForm {
+    .table-responsive {
+      table {
+        td, th {
+          white-space: normal !important;
+        }
+      }
+    }
+  }
+  @media #{$tablet} {
+    .nyu-synoptic-calendar-summary {
+      .calRight {
+        input {
+          padding: 4px 5px !important;
+          margin: 0 2px 0 0 !important;
+        }
+      }
+    }
+    .sakai-synoptic-announcements {
+      .listNav {
+        .inlineForm {
+          input, select {
+            margin: 2px 0 0 !important;
+          }
+          input {
+            padding: 4px 8px !important;
+          }
+        }
+      }
+    }
+  }
+}
 
 // -------------------------------------------------------------------------------------------------------------------
 //  Changes to the Chat Room tool

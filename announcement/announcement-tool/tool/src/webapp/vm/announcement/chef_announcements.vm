@@ -43,8 +43,11 @@
 		
 
 
-	
+#if ($toolId == "sakai.synoptic.announcement")
+<div class="portletBody container-fluid sakai-synoptic-announcements">
+#else
 <div class="portletBody container-fluid">
+#end
 	## Special header for the synoptic announcements tool
 	#if ($toolId == "sakai.synoptic.announcement")
 		<div class="nyu-synoptic-announcements Mrphs-multipleTools">
@@ -186,7 +189,7 @@
 						#end
 					</div>
 				</div> ##end navPanel
-				<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
+				<form id="announcementListForm" name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
 				<div class="table-responsive">
 					<table class="table table-hover table-striped table-bordered" border="0" cellspacing="0" summary="$tlang.getString('gen.tablecaptionworksp')">
 						<tr>
@@ -531,7 +534,7 @@
 								#end
 							</div>
 						</div> ##end navPanel
-						<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
+						<form id="announcementListForm" name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
 						<div class="table-responsive">
 							<table class="table table-hover table-striped table-bordered" border="0" cellspacing="0" summary="$tlang.getString('gen.tablecaptionsite')">
 								<tr>
