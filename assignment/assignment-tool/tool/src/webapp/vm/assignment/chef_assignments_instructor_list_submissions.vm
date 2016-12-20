@@ -295,6 +295,8 @@
 			#end
 
 			#if ($!value_SubmissionType != 4)
+			## NYU disables this feedback mode
+			#if (false)
 			<div id="sendFeedbackPanel">
 				<p class="discTria">
 					<a href="javascript:void(0)" onclick="ASN.toggleSendFeedbackPanel();">
@@ -337,6 +339,7 @@
 					</div>
 				</div>
 			</div>
+			#end
 			<input type="hidden" name = "allowResToggle" id = "allowResToggle" value="" />
 			<div id="allowResubmissionPanel">
 				<p class="discTria">
