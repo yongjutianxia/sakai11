@@ -19,9 +19,11 @@
                 <h:outputText value="#{msgs.import_preview_additional_text}" escape="false"/>
             </p>
 
-             <p class="instruction">
-                <h:outputText value="#{msgs.import_preview_nomatch}" escape="false" rendered="#{spreadsheetUploadBean.hasUnknownUser}"/>
-            </p>
+	    <h:panelGroup rendered="#{spreadsheetUploadBean.hasUnknownUser}">
+	             <p class="instruction">
+	                <h:outputText value="#{msgs.import_preview_nomatch}" escape="false" rendered="#{spreadsheetUploadBean.hasUnknownUser}"/>
+	            </p>
+	    </h:panelGroup>
 
             <%@ include file="/inc/globalMessages.jspf"%>
             <p/>

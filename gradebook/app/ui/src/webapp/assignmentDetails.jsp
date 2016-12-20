@@ -290,10 +290,12 @@
 			<%@ include file="/inc/gradingEventLogs.jspf"%>
 		</t:aliasBean>
 
-		<p class="instruction">
+		<h:panelGroup rendered="#{assignmentDetailsBean.emptyEnrollments}">
+		    <p class="instruction">
 			<h:outputText value="#{msgs.assignment_details_no_enrollments}" rendered="#{assignmentDetailsBean.emptyEnrollments}" />
-		</p>
-		
+		    </p>
+		</h:panelGroup>
+
 		<div id="buttonDiv2" class="act gbButtonBar">
 			<h:commandButton
 				id="saveButton2"

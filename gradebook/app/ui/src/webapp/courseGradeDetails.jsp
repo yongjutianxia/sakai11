@@ -142,9 +142,11 @@
 			<%@ include file="/inc/gradingEventLogs.jspf"%>
 		</t:aliasBean>
 
-		<p class="instruction">
-			<h:outputText value="#{msgs.course_grade_details_no_enrollments}" rendered="#{courseGradeDetailsBean.emptyEnrollments}" />
-		</p>
+		<h:panelGroup rendered="#{courseGradeDetailsBean.emptyEnrollments}">
+			<p class="instruction">
+				<h:outputText value="#{msgs.course_grade_details_no_enrollments}" rendered="#{courseGradeDetailsBean.emptyEnrollments}" />
+			</p>
+		</h:panelGroup>
 
 		</div> <!-- END OF INDNT1 -->
         <div class="act">

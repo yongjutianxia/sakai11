@@ -120,9 +120,11 @@
 			<%/* Assignment columns will be dynamically appended, starting here. */%>
 		</gbx:spreadsheetUI>
 
-		<p class="instruction">
-			<h:outputText value="#{msgs.roster_no_enrollments}" rendered="#{rosterBean.emptyEnrollments}" />
-		</p>
+		<h:panelGroup rendered="#{rosterBean.emptyEnrollments}">
+			<p class="instruction">
+				<h:outputText value="#{msgs.roster_no_enrollments}" rendered="#{rosterBean.emptyEnrollments}" />
+			</p>
+		</h:panelGroup>
 
 	  </h:form>
 	  	<h:panelGrid styleClass="instruction" cellpadding="0" cellspacing="0" columns="1">
