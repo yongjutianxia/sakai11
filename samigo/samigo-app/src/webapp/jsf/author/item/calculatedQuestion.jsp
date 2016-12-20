@@ -148,8 +148,8 @@ confirmation dialog
     <div class="mathjax-warning" style="display: none;">
       <strong>Acceptable Characters</strong>
       <div class="alert alert-warning">
-        <strong>NOTE</strong>: LaTeX and AsciiMath markup may conflict with notation required for this question type.
-        We recommend using the WIRIS or MathML plugins in the editor for these question types.
+        LaTeX and AsciiMath markup may conflict with notation required for this question type.
+        Use the <a href="http://www.nyu.edu/servicelink/041310214003342" target="_blank">WIRIS or MathML plugins</a> in the editor instead.
       </div>
     </div>
 		<label><h:outputText value="#{authorMessages.calc_question_example_label}"/></label>
