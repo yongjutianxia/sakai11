@@ -1,6 +1,6 @@
 <%-- For instructor view, generate the breadcrumb trail --%>
 
-<f:verbatim><span class="breadcrumb"><h3></f:verbatim>
+<f:verbatim><span class="breadCrumb"><h3></f:verbatim>
 
 	<%--  The root of the breadcrumb rendered here --%>
 	<h:commandLink action="#{bean.navigateToOverview}" value="#{msgs.breadcrumb_overview}" immediate="true" rendered="#{bean.breadcrumbPage eq 'overview'}" />

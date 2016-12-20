@@ -1,7 +1,7 @@
 <%-- Generate a breadcrumb trail for all pages except Instructor View --%>
 <%-- NOTE: Hierarchical trail, not an activity trail --%>
 
-<div class="breadcrumb"><h3>
+<div class="breadCrumb"><h3>
 
 	<%--  The root of the breadcrumb rendered here --%>
 	<h:commandLink action="#{bean.navigateToOverview}" value="#{msgs.breadcrumb_overview}" immediate="true" rendered="#{bean.breadcrumbPage eq 'overview'}" />
