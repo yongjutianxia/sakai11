@@ -60,12 +60,14 @@ module ProductionMode
   def user_is_admin?(user)
     user = @@userDirectoryService.get_user_by_eid(user)
 
-    admin_site = org.sakaiproject.component.cover.ServerConfigurationService.getString("nyu.serviceteam.adminSite");
+    admin_site = org.sakaiproject.component.cover.ServerConfigurationService.getString("nyu.serviceteam.adminSite")
     service_team = org.sakaiproject.component.cover.ServerConfigurationService.getString("nyu.serviceteam.role")
 
     admin_site_list = java.util.Vector.new
     admin_site_list.add(admin_site)
-    roles = org.sakaiproject.authz.cover.AuthzGroupService.getUserRoles(user.getId(), admin_site_list);
+
+    authzGroupService = org.sakaiproject.component.cover.ComponentManager.get("org.sakaiproject.authz.api.AuthzGroupService")
+    roles = authzGroupService.getUserRoles(user.getId(), admin_site_list)
 
     roles[admin_site] == service_team || roles[admin_site] == "admin"
   end
@@ -313,7 +315,7 @@ class Surrogates < Sinatra::Base
       strm = stream_for(conn, session)
 
       begin
-        conn.setAutoCommit(false);
+        conn.setAutoCommit(false)
 
         insert = conn.prepare_statement("insert into NYU_T_COURSE_ADMINS_ADHOC (stem_name, strm, netid, lastupddtm, operator_id, active)" +
                                         " VALUES (?, ?, ?, ?, ?, 'Y')")
@@ -538,7 +540,7 @@ class Surrogates < Sinatra::Base
 
 
   post '/remove_entry' do
-    remove_entry(params[:user], params[:course]);
+    remove_entry(params[:user], params[:course])
   end
 
 
