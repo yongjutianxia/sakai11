@@ -181,14 +181,17 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         //SAK-23418
         pasteFromWordRemoveFontStyles : false,
         pasteFromWordRemoveStyles : false,
-        autosave_saveDetectionSelectors : "form input[type='button'],form input[type='submit']",
-        //Delay for autosave
-        autosave_delay: 300,
-        //autosave_messageType can be "no" or "notification"
-        autosave_messageType : "statusbar", 
         //SAK-29598 - Add more templates to CK Editor
         templates_files: [basePath+"templates/default.js"],
         templates: 'customtemplates'
+    };
+
+    ckconfig.autosave = {
+        saveDetectionSelectors : "form input[type='button'],form input[type='submit']",
+        //Delay for autosave
+        delay: 300,
+        //autosave_messageType can be "no" or "notification"
+        messageType : "statusbar",
     };
 
     if (config != null && config.baseFloatZIndex) {
