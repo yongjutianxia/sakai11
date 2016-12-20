@@ -33,7 +33,7 @@
            			</td>
            			<td>
            		</f:verbatim>
-                <h:message for="title" styleClass="validationEmbedded" />
+                <h:message for="title" styleClass="text-danger" />
 				<f:verbatim>
            			</td>
            			</tr>
@@ -60,9 +60,9 @@
            			<td>
            		</f:verbatim>
            		<%/*
-                <h:message for="fileupload" styleClass="validationEmbedded" />
+                <h:message for="fileupload" styleClass="text-danger" />
            		*/%>
-                <h:message for="pickedFileDesc" styleClass="validationEmbedded" />
+                <h:message for="pickedFileDesc" styleClass="text-danger" />
                 <f:verbatim>
            			</td>
            			</tr>

@@ -79,9 +79,9 @@
                 	<h:commandButton actionListener="#{spreadsheetUploadBean.launchFilePicker}" immediate="true" value="#{msgs.upload_view_choose_file_button}" onclick="SPNR.disableControlsAndSpin( this, null );">
                 	</h:commandButton>
 					<%/*
-            		<h:message for="fileupload" styleClass="validationEmbedded" />
+            		<h:message for="fileupload" styleClass="text-danger" />
 					*/%>
-                	<h:message for="pickedFileDesc" styleClass="validationEmbedded" />
+                	<h:message for="pickedFileDesc" styleClass="text-danger" />
             		<f:verbatim>
             			</td>
             			</tr>

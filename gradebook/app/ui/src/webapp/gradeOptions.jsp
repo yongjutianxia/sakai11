@@ -99,7 +99,7 @@
 					onkeypress="return submitOnEnter(event, 'gbForm:saveButton');">
             <f:converter converterId="org.sakaiproject.gradebook.jsf.converter.NONTRAILING_DOUBLE" />
         </h:inputText>
-				<h:message for="mappingValue" styleClass="validationEmbedded" />
+				<h:message for="mappingValue" styleClass="text-danger" />
 			</h:column>
 		</t:dataTable>
 

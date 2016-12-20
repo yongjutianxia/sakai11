@@ -273,8 +273,8 @@
 							rendered="#{!assignmentDetailsBean.allCommentsEditable}"/>
 					</h:panelGroup>
 				</f:facet>
-				<h:message for="Score" styleClass="validationEmbedded gbMessageAdjustForContent"/>
-				<h:message for="LetterScore" styleClass="validationEmbedded gbMessageAdjustForContent"/>
+				<h:message for="Score" styleClass="text-danger gbMessageAdjustForContent"/>
+				<h:message for="LetterScore" styleClass="text-danger gbMessageAdjustForContent"/>
 				<t:div styleClass="gbTextOnRow" rendered="#{!scoreRow.commentEditable}">
 					<h:outputText value="#{scoreRow.commentText}"/>
 				</t:div>

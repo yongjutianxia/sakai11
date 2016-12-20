@@ -134,7 +134,7 @@
 				</t:div>
 			</h:column>
 			<h:column>
-				<h:message for="Grade" styleClass="validationEmbedded" />
+				<h:message for="Grade" styleClass="text-danger" />
 			</h:column>
 		</t:dataTable>
 

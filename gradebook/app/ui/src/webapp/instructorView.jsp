@@ -294,8 +294,8 @@
 	        <f:facet name="header">
 	        	<h:outputText value="#{msgs.inst_view_comments}"/>
 	        </f:facet>
-	        <h:message for="Score" styleClass="validationEmbedded gbMessageAdjustForContent"/>
-	        <h:message for="LetterScore" styleClass="validationEmbedded gbMessageAdjustForContent"/>
+	        <h:message for="Score" styleClass="text-danger gbMessageAdjustForContent"/>
+	        <h:message for="LetterScore" styleClass="text-danger gbMessageAdjustForContent"/>
 	        <h:outputText value="#{row.commentText}" rendered="#{row.assignment && row.commentText != null}" />
 		    </h:column>
 		    
