@@ -79,21 +79,34 @@ function dhtmlPopupHide(winName, e) {
 
 function dhtmlPopupShow(winName, e) {
 	var theDiv = dhtmlPopupGetDiv(winName);
+
 	dhtmlDebug("<br />e.clientX=" + e.clientX + ", dhtmlGetPageXOffset=" + dhtmlGetPageXOffset() + ", dhtmlGetInnerWidth=" + dhtmlGetInnerWidth() + ", dhtmlGetPageYOffset=" + dhtmlGetPageYOffset() + ", theDiv.offsetWidth=" + theDiv.offsetWidth + ", theDiv.offsetHeight=" + theDiv.offsetHeight);
-	if (e.clientX > 0) {
-		var maxLeftPos = dhtmlGetInnerWidth() - theDiv.offsetWidth;
-		var leftPos = e.clientX - 10;
-		if (leftPos > maxLeftPos) {
-			leftPos = maxLeftPos;
+
+	var maxLeftPos = dhtmlGetInnerWidth() - theDiv.offsetWidth;
+	var leftPos = e.target.getBoundingClientRect().left + 10;
+	if (leftPos > maxLeftPos) {
+		leftPos = maxLeftPos;
+	}
+	theDiv.style.left = (leftPos) + "px";
+	theDiv.style.top = e.target.getBoundingClientRect().top + 'px';
+
+	if (false) {
+		/* NOPE */
+		if (e.clientX > 0) {
+			var maxLeftPos = dhtmlGetInnerWidth() - theDiv.offsetWidth;
+			var leftPos = e.clientX - 10;
+			if (leftPos > maxLeftPos) {
+				leftPos = maxLeftPos;
+			}
+			theDiv.style.left = (leftPos) + "px";
+			theDiv.style.top = (dhtmlGetPageYOffset() + e.clientY + 15) + "px";
+		} else {
+			// The keyboard was used instead of the mouse, so we
+			// don't have a good starting position.
+				// Just center the popup for now.
+				theDiv.style.left = (dhtmlGetPageXOffset() + dhtmlGetInnerWidth()/2 - theDiv.offsetWidth/2) + "px";
+			theDiv.style.top = (dhtmlGetPageYOffset() + dhtmlGetInnerHeight()/2 - theDiv.offsetHeight/2) + "px";
 		}
-		theDiv.style.left = (leftPos) + "px";
-		theDiv.style.top = (dhtmlGetPageYOffset() + e.clientY + 15) + "px";
-	} else {
-		// The keyboard was used instead of the mouse, so we
-		// don't have a good starting position.
-		// Just center the popup for now.
-		theDiv.style.left = (dhtmlGetPageXOffset() + dhtmlGetInnerWidth()/2 - theDiv.offsetWidth/2) + "px";
-		theDiv.style.top = (dhtmlGetPageYOffset() + dhtmlGetInnerHeight()/2 - theDiv.offsetHeight/2) + "px";
 	}
 	theDiv.style.visibility = "visible";
 }
