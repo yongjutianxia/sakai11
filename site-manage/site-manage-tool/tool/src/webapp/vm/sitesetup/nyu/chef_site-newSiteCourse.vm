@@ -228,7 +228,7 @@ function redirectBasedOnSelection(){
 							<label for="course$courseNumber">$!sectionObject.title <span class="eid">$!sectionObject.eid</span></label>
 
 									#if ($!sectionObject.attached)
-										<span class="instruction site-already-linked-msg">A site including this course section already exists</span>
+										<span class="site-already-linked-msg">A site including this course section already exists</span>
 									#end
 									#set ($courseNumber = $courseNumber +1)
 								</li>

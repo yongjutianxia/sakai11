@@ -90,7 +90,7 @@ $(document).ready(function() {
 
             // add a cross-list list
             if ($(".cross-listed-sections", $targetListItem).length === 0) {
-                $targetListItem.append("<ul class='cross-listed-sections'><li class='instruction'>Cross listed:</li></ul>");
+                $targetListItem.append("<ul class='cross-listed-sections'><li class='text-info'>Cross listed:</li></ul>");
             }
 
             var $listItemEl = $("<li>");
