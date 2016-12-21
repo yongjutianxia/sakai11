@@ -22,6 +22,7 @@ meetings.checkAllMeetingAvailabilityId = null;
 meetings.checkRecordingAvailabilityId = null; 
 meetings.refreshRecordingListId = null;
 meetings.errorLog = new Object();
+meetings.browserTimezoneOffset = 0;
 
 (function ($) {
 
@@ -62,11 +63,11 @@ meetings.errorLog = new Object();
 
     $('#bbb_permissions_link').click(function (e) {
         return meetings.switchState('permissions');
-    });
+    }).hide();
 
     $('#bbb_recordings_link').click(function (e) {
         return meetings.switchState('recordings');
-    }).show();
+    }).hide();
     
     var settingsCallback = function () {
 
@@ -74,7 +75,7 @@ meetings.errorLog = new Object();
             meetings.userPerms = new BBBPermissions(meetings.currentUser.permissions);
             meetings.startupArgs.timezoneoffset = arg.timezoneoffset;
             var d = new Date();
-            meetings.browserTimeZoneOffset = d.getTimezoneOffset() * 60 * 1000 * -1;
+            meetings.browserTimezoneOffset = d.getTimezoneOffset() * 60 * 1000 * -1;
 
             // Now switch into the requested state
             if (meetings.currentUser != null) {
@@ -108,15 +109,29 @@ meetings.switchState = function (state, arg) {
     
     if ('currentMeetings' === state) {
     	$("#bbb_home_link").parent().addClass('current');
-        $('#bbb_recordings_link').parent().parent().show();
         
         // show permissions links only if site maintainer
+        $('#bbb_permissions_link').unbind('click');
         if (meetings.userPerms.bbbAdmin) {
             $('#bbb_permissions_link').parent().parent().show();
+            $('#bbb_permissions_link').click(function (e) {
+                return meetings.switchState('permissions');
+            }).show();
         } else {
             $('#bbb_permissions_link').parent().parent().hide();
         }
-        
+
+        // show recordings link only if site maintainer or if has specific view permission
+        $('#bbb_recordings_link').unbind('click');
+        if (!meetings.userPerms.bbbAdmin && !meetings.userPerms.bbbRecordingView) {
+            $('#bbb_recordings_link').parent().parent().hide();
+        } else {
+            $('#bbb_recordings_link').parent().parent().show();
+            $('#bbb_recordings_link').click(function (e) {
+                return meetings.switchState('recordings');
+            }).show();
+        }
+
         if (meetings.userPerms.bbbDeleteAny) {
             $('#bbb_end_meetings_link').parent().parent().show();        
         } else {
@@ -259,8 +274,8 @@ meetings.switchState = function (state, arg) {
         var now_local = new Date(parseInt(now_utc.getTime()) + parseInt(meetings.startupArgs.timezoneoffset));
         var now_local_plus_1 = new Date(parseInt(now_utc.getTime()) + parseInt(meetings.startupArgs.timezoneoffset) + 3600000);
 
-        var startDate = (!isNew && meeting.startDate) ? new Date(parseInt(meeting.startDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset) + ( (new Date()).dst() && !(new Date( parseInt(meeting.startDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(meeting.startDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? (3600000 * -1): 0 ) ) : now_local;
-        var endDate = (!isNew && meeting.endDate) ? new Date(parseInt(meeting.endDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset) + ( (new Date()).dst() && !(new Date( parseInt(meeting.endDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(meeting.endDate) - parseInt(meetings.browserTimeZoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? (3600000 * -1): 0 ) ) : now_local_plus_1;
+        var startDate = (!isNew && meeting.startDate) ? new Date(parseInt(meeting.startDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset) + ( (new Date()).dst() && !(new Date( parseInt(meeting.startDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(meeting.startDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? (3600000 * -1): 0 ) ) : now_local;
+        var endDate = (!isNew && meeting.endDate) ? new Date(parseInt(meeting.endDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset) + ( (new Date()).dst() && !(new Date( parseInt(meeting.endDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? 3600000: !(new Date()).dst() && (new Date( parseInt(meeting.endDate) - parseInt(meetings.browserTimezoneOffset) + parseInt(meetings.startupArgs.timezoneoffset))).dst()? (3600000 * -1): 0 ) ) : now_local_plus_1;
 
         // Setup time picker
         var zeropad = function (num) { return ((num < 10) ? '0' : '') + num; }
@@ -299,6 +314,30 @@ meetings.switchState = function (state, arg) {
     	$("#bbb_permissions_link").parent().addClass('current');
 
         meetings.utils.render('bbb_permissions_template', {'permissions': meetings.utils.getSitePermissions()}, 'bbb_content');
+
+        if ($("table")) {
+            $("table").each(function() {
+                var $this = $(this);
+                var newrows = [];
+                $this.find("tr").each(function(){
+                    var i = 0;
+                    $(this).find("td, th").each(function(){
+                        i++;
+                        if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
+                        if(i == 1)
+                            newrows[i].append("<th style=\"text-align:center;font-weight: bold;\">" + this.innerHTML  + "</th>");
+                        else
+                            newrows[i].append("<td align=\"center\">" + this.innerHTML  + "</td>");
+                    });
+                });
+                $this.find("tr").remove();
+                $.each(newrows, function(){
+                    $this.append(this);
+                });
+            });
+            $('td:first-child').removeAttr('align');
+            $('th:first').css('text-align', 'left');
+        }
 
         $('#bbb_permissions_save_button').bind('click', function() {
            meetings.utils.setSitePermissions('.bbb_permission_checkbox', function() {
@@ -406,8 +445,6 @@ meetings.switchState = function (state, arg) {
             $('#bbb_content').empty();
         }
     } else if ('recordings_meeting' === state) {
-        $("#bbb_recordings_link").parent().addClass('current inactive');
-
         if (arg && arg.meetingId) {
             if (meetings.userPerms.bbbViewMeetingList) {
                 // Get meeting list

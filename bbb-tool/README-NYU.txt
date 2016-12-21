@@ -1,1 +1,1 @@
-This is branch 11.x (9153b3b52c1832f7e38e4b4c3ae527d643bf47e6) from https://github.com/blindsidenetworks/bigbluebutton-sakai.git
+This is tag v11.0.1 (a66d032b041a61ab3993d71002b322203191c474) from https://github.com/sakaicontrib/bbb-tool/tree/v11.0.1

@@ -96,10 +96,11 @@
             startMillis -= date.getTimezoneOffset() * 60 * 1000;
             startMillis += (parseInt(meetings.startupArgs.timezoneoffset) * -1);
             date.setTime(startMillis);
-            
+
             $('#startDate').val(startMillis);
         } else {
             $('#startDate').removeAttr('name');
+            $('#startDate').val(null);
             $('#addToCalendar').removeAttr('checked');
         }
         if ($('#endDate1').attr('checked')) {
@@ -111,7 +112,7 @@
             endMillis -= date.getTimezoneOffset() * 60 * 1000;
             endMillis += (parseInt(meetings.startupArgs.timezoneoffset) * -1);
             date.setTime(endMillis);
-            
+
             $('#endDate').val(endMillis);
         }else{
             $('#endDate').removeAttr('name');
@@ -121,22 +122,22 @@
         // Validation
         meetings.utils.hideMessage();
         var errors = false;
-        
+
         // Validate title field
         var meetingTitle = $('#bbb_meeting_name_field').val().replace(/^\s+/, '').replace(/\s+$/, '');
         if(meetingTitle == '') {
             meetings.utils.showMessage(bbb_err_no_title, 'warning');
         	errors = true;
         }
-        
+
         // Validate participants list
         if($('#selContainer tbody tr').length == 0) {
             meetings.utils.showMessage(bbb_err_no_participants, 'warning');
             errors = true;
         }
-        
+
         // Validate date fields
-        if($('#startDate1').attr('checked') && $('#endDate1').attr('checked')) {
+        if($('#startDate1').prop('checked') && $('#endDate1').prop('checked')) {
             if(endMillis == startMillis) {
                 meetings.utils.showMessage(bbb_err_startdate_equals_enddate, 'warning');
                 errors = true;
@@ -255,13 +256,11 @@
         recording.timezoneOffset = "GMT" + (offset > 0? "+": "") +(offset/3600000);
         
         if(meetings.currentUser.id === recording.ownerId) {
-            recording.canEdit = meetings.userPerms.bbbEditOwn || meetings.userPerms.bbbEditAny;
-            recording.canEnd = meetings.userPerms.bbbEditOwn || meetings.userPerms.bbbEditAny;
-            recording.canDelete = meetings.userPerms.bbbDeleteOwn || meetings.userPerms.bbbDeleteAny;
+            recording.canEdit = meetings.userPerms.bbbRecordingEditOwn || meetings.userPerms.bbbRecordingEditAny;
+            recording.canDelete = meetings.userPerms.bbbRecordingDeleteOwn || meetings.userPerms.bbbRecordingDeleteAny;
         }else{
-        	recording.canEdit = meetings.userPerms.bbbEditAny;
-        	recording.canEnd = meetings.userPerms.bbbEditAny;
-        	recording.canDelete = meetings.userPerms.bbbDeleteAny;
+        	recording.canEdit = meetings.userPerms.bbbRecordingEditAny;
+        	recording.canDelete = meetings.userPerms.bbbRecordingDeleteAny;
         }
 	};
 	
@@ -316,11 +315,11 @@
         $('#meeting_status_'+meeting.id).toggleClass(statusClass).html(statusText);
         // If meeting can be ended, update end action link in the view
         if( meeting.canEnd ){
-            var end_meetingClass = "end_meeting_hidden";
+            var end_meetingClass = "bbb_end_meeting_hidden";
             var end_meetingText = "";
             if( meeting.joinable && meeting.joinableMode == 'inprogress' ){
-                end_meetingClass = "end_meeting_shown";
-                end_meetingText = "&nbsp;|&nbsp;" + "<a href=\"javascript:;\" onclick=\"return meetings.utils.endMeeting('" + escape(meeting.name) + "','" + meeting.id + "');\" title=\"" + bbb_action_end_meeting_tooltip + "\">" + bbb_action_end_meeting + "</a>";
+                end_meetingClass = "bbb_end_meeting_shown";
+                end_meetingText = "&nbsp;|&nbsp;&nbsp;" + "<a href=\"javascript:;\" onclick=\"return meetings.utils.endMeeting('" + escape(meeting.name) + "','" + meeting.id + "');\" title=\"" + bbb_action_end_meeting_tooltip + "\">" + bbb_action_end_meeting + "</a>";
             }
             $('#end_meeting_'+meeting.id).toggleClass(end_meetingClass).html(end_meetingText);
         }
@@ -470,7 +469,7 @@
         		response = data;
             },
             error : function (xmlHttpRequest,status,error) {
-            	meetings.utils.handleError(bbb_err_get_meeting, xmlHttpRequest.status, xmlHttpRequest.statusText);
+            	meetings.utils.handleError(bbb_err_get_recording, xmlHttpRequest.status, xmlHttpRequest.statusText);
             }
         });
         return response;
@@ -575,7 +574,7 @@
                 if ( meeting.canEnd ){ 
                     $('#end_meeting_'+meeting.id)
                     .removeClass()
-                    .addClass('end_meeting_hidden');
+                    .addClass('bbb_end_meeting_hidden');
                 }
                 // Update for list
                 $('#meeting_status_'+meeting.id)
@@ -602,7 +601,7 @@
                 if ( meeting.canEnd ){ 
                     $('#end_meeting_'+meeting.id)
                     .removeClass()
-                    .addClass('end_meeting_shown');
+                    .addClass('bbb_end_meeting_shown');
                 }
                 // Update for list
                 $('#meeting_status_'+meeting.id)
@@ -621,7 +620,7 @@
                 if ( meeting.canEnd ){ 
                     $('#end_meeting_'+meeting.id)
                     .removeClass()
-                    .addClass('end_meeting_hidden');
+                    .addClass('bbb_end_meeting_hidden');
                 }
                 // Update for list
                 $('#meeting_status_'+meeting.id)
@@ -644,7 +643,7 @@
                 if ( meeting.canEnd ){ 
                     $('#end_meeting_'+meeting.id)
                     .removeClass()
-                    .addClass('end_meeting_hidden');
+                    .addClass('bbb_end_meeting_hidden');
                 }
                 // Update for list
                 $('#meeting_status_'+meeting.id)
@@ -702,14 +701,18 @@
             meetings.utils.showMessage(bbb_err_get_recording, 'warning');
         } else {
         	meetings.utils.hideMessage();	
-        	
-        	var htmlRecordings = "";
-        	if(recordings.length > 0)
-				htmlRecordings = '(<a href="javascript:;" onclick="return meetings.switchState(\'recordings_meeting\',{\'meetingId\':\''+ meetingId + '\'})" title="">' + bbb_meetinginfo_recordings(unescape(recordings.length)) + '</a>)&nbsp;&nbsp;';
-        	else
-            	htmlRecordings = "(" + bbb_meetinginfo_recordings(unescape(recordings.length)) + ")";
-        		
-        	$('#recording_link_'+meetingId).html(htmlRecordings);
+        	if (!meetings.userPerms.bbbRecordingView) {
+                $('#meeting_recordings').hide();
+            } else {
+                $('#meeting_recordings').show();
+            	var htmlRecordings = "";
+            	if(recordings.length > 0)
+    				htmlRecordings = '(<a href="javascript:;" onclick="return meetings.switchState(\'recordings_meeting\',{\'meetingId\':\''+ meetingId + '\'})" title="">' + bbb_meetinginfo_recordings(unescape(recordings.length)) + '</a>)&nbsp;&nbsp;';
+            	else
+                	htmlRecordings = "(" + bbb_meetinginfo_recordings(unescape(recordings.length)) + ")";
+            		
+            	$('#recording_link_'+meetingId).html(htmlRecordings);
+            }
 		}
     };
 
@@ -1042,7 +1045,7 @@
             // by the Basic template which are needed.
             // This approach should be replaced as soon Sakai offers the way to customize the toolbar 
             // in the same call.
-            sakai.editor.launch = (function (targetId, config, w, h) {
+            sakai.editor.editors.launch = (function (targetId, config, w, h) {
                 var original = sakai.editor.launch;
                 if( toolbarSet == 'BBB') {
                     return function (targetId, config, w, h) {
@@ -1201,7 +1204,7 @@
             if( typeof CKEDITOR != "undefined" ) {
                 var editor = CKEDITOR.instances[textAreaId];
                 if ( editor != null ) {
-                    editor.remove();
+                    editor.destroy();
                 }
             }
             //Launch the editor
@@ -1276,15 +1279,7 @@ Array.prototype.addUpdateMeeting = function (meeting){
     }
 };
 
-Date.prototype.toUTCString = function (){
-
-    var date = this;
-    var date_utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-    return date_utc.getTime();
-};
-
 Date.prototype.stdTimezoneOffset = function () {
-
     var jan = new Date(this.getFullYear(), 0, 1);
     var jul = new Date(this.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
