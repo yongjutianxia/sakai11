@@ -25,8 +25,12 @@
                     <label for="address-input-display">Google Group Address</label>
                     <div class="input-group">
                         <input id="address-input-display" class="form-control" type="text" readonly value="{{address}}">
-                        <a style="display: none" href="javascript:void(0);" class="input-group-addon btn btn-default copy-to-clipboard" title="Copy to clipboard"><span class="glyphicon glyphicon-copy"></span></a>
-                        <a target="_blank" href="{{url}}" class="input-group-addon btn btn-default go-to-group" title="Go to group"><span class="glyphicon glyphicon-globe"></span></a>
+                        <span class="input-group-btn">
+                            <a style="display: none" href="javascript:void(0);" class="btn btn-default address-action-btn copy-to-clipboard" title="Copy to clipboard"><span class="glyphicon glyphicon-copy"></span></a>
+                        </span>
+                        <span class="input-group-btn">
+                            <a target="_blank" href="{{url}}" class="btn btn-default address-action-btn go-to-group" title="Go to group"><span class="glyphicon glyphicon-globe"></span></a>
+                        </span>
                     </div>
                     <p style="display: none" class="help-block clipboard-help-text platform-default">Press Control-c to copy to clipboard</p>
                     <p style="display: none" class="help-block clipboard-help-text platform-mac">Press &#8984;-C to copy to clipboard</p>
