@@ -2047,3 +2047,14 @@ li.canEdit span.fa-plus.fa-edit-icon.plus-edit-icon:before {
 #pageBody div.Mrphs-pagebody .Mrphs-toolTitleNav .Mrphs-toolTitleNav__button_container {
     top: 28px !important;
 }
+
+@media (max-width: 1280px) {
+    #toolbar {
+        margin-top: 40px;
+    }
+
+    #pageBody div.Mrphs-pagebody .Mrphs-toolTitleNav .Mrphs-toolTitleNav__button_container {
+        top: 0px !important;
+    }
+
+}
