@@ -74,7 +74,7 @@
                 <configuration name="final.allowoutcomes" value="false"/>
                 <configuration name="final.contentlink" value="false"/>
                 <configuration name="final.splash" value="false"/>
-                <configuration name="final.fa-icon" value="false"/>
+                <configuration name="final.fa_icon" value="true"/>
 
                 <!-- Allow multiple instances of this tool within one site -->
                 <configuration name="allowMultipleInstances" value="true" />
@@ -137,6 +137,7 @@
                 <configuration name="final.allowoutcomes" value="true"/>
                 <configuration name="final.contentlink" value="true"/>
                 <configuration name="final.splash" value="true"/>
+                <configuration name="final.fa_icon" value="true"/>
         </tool>
         -->
 
@@ -192,6 +193,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 	  
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -256,6 +258,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
 
 	  
@@ -321,6 +324,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 	  
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -384,6 +388,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 	  
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -446,6 +451,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 	  
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -510,6 +516,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           
           <!-- added these in for completeness since they are checked -->
           <configuration name="final.resource" value="true"/>
@@ -573,6 +580,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
           
           <!-- added these in for completeness since they are checked -->
@@ -638,6 +646,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -703,6 +712,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -771,6 +781,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
 	  <!-- added these in for completeness since they are checked -->
 	  <configuration name="final.resource" value="true"/>
@@ -836,6 +847,7 @@
           <configuration name="final.allowoutcomes" value="true"/>
           <configuration name="final.allowlori" value="true"/>
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
 
 
 	  <!-- added these in for completeness since they are checked -->
@@ -929,6 +941,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="true"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -978,6 +991,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="true"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1027,6 +1041,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="true"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1076,6 +1091,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="true"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1126,6 +1142,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="false"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1175,6 +1192,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="false"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1224,6 +1242,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="false"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>
@@ -1273,6 +1292,7 @@
           <configuration name="imsti.allowlori" value="off"/>
           <configuration name="imsti.contentlink" />
           <configuration name="final.splash" value="true"/>
+          <configuration name="final.fa_icon" value="true"/>
           <configuration name="final.launch" value="true"/>
           <configuration name="final.xml" value="true"/>
           <configuration name="final.secret" value="true"/>

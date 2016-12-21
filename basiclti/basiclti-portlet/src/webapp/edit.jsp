@@ -175,7 +175,7 @@ if ( document.getElementById("UISwitcher") ) switchui();
 </p>
 <% } %>
 
-<% if ( allow(sp,"fa_icon") ) { %>
+<% if ( false && allow(sp,"fa_icon") ) { %>
 <p  class="shorttext" style="clear:none;">
 <label for="imsti_fa_icon"><%=rb.getString("tool.fa_icon") %></label>
 <input type="text" name="imsti.fa_icon" id="imsti_fa_icon" size="20" value="<%=ov.getProperty("imsti.fa_icon","")%>"> 
