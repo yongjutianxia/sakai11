@@ -20,7 +20,7 @@
 		$tlang.getString("newsc.selection")
 	</h4>
 	#if ($isCourseSite)
-		<p class="instruction site-setup-messages">You are setting up one course site that includes the following sections:</p>
+		<p class="site-setup-messages">You are setting up one course site that includes the following sections:</p>
 		<div class="step">
 		<ul class="indnt2 attachList">
 			#foreach ($eid in $selectedProviderCourse)

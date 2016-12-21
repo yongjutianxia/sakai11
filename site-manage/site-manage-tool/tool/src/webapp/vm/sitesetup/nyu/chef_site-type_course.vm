@@ -15,7 +15,7 @@
     <input type="text" id="courseSiteTypes" style="display:none" value="$courseSiteTypeStrings">
 
     #if ($alertMessage)<div class="alertMessage">$tlang.getString("sitetype.alert") $alertMessage</div>  #end
-    <p class="instruction site-setup-messages">
+    <p class="site-setup-messages">
         Choose your Academic Term:
     </p>
     <form name="typeform" id="typeform" action="#toolForm("$action")" method="post">

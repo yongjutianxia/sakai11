@@ -73,6 +73,7 @@
 }
 #findCoursePanels li label {
     line-height: 16px;
+    display: inline;
 }
 #short_description {
     width: 100%;
@@ -116,7 +117,6 @@
     vertical-align: middle !important;
 }
 #courseConfirmSubmitMessage .alertMessage {
-  background-image: url(/library/image/sakai/warn.gif);
   border: none;
   line-height: 16px;
   margin-top: 0;

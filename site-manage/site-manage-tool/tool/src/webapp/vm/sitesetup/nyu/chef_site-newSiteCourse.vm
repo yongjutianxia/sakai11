@@ -145,10 +145,10 @@ function redirectBasedOnSelection(){
 		</p>
 	#end
 	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>#end
-	<div class="alert site-setup-messages">
-		<p class="instruction">Please select the section(s) to be included in your course site. Selecting multiple sections will combine them into <b>one</b> course site.</p>
+	<div class="site-setup-messages">
+		<p class="">Please select the section(s) to be included in your course site. Selecting multiple sections will combine them into <b>one</b> course site.</p>
 		#if (!$site && $termCourseList && $termCourseList.size() > 1)
-			<p class="instruction"><b>Note:</b> You may only create one course site at one time. To create additional course sites you will need to re-enter the Set Up Course Sites tool.</p>
+			<p class=""><b>Note:</b> You may only create one course site at one time. To create additional course sites you will need to re-enter the Set Up Course Sites tool.</p>
 		#end
 	</div>
 	<form name = "addCourseForm" method="post" action="#toolForm($action)">
@@ -159,7 +159,7 @@ function redirectBasedOnSelection(){
 
 			#if ($!termCourseList && $!termCourseList.size() > 0)
 				#if (($!providerCourseList && $!providerCourseList.size() != 0) || ($!requestedCourseList && $!requestedCourseList.size() != 0))
-					<p class="instruction">$tlang.getString("nscourse.youmay")</p>
+					<p class="">$tlang.getString("nscourse.youmay")</p>
 				#end
 				
 				## display only subject, course number and section
@@ -256,7 +256,7 @@ function redirectBasedOnSelection(){
 			#if (!$site)
 				## if site creation is based on template, this could be the final step!
 				#if ($!basedOnTemplate) 
-					<div class="instruction" id ="nextInstructions">
+					<div class="" id ="nextInstructions">
 						<span id="templateNonCourseInstruction" style="display:block">$tlang.getString("sitetype.templatefinalstepinstruction")</span>
 					</div>
 				#end
