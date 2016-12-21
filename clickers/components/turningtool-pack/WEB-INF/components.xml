@@ -90,7 +90,7 @@
 
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.deviceIdEmailReminder"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-         init-method="init">
+        singleton="true" init-method="init">
         <property name="beanId">
             <value>deviceIdEmailReminder</value>
         </property>
