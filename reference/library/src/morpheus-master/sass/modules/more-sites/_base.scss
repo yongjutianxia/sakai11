@@ -374,7 +374,7 @@ ul.favoriteSiteList{
 		display: inline-block;
 	}
 
-	@media #{$phone}{
+	@media #{$tablet}{
 		.favorites-desktop{
 			display: none;
 		}
@@ -556,8 +556,37 @@ li.organizeFavorites:not(.active) .favoriteCountAndWarning.maxFavoritesReached {
 	border-right: solid 1px #ababab;
 }
 
+
 #favorite-settings-pane {
 	float: left;
 	width: 28%;
 	padding-left: 1em;
+}
+
+.favorites-visible-nonmobile {
+    display: block;
+}
+
+@media #{$tablet}{
+    #organize-favorites-pane {
+        border-right: none;
+    }
+
+    #favorite-settings-pane {
+        display: none;
+    }
+
+    .favorites-visible-nonmobile {
+        display: none;
+    }
+
+    ul.favoriteSiteList > li.favorites-max-marker {
+        display: none;
+    }
+
+    .organizeFavoritesList{
+        .site-favorite-is-past-max {
+	    opacity: 1.0;
+        }
+    }
 }
