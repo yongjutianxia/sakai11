@@ -240,6 +240,9 @@
 	  <property name="cmAdmin">
 	    <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
 	  </property>
+	  <property name="authzGroupService">
+	    <ref bean="org.sakaiproject.authz.api.AuthzGroupService"/>
+	  </property>
 	</bean>
 
 	<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.NYUCMSyncJob"
