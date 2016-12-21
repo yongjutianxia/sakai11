@@ -169,12 +169,14 @@ public class MathJaxEnabler
         }
 
         // NYU MathJax is either on or off for the entire site (all tools)
-        boolean isMathJaxEnabledForSite = (Boolean) state.getAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE);
-        ResourcePropertiesEdit props = site.getPropertiesEdit();
-        if (isMathJaxEnabledForSite) {
-            props.addProperty(SITE_PROP_MATHJAX_ALLOWED, Boolean.TRUE.toString());
-        } else {
-            props.removeProperty(SITE_PROP_MATHJAX_ALLOWED);
+        if (state.getAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE) != null) {
+            boolean isMathJaxEnabledForSite = (Boolean) state.getAttribute(STATE_KEY_IS_MATHJAX_ALLOWED_IN_SITE);
+            ResourcePropertiesEdit props = site.getPropertiesEdit();
+            if (isMathJaxEnabledForSite) {
+                props.addProperty(SITE_PROP_MATHJAX_ALLOWED, Boolean.TRUE.toString());
+            } else {
+                props.removeProperty(SITE_PROP_MATHJAX_ALLOWED);
+            }
         }
 
         return true;
