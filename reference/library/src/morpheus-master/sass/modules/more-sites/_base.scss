@@ -517,14 +517,15 @@ li.organizeFavorites:not(.active) .favoriteCountAndWarning.maxFavoritesReached {
 }
 
 
-.moresites-refresh-notification{
+#loginLinks .moresites-refresh-notification{
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
 	top: 13px;
-	border: 1px solid $tool-border-color;
+	border: 1px solid #EAC276;
 	z-index: 1000;
 	display: inline-block;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 
 	-webkit-transition: background-color 0.2s, color 0.2s;
 	-moz-transition: background-color 0.2s, color 0.2s;
@@ -532,17 +533,17 @@ li.organizeFavorites:not(.active) .favoriteCountAndWarning.maxFavoritesReached {
 	-o-transition: background-color 0.2s, color 0.2s;
 	transition: background-color 0.2s, color 0.2s;
 
-	background-color: #f7e084;
+	background-color: #F9EDBE;
 	color: #000 !important;
 	text-align: center;
 	padding: 6px 8px;
-	border-radius: 3px;
 	text-decoration: none;
 
 	a
 	{
 		display: inline-block; // to override flex on login links
-		color: $primary-color;
+		color: #191919;
+		text-decoration: underline !important;
 	}
 
 	@media #{$phone}{

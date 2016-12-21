@@ -520,7 +520,8 @@ $PBJQ(document).ready(function($){
 
     $PBJQ("#loginLinks").prepend(notification);
 
-    notification.css('top', ($PBJQ('.Mrphs-siteHierarchy').offset().top) + 'px');
+    var topnav = $PBJQ('.Mrphs-mainHeader');
+    notification.css('top', (topnav.offset().top + topnav.height()) + 'px');
   };
 
   var syncInProgress = false;
