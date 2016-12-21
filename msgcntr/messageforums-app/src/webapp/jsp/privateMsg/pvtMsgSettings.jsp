@@ -57,10 +57,10 @@
 		       <h:panelGroup rendered="#{PrivateMessagesTool.instructor}">
 		         <f:verbatim><h3></f:verbatim><h:outputText value="#{msgs.pvt_site_settings}" /><f:verbatim></h3></f:verbatim>
 				  
-                         <h:panelGroup styleClass="shorttext" rendered="#{!PrivateMessagesTool.emailCopyDisabled}">
+                         <h:panelGroup styleClass="shorttext" rendered="#{false && !PrivateMessagesTool.emailCopyDisabled}">
                            <h:outputLabel for="" ><h:outputText value="#{msgs.pvt_sendemailout}"/></h:outputLabel>
                          </h:panelGroup>
-                         <h:panelGroup rendered="#{!PrivateMessagesTool.emailCopyDisabled}">
+                         <h:panelGroup rendered="#{false && !PrivateMessagesTool.emailCopyDisabled}">
                            <h:selectOneRadio id="email_sendout" value="#{PrivateMessagesTool.sendToEmail}"
                                layout="pageDirection"  styleClass="checkbox inlineForm">
                              <f:selectItem itemValue="0" itemLabel="#{msgs.pvt_sendemail_0}" />

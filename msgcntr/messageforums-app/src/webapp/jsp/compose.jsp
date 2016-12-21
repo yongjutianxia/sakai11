@@ -170,16 +170,18 @@
 			</h:panelGroup>
 
 
-			 <h:panelGroup styleClass="shorttext" rendered= "#{PrivateMessagesTool.emailCopyOptional || PrivateMessagesTool.emailCopyAlways}">
-			   <h:outputLabel><h:outputText styleClass="pvt_send_cc" value="#{msgs.pvt_send_cc}"/></h:outputLabel>
-			 </h:panelGroup>
+                        <h:panelGroup rendered="#{false}">
+			    <h:panelGroup styleClass="shorttext" rendered= "#{PrivateMessagesTool.emailCopyOptional || PrivateMessagesTool.emailCopyAlways}">
+			        <h:outputLabel><h:outputText styleClass="pvt_send_cc" value="#{msgs.pvt_send_cc}"/></h:outputLabel>
+			    </h:panelGroup>
 
-			<h:panelGroup styleClass="checkbox" rendered= "#{PrivateMessagesTool.emailCopyOptional}">
-			  <h:selectBooleanCheckbox value="#{PrivateMessagesTool.booleanEmailOut}" id="send_email_out"></h:selectBooleanCheckbox>
-			  <h:outputLabel for="send_email_out"><h:outputText value="#{msgs.pvt_send_as_email}"/></h:outputLabel>
-			</h:panelGroup>
+			    <h:panelGroup styleClass="checkbox" rendered= "#{PrivateMessagesTool.emailCopyOptional}">
+			        <h:selectBooleanCheckbox value="#{PrivateMessagesTool.booleanEmailOut}" id="send_email_out"></h:selectBooleanCheckbox>
+			        <h:outputLabel for="send_email_out"><h:outputText value="#{msgs.pvt_send_as_email}"/></h:outputLabel>
+			    </h:panelGroup>
 
-			<h:outputText value="#{msgs.pvt_send_as_email_always}" rendered= "#{PrivateMessagesTool.emailCopyAlways}"></h:outputText>
+			    <h:outputText value="#{msgs.pvt_send_as_email_always}" rendered= "#{PrivateMessagesTool.emailCopyAlways}"></h:outputText>
+                        </h:panelGroup>
 
 				<h:outputLabel for="viewlist"><h:outputText value="#{msgs.pvt_label}" /></h:outputLabel>
 				<h:selectOneListbox size="1" id="viewlist" value="#{PrivateMessagesTool.selectedLabel}">
