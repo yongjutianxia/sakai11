@@ -234,14 +234,15 @@
 
         $('#modal-area .modal-body').empty().append(template);
         $('#modal-area .modal-title').html('Create new Google Group');
-        ModalHelper.modal($('#modal-area'));
 
-        $('#modal-area').on('shown.bs.modal', function () {
+        $('#modal-area').one('shown.bs.modal', function () {
             template.find('.description').focus();
             new AutoPopulateHandler(template, self.config);
             new CharacterCountHandler(template.find(":input.description"), template.find(".description-character-count"));
             new CharacterCountHandler(template.find(":input.address"), template.find(".group-address-character-count"));
         });
+
+        ModalHelper.modal($('#modal-area'));
     };
 
 
@@ -275,13 +276,14 @@
 
         $('#modal-area .modal-body').empty().append(template);
         $('#modal-area .modal-title').html('Edit Google Group');
-        ModalHelper.modal($('#modal-area'));
 
-        $('#modal-area').on('shown.bs.modal', function () {
+        $('#modal-area').one('shown.bs.modal', function () {
             template.find('.description').focus();
             new CharacterCountHandler(template.find(":input.description"), template.find(".description-character-count"));
             new DeleteHandler(template.find("form.delete-group-form"), template.find('.create-group-form :input.address').val());
         });
+
+        ModalHelper.modal($('#modal-area'));
     };
 
     exports.CRUDModal = CRUDModal;
