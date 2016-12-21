@@ -719,6 +719,11 @@ body {
     }
   }
 }
+body.active-more-sites {
+  .moresites-refresh-notification {
+    display: none;
+  }
+}
 
 // Fix for CLASSES-2330 in Lessons
 body.active-more-sites {
