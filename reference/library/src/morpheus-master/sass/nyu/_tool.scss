@@ -45,11 +45,21 @@
       }
     }
   }
+  ul.navIntraTool {
+    font-size: 0;
+  }
   .navIntraTool {
     padding-left: 0 !important;
     padding-right: 1em !important;
+
+    ul {
+      font-size: 0;
+    }
+
     li {
-      margin-right: -5px !important;
+      margin-right: -1px !important;
+      font-size: $nyu-tool-tab-text-size;
+      display: inline-block !important;
 
       a {
         height: $nyu-tool-tab-height;
@@ -113,6 +123,7 @@
         input[type="text"] {
           height: $nyu-tool-tab-height - 2;
           margin: 0px 0 0 6px;
+          border: 1px solid #EAEAEA;
 
           &.form-control {
             height: $nyu-tool-tab-height - 6;
@@ -804,7 +815,7 @@ body {
     }
     #gbForm {
       #headers {
-        line-height: 17px;
+      
       }
     }
   }
