@@ -1023,7 +1023,8 @@ public class TemplateBean implements Serializable
   
   public boolean getShowAssessmentTypes() {
 	  AuthorizationBean authorizationBean = (AuthorizationBean) ContextUtil.lookupBean("authorization");
-	  return authorizationBean.isSuperUser() || ServerConfigurationService.getBoolean("samigo.showAssessmentTypes", false);
+          // authorizationBean.isSuperUser() ||
+	  return ServerConfigurationService.getBoolean("samigo.showAssessmentTypes", false);
   }
 
   public boolean isSecureDeliveryAvailable() {
