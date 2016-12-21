@@ -9,15 +9,12 @@
   .icon-nyu-libraries {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e051';
+      content: '\e051' !important;
     }
   }
 
   .icon-nyu-ls-music-resources {
-    font-family: 'nyu-classes-icons' !important;
-    &:before {
-      content: '\e009';
-    }
+    @extend .fa-music;
   }
 
   // Workspace Home - globe icon
@@ -44,31 +41,31 @@
   .icon-sakai-bbb                       {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e03C';
+      content: '\e03C' !important;
     }
   }
   .icon-sakai-rsf-evaluation            {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e046';
+      content: '\e046' !important;
     }
   }
   .icon-sakai-scorm-tool                {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e602';
+      content: '\e602' !important;
     }
   }
   .icon-sakai-scorm-singlepackage-tool  {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e602';
+      content: '\e602' !important;
     }
   }
   .icon-sakai-turningtool               {
     font-family: 'nyu-classes-icons' !important;
     &:before {
-      content: '\e054';
+      content: '\e054' !important;
     }
   }
   .icon-sakai-groupergoogle             { @extend .fa-google; }
