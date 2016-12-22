@@ -95,7 +95,7 @@ $button-color-background-color: $nyu-button-primary-background-color;
 //$ok-color:                  #3c763d !default;
 //$ok-background-color:        lighten($ok-color, 45%) !default;
 //$warn-background-color:     #F6ECB7 !default;
-//$warn-color:                darken($warn-background-color, 35%) !default;
+$warn-color:                  darken($warn-background-color, 45%);
 //$error-background-color:    #f2dede !default;
 //$error-color:               darken($error-background-color, 30%) !default;
 

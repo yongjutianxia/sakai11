@@ -1,4 +1,18 @@
 // -------------------------------------------------------------------------------------------------------------------
+//  Tool Warning mixin
+// -------------------------------------------------------------------------------------------------------------------
+@mixin toolWarningMessage( $content ) {
+  content: $content;
+  background: $warn-background-color;
+  padding: 10px;
+  color: $warn-color;
+  border: 1px solid lighten($warn-color, 25%);
+  text-align: center;
+  display: block;
+  margin: 0 10px 20px;
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 //  Buttons
 // -------------------------------------------------------------------------------------------------------------------
 
@@ -802,14 +816,7 @@ body {
     @media #{$tablet} {
       .#{$namespace}toolTitleNav.#{$namespace}container--toolTitleNav {
         &:before {
-          content: 'Taking high-stakes tests on mobile is not recommended. Please use the desktop interface.';
-          width: 100%;
-          background: $warn-background-color;
-          padding: 10px;
-          color: $warn-color;
-          border: 1px solid lighten($warn-color, 25%);
-          text-align: center;
-          display: block;
+          @include toolWarningMessage('Taking high-stakes tests on mobile is not recommended. Please use the desktop interface.');
         }
       }
     }
@@ -845,6 +852,23 @@ body {
     #gbForm {
       #headers {
       
+      }
+    }
+  }
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Basiclti tools
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  @media #{$tablet} {
+    // on mobile show a warning message for certain Basiclti tools
+    .#{$namespace}toolBody--nyu-curriculumbuilder-libraries,
+    .#{$namespace}toolBody--nyu-aqua,
+    .#{$namespace}toolBody--nyu-webassign {
+      &:before {
+        @include toolWarningMessage('For the best experience, we recommend using the desktop interface for this tool.');
       }
     }
   }
