@@ -165,6 +165,38 @@ public class SakaiFsService implements FsService {
 	}
 
 	public FsVolume[] getVolumes() {
+		List<Site> sites = new ArrayList<>(2);
+		String workspaceId = null;
+
+		try {
+			String userId = userDirectoryService.getCurrentUser().getId();
+			Site myWorkspace = siteService.getSiteVisit(siteService.getUserSiteId(userId));
+			sites.add(0,myWorkspace);
+
+			workspaceId = myWorkspace.getId();
+		} catch (Exception e) {}
+
+		if (getCurrentSite() != null && !getCurrentSite().equals(workspaceId)) {
+			try {
+				sites.add(siteService.getSite(getCurrentSite()));
+			} catch (Exception e) {}
+		}
+
+		List<FsVolume> volumes = new ArrayList<>(sites.size());
+
+		for (Site site: sites) {
+			String currentSiteId = site.getId();
+			//Exclude the admin site as do not contain tools with real content
+			if("!admin".equals(currentSiteId) || "~admin".equals(currentSiteId)){
+				continue;
+			}
+			volumes.add(getSiteVolume(currentSiteId));
+		}
+
+		return volumes.toArray(new FsVolume[0]);
+	}
+
+	public FsVolume[] getVolumesOriginal() {
 		List<Site> sites  = siteService.getSites(ACCESS, null, null, null, null, null);
 		// Add the user workspace as volume.
 		try {
@@ -217,6 +249,16 @@ public class SakaiFsService implements FsService {
 		} else {
 			throw new IllegalArgumentException("Passed FsItem must be a SakaiFsItem.");
 		}
+	}
+
+	private static ThreadLocal<String> currentSite = new ThreadLocal<String>();
+
+	public String getCurrentSite() {
+		return currentSite.get();
+	}
+
+	public void setCurrentSite(String siteId) {
+		currentSite.set(siteId);
 	}
 
 	public SiteService getSiteService() {
