@@ -2057,4 +2057,11 @@ li.canEdit span.fa-plus.fa-edit-icon.plus-edit-icon:before {
         top: 0px !important;
     }
 
+    span.Mrphs-hierarchy--separator {
+        margin-top: 3px !important;
+    }
+
+    span.lessons-siteHierarchy-title {
+        margin-top: 0 !important;
+    }
 }
