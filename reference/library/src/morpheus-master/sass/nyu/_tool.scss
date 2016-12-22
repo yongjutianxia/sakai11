@@ -762,6 +762,24 @@ body {
       }
     }
   }
+
+  @media #{$tablet} {
+    .#{$namespace}sakai-forums {
+      table.specialLink {
+        td:nth-child(2) {
+          .itemNav {
+            .button,
+            input[type="submit"] {
+              display: block;
+            }
+          }
+        }
+      }
+      .bogus {
+        white-space: normal !important;
+      }
+    }
+  }
 }
 
 // -------------------------------------------------------------------------------------------------------------------
