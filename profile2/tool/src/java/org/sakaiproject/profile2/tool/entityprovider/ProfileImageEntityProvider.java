@@ -123,6 +123,7 @@ public class ProfileImageEntityProvider extends AbstractEntityProvider implement
         }
 
         if (imageLogic.resetProfileImage(currentUserId)) {
+            profileImageService.resetCachedProfileImageId(currentUserId);
             result.put("status", "SUCCESS");
         }
 
