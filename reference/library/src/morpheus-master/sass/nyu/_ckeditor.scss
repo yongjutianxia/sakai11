@@ -107,5 +107,15 @@ body {
         }
       }
     }
+    // NYU Help plugin
+    .cke_button__nyuhelp {
+      .cke_button_icon {
+        background-image: none !important;
+
+        &:before {
+          @include font_awesome_button_icon('\f059');
+        }
+      }
+    }
   }
 }
