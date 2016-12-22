@@ -337,6 +337,17 @@ body {
     }
   }
 }
+body {
+  @media #{$desktop} {
+    .#{$namespace}multipleTools {
+      .#{$namespace}container.#{$namespace}sakai-iframe-site {
+        .portletBody.siteDescription {
+          min-height: 405px;
+        }
+      }
+    }
+  }
+}
 
 // -------------------------------------------------------------------------------------------------------------------
 //  Changes to the Chat Room tool
