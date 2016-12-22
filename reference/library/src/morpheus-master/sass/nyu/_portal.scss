@@ -781,6 +781,14 @@ body.active-more-sites {
   }
 }
 
+body {
+  .#{$namespace}siteHierarchy {
+    .#{$namespace}hierarchy--parent-sites {
+      display: none;
+    }
+  }
+}
+
 
 
 // --------------------------------------------------------------------------------------------------------------------
