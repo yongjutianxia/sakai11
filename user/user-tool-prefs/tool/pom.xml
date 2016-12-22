@@ -21,6 +21,10 @@
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-util</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.sakaiproject.edu-services.course-management</groupId>
+      <artifactId>coursemanagement-api</artifactId>
+    </dependency>
 <!-- pull throught the JSF tool dependencies -->
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
