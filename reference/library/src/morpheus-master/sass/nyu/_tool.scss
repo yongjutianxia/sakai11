@@ -804,10 +804,10 @@ body {
         &:before {
           content: 'Taking high-stakes tests on mobile is not recommended. Please use the desktop interface.';
           width: 100%;
-          background: $info-background-color;
+          background: $warn-background-color;
           padding: 10px;
-          color: $info-color;
-          border: 1px solid lighten($info-color, 25%);
+          color: $warn-color;
+          border: 1px solid lighten($warn-color, 25%);
           text-align: center;
           display: block;
         }
