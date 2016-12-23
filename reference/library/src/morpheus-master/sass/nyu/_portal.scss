@@ -766,17 +766,8 @@ body.active-more-sites {
     border-left: 1px solid $nyu-content-border-color;
 
     a.#{$namespace}hierarchy--toolName {
-      color: $nyu-reset-button-text-color !important;
-      font-size: $nyu-reset-button-text-size !important;
-
       margin: 1em 0 0.25em 1.25em !important;
       display: inline-block !important;
-      border-bottom: 1px solid transparent;
-
-      &:hover {
-        text-decoration: none !important;
-        border-color: $nyu-reset-button-text-color !important;
-      }
     }
   }
 }
@@ -785,6 +776,17 @@ body {
   .#{$namespace}siteHierarchy {
     .#{$namespace}hierarchy--parent-sites {
       display: none;
+    }
+
+    a.#{$namespace}hierarchy--toolName {
+      color: $nyu-reset-button-text-color !important;
+      font-size: $nyu-reset-button-text-size !important;
+      border-bottom: 1px solid transparent;
+
+      &:hover {
+        text-decoration: none !important;
+        border-color: $nyu-reset-button-text-color !important;
+      }
     }
   }
 }
