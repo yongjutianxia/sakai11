@@ -150,7 +150,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
         toolbar_Basic:
         [
-            ['Source', '-', 'Bold', 'Italic', 'Underline', '-', 'Link', 'Unlink', '-', 'NumberedList','BulletedList', 'Blockquote']
+            ['Bold', 'Italic', 'Underline', '-', 'Link', 'Unlink', '-', 'NumberedList','BulletedList']
         ],
         toolbar_Full:
         [
