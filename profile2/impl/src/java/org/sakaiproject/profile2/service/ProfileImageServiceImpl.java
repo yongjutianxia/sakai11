@@ -3,6 +3,7 @@ package org.sakaiproject.profile2.service;
 import lombok.Setter;
 import org.sakaiproject.profile2.dao.ProfileDao;
 import org.sakaiproject.profile2.hbm.model.ProfileImageUploaded;
+import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.tool.cover.SessionManager;
 
 public class ProfileImageServiceImpl implements ProfileImageService {
@@ -18,6 +19,14 @@ public class ProfileImageServiceImpl implements ProfileImageService {
 
 
     public String getProfileImageURL(final String userId, final String eid, final boolean thumbnail) {
+        if (userId == null) {
+            if (thumbnail) {
+                return ProfileConstants.UNAVAILABLE_IMAGE_THUMBNAIL;
+            } else {
+                return ProfileConstants.UNAVAILABLE_IMAGE_FULL;
+            }
+        }
+
         String url = "/direct/profile/"+eid+"/image";
 
         if (thumbnail) {
