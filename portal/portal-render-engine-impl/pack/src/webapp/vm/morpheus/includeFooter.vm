@@ -3,6 +3,7 @@
     #if (!$pagepopup)
 
         <footer id="footer" role="contentinfo" class="Mrphs-footer">
+            <div class="selectedTimeZone">Timezone: ${selectedTimeZone}</div>
 
             <ul id="footer-links" class="Mrphs-footer--nav Mrphs-footer--nav__main">
 
