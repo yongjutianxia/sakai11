@@ -183,7 +183,7 @@ public class NYUDbHelper {
 	protected String getSiteTemplateForSchoolCode(String schoolCode) {
 
 		if (StringUtils.isBlank(schoolCode)) {
-			return null;
+			return schoolCodeLookup(DEFAULT_KEY);
 		}
 
 		String result = schoolCodeLookup(schoolCode);
