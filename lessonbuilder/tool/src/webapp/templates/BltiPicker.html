@@ -72,7 +72,7 @@ function showIframe(title) {
 		modal: true,
 		draggable: false,
 		open: function() {
-			$('#sakai-basiclti-admin-iframe').width('100%');
+			$('#sakai-basiclti-admin-iframe').css('width', '100%');
 		},
 		close: function() {
 			$('#sakai-basiclti-admin-iframe').attr('src','/library/image/sakai/spinner.gif');
@@ -81,7 +81,7 @@ function showIframe(title) {
 
 	$(window).resize(function() {
 		$("#modal-iframe-div").dialog("option", "width", modalDialogWidth());
-		$('#sakai-basiclti-admin-iframe').width('100%');
+		$('#sakai-basiclti-admin-iframe').css('width', '100%');
 	});
 }
 //]]>
