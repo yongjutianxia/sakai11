@@ -2057,6 +2057,12 @@ li.canEdit span.fa-plus.fa-edit-icon.plus-edit-icon:before {
         top: 0px !important;
     }
 
+    body > div.Mrphs-portalWrapper > nav.Mrphs-siteHierarchy > span.nextprev.buttonset.ui-buttonset {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 800px) {
     span.Mrphs-hierarchy--separator {
         margin-top: 3px !important;
     }
