@@ -72,7 +72,7 @@
 			#if (!$assignment.isGroup())
 				#if (!$value_CheckAnonymousGrading.equals("true") && $!groups.hasNext())
 					<div class="form-group spinnerBesideContainer">
-						<label class="col-md-2" for="view">
+						<label for="view">
 							$tlang.getString("gen.view2")
 						</label>
 						<div class="col-md-10">
@@ -168,7 +168,7 @@
 		<div class="col-md-4">
 			#if (!$!showMsg || $showMsg ==0)
 			#else
-				<div class="listNav text-right">
+				<div class="listNav">
 					## download all
 					<a href="" class="noPointers" id="downloadAll" onclick="SPNR.insertSpinnerAfter( this, escapeList, null ); ASN.submitForm( 'viewForm', 'download', null, null ); return false;" title="$!tlang.getString('downall')">$!tlang.getString('downall')</a>
 						#if(!$disableGrade)
