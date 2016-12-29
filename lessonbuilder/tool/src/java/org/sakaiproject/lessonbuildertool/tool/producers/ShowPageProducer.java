@@ -1385,7 +1385,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 						itemicon.decorate(new UIStyleDecorator("fa-globe"));
 						break;
 					    case SimplePageItem.SCORM:
-						itemicon.decorate(new UIFreeAttributeDecorator("src", "/library/image/silk/application_go.png"));
+						itemicon.decorate(new UIStyleDecorator("fa-external-link"));
 						break;
 					    case SimplePageItem.PAGE:
 						itemicon.decorate(new UIStyleDecorator("fa-folder-open-o"));
