@@ -541,22 +541,14 @@ public class SiteHandler extends WorksiteHandler
 
                     rcontext.put("showJoinableGroups", "false");
 
-                    Collection<Group> userGroups = site.getGroupsWithMember(userId);
-                    if (!isInstructor && userGroups != null && !userGroups.isEmpty()) {
-                        // If the user is already in a group, show the tool
-                        for (Group g : userGroups) {
-                            if (g.getProperties().getProperty(Group.GROUP_PROP_JOINABLE_SET) != null) {
-                                rcontext.put("showJoinableGroups", "true");
-                                break;
-                            }
-                        }
-                    } else {
-                        // Or if there are joinable groups they may want to join, show it.
-                        for (Group g : site.getGroups()) {
-                            if (g.getProperties().getProperty(Group.GROUP_PROP_JOINABLE_SET) != null) {
-                                rcontext.put("showJoinableGroups", "true");
-                                break;
-                            }
+                    // CLASSES-2303: If there is any group in a site, other than
+                    // just the section group(s), show Site Groups. So that
+                    // includes joinable groups, manually created groups, auto
+                    // groups.
+                    for (Group g : site.getGroups()) {
+                        if (g.getProviderGroupId() == null) {
+                            rcontext.put("showJoinableGroups", "true");
+                            break;
                         }
                     }
                 }
