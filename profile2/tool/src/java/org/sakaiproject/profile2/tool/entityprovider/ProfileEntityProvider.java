@@ -176,6 +176,9 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 		final byte[] bytes = image.getBinary();
 		if(bytes != null && bytes.length > 0) {
 			try {
+				// NYU set mime type here before header is sent
+				requestGetter.getResponse().setContentType(image.getMimeType());
+
 				out.write(bytes);
 				ActionReturn actionReturn = new ActionReturn("BASE64", image.getMimeType(), out);
 				
