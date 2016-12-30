@@ -1,4 +1,4 @@
-#if ($isAdmin || $canAddProject)
+#if ($isAdmin)
     #parse("/vm/sitesetup/chef_site-type.vm")
 #else
     #parse("/vm/sitesetup/nyu/chef_site-type_course.vm")
