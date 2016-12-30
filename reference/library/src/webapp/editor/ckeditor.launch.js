@@ -224,7 +224,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('magicembed',basePath+'magicembed/', 'plugin.js');
             CKEDITOR.plugins.addExternal('youtube',basePath+'youtube/', 'plugin.js');
             CKEDITOR.plugins.addExternal('ckeditor_wiris',basePath+'ckeditor_wiris/', 'plugin.js');
-            CKEDITOR.plugins.addExternal('Mediasite', basePath + 'Mediasite/', 'plugin.js');
             CKEDITOR.plugins.addExternal('nyupreview', basePath + 'nyupreview/', 'plugin.js');
             CKEDITOR.plugins.addExternal('encodedimage', basePath + 'encodedimage/', 'plugin.js');
             CKEDITOR.plugins.addExternal('nyuhelp', basePath + 'nyuhelp/', 'plugin.js');
@@ -258,7 +257,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.dtd.$removeEmpty['i'] = false;
             ckconfig.extraPlugins+=",audio,kalturaflash,magicembed,youtube";
             ckconfig.extraPlugins+=",ckeditor_wiris";
-            ckconfig.extraPlugins+=",Mediasite";
             ckconfig.extraPlugins+=",autolink";
             ckconfig.extraPlugins+=",nyupreview";
             ckconfig.extraPlugins+=",encodedimage";
