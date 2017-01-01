@@ -59,16 +59,9 @@
         <div style="width:99%" class="permsControls">
             <div style="float:left;width:50%;">
               <fieldset>
-              <legend><span><spring:message code="siterole.sitetype.title" /></span></legend>
-              <div class="permsInstruction"><em><spring:message code="siterole.sitetype.header" /></em></div>
-              <ul style="margin: 0px;">
-                  <c:forEach var="siteType" items="${siteTypes}" varStatus="counter">
-                  <li class="checkbox">
-                      <input id="siteTypeSelect-${siteType}" type="checkbox" name="site-type" value="${siteType}" />
-                      <label for="siteTypeSelect-${siteType}">${siteType}</label>
-                  </li>
-                  </c:forEach>
-              </ul>
+              <legend><span><spring:message code="siterole.realms.title" /></span></legend>
+              <div class="permsInstruction"><em><spring:message code="siterole.realms.header" /></em></div>
+              <textarea name="realms-to-update" style="width: 100%; min-height: 50em"></textarea>
               </fieldset>
 
               <fieldset>

@@ -55,10 +55,10 @@ public class SitePermsService {
 
     private static int DEFAULT_PAUSE_TIME_MS = 1001; // just over 1 second
     private static int DEFAULT_MAX_UPDATE_TIME_SECS = 60*60; // 1 hour
-    private static int DEFAULT_SITES_BEFORE_PAUSE = 10;
+    private static int DEFAULT_SITES_BEFORE_PAUSE = 100;
 
     private int pauseTimeMS = DEFAULT_PAUSE_TIME_MS;
-    private long maxUpdateTimeMS = DEFAULT_MAX_UPDATE_TIME_SECS * 1000l;
+    private long maxUpdateTimeMS = Long.MAX_VALUE;
     private int sitesUntilPause = DEFAULT_SITES_BEFORE_PAUSE;
 
     public static String[] templates = {
@@ -90,17 +90,17 @@ public class SitePermsService {
      * @param roles a list of site roles
      * @param add if true then add the permissions, if false then remove them
      */
-    public void setSiteRolePerms(final String[] perms, final String[] types, final String[] roles, final boolean add) {
+    public void setRealmsRolePerms(final String[] perms, final String[] realms, final String[] roles, final boolean add) {
         if (! securityService.isSuperUser()) {
-            throw new SecurityException("setSiteRolePerms is only usable by super users");
+            throw new SecurityException("setRealmsRolePerms is only usable by super users");
         }
         if (isLockedForUpdates()) {
             throw new IllegalStateException("Cannot start new perms update, one is already in progress");
         }
         // get the configurable values
         pauseTimeMS = serverConfigurationService.getConfig("site.adminperms.pause.ms", pauseTimeMS);
-        int maxUpdateTimeS = serverConfigurationService.getConfig("site.adminperms.maxrun.secs", DEFAULT_MAX_UPDATE_TIME_SECS);
-        maxUpdateTimeMS = 1000l * maxUpdateTimeS; // covert to milliseconds
+        // int maxUpdateTimeS = serverConfigurationService.getConfig("site.adminperms.maxrun.secs", DEFAULT_MAX_UPDATE_TIME_SECS);
+        // maxUpdateTimeMS = 1000l * maxUpdateTimeS; // covert to milliseconds
         sitesUntilPause = serverConfigurationService.getConfig("site.adminperms.sitesuntilpause", sitesUntilPause);
         // get the current state
         final User currentUser = userDirectoryService.getCurrentUser();
@@ -109,7 +109,7 @@ public class SitePermsService {
         Runnable backgroundRunner = new Runnable() {
             public void run() {
                 try {
-                    initiateSitePermsThread(currentUser, currentSession, perms, types, roles, add);
+                    initiateRealmsPermsThread(currentUser, currentSession, perms, realms, roles, add);
                 } catch (IllegalStateException e) {
                     throw e; // rethrow this back out
                 } catch (Exception e) {
@@ -142,7 +142,8 @@ public class SitePermsService {
     public synchronized boolean isLockedForUpdates() {
         boolean locked = false;
         if (updateStarted > 0) {
-            if (System.currentTimeMillis() > (updateStarted + maxUpdateTimeMS)) {
+            // NYU: Don't time out!
+            if (false && System.currentTimeMillis() > (updateStarted + maxUpdateTimeMS)) {
                 // max time reached for this update so reset
                 updateStarted = 0;
                 updateStatus = STATUS_COMPLETE;
@@ -154,9 +155,9 @@ public class SitePermsService {
         return locked;
     }
 
-    private void initiateSitePermsThread(final User currentUser, final Session currentSession, final String[] perms, final String[] types, final String[] roles, final boolean add) throws InterruptedException {
+    private void initiateRealmsPermsThread(final User currentUser, final Session currentSession, final String[] perms, final String[] realms, final String[] roles, final boolean add) throws InterruptedException {
         String permsString = makeStringFromArray(perms);
-        String typesString = makeStringFromArray(types);
+        String realmsString = realms.length + " realms";
         String rolesString = makeStringFromArray(roles);
         // exit if we are locked for updates
         if (isLockedForUpdates()) {
@@ -165,7 +166,7 @@ public class SitePermsService {
         updateStarted = System.currentTimeMillis();
         // update the session with a status message
         String msg = getMessage("siterole.message.processing."+(add?"add":"remove"), 
-                new Object[] {permsString, typesString, rolesString, 0});
+                new Object[] {permsString, realmsString, rolesString, 0});
         log.info("STARTED: "+msg+" :: pauseTimeMS="+pauseTimeMS+", sitesUntilPause="+sitesUntilPause+", maxUpdateTimeMS="+maxUpdateTimeMS);
         updateStatus = "RUNNING";
         updateMessage = msg;
@@ -175,15 +176,13 @@ public class SitePermsService {
             List<String> permsList = Arrays.asList(perms);
             // now add the perms to all matching roles in all matching sites
             // switched site listing to using ids only - KNL-1125
-            List<String> siteIds = siteService.getSiteIds(SelectionType.ANY, types, null, null, SortType.NONE, null);
             int pauseTime = 0;
             int sitesCounter = 0;
             int updatesCount = 0;
             int successCount = 0;
-            for (String siteId : siteIds) {
-                String siteRef = siteService.siteReference(siteId);
+            for (String realm : realms) {
                 try {
-                    AuthzGroup ag = authzGroupService.getAuthzGroup(siteRef);
+                    AuthzGroup ag = authzGroupService.getAuthzGroup(realm);
                     if (authzGroupService.allowUpdate(ag.getId())) {
                         boolean updated = false;
                         for (String role : roles) {
@@ -218,7 +217,7 @@ public class SitePermsService {
                             // only save if the group was updated
                             authzGroupService.save(ag);
                             updatesCount++;
-                            log.info("Added Permissions ("+permsString+") for roles ("+rolesString+") to group:" + siteRef);
+                            log.info("Added Permissions ("+permsString+") for roles ("+rolesString+") to group:" + realm);
                         }
                         successCount++;
                         if (updatesCount > 0 && updatesCount % sitesUntilPause == 0) {
@@ -230,12 +229,12 @@ public class SitePermsService {
                             currentSession.setActive();
                         }
                     } else {
-                        log.warn("Cannot update authz group: " + siteRef + ", unable to apply any perms change");
+                        log.warn("Cannot update authz group: " + realm + ", unable to apply any perms change");
                     }
                 } catch (GroupNotDefinedException e) {
-                    log.error("Could not find authz group: " + siteRef + ", unable to apply any perms change");
+                    log.error("Could not find authz group: " + realm + ", unable to apply any perms change");
                 } catch (AuthzPermissionException e) {
-                    log.error("Could not save authz group: " + siteRef + ", unable to apply any perms change");
+                    log.error("Could not save authz group: " + realm + ", unable to apply any perms change");
                 }
                 sitesCounter++;
                 if (!isLockedForUpdates()) {
@@ -243,18 +242,18 @@ public class SitePermsService {
                     throw new RuntimeException("Timeout occurred while running site permissions update");
                 } else if (sitesCounter % 4 == 0) {
                     // update the processor status every few sites processed
-                    int percentComplete = (int) (sitesCounter * 100) / siteIds.size();
+                    int percentComplete = (int) (sitesCounter * 100) / realms.length;
                     msg = getMessage("siterole.message.processing."+(add?"add":"remove"), 
-                            new Object[] {permsString, typesString, rolesString, percentComplete});
+                            new Object[] {permsString, realmsString, rolesString, percentComplete});
                     updateMessage = msg;
                 }
             }
-            int failureCount = siteIds.size() - successCount;
+            int failureCount = realms.length - successCount;
             long totalTime = System.currentTimeMillis() - updateStarted;
             int totalSecs = totalTime > 0 ? (int)(totalTime/1000) : 0;
             int pauseSecs = pauseTime > 0 ? (int)(pauseTime/1000) : 0;
             msg = getMessage("siterole.message.permissions."+(add ? "added" : "removed"), 
-                    new Object[] {permsString, typesString, rolesString, siteIds.size(), updatesCount, successCount, failureCount, totalSecs, pauseSecs});
+                    new Object[] {permsString, realmsString, rolesString, realms.length, updatesCount, successCount, failureCount, totalSecs, pauseSecs});
             log.info(msg);
             updateMessage = msg;
         } finally {

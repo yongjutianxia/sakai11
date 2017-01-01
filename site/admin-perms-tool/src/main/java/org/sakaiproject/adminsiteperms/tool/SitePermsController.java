@@ -63,8 +63,6 @@ public class SitePermsController extends AbstractController {
             addMessage(model, false, statusMsg);
         }
 
-        /** The types of sites to add perms to (course/project/workspace/etc.) */
-        String[] types = null;
         /** The perms to add/remove to the sites */
         String[] perms = null;
         /** The roles to have the perms added or removed */
@@ -74,15 +72,21 @@ public class SitePermsController extends AbstractController {
             if ("perms".equals(request.getParameter("action"))) {
                 // this is a permissions update
                 perms = request.getParameterValues("site-perm");
-                types = request.getParameterValues("site-type");
                 roles = request.getParameterValues("site-role");
+
+                List<String> realmsToUpdate = new ArrayList();
+
+                for (String realm : request.getParameter("realms-to-update").split("\n")) {
+                    realm = realm.trim();
+                    if (!realm.isEmpty()) {
+                        realmsToUpdate.add(realm);
+                    }
+                }
+
                 try {
                     if (ArrayUtils.isEmpty(perms)) {
                         // missing a setting so we can't actually process anything
                         throw new IllegalArgumentException("Invalid perms POST - no perms to add or remove");
-                    } else if (ArrayUtils.isEmpty(types)) {
-                        // missing a setting so we can't actually process anything
-                        throw new IllegalArgumentException("Invalid perms POST - no site types to apply permissions to");
                     } else if (ArrayUtils.isEmpty(roles)) {
                         // missing a setting so we can't actually process anything
                         throw new IllegalArgumentException("Invalid perms POST - no roles to apply permissions to");
@@ -97,11 +101,12 @@ public class SitePermsController extends AbstractController {
                             throw new RuntimeException("Invalid perms POST - no addPerms or removePerms");
                         }
                         // triggers the permissions update
-                        sitePermsService.setSiteRolePerms(perms, types, roles, add);
+                        sitePermsService.setRealmsRolePerms(perms, realmsToUpdate.toArray(new String[0]), roles, add);
+
                         // add the frontend message and log
-                        String msg = addMessage(model, false, "siterole.message.processing."+(add?"add":"remove"), 
-                                new Object[] {a2es(perms), a2es(types), a2es(roles), 0});
-                        log.info(msg);
+                        // String msg = addMessage(model, false, "siterole.message.processing."+(add?"add":"remove"), 
+                        //         new Object[] {a2es(perms), a2es(types), a2es(roles), 0});
+                        // log.info(msg);
                     }
                 } catch (IllegalArgumentException e) {
                     // translate and pass the message to the frontend
