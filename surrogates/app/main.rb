@@ -367,15 +367,22 @@ class Surrogates < Sinatra::Base
 
   def remove_entry(user, course)
     with_db_connection do |conn|
+      begin
+        conn.setAutoCommit(false)
 
-      remove = conn.prepare_statement("update NYU_T_COURSE_ADMINS_ADHOC " +
-                                      " set active = 'N' where" +
-                                      " netid = ? AND stem_name = ?")
+        remove = conn.prepare_statement("update NYU_T_COURSE_ADMINS_ADHOC " +
+                                        " set active = 'N' where" +
+                                        " netid = ? AND stem_name = ?")
 
-      with_open(remove) do |remove|
-        remove.setString(1, user)
-        remove.setString(2, course)
-        remove.execute
+        with_open(remove) do |remove|
+          remove.setString(1, user)
+          remove.setString(2, course)
+          remove.execute
+          conn.commit()
+        end
+      ensure
+        conn.rollback()
+        conn.setAutoCommit(true)
       end
     end
   end
