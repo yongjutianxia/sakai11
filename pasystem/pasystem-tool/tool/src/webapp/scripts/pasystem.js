@@ -186,6 +186,12 @@ PASystemPopup.prototype.showPopup = function() {
                    },
                    beforeOpen: function() {
                      this.$instance.find(".featherlight-content").attr("tabindex", 0);
+                     // NYU add CSS class to outer featherlight container
+                     if (self.uuid == "preview") {
+                       this.$instance.addClass("pasystem-popup-preview");
+                     } else {
+                       this.$instance.addClass("pasystem-popup");
+                     }
                    },
                    afterOpen: function() {
                      this.$instance.find(".featherlight-content").focus();

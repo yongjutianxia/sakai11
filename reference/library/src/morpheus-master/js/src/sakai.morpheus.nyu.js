@@ -42,7 +42,7 @@ $PBJQ(function() {
 
 // Ensure PASystem messages are visible on mobile
 $PBJQ(function() {
-  var $pasystem = $PBJQ(".pasystem-banner-alerts");
+  var $pasystem = $PBJQ(".pasystem-banner-alerts:visible");
 
   function repositionHeaderBits() {
     $PBJQ(".Mrphs-headerLogo").css("top", $pasystem.height());
@@ -50,7 +50,7 @@ $PBJQ(function() {
     $PBJQ(".Mrphs-topHeader").css("paddingTop", $pasystem.height() + $PBJQ(".Mrphs-headerLogo").height());
   }
 
-  if ($PBJQ(".pasystem-banner-alert", $pasystem).length > 0) {
+  if ($PBJQ(".pasystem-banner-alert:visible", $pasystem).length > 0) {
     repositionHeaderBits();
   }
 
