@@ -28,7 +28,8 @@
 body {
   @media #{$tablet} {
     .pasystem-banner-alerts,
-    .featherlight.pasystem-popup {
+    .featherlight.pasystem-popup,
+    .pasystem-banner-alert-toggle {
       display: none !important;
     }
   }
