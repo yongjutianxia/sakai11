@@ -1481,7 +1481,10 @@ $(document).ready(function() {
 			$("#edit-height").hide();
 			$("#pathdiv").hide();
 			$("#editgroups").after($("#grouplist"));
-			
+
+			$("#prereqstuff input").prop('disabled', false);
+			$("#prereqstuff").show();
+
 			var row = $(this).parent().parent().parent();
 			var itemid = row.find(".current-item-id2").text();
 
@@ -1637,6 +1640,7 @@ $(document).ready(function() {
                                         var gradebookSelected = row.find('.scormGraded').text().trim() === 'true';
 					$("#edit-height").hide();
                                         $("#prereqstuff").hide();
+					$("#prereqstuff input").prop('disabled', true);
 					$("#scormstuff").show();
 					$('#edit-scorm-sync-to-gradebook').prop('checked', gradebookSelected);
 					$('#edit-scorm-required').prop('checked', row.find('.scormRequired').text().trim() === 'true');
