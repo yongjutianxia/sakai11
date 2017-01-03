@@ -589,6 +589,15 @@ body {
         font-weight: normal !important;
       }
     }
+
+    // edit site
+    form#classInformationForm {
+      .form-group {
+        input#title {
+          width: 100%;
+        }
+      }
+    }
   }
   .act {
     clear: both;
