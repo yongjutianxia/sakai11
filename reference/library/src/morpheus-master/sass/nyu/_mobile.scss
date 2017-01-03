@@ -160,12 +160,10 @@ body {
         max-height: none !important;
       }
     }
-  }
-}
 
-@media #{$phone} {
-  body {
-    
+    .moresites-refresh-notification {
+      display: none !important;
+    }
   }
 }
 
