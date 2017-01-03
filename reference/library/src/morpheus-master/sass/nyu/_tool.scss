@@ -872,6 +872,11 @@ body {
       }
     }
   }
+
+  // Hide the fa_icon form field
+  .foorm-text[id='fa_icon.input'] {
+    display: none !important;
+  }
 }
 
 
