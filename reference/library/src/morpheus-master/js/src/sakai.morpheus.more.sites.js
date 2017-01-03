@@ -33,7 +33,7 @@ var dhtml_view_sites = function(){
         // Raise the button to keep it visible over the modal overlay
         allSitesButton.css('z-index', 1005);
 
-        var topPosition = allSitesButton.offset().top + allSitesButton.outerHeight() + topPadding;
+        var topPosition = allSitesButton.position().top + allSitesButton.outerHeight() + topPadding;
         var rightPosition = $PBJQ('body').outerWidth() - (allSitesButton.offset().left + allSitesButton.outerWidth());
         if( $PBJQ('html').attr('dir') !== "rtl" ){
           modal.css('top', topPosition).css('right', rightPosition);
