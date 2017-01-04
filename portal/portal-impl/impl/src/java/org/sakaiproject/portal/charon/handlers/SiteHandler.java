@@ -542,11 +542,13 @@ public class SiteHandler extends WorksiteHandler
                     rcontext.put("showJoinableGroups", "false");
 
                     // CLASSES-2303: If there is any group in a site, other than
-                    // just the section group(s), show Site Groups. So that
-                    // includes joinable groups, manually created groups, auto
-                    // groups.
+                    // the section group(s) or any lessonbuilder groups (prerequisites),
+                    // show Site Groups. So that includes joinable groups, manually
+                    // created groups, auto groups.
                     for (Group g : site.getGroups()) {
-                        if (g.getProviderGroupId() == null) {
+                        if (g.getProviderGroupId() == null &&
+                                g.getProperties().get("lessonbuilder_ref") == null)
+                        {
                             rcontext.put("showJoinableGroups", "true");
                             break;
                         }
