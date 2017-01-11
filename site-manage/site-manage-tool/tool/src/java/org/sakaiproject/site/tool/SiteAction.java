@@ -15683,6 +15683,11 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					state.setAttribute(STATE_TERM_COURSE_LIST, sections);
 					state.setAttribute(STATE_TEMPLATE_INDEX, "36");
 					state.setAttribute(STATE_AUTO_ADD, Boolean.TRUE);
+				} else if(!SecurityService.isSuperUser()) {
+					// NYU send instructor to the newSiteCourse template but
+					// it will be empty
+					state.setAttribute(STATE_TEMPLATE_INDEX, "36");
+					state.setAttribute(STATE_TERM_COURSE_LIST, new ArrayList());
 				} else {
 					state.removeAttribute(STATE_TERM_COURSE_LIST);
 					
