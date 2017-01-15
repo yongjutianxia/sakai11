@@ -193,6 +193,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         delay: 300,
         //autosave_messageType can be "no" or "notification"
         messageType : "statusbar",
+        // Use the default key (with the location)
+        SaveKey: null,
     };
 
     if (config != null && config.baseFloatZIndex) {
