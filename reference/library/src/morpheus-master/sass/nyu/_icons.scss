@@ -36,6 +36,7 @@
   .icon-nyu-panopto-law                 { @extend .fa-film; }
   .icon-nyu-panopto-poly                { @extend .fa-film; }
   .icon-nyu-panopto-engineering         { @extend .fa-film; }
+  .icon-nyu-panopto-campusmedia         { @extend .fa-film; }
 
   .icon-sakai-blogwow                   { @extend .fa-feed; }
   .icon-sakai-bbb                       {
@@ -97,5 +98,22 @@
       width: 16px;
       height: 16px;
       display: block
+  }
+
+  .icon-nyu-aqua,
+  .icon-nyu-cengage-mindtap-ls,
+  .icon-nyu-cerego,
+  .icon-nyu-cerego-groups,
+  .icon-nyu-curriculumbuilder-libraries,
+  .icon-nyu-echo360,
+  .icon-nyu-echo360-hosted,
+  .icon-nyu-foliotek,
+  .icon-nyu-forclass,
+  .icon-nyu-turningpoint-cloud,
+  .icon-nyu-vitalsource,
+  .icon-nyu-voicethread,
+  .icon-nyu-webassign,
+  .icon-nyu-webex {
+    @extend .fa-globe;
   }
 }
