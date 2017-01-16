@@ -521,7 +521,7 @@ $PBJQ(document).ready(function($){
     $PBJQ("#loginLinks").prepend(notification);
 
     var topnav = $PBJQ('.Mrphs-mainHeader');
-    notification.css('top', (topnav.offset().top + topnav.height()) + 'px');
+    notification.css('top', (topnav.height()) + 'px');
   };
 
   var syncInProgress = false;
