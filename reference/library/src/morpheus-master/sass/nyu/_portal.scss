@@ -262,23 +262,29 @@ body {
 // --------------------------------------------------------------------------------------------------------------------
 //  Favorite Sites Navigation
 // --------------------------------------------------------------------------------------------------------------------
-.#{$namespace}topHeader{
-  display: block !important;
-  box-shadow: $nyu-divider-shadow;
-  position: relative;
+body {
+  .#{$namespace}topHeader{
+    display: block !important;
+    box-shadow: $nyu-divider-shadow;
+    position: relative;
 
-  @media #{$desktop} {
-    padding-top: 0 !important;
+    a[href] {
+      color: $nyu-header-menu-color;
+    }
+
+    @media #{$desktop} {
+      padding-top: 0 !important;
+    }
   }
-}
-.#{$namespace}topHeader {
-   .#{$namespace}loginNav {
-      @media #{$phone} {
-        position: absolute;
-        right: 10px;
-        top: 6px;
-        margin-right: 0px !important;
-      }
+  .#{$namespace}topHeader {
+     .#{$namespace}loginNav {
+        @media #{$phone} {
+          position: absolute;
+          right: 10px;
+          top: 6px;
+          margin-right: 0px !important;
+        }
+    }
   }
 }
 @media #{$nonPhone} {
