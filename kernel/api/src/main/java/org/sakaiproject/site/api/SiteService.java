@@ -300,6 +300,10 @@ public interface SiteService extends EntityProducer
 
 		/** Get unpublished sites the current user has access to */
 		public static final SelectionType INACTIVE_ONLY = new SelectionType("inactive", true, true, false, true);
+
+		/** Get sites that the current user has read access to (non-myWorkspace, non-special), includes unpublished, see KNL-1207. */
+		public static final SelectionType ACCESS_ALL = new SelectionType("access_all", true, true, false, true);
+
 	}
 
 	/**
