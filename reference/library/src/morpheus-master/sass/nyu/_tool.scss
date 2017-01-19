@@ -32,66 +32,89 @@
 //   - ensure the new and help actions are rendered above the tabs
 // -------------------------------------------------------------------------------------------------------------------
 @media #{$nonPhone} {
-  #content {
-    overflow: visible !important;
-  }
-  .#{$namespace}toolTitleNav {
-    margin-top: 0 !important;
-  }
-  .#{$namespace}pageColumns--single {
-    .#{$namespace}toolTitleNav__button_container {
-      top: -30px !important;
-      right: 0 !important;
-      position: absolute !important;
-      float: none !important;
-      left: initial !important;
+  body {
+    #content {
+      overflow: visible !important;
     }
-  }
-  .#{$namespace}multipleTools {
-    .#{$namespace}toolTitleNav__button_container {
-      top: -4px !important;
-      right: -11px !important;
+    .#{$namespace}toolTitleNav {
+      margin-top: 0 !important;
     }
     .#{$namespace}pageColumns--single {
       .#{$namespace}toolTitleNav__button_container {
-        top: 5px !important;
-        right: 5px !important;
+        top: -30px !important;
+        right: 0 !important;
+        position: absolute !important;
+        float: none !important;
+        left: initial !important;
       }
     }
-  }
-  ul.navIntraTool {
-    font-size: 0;
-  }
-  .navIntraTool {
-    padding-left: 0 !important;
-    padding-right: 1em !important;
-
-    ul {
+    .#{$namespace}multipleTools {
+      .#{$namespace}toolTitleNav__button_container {
+        top: -4px !important;
+        right: -11px !important;
+      }
+      .#{$namespace}pageColumns--single {
+        .#{$namespace}toolTitleNav__button_container {
+          top: 5px !important;
+          right: 5px !important;
+        }
+      }
+    }
+    ul.navIntraTool {
       font-size: 0;
     }
+    .navIntraTool {
+      padding-left: 0 !important;
+      padding-right: 1em !important;
 
-    li {
-      margin-right: -1px !important;
-      font-size: $nyu-tool-tab-text-size;
-      display: inline-block !important;
+      ul {
+        font-size: 0;
+      }
 
-      a {
-        height: $nyu-tool-tab-height;
-        margin-right: 0 !important;
-        font-size: $nyu-tool-tab-text-size !important;
-        padding: 0 10px !important;
-        line-height: $nyu-tool-tab-height;
-        text-transform: $nyu-tool-tab-text-transform !important;
-        letter-spacing: $nyu-tool-tab-text-letter-spacing !important;
+      li {
+        margin-right: -1px !important;
+        font-size: $nyu-tool-tab-text-size;
+        display: inline-block;
 
-        &:hover {
-          background-color: $nyu-tool-tab-hover-background-color !important;
-          color: $nyu-tool-tab-hover-text-color !important;
-          text-decoration: none !important;
-          position: relative;
+        a {
+          height: $nyu-tool-tab-height;
+          margin-right: 0 !important;
+          font-size: $nyu-tool-tab-text-size !important;
+          padding: 0 10px !important;
+          line-height: $nyu-tool-tab-height;
+          text-transform: $nyu-tool-tab-text-transform !important;
+          letter-spacing: $nyu-tool-tab-text-letter-spacing !important;
+
+          &:hover {
+            background-color: $nyu-tool-tab-hover-background-color !important;
+            color: $nyu-tool-tab-hover-text-color !important;
+            text-decoration: none !important;
+            position: relative;
+
+            &:before {
+              border-top: 4px solid $nyu-tool-tab-hover-highlight-color !important;
+              content: '';
+              display: block;
+              position: absolute;
+              left: -1px;
+              right: -1px;
+              top: -1px;
+            }
+          }
+        }
+
+        span.current {
+          margin: 0 !important;
+          padding: 0 10px !important;
+          color: $nyu-tool-tab-active-text-color !important;
+          height: $nyu-tool-tab-height + 1;
+          line-height: $nyu-tool-tab-height + 1;
+          font-size: $nyu-tool-tab-active-text-size !important;
+          background-color: $nyu-tool-tab-active-background-color !important;
+          text-transform: $nyu-tool-tab-text-transform !important;
 
           &:before {
-            border-top: 4px solid $nyu-tool-tab-hover-highlight-color !important;
+            border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
             content: '';
             display: block;
             position: absolute;
@@ -100,48 +123,27 @@
             top: -1px;
           }
         }
-      }
 
-      span.current {
-        margin: 0 !important;
-        padding: 0 10px !important;
-        color: $nyu-tool-tab-active-text-color !important;
-        height: $nyu-tool-tab-height + 1;
-        line-height: $nyu-tool-tab-height + 1;
-        font-size: $nyu-tool-tab-active-text-size !important;
-        background-color: $nyu-tool-tab-active-background-color !important;
-        text-transform: $nyu-tool-tab-text-transform !important;
-
-        &:before {
-          border-top: 4px solid $nyu-tool-tab-active-highlight-color !important;
-          content: '';
-          display: block;
-          position: absolute;
-          left: -1px;
-          right: -1px;
-          top: -1px;
-        }
-      }
-
-      .formItem {
-        input[type="submit"] {
-          margin: 0;
-        }
-        &.form-inline {
+        .formItem {
           input[type="submit"] {
             margin: 0;
-            height: $nyu-tool-tab-height - 6;
-            padding: 0px 10px;
           }
-        }
-        input[type="text"] {
-          height: $nyu-tool-tab-height - 2;
-          margin: 0px 0 0 6px;
-          border: 1px solid #EAEAEA;
+          &.form-inline {
+            input[type="submit"] {
+              margin: 0;
+              height: $nyu-tool-tab-height - 6;
+              padding: 0px 10px;
+            }
+          }
+          input[type="text"] {
+            height: $nyu-tool-tab-height - 2;
+            margin: 0px 0 0 6px;
+            border: 1px solid #EAEAEA;
 
-          &.form-control {
-            height: $nyu-tool-tab-height - 6;
-            margin: 0px 0 1px 6px;
+            &.form-control {
+              height: $nyu-tool-tab-height - 6;
+              margin: 0px 0 1px 6px;
+            }
           }
         }
       }
@@ -896,6 +898,11 @@ body {
     .column {
       a[href] {
         color: $nyu-link-color;
+      }
+    }
+    ul#toolbar {
+      li {
+        display: inline-block;
       }
     }
   }
