@@ -3,8 +3,8 @@ var dialogutil = dialogutil || {};
 (function(jQuery, dialogutil) {
 
 	dialogutil.openDialog = function(divId, frameId) {
-		var vHeight = 300;
-		
+		var vHeight = Math.max(300, parseInt($(window).height() * 0.9));
+		var hWidth = Math.min(1024, parseInt($(window).width() * 0.9));
 		
 
 		$("#" + divId).dialog({
@@ -12,7 +12,7 @@ var dialogutil = dialogutil || {};
 			autoOpen:false,
 			draggable:false,
 			modal: true,
-			width: 600,
+			width: hWidth,
 			height: vHeight,
 			close: function(event, ui) {
 				dialogutil.closeDialog(divId, frameId);
@@ -25,7 +25,6 @@ var dialogutil = dialogutil || {};
 			zIndex: 10
 		});
 
-		$("#" + divId).dialog( "option", "position", "top");
 		$("#" + divId).dialog("open");
 	};
 
