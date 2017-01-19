@@ -39,6 +39,7 @@ import org.apache.commons.lang.StringUtils;
 import com.unboundid.ldap.sdk.BindResult;
 import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.LDAPConnectionPool;
+import com.unboundid.ldap.sdk.LDAPSearchException;
 import com.unboundid.ldap.sdk.ResultCode;
 import com.unboundid.ldap.sdk.RoundRobinServerSet;
 import com.unboundid.ldap.sdk.SearchResult;
@@ -870,16 +871,29 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			}
 			long start = System.currentTimeMillis();
 			
-			SearchResult searchResult = 
-				connectionPool.search(searchBaseDn, 
-						searchScope,
-						dr,
-						maxResults,
-						operationTimeout,
-						false,
-						filter, 
-						searchResultPhysicalAttributeNames
-						);
+			SearchResult searchResult = null;
+
+                        try {
+                            searchResult = connectionPool.search(searchBaseDn, 
+                                    searchScope,
+                                    dr,
+                                    maxResults,
+                                    operationTimeout,
+                                    false,
+                                    filter,
+                                    searchResultPhysicalAttributeNames
+                            );
+                        } catch (LDAPSearchException e) {
+                            if (e.getResultCode().equals(ResultCode.SIZE_LIMIT_EXCEEDED)) {
+                                // CLASSES-2606 We still want results even
+                                // though we hit the max.  Just take what we
+                                // were able to get.
+                                searchResult = e.getSearchResult();
+                            } else {
+                                throw e;
+                            }
+                        }
+
 			List<SearchResultEntry> searchResults = searchResult.getSearchEntries();
 			
 			List<LdapUserData> mappedResults = new ArrayList<LdapUserData>();
