@@ -1,3 +1,5 @@
+@import "font-awesome";
+
 // -------------------------------------------------------------------------------------------------------------------
 //  Tool Warning mixin
 // -------------------------------------------------------------------------------------------------------------------
@@ -923,6 +925,122 @@ body {
         padding: 0 5px;
         line-height: 20px;
         width: 100%;
+      }
+    }
+  }
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Syllabus tool
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  .#{$namespace}sakai-syllabus {
+    // main listing page
+    #syllabus {
+      #accordion {
+        .ui-accordion {
+          margin-bottom: 20px;
+
+          .ui-accordion-header {
+            min-height: 42px;
+            padding: 12px 10px;
+            border-color: #E5E5E5;
+            background: #FAFAFA;
+
+            .editItemTitle {
+              font-weight: bold;
+              color: #347EB2;
+            }
+
+            .syllabus-drag {
+              @extent .fa-snowflake-o;
+              font-size: 18px;
+              position: absolute;
+              color: #AAA;
+              left: 4px;
+              cursor: move;
+              width: 20px;
+              text-align: center;
+
+              &:before {
+                font-family: 'nyu-classes-icons' !important;
+                content: '\f1c5' !important;
+                width: 10px;
+                display: inline-block;
+              }
+
+              img {
+                display: none;
+              }
+            }
+
+            .actionIcon {
+              width: 22px;
+              text-align: center;
+              float: left;
+              padding: 0;
+            }
+
+            .actionIcon.editDetails {
+              text-decoration: none !important;
+              margin-left: 14px;
+
+              @extend .fa-pencil;
+              &:before {
+                font: normal normal normal 14px / 1 FontAwesome;
+              }
+
+              img {
+                display: none;
+              }
+            }
+
+            .actionIcon.publish {
+              text-decoration: none !important;
+
+              &.publishOn {
+                 @extend .fa-eye;
+                 &:before {
+                   font: normal normal normal 14px / 1 FontAwesome;
+                 }
+              }
+
+              &.publishOff {
+                @extend .fa-eye-slash;
+                 &:before {
+                   font: normal normal normal 14px / 1 FontAwesome;
+                 }
+              }
+            }
+
+            .actionIcon.delete {
+              text-decoration: none !important;
+
+              @extend .fa-trash-o;
+              &:before {
+                font: normal normal normal 14px / 1 FontAwesome;
+              }
+
+              img {
+                display: none;
+              }
+            }
+          }
+
+          .ui-accordion-header-icon {
+            display: none;
+          }
+
+          .ui-accordion-content {
+            border-color: #E5E5E5;
+          }
+        }
+      }
+
+      #expandLink, #collapseLink {
+        display: inline !important;
+        margin-left: 8px;
       }
     }
   }
