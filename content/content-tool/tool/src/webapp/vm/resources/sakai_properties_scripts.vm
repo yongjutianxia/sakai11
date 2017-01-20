@@ -1641,6 +1641,8 @@
       showDates();
     } else if ($radio.is("[id^='hidden_true_']:checked")) {
       hideDates();
+    } else if ($radio.is("[id^='hidden_with_accessible_content_true_']:checked")) {
+      hideDates();
     } else {
       return true;
     }
