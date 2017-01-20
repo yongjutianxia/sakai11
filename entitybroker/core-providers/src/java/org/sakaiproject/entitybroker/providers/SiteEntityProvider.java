@@ -542,6 +542,13 @@ RESTful, ActionsExecutable, Redirectable, RequestStorable, DepthLimitable {
             String source = null;
             boolean toolPopup = false;
             int count = 0;
+
+            // NYU add switch for hiding Settings in dropdown menus
+            // as Students should never see this tool as "Settings"
+            // rather it's either hidden or "Site Groups" - so we hide it
+            // in this context
+            boolean skipPage = false;
+
             // get the tool configs for each
             for (ToolConfiguration tc : (List<ToolConfiguration>) page.getTools() ) {
                 // get the tool from column 0 for this tool config (if there is one)
@@ -579,6 +586,10 @@ RESTful, ActionsExecutable, Redirectable, RequestStorable, DepthLimitable {
                         toolPopup = "on".equals(toolProps.getProperty("imsti.newpage"));
                         source = "/access/basiclti/site/"+tc.getContext()+"/"+tc.getId();
                     }
+
+                    if ("sakai.siteinfo".equals(tool.getId())) {
+                        skipPage = true;
+                    }
                 }
             }
             if ( count != 1 ) {
@@ -587,6 +598,10 @@ RESTful, ActionsExecutable, Redirectable, RequestStorable, DepthLimitable {
             }
             pageData.put("toolpopup", Boolean.valueOf(toolPopup));
             pageData.put("toolpopupurl", source);
+
+            if (skipPage) {
+                continue;
+            }
 
             // Add the pageData
             data.add( pageData );
