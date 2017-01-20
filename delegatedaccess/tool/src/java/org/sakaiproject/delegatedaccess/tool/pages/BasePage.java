@@ -269,7 +269,7 @@ public class BasePage extends WebPage implements IHeaderContributor {
 	 */
 	protected void disableLink(Link<Void> l) {
 		l.add(new AttributeAppender("class", new Model<String>("current"), " "));
-		l.replace(l.get(0));
+		l.setRenderBodyOnly(true);
 		l.setEnabled(false);
 	}
 
