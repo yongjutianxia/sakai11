@@ -348,6 +348,8 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			return false;
 		}
 
+                long _ldapStartTime = System.currentTimeMillis();
+
 		try
 		{
 			// look up the end-user's DN, which could be nested at some 
@@ -355,6 +357,8 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			// TODO: optimization opportunity if user entries are 
 			// directly below getBasePath()
 			final String endUserDN = lookupUserBindDn(userLogin);
+
+			long _ldapFinishedLookupUserBindDn = System.currentTimeMillis();
 
 			if ( endUserDN == null ) {
 				if ( M_log.isDebugEnabled() ) {
@@ -373,7 +377,19 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			}
 			
 			lc = connectionPool.getConnection();
+			long _ldapFinishedConnecting = System.currentTimeMillis();
+
 			BindResult bindResult = lc.bind(endUserDN, password);
+			long _ldapFinishTime = System.currentTimeMillis();
+
+			M_log.info(String.format("[%s] Successful LDAP authentication for '%s' (connection: %d; lookup: %d; bind: %d; total: %d)",
+							Thread.currentThread().toString(),
+							userLogin,
+							(_ldapFinishedConnecting - _ldapFinishedLookupUserBindDn),
+							(_ldapFinishedLookupUserBindDn - _ldapStartTime),
+							(_ldapFinishTime - _ldapFinishedConnecting),
+							(_ldapFinishTime - _ldapStartTime)));
+
 			if(bindResult.getResultCode().equals(ResultCode.SUCCESS)) {
 				return true;
 			}
