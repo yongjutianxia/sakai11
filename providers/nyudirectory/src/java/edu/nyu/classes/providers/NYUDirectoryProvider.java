@@ -131,7 +131,7 @@ public class NYUDirectoryProvider extends UnboundidDirectoryProvider
         for (UserEdit missedUser : missedUsers) {
             LOG.warn("User could not be found in NYU_T_USERS: " + missedUser.getEid() + ".  Falling back to LDAP for this user");
 
-            if (super.getUser(missedUser)) {
+            if (isSensibleEid(missedUser.getEid()) && super.getUser(missedUser)) {
                 LOG.warn("Found user " + missedUser.getEid() + " in LDAP");
             } else {
                 LOG.warn("Could not find user " + missedUser.getEid() + " in LDAP");
@@ -160,6 +160,21 @@ public class NYUDirectoryProvider extends UnboundidDirectoryProvider
         return missedUserCount == 0;
     }
 
+
+    // An optimization for commonly incorrect EIDs that aren't worth bugging LDAP for
+    private static final int UUID_LENGTH = 36;
+
+    private boolean isSensibleEid(String eid) {
+        if (eid == null) {
+            return false;
+        } else if (eid.indexOf("@") >= 0) {
+            return false;
+        } else if ((eid.length() == UUID_LENGTH) && eid.indexOf("-") >= 0) {
+            return false;
+        }
+
+        return true;
+    }
 
     // Query the database for the users in `pageOfUsers` and load their information into the UserEdit objects.
     private void fetchPageOfUsers(Connection connection, List<UserEdit> pageOfUsers, Map<String, UserEdit> usersByEid) throws SQLException {
