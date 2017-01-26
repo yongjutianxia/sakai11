@@ -376,6 +376,8 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 						userLogin + "][bind dn [" + endUserDN + "]");
 			}
 			
+                        nyuLogLDAPUsage();
+
 			lc = connectionPool.getConnection();
 			long _ldapFinishedConnecting = System.currentTimeMillis();
 
@@ -889,6 +891,8 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			long start = System.currentTimeMillis();
 			
 			SearchResult searchResult = null;
+
+                        nyuLogLDAPUsage();
 
                         try {
                             searchResult = connectionPool.search(searchBaseDn, 
@@ -1530,4 +1534,23 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 		this.searchAliases = searchAliases;
 	}
 
+
+	private void nyuLogLDAPUsage() {
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		for (StackTraceElement elt : Thread.currentThread().getStackTrace()) {
+			if (count < 20) {
+				if (sb.length() > 0) {
+					sb.append("    ");
+				}
+
+				sb.append(elt.toString());
+				sb.append("\n");
+			}
+
+			count++;
+		}
+
+		M_log.info("LDAP hit: " + sb.toString());
+	}
 }
