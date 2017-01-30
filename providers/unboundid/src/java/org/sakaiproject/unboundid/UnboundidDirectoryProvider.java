@@ -41,7 +41,8 @@ import com.unboundid.ldap.sdk.DereferencePolicy;
 import com.unboundid.ldap.sdk.LDAPConnectionPool;
 import com.unboundid.ldap.sdk.LDAPSearchException;
 import com.unboundid.ldap.sdk.ResultCode;
-import com.unboundid.ldap.sdk.RoundRobinServerSet;
+import com.unboundid.ldap.sdk.ServerSet;
+import com.unboundid.ldap.sdk.SingleServerSet;
 import com.unboundid.ldap.sdk.SearchResult;
 import com.unboundid.ldap.sdk.SearchResultEntry;
 import com.unboundid.ldap.sdk.SearchScope;
@@ -222,22 +223,20 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			M_log.warn("Unboundid batchSize is larger than maxResultSize, batchSize has been reduced from: "+ batchSize + " to: "+ maxResultSize);
 		}
 
-		// Create a new LDAP connection pool with 10 connections spanning multiple
-		// servers using a server set.
-		RoundRobinServerSet serverSet = null;
+		ServerSet serverSet = null;
 
 		if (isSecureConnection()) {
 			try {
 				SSLUtil sslUtil = new SSLUtil(new TrustAllTrustManager());
 				SSLSocketFactory sslSocketFactory = sslUtil.createSSLSocketFactory();
 
-				serverSet = new RoundRobinServerSet(ldapHost, ldapPort, sslSocketFactory);
+				serverSet = new SingleServerSet(ldapHost[0], ldapPort[0], sslSocketFactory);
 			} catch (GeneralSecurityException ex) {
 				M_log.error("Error while initializing LDAP SSLSocketFactory");
 				throw new RuntimeException(ex);
 			}
 		} else {
-			serverSet = new RoundRobinServerSet(ldapHost, ldapPort);
+			serverSet = new SingleServerSet(ldapHost[0], ldapPort[0]);
 		}
 
 		SimpleBindRequest bindRequest = new SimpleBindRequest(ldapUser, ldapPassword);
