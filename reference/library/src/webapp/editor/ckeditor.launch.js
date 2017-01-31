@@ -247,7 +247,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
             //extraToolbarButtons.push('atd-ckeditor');
 
-            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification";
+            ckconfig.extraPlugins+="image,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification";
 
             //SAK-29648
             ckconfig.contentsCss = [basePath+'/fontawesome/font-awesome/css/font-awesome.min.css'];
