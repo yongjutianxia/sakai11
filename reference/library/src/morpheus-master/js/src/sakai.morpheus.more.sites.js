@@ -50,9 +50,9 @@ var dhtml_view_sites = function(){
       paneHeight -= $PBJQ('.tab-pane').offset().top;
 
       // and adjust to show the bottom of the modal frame
-      paneHeight -= parseInt(modal.css('padding-bottom'), 10);
+      paneHeight -= parseInt(modal.css('padding-bottom'), 20);
 
-      $PBJQ('.tab-pane').css('max-height', paneHeight);
+      $PBJQ('.tab-pane').css('height', paneHeight);
 
 
       // CLASSES-2396 only focus the search field on desktop
