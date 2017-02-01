@@ -217,6 +217,7 @@
 							<f:verbatim><span class="syllabus-drag"></f:verbatim>
 							<h:graphicImage url="/images/cursor_drag_arrow.png" title="#{msgs.dragToReorder}"  styleClass="actionIcon"/>
 							<f:verbatim></span></f:verbatim>
+							<f:verbatim><span class="edit-actions"></f:verbatim>
 							<h:commandLink action="#{eachEntry.processListRead}" title="#{msgs.edit_details}" styleClass="actionIcon editDetails">
                                                           <f:param name="returnToMain" value="true"></f:param>
 							  <h:graphicImage url="/images/pencil.png"/>
@@ -239,6 +240,7 @@
 								<img src="/library/image/silk/cross.png"/>
 								</a>
 							</f:verbatim>
+							<f:verbatim></span></f:verbatim>
 						</f:subview>
 						<f:verbatim><a href="javascript:void(0)" </f:verbatim>
 							<f:subview id="draftclass" rendered="#{eachEntry.status == eachEntry.draftStatus}">
