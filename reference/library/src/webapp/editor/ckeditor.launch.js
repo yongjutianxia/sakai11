@@ -190,7 +190,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
     ckconfig.autosave = {
         saveDetectionSelectors : "form input[type='button'],form input[type='submit']",
         //Delay for autosave
-        delay: 300,
+        delay: 60,
         //autosave_messageType can be "no" or "notification"
         messageType : "statusbar",
         // Use the default key (with the location)
