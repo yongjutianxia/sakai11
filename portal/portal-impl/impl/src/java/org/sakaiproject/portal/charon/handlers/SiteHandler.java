@@ -527,33 +527,44 @@ public class SiteHandler extends WorksiteHandler
 			rcontext.put("responseBody", (String) bufferMap.get("responseBody"));
 		}
 
-                // CLASSES-1453
-                boolean isInstructor = false;
+		// CLASSES-1453
+		boolean isInstructor = false;
 
-                if (site != null) {
-                    if (SecurityService.unlock(SiteService.SECURE_UPDATE_SITE, site.getReference())) {
-                        // NYU: Should we show siteinfo as "settings"?
-                        isInstructor = true;
-                        rcontext.put("showSiteInfoAsSettings", "true");
-                    } else {
-                        rcontext.put("showSiteInfoAsSettings", "false");
-                    }
+		if (site != null) {
+		    if (SecurityService.unlock(SiteService.SECURE_UPDATE_SITE, site.getReference())) {
+			// NYU: Should we show siteinfo as "settings"?
+			isInstructor = true;
+			rcontext.put("showSiteInfoAsSettings", "true");
+		    } else {
+			rcontext.put("showSiteInfoAsSettings", "false");
+		    }
 
-                    rcontext.put("showJoinableGroups", "false");
+		    boolean showJoinableGroups = false;
 
-                    // CLASSES-2303: If there is any group in a site, other than
-                    // the section group(s) or any lessonbuilder groups (prerequisites),
-                    // show Site Groups. So that includes joinable groups, manually
-                    // created groups, auto groups.
-                    for (Group g : site.getGroups()) {
-                        if (g.getProviderGroupId() == null &&
-                                g.getProperties().get("lessonbuilder_ref") == null)
-                        {
-                            rcontext.put("showJoinableGroups", "true");
-                            break;
-                        }
-                    }
-                }
+		    // CLASSES-2303
+		    // If the site has joinable groups, show the tool to the student
+		    for (Group g : site.getGroups()) {
+			if (g.getProperties().getProperty(Group.GROUP_PROP_JOINABLE_SET) != null) {
+			    showJoinableGroups = true;
+			    break;
+			}
+		    }
+
+		    if (!showJoinableGroups) {
+			// If the user belongs to any group other than a roster
+			// or a lessons group, show the tool.
+			Collection<Group> userGroups = site.getGroupsWithMember(userId);
+
+			for (Group g : userGroups) {
+			    if (g.getProviderGroupId() == null && g.getProperties().get("lessonbuilder_ref") == null) {
+				showJoinableGroups = true;
+				break;
+			    }
+			}
+		    }
+
+		    rcontext.put("showJoinableGroups", String.valueOf(showJoinableGroups));
+		}
 
 		rcontext.put("siteId", siteId);
 		boolean showShortDescription = Boolean.valueOf(ServerConfigurationService.getBoolean("portal.title.shortdescription.show", false));
