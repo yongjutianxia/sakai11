@@ -307,6 +307,11 @@ form[name^='announcementListForm'] .instruction {
     display: none !important;
   }
 }
+body > .portletBody > #calendarForm {
+  .calHeader {
+    text-align: center;
+  }
+}
 #synopticForm {
   #showOptions {
     display: none !important;
