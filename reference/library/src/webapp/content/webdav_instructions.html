@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <title>Upload-Download Multiple Resources</title>
-  <script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js">
-  </script>
+
+  <script type="text/javascript" language="JavaScript" src="/library/js/headscripts.js"></script>
   <script language="JavaScript" type="text/JavaScript">
 		<!--
 			var i, a, href
@@ -36,7 +36,7 @@
 		if((s==null)||(typeof(s)!='string')||!s.length)return'';return s.replace(/^\s+/,'').replace(/\s+$/,'')
 		}
 	function splitedWebDavLink() {
-		var input = parent.document.getElementById("webDavUrl")
+		var input = parent.document.getElementById("webDavUrl");
 		return input.value.split('/');
 	}
 	var swdl = splitedWebDavLink();
@@ -60,6 +60,8 @@
                         if (p.className=='webDavUsername' && getUsername()) {
                                 p.innerHTML=getUsername();
                         }
+
+          $("#webDavUrl").val(parent.document.getElementById("webDavUrl").value);
 		}
 	}
 	function getBaseUrlEncoded() {
@@ -100,53 +102,60 @@
 		// -->
 		</script>
 
+  <link href="/library/skin/morpheus-nyu/tool.css?version=9a0e75a" rel="stylesheet" media="screen, tty, tv, handheld, projection"/>
+  <script src="/library/webjars/jquery/1.11.3/jquery.min.js?version=9a0e75a"></script>
 </head>
 <body onload="(window.frameElement) ? setMainFrameHeight(trim(window.frameElement.id)):'';localizeData()">
 <div>
-  <div class="webdav_os">
-    <h4>Setting up WebDAV using Cyberduck</h4>
+  <p>Using <strong>WebDAV</strong>, you can then easily copy files and folders between NYU Classes and your computer. The following instructions detail the process for downloading <strong>Cyberduck</strong> and using it to connect to this site's Resources.</p>
 
-    <p><strong>Note:</strong> If you already have downloaded Cyberduck to connect to another site's Resources tool, you will still need to follow steps 3 - 6 below, as each site in NYU Classes has a different address configuration.</p>
+  <div class="webdav_os">
+    <h4>Downloading Cyberduck</h4>
+    <p>To connect to a site's Resources tool, you must first download the Cyberduck FTP client. To do so:</p>
 
     <ol>
+      <li>Navigate to the Cyberduck website at <a href="http://cyberduck.io/" target="_blank">http://cyberduck.io/</a>.</li>
       <li>
-        <p>Download the free Cyberduck WebDAV client.</p>
-        <ul style="list-style-type: lower-alpha;">
-          <li>
-            <p>Download Cyberduck at <a href="http://cyberduck.io/" target="_blank">http://cyberduck.io/</a>. There are versions available for OS X (.zip) and Windows (.exe) on the left side of the screen, so select the appropriate version for your operating system.</p>
-            <div style="color: #31708f; background-color: #d9edf7;border: 1px solid #bce8f1;margin: 10px 0;border-radius: 5px;padding: 0 10px;">
-              <p><strong>Note for OS X users:</strong> While a “Download on the Mac App Store” link is available, this version of Cyberduck is not free. To download a free version, select the .zip version available above.</p>
-            </div>
-          </li>
-          <li>Double-click the downloaded file.
-            <ul>
-              <li>For OS X, a disk image with a name similar to Cyberduck-4.6.1 (or higher) should now be available. Simply drag and drop the folder from the disk image to your Applications folder.</li>
-              <li>For Windows, the Cyberduck installer should run and guide you through the installation process.</li>
-            </ul>
-          </li>
+        <p>Download options for Mac (.zip) and Windows (.exe) will display on the left side of the screen. Select the appropriate version for your operating system, and the application will download to your computer.</p>
+        <p><strong>Note:</strong> While "Download on the Mac App Store" and "Get it on Windows 10" links are available, these versions of Cyberduck are <strong><u>not</u></strong> free. To download a free version, select the Windows/Mac download buttons.</p>
+      </li>
+      <li>
+        <p>Double-click the downloaded file.</p>
+        <ul>
+          <li>For MacOS, a disk image for Cyberduck-5.3.3 (or higher) will now display. Simply drag and drop the application from the disk image window to your computer's Applications folder.</li>
+          <li>For Windows, the Cyberduck installer should run and guide you through the installation process.</li>
         </ul>
+      </li>
+    </ol>
+    <p>Cyberduck will now be successfully installed on your computer.</p>
 
-      <li><p>Once installed, open the Cyberduck application.</p></li>
-      <li><p>Click the <strong>Open Connection</strong> button (or the menu item <strong>File</strong> &gt; <strong>Open Connection</strong>).</p></li>
+    <h4>Connecting to Your Site's Resources</h4>
+    <p>Once you have installed Cyberduck, you can use it to connect to your site's Resources.</p>
+    <p><strong>Note:</strong> If you have a previously installed version, you <strong><u>must</u></strong> update it to the latest version (v. 5.5.3 or higher) in order to follow these instructions.</p>
+    <ol>
+      <li>Open Cyberduck.</li>
+      <li>Click the <strong>Open Connection</strong> button (or select File > Open Connection from the application menu bar).</li>
       <li>
-        <p>You will be presented with a form similar to this (taken from Cyberduck v4.6.1 on Mac OS X):</p>
-        <div><img src="webdav_cyberduck_screenshot-4.6.1.jpg?1433992414" alt="Screenshot of Cyberduck Add Connection form" /></div>
+        <p>You will be presented with a form similar to the following (screenshot taken from Cyberduck v. 5.3.3 on MacOS):</p>
+        <img src="webdav.jpg" title="Cyberduck screenshot from v5.3.3" style="width:100%;max-width:680px;"/>
       </li>
       <li>
         <p>Complete the form as follows:</p>
-        <ul style="list-style-type: lower-alpha;">
-          <li>Select <strong>WebDAV <span class="webDavService"></span></strong> from the drop-down list</li>
-          <li>Type or paste the following into the "Server" field: <strong><span class="webDavHostName">hostname</span></strong></li>
-          <li>Type or paste the following into the "Port" field: <strong><span class="webDavPort">80</span></strong></li>
-          <li>Type or paste your <em>netID</em> into the "Username" field: <strong><span class="webDavUsername"></span></strong></li>
-          <li>Enter your <em>NYU password</em> into the "Password" field.
-          <li>Click and expand "More Options." Within the "Path" field, type or paste the following: <strong><span class="webDavFolderUrlEncoded">dav/xxxx-xxxx-xxxx</span></strong></li>
-        </ul>
+        <ol style="list-style-type: lower-alpha;">
+          <li>Select <strong>WebDAV (HTTP/SSL)</strong> from the drop-down list.</li>
+          <li>
+            <p>Within the "Server" field, paste the following path (unique to this course site):</p>
+            <p><input class="form-control" id="webDavUrl" type="text" readonly/></p>
+            <p>Once pasted, only "<span class="webDavHostName"></span>" will display in the “Server” field. <strong><u>The full path will display as a blue URL below</u></strong>.</p>
+          </li>
+          <li>Type or paste the following into the "Port" field: <strong><span class="webDavPort"></span></strong>.</li>
+          <li>Enter your <strong>NYU NetID</strong> into the "Username" field.</li>
+          <li>Enter your <strong>NetID password</strong> into the "Password" field.</li>
+        </ol>
       </li>
-      <li><p>Click <strong>Connect</strong>.</p></li>      
+      <li>Click <strong>Connect</strong>.</li>
     </ol>
-
-    <p>You will now see a window on your screen showing the Resources in your site. Simply drag-and-drop between your computer and this window to transfer files to and from your NYU Classes site's Resources tool.</p>
+    <p>You will now see a window on your screen showing the Resources in your site. Simply drag-and-drop files/folders between your computer and this window to transfer content to/from the Resources tool.</p>
   </div>
 </div>
 </body>
