@@ -979,7 +979,7 @@ ul#toolbar li em {
 .Mrphs-siteHierarchy .breadcrumb-link, .Mrphs-siteHierarchy .lessons-siteHierarchy-title {
   display: inline-block;
   margin-top: 1em;
-  padding-top: 3px;
+  padding-top: 4px;
 }
 
 .Mrphs-siteHierarchy .lessons-siteHierarchy-title.bold {
@@ -1696,8 +1696,6 @@ span.nextprev {
   display: inline-block;
 }
 .fa-item-text {
-  position:relative; 
-  top:3px; 
   margin-right:2px;
   font-family:FontAwesome;
 }
