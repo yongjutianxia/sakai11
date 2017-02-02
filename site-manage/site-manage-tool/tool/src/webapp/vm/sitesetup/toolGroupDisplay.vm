@@ -55,7 +55,7 @@
                                             #elseif ($multipleToolIdTitleMap.containsKey($toolId))
                                             <!-- Multi tool $toolId is handled below -->
                                     		#else 
-                                            <div class="toolListControl">
+                                            <div class="toolListControl" id="$toolId.replace(".","_")_wrap">
                                                 <input type="checkbox" name="selectedTools" value="$toolId" id="$toolId"
                                                 #if ($tools.isSelected())
                                                 	checked="checked"

@@ -3,7 +3,7 @@
 	#set($toolMultipleId = $toolMultiple.getId())
     	#set ($rowCount=$rowCount + 1)
 	<li id="row-$rowCount" class="indnt3">
-		<div class="toolListControl">
+		<div class="toolListControl" id="$toolMultipleId.replace(".","_")_wrap">
 			<input type="checkbox" name="selectedTools" value="$toolMultipleId" id="$toolMultipleId"
 				## toolMultiples shouldn't be *required* but hey...
 				##if ($toolMultiple.isRequired())
