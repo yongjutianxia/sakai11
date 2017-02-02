@@ -154,7 +154,7 @@
 
     <tool id="nyu.briteclass"
           title="BriteClass"
-          description="BriteClass">
+          description="Lecture capture tool. Note: Recordings are only available for courses that meet in a lecture capture space or classroom.">
 
       <configuration name="sakai.properties.url.key" value="nyu.briteclass.url" />
       <configuration name="height" value="800px" />
