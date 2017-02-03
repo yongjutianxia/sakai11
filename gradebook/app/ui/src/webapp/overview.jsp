@@ -25,10 +25,12 @@
 			</h:panelGroup>
 		</div>
 		
+    <f:verbatim><div class='nyu-add-import-toolbar'></f:verbatim>
 		<sakai:tool_bar rendered="#{overviewBean.userAbleToEditAssessments}">
     		<sakai:tool_bar_item value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" current="false" style="sakai_jsf_not_current_marker" />
    			<sakai:tool_bar_item value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" current="false" style="sakai_jsf_not_current_marker" />
   		</sakai:tool_bar>
+    <f:verbatim></div></f:verbatim>
   		
   						
   	<h:panelGrid cellpadding="0" cellspacing="0" columns="2"
