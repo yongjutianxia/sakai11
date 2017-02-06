@@ -20,7 +20,7 @@
 	<span>Message for user here</span>
   </div>
   <div class="tier1">
-    <form rsf:id="edit-blog-entry-form" method="post">
+    <form rsf:id="edit-blog-entry-form" id="edit-blog-entry-form" method="post">
       <div class="highlightPanel">
         <div class="blogwowTitleEntry">
           <span rsf:id="title-label">Title:</span>&nbsp;&nbsp;&nbsp;
@@ -48,6 +48,36 @@
         </p>
       </div>
     </form>
+    <script>
+      function initBlogForm() {
+        // jQuery is loaded now!
+        var $form = $PBJQ('#edit-blog-entry-form');
+
+        // When a submit button is clicked,
+        $form.find(':submit').on('click', function() {
+          // create a hidden input of the same name and value
+          var $hidden = $(document.createElement('input')).attr('type', 'hidden');
+          $hidden.attr('name', $(this).attr('name'));
+          $hidden.attr('value', $(this).attr('value'));
+          $form.append($hidden);
+
+          return true;
+        });
+
+        // When the form is submitted, disable all buttons
+        // to avoid double clicks / double posts
+        $form.on('submit', function() {
+          $form.find(':submit').prop('disabled', true);
+          return true;
+        });
+      };
+
+      if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', initBlogForm, false);
+      } else if (document.attachEvent)  {
+        document.attachEvent('DOMContentLoaded', initBlogForm);
+      };
+    </script>
   </div>
   <!--img src="images/tea.gif" align="right"/-->
 </div>
