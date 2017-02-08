@@ -165,48 +165,48 @@ function showAddPage(clickedLink, init) {
 
 function showEditPage(clickedLink) {
 	li = $(clickedLink).closest(".sortable_item");
-	$(li).find(".item_label_box").hide();
-	$(li).find(".item_control_box").hide();
-	$(li).find(".item_edit_box").fadeIn('normal');
-	//$(li).removeClass("sortable_item");
-	$(li).addClass("editable_item");
-	$(li).unbind();
+	clone = li.clone();
+	clone.data('source', li);
+	li.hide();
+	clone.insertAfter(li);
+
+	clone.find(".item_label_box").hide();
+	clone.find(".item_control_box").hide();
+	clone.find(".item_edit_box").fadeIn('normal');
+	clone.addClass("editable_item");
+	clone.unbind();
+    clone.find(".item_edit_box :input").select().on("keypress", function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            clone.find(".do-save-edit").trigger("click");
+            return false;
+        }
+        return true;
+    });
 	resetFrame();
 }
 
 function doSaveEdit(clickedLink) {
 	var theHref = $(clickedLink).attr('href');
-	li = $(clickedLink).closest(".sortable_item");
-	newTitle = $(li).find(".new_title");
-	newConfig = $(li).find(".new_config");
+	clone = $(clickedLink).closest(".sortable_item");
+	newTitle = clone.find(".new_title");
+	newConfig = clone.find(".new_config");
 	$("#call-results").load(clickedLink + "&newTitle=" + encodeURIComponent(newTitle.val()) + "&newConfig=" + encodeURIComponent(newConfig.val()), function() {
 
 		var status = $("#call-results").find("#value").text();
 		if (status == 'pass') {
-			$(li).find(".item_edit_box").hide();
-			newTitle = $("#call-results").find("#pageId strong").html();	
-			$(li).find(".item_label_box").empty();
-			$(li).find(".item_label_box").append(newTitle);
-			$(li).find(".item_label_box").show();
-			$(li).find(".item_label_box").attr("style", "display: inline");
-			$(li).find(".item_control_box").show();
-			$(li).find(".item_control_box").attr("style", "display: inline");
-			$(li).addClass("sortable_item");
-			$(li).removeClass("editable_item");
+			li = clone.data("source");
+			li.find(".item_label_box").html(newTitle.val());
+			li.show();
+			clone.remove();
 		}
   	});
 }
 
 function doCancelEdit(clickedLink) {
-	li = $(clickedLink).closest(".sortable_item");
-	$(li).find(".item_edit_box").hide();
-	$(li).find(".item_label_box").show();
-	$(li).find(".item_label_box").attr("style", "display: inline");
-	$(li).find(".item_control_box").show();
-	$(li).find(".item_control_box").attr("style", "display: inline");
-	$(li).addClass("sortable_item");
-	$(li).removeClass("editable_item");
-	$(li).find(".new_title").val($(li).find(".item_label_box").text());
+	clone = $(clickedLink).closest(".sortable_item");
+	clone.data("source").show();
+	clone.remove();
 }
 
 function checkReset() {
