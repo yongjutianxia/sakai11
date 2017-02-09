@@ -119,6 +119,14 @@ li.sortable_hover
 {
 	padding-right: 5px;
 }
+.item_control_box .dropdown-menu>li>a.disabled {
+	color: #AAA;
+}
+.item_control_box .dropdown-menu>li>a.disabled:hover,
+.item_control_box .dropdown-menu>li>a.disabled:focus,
+.item_control_box .dropdown-menu>li>a.disabled:active {
+	background-color: transparent;
+}
 .item_label_box
 {
 	display: inline;

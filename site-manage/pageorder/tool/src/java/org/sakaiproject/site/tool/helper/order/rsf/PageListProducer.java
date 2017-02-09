@@ -101,6 +101,8 @@ public class PageListProducer
                     toolId = tools.get(0).getToolId().replaceAll("\\.", "-");
                 }
                 UIOutput.make(pagerow, "tool-icon").decorate(new UIFreeAttributeDecorator("class", String.format("tool-icon icon-%s", toolId)));
+                // NYU add the toolId as a CSS class
+                pagerow.decorate(new UIFreeAttributeDecorator("class", String.format("sortable_item tool-%s", toolId)));
 
                 PageEditViewParameters param = new PageEditViewParameters();
                                 

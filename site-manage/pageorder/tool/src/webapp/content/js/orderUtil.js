@@ -267,3 +267,19 @@ function addTool(draggable, manual) {
 	return false;
 }
 
+// NYU disable edit title for lesson pages
+$(document).ready(function(){
+  var LESSONS_TOOL_ID = 'sakai-lessonbuildertool';
+
+  function disableLessonsEditMenuItem(li) {
+    var $editMenuItem = $('.edit-page-title', li);
+    $editMenuItem.attr('href', 'javscript:void(0);');
+    $editMenuItem.attr('onclick', 'javscript:void(0);');
+    $editMenuItem.addClass('disabled');
+    $editMenuItem.attr('title', 'This page title can only be edited via the Lesson tool\'s \'Page Settings\' tab');
+  };
+  
+  $('#page-list').find('.tool-'+LESSONS_TOOL_ID).each(function() {
+    disableLessonsEditMenuItem($(this));
+  });
+});
