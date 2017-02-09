@@ -27,6 +27,9 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -362,7 +365,7 @@ public class AccessServlet extends VmServlet
 			if (sessionManager.getCurrentSessionUserId() == null)
 			{
 				try {
-					doLogin(req, res, origPath);
+					doSamlRedirect(req, res, origPath);
 				} catch ( IOException ioex ) {}
 				return;
 			}
@@ -441,6 +444,16 @@ public class AccessServlet extends VmServlet
 		setVmReference("tlang", rb, req);
 		res.setContentType("text/html; charset=UTF-8");
 		includeVm("vm/access/copyrightAlert.vm", req, res);	
+	}
+
+	protected void doSamlRedirect(HttpServletRequest req, HttpServletResponse res, String path)
+		throws ToolException, IOException {
+		String ssoURL = ServerConfigurationService.getString("edu.nyu.classes.saml.ssoURL");
+		if (ssoURL != null && !"".equals(ssoURL)) {
+			res.sendRedirect(ssoURL + "&target=" + URLEncoder.encode(path));
+		} else {
+			doLogin(req, res, path);
+		}
 	}
 
 	/**

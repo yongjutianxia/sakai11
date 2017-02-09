@@ -142,6 +142,15 @@ public class SiteHandler extends WorksiteHandler
 	public int doGet(String[] parts, HttpServletRequest req, HttpServletResponse res,
 			Session session) throws PortalHandlerException
 	{
+		if (parts.length == 2 && "pda".equals(parts[1])) {
+			try {
+				res.sendRedirect("/portal");
+			} catch (IOException ex) {
+				// We tried...
+			}
+			return END;
+		}
+
 		if ((parts.length >= 2) && (parts[1].equals(SiteHandler.URL_FRAGMENT)))
 		{
 			// This is part of the main portal so we simply remove the attribute
