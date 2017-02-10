@@ -37,7 +37,7 @@
 		}
 	function splitedWebDavLink() {
 		var input = parent.document.getElementById("webDavUrl");
-		return input.value.split('/');
+		return input.value.trim().split('/');
 	}
 	var swdl = splitedWebDavLink();
 	function localizeData() {
@@ -131,7 +131,7 @@
 
     <h4>Connecting to Your Site's Resources</h4>
     <p>Once you have installed Cyberduck, you can use it to connect to your site's Resources.</p>
-    <p><strong>Note:</strong> If you have a previously installed version, you <strong><u>must</u></strong> update it to the latest version (v. 5.5.3 or higher) in order to follow these instructions.</p>
+    <p><strong>Note:</strong> If you have a previously installed version, you <strong><u>must</u></strong> update to the latest version (v. 5.3.3 or higher).</p>
     <ol>
       <li>Open Cyberduck.</li>
       <li>Click the <strong>Open Connection</strong> button (or select File > Open Connection from the application menu bar).</li>
