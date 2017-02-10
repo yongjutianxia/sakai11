@@ -449,8 +449,9 @@ public class AccessServlet extends VmServlet
 	protected void doSamlRedirect(HttpServletRequest req, HttpServletResponse res, String path)
 		throws ToolException, IOException {
 		String ssoURL = ServerConfigurationService.getString("edu.nyu.classes.saml.ssoURL");
+
 		if (ssoURL != null && !"".equals(ssoURL)) {
-			res.sendRedirect(ssoURL + "&target=" + URLEncoder.encode(path));
+			res.sendRedirect(ssoURL + "&target=" + URLEncoder.encode(req.getContextPath() + req.getServletPath() + path));
 		} else {
 			doLogin(req, res, path);
 		}
