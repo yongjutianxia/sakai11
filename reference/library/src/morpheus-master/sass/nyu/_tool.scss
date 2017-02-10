@@ -928,6 +928,13 @@ body {
         display: inline-block;
       }
     }
+    .textType {
+      overflow: hidden;
+      min-height: 24px;
+    }
+    .edit-col {
+      right: 0;
+    }
   }
 }
 
