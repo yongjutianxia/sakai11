@@ -58,6 +58,15 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 
+import java.io.UnsupportedEncodingException;
+import org.sakaiproject.component.cover.HotReloadConfigurationService;
+import org.sakaiproject.user.api.Authentication;
+import org.sakaiproject.user.api.AuthenticationException;
+import org.sakaiproject.user.api.AuthenticationMissingException;
+import org.sakaiproject.user.api.Evidence;
+import org.sakaiproject.user.cover.AuthenticationManager;
+import org.sakaiproject.util.ExternalTrustedEvidence;
+
 /**
  * Entity provider for Sakai Sessions
  * 
@@ -411,7 +420,131 @@ public class SessionEntityProvider extends AbstractEntityProvider implements Cor
 
       return result;
    }
-   
+
+   @EntityCustomAction(action="mobilelogin",viewKey=EntityView.VIEW_NEW)
+   public Object doMobileLogin(EntityView view, Map<String, Object> params) {
+      String nyuMobileSecret = HotReloadConfigurationService.getString("nyu.mobile.secret", "").trim();
+      String ipWhitelistRegex = HotReloadConfigurationService.getString("nyu.mobile.ip-whitelist-regex", "");
+
+      if (nyuMobileSecret.isEmpty()) {
+         throw new IllegalStateException("NYU Mobile secret not set!");
+      }
+
+      // IP check
+      HttpServletRequest req = requestGetter.getRequest();
+
+      if (ipWhitelistRegex.isEmpty() || !isIPAddressAcceptable(req, ipWhitelistRegex)) {
+         String msg = "Access denied";
+         log.error(msg);
+         throw new SecurityException(msg);
+      }
+
+      // Session check
+      Session sakaiSession = sessionManager.getCurrentSession();
+
+      if (sakaiSession != null && sakaiSession.getUserId() != null) {
+         String msg = "Already have an existing session!";
+         log.error(msg);
+         throw new IllegalStateException(msg);
+      }
+
+      // Params check
+      String requestedUser = getStringParamOrDie(params, "netid");
+      String secret = getStringParamOrDie(params, "secret");
+
+      if (!constantTimeCompare(nyuMobileSecret, secret)) {
+         String msg = "Supplied secret was not valid";
+         log.error(msg);
+         throw new IllegalArgumentException(msg);
+      }
+
+      User userinfo = null;
+      try {
+         userinfo = userDirectoryService.getUserByEid(requestedUser);
+      } catch (UserNotDefinedException e) {
+      }
+
+      if (userinfo == null || org.sakaiproject.authz.cover.SecurityService.isSuperUser(userinfo.getId())) {
+         String msg = "Can't log in as user: " + requestedUser;
+         log.error(msg);
+         throw new SecurityException(msg);
+      }
+
+      // If all is well, create a session and log in as the requested user
+      Evidence e = new ExternalTrustedEvidence(requestedUser);
+
+      try {
+         Authentication a = AuthenticationManager.authenticate(e);
+         org.sakaiproject.event.cover.UsageSessionService.login(a, req);
+      } catch (AuthenticationException ex) {
+         String msg = "Could not log in as user: " + requestedUser;
+         log.error(msg);
+         log.error(ex.getMessage());
+         ex.printStackTrace();
+
+         throw new SecurityException(msg);
+      }
+
+      log.info("NYU Mobile successfully authenticated for user: " + requestedUser);
+
+      return "";
+   }
+
+
+   private static final int MAX_SECRET_LENGTH = 8192;
+
+   // Compare two strings without giving away information about how close they
+   // were (or their relative lengths) via timing.  That is, don't short circuit
+   // and always do the same amount of work.
+   private static boolean constantTimeCompare(String s1, String s2) {
+      try {
+         byte[] b1 = s1.getBytes("UTF-8");
+         byte[] b2 = s2.getBytes("UTF-8");
+
+         if (b1.length >= MAX_SECRET_LENGTH || b2.length >= MAX_SECRET_LENGTH) {
+            throw new IllegalArgumentException("String exceeded max length");
+         }
+
+         boolean matched = true;
+
+         for (int i = 0; i < MAX_SECRET_LENGTH; i++) {
+            if (b1[i % b1.length] != b2[i % b2.length]) {
+               matched = false;
+            }
+         }
+
+         return matched;
+      } catch (UnsupportedEncodingException e) {
+         log.error("Unsupported encoding exception");
+         return false;
+      }
+   }
+
+   private static boolean isIPAddressAcceptable(HttpServletRequest request, String pattern)
+   {
+      String ip = request.getRemoteAddr();
+      return ip.matches(pattern);
+   }
+
+   private static String getStringParamOrDie(Map<String, Object> params, String param) {
+      String value = (String)params.get(param);
+
+      if (value == null) {
+         value = "";
+      }
+
+      value = value.trim();
+
+      if (value.isEmpty()) {
+         String msg = "Missing value for parameter: " + param;
+         log.error(msg);
+         throw new IllegalArgumentException(msg);
+      }
+
+      return value;
+   }
+
+
    private boolean getAllowed()
    {
 	   boolean allowed=true;
