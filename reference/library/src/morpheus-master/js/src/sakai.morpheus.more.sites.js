@@ -596,7 +596,7 @@ $PBJQ(document).ready(function($){
   };
 
   var returnElementToOriginalPositionIfPossible = function (siteId) {
-    if (initialFavoritesList && initialFavoritesList.includes(siteId)) {
+    if (initialFavoritesList && $.inArray(siteId,initialFavoritesList) >= 0) {
       var idx = initialFavoritesList.indexOf(siteId);
 
       // We'll attempt to place our item to the right its original left
@@ -736,7 +736,7 @@ $PBJQ(document).ready(function($){
         var favoriteItem = itemsBySiteId[siteid].clone(false);
 
         favoriteItem.addClass('organize-favorite-item').data('site-id', siteid);
-        var dragHandle = $PBJQ('<i class="fa fa-bars fav-drag-handle"></i>');
+        var dragHandle = $PBJQ('<a href="javascript:void(0)" class="fav-drag-handle"></a>');
 
         // Hide the tool dropdown
         $PBJQ('.toolMenus', favoriteItem).remove();
@@ -783,6 +783,7 @@ $PBJQ(document).ready(function($){
 
       list.sortable({
         items: "li:not(.favorites-max-marker)",
+        handle: ".fav-drag-handle",
         stop: function () {
           // Rehighlight the first N items
           highlightMaxItems();
