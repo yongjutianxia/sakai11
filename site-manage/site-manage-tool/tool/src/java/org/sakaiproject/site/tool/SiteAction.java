@@ -16350,17 +16350,19 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 		String templateSiteId = null;
 
+		AcademicSession term = (AcademicSession) state.getAttribute(STATE_TERM_SELECTED);
+
 		// CLASSES-2410 EPOLY sites will use a template based on their location
 		final String epolyCode = "EPOLY";
 		if (epolyCode.equals(prop_location)) {
 			// EPOLY isn't a real school code, but we just need a
 			// unique key for the table.
-			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(epolyCode);
+			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(epolyCode, term.getEid());
 		}
 
 		if (templateSiteId == null) {
 			//CLASSES-494, get template site if it exists
-			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school);
+			templateSiteId = nyuDbHelper.getSiteTemplateForSchoolCode(prop_school, term.getEid());
 		}
 
 		//check siteid supplied is an actual site

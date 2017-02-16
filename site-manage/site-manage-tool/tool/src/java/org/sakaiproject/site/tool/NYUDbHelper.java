@@ -180,18 +180,32 @@ public class NYUDbHelper {
 	}
 
 
-	protected String getSiteTemplateForSchoolCode(String schoolCode) {
+    protected String getSiteTemplateForSchoolCode(String schoolCode, String termCode) {
 
 		if (StringUtils.isBlank(schoolCode)) {
 			return schoolCodeLookup(DEFAULT_KEY);
 		}
 
-		String result = schoolCodeLookup(schoolCode);
+		// CLASSES-2586
+		boolean useOldGradebook = ("Fall_2016".equals(termCode) || "Spring_2017".equals(termCode) || "January_2017".equals(termCode));
 
-		if (result != null) {
-			return result;
-		} else {
-			return schoolCodeLookup(DEFAULT_KEY);
+		String result = null;
+
+		if (!useOldGradebook) {
+		    // Look for a special suffixed school for the template containing Gradebook NG
+		    result = schoolCodeLookup(schoolCode + "_NG");
 		}
+
+		if (result == null) {
+		    result = schoolCodeLookup(schoolCode);
+		}
+
+		if (result == null) {
+		    result = schoolCodeLookup(DEFAULT_KEY);
+		}
+
+		M_log.info("Selected template for school " + schoolCode + " and term " + termCode + ": " + result);
+
+		return result;
 	}
 }
