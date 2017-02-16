@@ -1046,6 +1046,11 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 		     if (gradebookPoints != null && !gradebookPoints.equals("")) {
 			 page.setGradebookPoints(Double.valueOf(gradebookPoints));
 		     }
+
+		     String cssSheet = pageElement.getAttribute("csssheet");
+		     if (cssSheet != null && !cssSheet.equals(""))
+			 page.setCssSheet(cssSheet.replaceFirst("^/group/" + fromSiteId, "/group/" + siteId));
+
 		     String folder = pageElement.getAttribute("folder");
 		     if (folder != null && !folder.equals(""))
 			 page.setFolder(folder);
