@@ -887,6 +887,31 @@ body {
           margin-top: 0;
         }
       }
+      .gbSection {
+        > table {
+          border: none;
+
+          tr.show.bogus {
+            background-color: #FFF;
+            border-top: 1px solid #CCC;
+            margin-bottom: 30px;
+
+            td {
+              border: none;
+
+              > table {
+                td {
+                  border: none;
+                }
+              }
+
+              .itemSeparator {
+                display: none;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
