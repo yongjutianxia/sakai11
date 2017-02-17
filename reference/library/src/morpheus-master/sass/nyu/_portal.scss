@@ -523,6 +523,8 @@ body {
       }
 
       ul.favoriteSiteList {
+        clear: both;
+
         > li {
           min-height: 32px !important;
           color: $nyu-all-sites-button-text-color !important;
