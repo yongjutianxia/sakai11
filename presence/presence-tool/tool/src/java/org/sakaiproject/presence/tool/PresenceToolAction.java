@@ -280,6 +280,9 @@ public class PresenceToolAction extends VelocityPortletPaneledAction
 
 	public void doSwitch(RunData data, Context context)
 	{
+		if (1 == 1) {
+			throw new RuntimeException("NO WAY");
+		}
 		// We look at the status in the request so that if someone else has changed the status
 		// of a node we don't switch it back.
 		String id = data.getParameters().getString("server_id");

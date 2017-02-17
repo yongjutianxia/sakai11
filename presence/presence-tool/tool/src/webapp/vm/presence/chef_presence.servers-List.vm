@@ -26,15 +26,9 @@
 				</td>
 				<td headers="Status">
 					$serverStatus.get($serverName)
-					#if($serverStatus.get($serverName) == "CLOSING")
-						#set($button = $tlang.getString("presence.button.open"))
-					#else
-						#set($button = $tlang.getString("presence.button.close"))
-					#end
 					<form name="prevpageForm" class="inlineForm" method="post" action="#toolForm("$action")">
 						<input type="hidden" name="server_id" value="$serverName"/>
 						<input type="hidden" name="status" value="$serverStatus.get($serverName)"/>
-						<input type="submit" name="eventSubmit_doSwitch" value="$button"/>
 						<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 					</form>
 				</td>
