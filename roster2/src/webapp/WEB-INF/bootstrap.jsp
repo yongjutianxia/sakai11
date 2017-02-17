@@ -92,7 +92,7 @@
 <script type="text/javascript" src="/library/js/jquery/cluetip/1.2.10/jquery.cluetip.min.js"></script>
 <script type="text/javascript" src="/library/js/jquery/hoverIntent/r7/jquery.hoverIntent.minified.js"></script>
 <script type="text/javascript" src="/sakai-roster2-tool/js/roster_permissions.js"></script>
-<script type="text/javascript" src="/sakai-roster2-tool/js/roster.js"></script>
+<script type="text/javascript" src="/sakai-roster2-tool/js/roster.js?_=10.4"></script>
 
 </body>
 </html>
