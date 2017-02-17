@@ -434,11 +434,19 @@ public class ProfileEntityProvider extends AbstractEntityProvider implements Cor
 		
 			sb.append("<div class=\"profile2-profile-image\">");
 			sb.append("<img src=\"");
+			String imageUrl = "";
 			if (official) {
-				sb.append(imageLogic.getOfficialProfileImage(userProfile.getUserUuid(), siteId).getUrl());
+				imageUrl = imageLogic.getOfficialProfileImage(userProfile.getUserUuid(), siteId).getUrl();
 			} else {
-				sb.append(userProfile.getImageUrl());
+				imageUrl = userProfile.getImageUrl();
 			}
+			if (imageUrl.contains("?")) {
+				imageUrl += "&";
+			} else {
+				imageUrl += "?";
+			}
+			imageUrl += "siteId="+siteId;
+			sb.append(imageUrl);
 			sb.append("\" />");
 			sb.append("</div>");
 		
