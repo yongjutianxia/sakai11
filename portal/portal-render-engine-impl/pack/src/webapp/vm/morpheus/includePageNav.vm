@@ -213,6 +213,11 @@
 
     #end ## END of IF ( $subSites )
 
+    <script src="/library/js/lessons-subnav.js$!{portalCDNQuery}"></script>
+    <script>
+        new LessonsSubPageNavigation($sitePages.additionalLessonsPages, "$sitePages.currentLessonsPage")
+    </script>
+
 </div>
 
 <!-- END VM includePageNav.vm -->
