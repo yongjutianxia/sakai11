@@ -361,7 +361,11 @@ public class GbGradebookData {
 
             gradeData[0] = gbCourseGrade.getDisplayString();
 
-            gradeData[1] = FormatHelper.formatDoubleToDecimal(courseGrade.getPointsEarned());
+            if (courseGrade.getPointsEarned() == null) {
+                gradeData[1] = "";
+            } else {
+                gradeData[1] = FormatHelper.formatDoubleToDecimal(courseGrade.getPointsEarned());
+            }
 
             result.add(gradeData);
         }
