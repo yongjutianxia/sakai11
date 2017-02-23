@@ -372,7 +372,12 @@ public class AccessServlet extends VmServlet
 
 			// otherwise reject the request
 			M_log.debug("dispatch(): ref: " + ref.getReference(), e);
-			sendError(res, HttpServletResponse.SC_FORBIDDEN);
+			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+                        try {
+                            res.setContentType("text/html");
+                            res.getWriter().write("<html><body><h1>Content unavailable</h1><p>The content you requested is not available.</p></body></html>");
+                        } catch (IOException e2) {}
 		}
 
 		catch (EntityAccessOverloadException e)
