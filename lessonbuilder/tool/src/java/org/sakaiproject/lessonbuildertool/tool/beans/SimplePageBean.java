@@ -2390,6 +2390,22 @@ public class SimplePageBean {
 			entry.title = title;
 			path = new ArrayList<PathEntry>();
 			path.add(entry);
+		} else if (op.equals("clear_and_push")) {
+			// clear path for top level subpage
+			path = new ArrayList<PathEntry>();
+			// add an entry for the parent page
+			SimplePage parentPage = getPage(currentPage.getParent());
+			PathEntry parentEntry = new PathEntry();
+			parentEntry.pageId = parentPage.getPageId();
+			parentEntry.pageItemId = -1L;
+			parentEntry.title = parentPage.getTitle();
+			path.add(parentEntry);
+			// add the subpage
+			PathEntry entry = new PathEntry();
+			entry.pageId = pageId;
+			entry.pageItemId = pageItemId;
+			entry.title = title;
+			path.add(entry);  // put it on the end
 	    } else if (path.get(path.size()-1).pageId.equals(pageId)) {
 	    	// nothing. we're already there. this is to prevent 
 	    	// oddities if we refresh the page
