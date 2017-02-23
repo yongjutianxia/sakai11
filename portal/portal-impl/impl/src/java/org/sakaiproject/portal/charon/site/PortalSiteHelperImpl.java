@@ -82,7 +82,6 @@ import org.sakaiproject.portal.util.ToolUtils;
 import org.sakaiproject.portal.charon.PortalStringUtil;
 import org.sakaiproject.util.FormattedText;
 
-// FIXME: move elsewhere?
 import org.sakaiproject.db.cover.SqlService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -881,7 +880,6 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		return theMap;
 	}
 
-	// FIXME: move elsewhere?
 	private class LessonsTreeView {
 
 		public String lessonsPagesJSON(List pages) {
@@ -940,7 +938,8 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 					}
 				}
 			} catch (SQLException e) {
-				// TODO: log diagnostic
+                            log.error("Failed to get lessons tree: " + e.getMessage());
+                            e.printStackTrace();
 			}
 
 			return result;
