@@ -891,6 +891,9 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				pageIds.add(page.get("pageId"));
 			}
 
+			// JSONObject.toJSONString(getAdditionalLessonsPages(pageIds))
+			System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[PortalSiteHelperImpl.java:895 b28949]: " + "\n    JSONObject.toJSONString(getAdditionalLessonsPages(pageIds)) => " + (JSONObject.toJSONString(getAdditionalLessonsPages(pageIds))) + "\n");
+
 			return JSONObject.toJSONString(getAdditionalLessonsPages(pageIds));
 		}
 
@@ -905,15 +908,14 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			try {
 				try {
 					connection = SqlService.borrowConnection();
-					ps = connection.prepareStatement("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, i.id, i.sakaiId, i.name" +
+					ps = connection.prepareStatement("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, p.title as name, i.id as itemId" +
 							" from lesson_builder_pages p" +
-							" inner join lesson_builder_items i on p.pageId = i.sakaiId" +
+							" inner join lesson_builder_items i on p.parent = i.pageId AND type = 2" +
 							" inner join sakai_site_tool s on p.toolId = s.page_id" +
 							" where p.parent in " +
 							"   (select pageId from lesson_builder_pages" +
 							"      where parent is null AND" +
-							"        toolId in (" + placeholdersFor(pageIds) + "))" +
-							" order by i.sequence");
+							"        toolId in (" + placeholdersFor(pageIds) + "))");
 
 					for (int i = 0; i < pageIds.size(); i++) {
 						ps.setString(i + 1, pageIds.get(i));
@@ -951,7 +953,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			result.put("toolId", rs.getString("toolId"));
 			result.put("pageId", rs.getString("pageId"));
 			result.put("siteId", rs.getString("siteId"));
-			result.put("itemId", rs.getString("id"));
+			result.put("itemId", rs.getString("itemId"));
 			result.put("sendingPage", rs.getString("sendingPage"));
 			result.put("name", rs.getString("name"));
 
