@@ -214,9 +214,11 @@
     #end ## END of IF ( $subSites )
 
     <script src="/library/js/lessons-subnav.js$!{portalCDNQuery}"></script>
+    #if (${sitePages.additionalLessonsPages})
     <script>
         new LessonsSubPageNavigation($sitePages.additionalLessonsPages, "$sitePages.currentLessonsPage")
     </script>
+    #end
 
 </div>
 

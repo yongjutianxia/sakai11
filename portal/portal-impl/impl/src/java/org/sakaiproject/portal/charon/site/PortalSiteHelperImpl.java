@@ -819,7 +819,12 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			theMap.put("currentLessonsPage", "null");
 		}
 		theMap.put("pageNavTools", l);
-		theMap.put("additionalLessonsPages", lessonsTreeView.lessonsPagesJSON(l));
+
+
+		if ("true".equals(site.getProperties().getProperty("lessons_submenu"))) {
+			theMap.put("additionalLessonsPages", lessonsTreeView.lessonsPagesJSON(l));
+		}
+
 		theMap.put("pageMaxIfSingle", ServerConfigurationService.getBoolean(
 				"portal.experimental.maximizesinglepage", false));
 		theMap.put("pageNavToolsCount", Integer.valueOf(l.size()));
