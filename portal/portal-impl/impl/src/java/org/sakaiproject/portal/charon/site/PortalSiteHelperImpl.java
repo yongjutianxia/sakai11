@@ -951,7 +951,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 					"   (select pageId from lesson_builder_pages" +
 					"      where parent is null AND" +
 					"        toolId in (" + placeholdersFor(pageIds) + "))" +
-					" order by i.sequence;");
+					" order by i.sequence");
 		}
 
 		private String toChar(Connection conn, String expr) {
