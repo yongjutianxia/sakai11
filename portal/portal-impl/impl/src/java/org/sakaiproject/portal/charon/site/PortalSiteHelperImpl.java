@@ -896,9 +896,6 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 				pageIds.add(page.get("pageId"));
 			}
 
-			// JSONObject.toJSONString(getAdditionalLessonsPages(pageIds))
-			System.err.println("\n*** DEBUG " + System.currentTimeMillis() + "[PortalSiteHelperImpl.java:895 b28949]: " + "\n    JSONObject.toJSONString(getAdditionalLessonsPages(pageIds)) => " + (JSONObject.toJSONString(getAdditionalLessonsPages(pageIds))) + "\n");
-
 			return JSONObject.toJSONString(getAdditionalLessonsPages(pageIds));
 		}
 
@@ -913,14 +910,7 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			try {
 				try {
 					connection = SqlService.borrowConnection();
-					ps = connection.prepareStatement("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, p.title as name, i.id as itemId" +
-							" from lesson_builder_pages p" +
-							" inner join lesson_builder_items i on p.parent = i.pageId AND type = 2" +
-							" inner join sakai_site_tool s on p.toolId = s.page_id" +
-							" where p.parent in " +
-							"   (select pageId from lesson_builder_pages" +
-							"      where parent is null AND" +
-							"        toolId in (" + placeholdersFor(pageIds) + "))");
+					ps = connection.prepareStatement(buildSQL(connection, pageIds));
 
 					for (int i = 0; i < pageIds.size(); i++) {
 						ps.setString(i + 1, pageIds.get(i));
@@ -950,6 +940,34 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			}
 
 			return result;
+		}
+
+		private String buildSQL(Connection conn, List<String> pageIds) {
+			return ("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, p.title as name, i.id as itemId" +
+					" from lesson_builder_pages p" +
+					" inner join lesson_builder_items i on p.parent = i.pageId AND type = 2 AND " + toChar(conn, "p.pageId") + " = i.sakaiId" +
+					" inner join sakai_site_tool s on p.toolId = s.page_id" +
+					" where p.parent in " +
+					"   (select pageId from lesson_builder_pages" +
+					"      where parent is null AND" +
+					"        toolId in (" + placeholdersFor(pageIds) + "))" +
+					" order by i.sequence;");
+		}
+
+		private String toChar(Connection conn, String expr) {
+			try {
+				String dbFamily = conn.getMetaData().getDatabaseProductName().toLowerCase(java.util.Locale.ROOT);
+
+				if ("mysql".equals(dbFamily)) {
+					return String.format("cast(%s AS CHAR)", expr);
+				} else if ("oracle".equals(dbFamily)) {
+					return String.format("to_char(%s)", expr);
+				} else {
+					return expr;
+				}
+			} catch (SQLException e) {
+				return expr;
+			}
 		}
 
 		private Map<String, String> makeMap(ResultSet rs) throws SQLException {
