@@ -202,6 +202,7 @@ body.is-logged-out{
 }
 
 .#{$namespace}topHeader{
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 	background: $top-header-background;
 	color: $background-color;
 	font-size: 1em;
@@ -632,6 +633,7 @@ body.is-logged-out{
 #topnav_container
 {
 	@include display-flex(flex);
+	background-color: $sites-nav-background;
 }
 
 #linkNav{
