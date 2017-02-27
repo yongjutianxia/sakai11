@@ -20,19 +20,16 @@ body.is-logged-out{
 		margin-bottom: 4px;
 
 	.#{$namespace}headerLogo{
-		@include display-flex( flex );
-		@include justify-content( flex-start );
+		width: 100%;
 		overflow: hidden;
-		padding: 0 1em;
-		min-width: $tool-menu-width;
-		@include flex-shrink( 0 );
+		padding: 1em;
+		text-align: center;
 		@include transition( width 0.5s linear 0s );
-		margin: 1em;
 		.#{$namespace}headerLogo--institution{
 			background: url($logo) no-repeat center center;
 			width: 		$logo-width;
 			height: 	$logo-height;
-			display:	inline-block;
+			float: left;
 		}
 	}
 
@@ -69,9 +66,6 @@ body.is-logged-out{
 
 	&.is-maximized{
 		.siteNavWrap{
-			@include display-flex(flex);
-			@include align-items(center);
-			@include flex-grow( 1 );
 			@media #{$phone}{
 				display: none;
 			}
@@ -234,10 +228,6 @@ body.is-logged-out{
 	.#{$namespace}loginNav{
 		float: right;
 		margin: 0 1em 0 0px;
-		@include flex-shrink( 0 );
-		@include display-flex( flex );
-		@include align-items( center );
-		@include justify-content( flex-end );
 	}
 
 	@media #{$phone}{
@@ -645,8 +635,6 @@ body.is-logged-out{
 }
 
 #linkNav{
-	@include display-flex(flex);
-	padding: 0.5em;
 	ul{
 		@include display-flex(flex);
 		@include flex-wrap( wrap );

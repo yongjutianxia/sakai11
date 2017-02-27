@@ -25,7 +25,11 @@
                 ## Header
                 <div class="Mrphs-topHeader">
                     #parse("/vm/morpheus/snippets/header-snippet.vm")
-                    #parse("/vm/morpheus/includeLoginNav.vm")
+                    #if (${tabsSites})
+                        ## tabs
+                        #parse("/vm/morpheus/includeTabs.vm")
+
+                    #end ## END of IF (${tabsSites})
                 </div>
 
                 #if (${tabsSites})
