@@ -258,6 +258,8 @@ var header = $(".Mrphs-topHeader");
 var currentHeaderWidth = -1;
 var mainHeaderSize  = $(header).height();
 
+// FIXME: Displayed while we apply the NYU skin
+if (false) {
 $PBJQ(document).ready( function(){
 
   $(header).data("sticked",false);
@@ -299,4 +301,4 @@ $PBJQ(document).ready( function(){
   currentHeaderWidth = $(".Mrphs-mainHeader").width();
   
 });
-
+}
