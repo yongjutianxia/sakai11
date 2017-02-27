@@ -138,8 +138,8 @@ body.is-logged-out{
 	display: block;
 	min-width: $tool-menu-width;
 	width: $tool-menu-width;
-	@include flex-basis( 7.5em );
-	margin: 0 0 0 0;
+	@include flex-basis( $tool-menu-width );
+	margin: 5px 0 0 0;
 	text-align: center;
 	border-right: 1px solid $tool-border-color;
 	@include transition( left 0.25s linear 0s );
