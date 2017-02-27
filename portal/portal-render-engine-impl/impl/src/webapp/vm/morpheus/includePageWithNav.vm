@@ -3,9 +3,6 @@
 ##
 <!-- START VM includePageWithNav.vm -->
 
-    #parse("/vm/morpheus/includeSiteHierarchy.vm")
-
-
     <div id="pageBody">
     
     #if ( $sitePages.pageNavToolsCount > 1 || ! $sitePages.pageMaxIfSingle )
@@ -19,8 +16,8 @@
     #end ## END of IF ( $sitePages.pageNavToolsCount > 1 || ! $sitePages.pageMaxIfSingle )
 
     <div class="Mrphs-pagebody">
-        #parse("/vm/morpheus/includeDesktopToolHeader.vm")
-       
+        #parse("/vm/morpheus/includeSiteHierarchy.vm")
+
         #parse("/vm/morpheus/includePageBody.vm")
         
         #parse("/vm/morpheus/includeFooter.vm")

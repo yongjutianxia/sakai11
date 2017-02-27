@@ -1,5 +1,6 @@
 .#{$namespace}siteHierarchy{
 	background: $tool-background-color;
+	min-height: $hierarchy-size;
 
 	h1{
 		color: $background-color;
@@ -22,6 +23,10 @@
 
 	/* Show the breadcrumbs on multiple rows (when there are parent sites), and use hover animations */
 	@media #{$nonPhone}{
+		.#{$namespace}hierarchy--siteName, .#{$namespace}hierarchy--siteNameSeparator{
+			display: none;
+		}
+
 		min-height: initial;
 
 		.#{$namespace}hierarchy--siteName a, .#{$namespace}hierarchy--1 a{
