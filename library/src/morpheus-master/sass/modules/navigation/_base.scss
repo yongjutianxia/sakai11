@@ -633,6 +633,7 @@ body.is-logged-out{
 #topnav_container
 {
 	@include display-flex(flex);
+	padding-left: 0.5em;
 	background-color: $sites-nav-background;
 }
 
