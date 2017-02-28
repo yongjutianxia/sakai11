@@ -7,6 +7,7 @@ jQuery(function () {
             collapse.css('position', 'fixed')
                     .css('bottom', 0)
                     .css('left', 0)
+                    .css('display', 'flex')
                     .css('width', width);
 
             collapse.addClass('floatingToolMenu');
