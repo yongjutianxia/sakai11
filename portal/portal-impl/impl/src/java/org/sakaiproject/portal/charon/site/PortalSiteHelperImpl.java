@@ -82,6 +82,14 @@ import org.sakaiproject.portal.util.ToolUtils;
 import org.sakaiproject.portal.charon.PortalStringUtil;
 import org.sakaiproject.util.FormattedText;
 
+import org.sakaiproject.db.cover.SqlService;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.json.simple.JSONObject;
+
+
 /**
  * @author ieb
  * @since Sakai 2.4
@@ -800,7 +808,23 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 			theMap.put("pageNavCanAddMoreTools", false);
 		}
 
+		LessonsTreeView lessonsTreeView = new LessonsTreeView();
+		if (page.getTools().size() == 1 && "sakai.lessonbuildertool".equals(page.getTools().get(0).getToolId())) {
+			if (req.getParameter("sendingPage") == null) {
+				theMap.put("currentLessonsPage", "null");
+			} else {
+				theMap.put("currentLessonsPage", req.getParameter("sendingPage"));
+			}
+		} else {
+			theMap.put("currentLessonsPage", "null");
+		}
 		theMap.put("pageNavTools", l);
+
+
+		if ("true".equals(site.getProperties().getProperty("lessons_submenu"))) {
+			theMap.put("additionalLessonsPages", lessonsTreeView.lessonsPagesJSON(l));
+		}
+
 		theMap.put("pageMaxIfSingle", ServerConfigurationService.getBoolean(
 				"portal.experimental.maximizesinglepage", false));
 		theMap.put("pageNavToolsCount", Integer.valueOf(l.size()));
@@ -860,6 +884,120 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 
 		return theMap;
 	}
+
+	private class LessonsTreeView {
+
+		public String lessonsPagesJSON(List pages) {
+			List<Map<String,String>> typedPages = (List<Map<String,String>>) pages;
+
+			List<String> pageIds = new ArrayList<>(typedPages.size());
+
+			for (Map<String, String> page : typedPages) {
+				pageIds.add(page.get("pageId"));
+			}
+
+			return JSONObject.toJSONString(getAdditionalLessonsPages(pageIds));
+		}
+
+		// Return a mapping of PageID -> list of additional items to show
+		private Map<String, List<Map<String, String>>> getAdditionalLessonsPages(List<String> pageIds) {
+			Connection connection = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			Map<String, List<Map<String, String>>> result = new HashMap<>();
+
+			try {
+				try {
+					connection = SqlService.borrowConnection();
+					ps = connection.prepareStatement(buildSQL(connection, pageIds));
+
+					for (int i = 0; i < pageIds.size(); i++) {
+						ps.setString(i + 1, pageIds.get(i));
+					}
+
+					rs = ps.executeQuery();
+
+					while (rs.next()) {
+						if (!result.containsKey(rs.getString("toolId"))) {
+							result.put(rs.getString("toolId"), new ArrayList<Map<String, String>>());
+						}
+
+						result.get(rs.getString("toolId")).add(makeMap(rs));
+					}
+
+				} finally {
+					if (ps != null) { ps.close(); }
+					if (rs != null) { rs.close(); }
+
+					if (connection != null) {
+						SqlService.returnConnection(connection);
+					}
+				}
+			} catch (SQLException e) {
+                            log.error("Failed to get lessons tree: " + e.getMessage());
+                            e.printStackTrace();
+			}
+
+			return result;
+		}
+
+		private String buildSQL(Connection conn, List<String> pageIds) {
+			return ("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, p.title as name, i.id as itemId" +
+					" from lesson_builder_pages p" +
+					" inner join lesson_builder_items i on p.parent = i.pageId AND type = 2 AND " + toChar(conn, "p.pageId") + " = i.sakaiId" +
+					" inner join sakai_site_tool s on p.toolId = s.page_id" +
+					" where p.parent in " +
+					"   (select pageId from lesson_builder_pages" +
+					"      where parent is null AND" +
+					"        toolId in (" + placeholdersFor(pageIds) + "))" +
+					" order by i.sequence");
+		}
+
+		private String toChar(Connection conn, String expr) {
+			try {
+				String dbFamily = conn.getMetaData().getDatabaseProductName().toLowerCase(java.util.Locale.ROOT);
+
+				if ("mysql".equals(dbFamily)) {
+					return String.format("cast(%s AS CHAR)", expr);
+				} else if ("oracle".equals(dbFamily)) {
+					return String.format("to_char(%s)", expr);
+				} else {
+					return expr;
+				}
+			} catch (SQLException e) {
+				return expr;
+			}
+		}
+
+		private Map<String, String> makeMap(ResultSet rs) throws SQLException {
+			Map<String, String> result = new HashMap<>();
+
+			result.put("toolId", rs.getString("toolId"));
+			result.put("pageId", rs.getString("pageId"));
+			result.put("siteId", rs.getString("siteId"));
+			result.put("itemId", rs.getString("itemId"));
+			result.put("sendingPage", rs.getString("sendingPage"));
+			result.put("name", rs.getString("name"));
+
+			return result;
+		}
+
+		private <E> String placeholdersFor(List<E> list) {
+			StringBuilder placeholders = new StringBuilder();
+			for (E elt : list) {
+				if (placeholders.length() > 0) {
+					placeholders.append(", ");
+				}
+
+				placeholders.append("?");
+			}
+
+			return placeholders.toString();
+		}
+
+	}
+
 
 	/**
 	 * Collapse a string to only allow characters that can be in variables

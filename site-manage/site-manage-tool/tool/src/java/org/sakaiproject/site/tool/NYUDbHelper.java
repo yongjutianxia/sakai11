@@ -180,7 +180,7 @@ public class NYUDbHelper {
 	}
 
 
-    protected String getSiteTemplateForSchoolCode(String schoolCode, String termCode) {
+	protected String getSiteTemplateForSchoolCode(String schoolCode, String termCode) {
 
 		if (StringUtils.isBlank(schoolCode)) {
 			return schoolCodeLookup(DEFAULT_KEY);
@@ -191,17 +191,20 @@ public class NYUDbHelper {
 
 		String result = null;
 
-		if (!useOldGradebook) {
-		    // Look for a special suffixed school for the template containing Gradebook NG
-		    result = schoolCodeLookup(schoolCode + "_NG");
-		}
+		if (useOldGradebook) {
+			result = schoolCodeLookup(schoolCode);
 
-		if (result == null) {
-		    result = schoolCodeLookup(schoolCode);
-		}
+			if (result == null) {
+				result = schoolCodeLookup(DEFAULT_KEY);
+			}
+		} else {
+			// Look for a special suffixed school for the template containing Gradebook NG
+			result = schoolCodeLookup(schoolCode + "_NG");
 
-		if (result == null) {
-		    result = schoolCodeLookup(DEFAULT_KEY);
+			if (result == null) {
+				result = schoolCodeLookup(DEFAULT_KEY + "_NG");
+			}
+
 		}
 
 		M_log.info("Selected template for school " + schoolCode + " and term " + termCode + ": " + result);

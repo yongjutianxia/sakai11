@@ -1280,3 +1280,103 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
     }
   }
 }
+
+// -------------------------------------------------------------------------------------------------------------------
+//  Lessons-Tool Subpage Menu
+// -------------------------------------------------------------------------------------------------------------------
+body {
+  #toolMenu {
+    li.has-lessons-sub-pages {
+      &.is-parent-of-current.expanded {
+        a {
+          border-left: $nyu-tool-nav-item-border-left !important;
+        }
+      }
+
+      > a {
+        .#{$namespace}toolsNav__menuitem--icon {
+          &:before {
+            content: '\f054';
+          }
+        }
+      }
+
+      &.expanded {
+        > a {
+          .#{$namespace}toolsNav__menuitem--icon {
+            &:before {
+              content: '\f078';
+            }
+          }
+        }
+      }
+
+      ul.lessons-sub-page-menu {
+        display: none;
+  
+        li {
+          border-bottom: none;
+          min-height: 30px;
+
+          a {
+            text-align: left;
+            padding: 0.5em 0 0.5em 40px;
+            text-size: 12px !important;
+            min-height: 30px;
+            border-left: $nyu-tool-nav-item-border-left !important;
+
+            &:hover {
+              border-left: $nyu-tool-nav-item-hover-border-left !important;
+            }
+          }
+
+          &.is-current {
+            a {
+              border-left: $nyu-tool-nav-item-selected-border-left !important;
+            }
+          }
+        }
+      }
+  
+      &.expanded {
+        ul.lessons-sub-page-menu {
+          display: block;
+        }
+      }
+
+      position: relative;
+
+      .lessons-goto-top-page {
+        display: none;
+        position: absolute;
+        z-index: 2;
+        right: 0;
+        top: 0;
+        width: 30px;
+        line-height: 30px;
+        border: none !important;
+        background: none !important;
+
+        &:hover {
+          border: none !important;
+          background: none !important;
+        }
+
+        &:before {
+          font-family: 'FontAwesome';
+          content: '\f0a9';
+        }
+
+        @media #{$tablet} {
+          display: block;
+        }
+      }
+
+      &:hover {
+        .lessons-goto-top-page {
+          display: block;
+        }
+      }
+    }
+  }
+}

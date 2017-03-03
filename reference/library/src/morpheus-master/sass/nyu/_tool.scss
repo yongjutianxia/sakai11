@@ -186,6 +186,16 @@ span.cke_bottom .cke_resizer.cke_resizer_ltr {
     top: 13px;
 }
 
+/* CLASSES-2655 Force the button color back to white */
+a.cke_dialog_ui_button.cke_dialog_ui_button_ok {
+    color: white !important;
+}
+
+a.cke_dialog_ui_button {
+    color: black !important;
+}
+
+
 // -------------------------------------------------------------------------------------------------------------------
 //  Date Picker
 // -------------------------------------------------------------------------------------------------------------------

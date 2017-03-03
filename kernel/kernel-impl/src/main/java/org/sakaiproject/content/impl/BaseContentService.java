@@ -1607,6 +1607,10 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 		if (isAttachmentResource(id) && isCollection(id) && !m_securityService.isSuperUser())
 		    M_log.warn("availability check for attachment collection " + id);
 
+		if (studentAccessingUnpublishedContent(id)) {
+			return false;
+		}
+
 		GroupAwareEntity entity = null;
 		//boolean isCollection = id.endsWith(Entity.SEPARATOR);
 		while(!available && entity == null && id != null && ! id.trim().equals(""))
@@ -1686,6 +1690,40 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 
 		return available;
 
+	}
+
+	private boolean studentAccessingUnpublishedContent(String id) {
+		String[] refs = StringUtil.split(id, Entity.SEPARATOR);
+
+		if (refs.length < 3 || !"group".equals(refs[1])) {
+			return false;
+		}
+
+		String siteId = refs[2];
+
+		try {
+			Site site = m_siteService.getSite(siteId);
+
+			if (site == null) {
+				return false;
+			}
+
+			if (m_securityService.unlock(SITE_UPDATE_ACCESS, site.getId())) {
+				// Instructor... OK
+				return false;
+			}
+
+			if (site.isPublished()) {
+				// Pass through to the rest of the permission checks
+				return false;
+			} else {
+				// Bad!  Block access to unpublished site resources.
+				M_log.warn("Blocked access to unpublished content " + id);
+				return true;
+			}
+		} catch (IdUnusedException e) {
+			return false;
+		}
 	}
 
 	/**
