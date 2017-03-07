@@ -1708,7 +1708,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 				return false;
 			}
 
-			if (m_securityService.unlock(SITE_UPDATE_ACCESS, site.getId())) {
+			if (m_securityService.unlock(SITE_UPDATE_ACCESS, "/site/" + site.getId())) {
 				// Instructor... OK
 				return false;
 			}
