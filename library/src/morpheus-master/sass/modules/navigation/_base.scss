@@ -208,10 +208,7 @@ body.is-logged-out{
 	font-size: 1em;
 	height: auto;
 	width: 100%;
-	@include display-flex(inline-flex);
-	@include align-items(center);
-	@include justify-content( space-between );
-	@include transition( top 0.25s linear 0s );
+	box-shadow: $divider-shadow;
 
 	a
 	{
