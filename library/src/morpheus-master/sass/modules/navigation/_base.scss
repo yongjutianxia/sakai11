@@ -233,6 +233,12 @@ body.is-logged-out{
 		@include display-flex( flex );
 		@include align-items( center );
 		@include justify-content( flex-end );
+
+		#roleSwitch {
+			padding-right: 1em;
+			margin-right: 1em;
+			border-right: 1px solid #F0F0F0;
+		}
 	}
 
 	@media #{$phone}{
