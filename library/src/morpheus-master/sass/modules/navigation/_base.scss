@@ -90,6 +90,10 @@ body.is-logged-out{
 		    transform: scale(0.75, 0.75);
 		}
 
+		.#{$namespace}headerLogo{
+			padding: 4px 0 0;
+		}
+
 	}
 
 	@media #{$phone}{
