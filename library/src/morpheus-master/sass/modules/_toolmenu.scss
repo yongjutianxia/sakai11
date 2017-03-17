@@ -36,9 +36,6 @@ body.is-logged-out{
 					a{
 						min-height: 1.7em;
 						text-align: center;
-						@if $tool-menu-icon-on-left {
-							min-height: 3.4em;
-						}
 						&:hover{
 							.#{$namespace}toolsNav__menuitem--title{
 								position: absolute;
@@ -50,7 +47,6 @@ body.is-logged-out{
 								z-index: 50;
 								width: auto;
 								border-radius: 0 5px 5px 0;
-							    min-height: 3.4em;
 								line-height: 100%;
 							}
 						}
@@ -319,7 +315,6 @@ nav#subSites{
 				@if $tool-menu-icon-on-left {
 					text-align: left;
 					padding: 0.5em 0.5em;
-					min-height: 3.4em;
 				} @else {
 					text-align: center;
 					padding: 0.5em 0.25em;
