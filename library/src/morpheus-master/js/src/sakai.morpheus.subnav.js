@@ -40,15 +40,19 @@ var buildDropdownMenu = function(container, siteId, callback) {
           if (item.toolpopup) {
             var link_attrs = ' role="menuitem" href="{{tool_url}}?sakai.popup=yes" title="{{item_title}}" onclick="window.open(\'{{item_toolpopupurl}}\');"';
             li_template = '<li class="Mrphs-sitesNav__submenuitem" >' +
-              '<a class="Mrphs-sitesNav__submenuitem-icon"' + link_attrs + '><span class="toolMenuIcon icon-sakai--{{icon}}"></span></a>' +
-              '<a class="Mrphs-sitesNav__submenuitem-title"' + link_attrs + '>{{item_title}}</a>' +
+              '<a class="Mrphs-sitesNav__submenuitem-link"' + link_attrs+'>' +
+              '  <span class="Mrphs-sitesNav__submenuitem-icon"><span class="toolMenuIcon icon-sakai--{{icon}}"></span></span>' +
+              '  <span class="Mrphs-sitesNav__submenuitem-title">{{item_title}}</span>' +
+              '</a>' +
               '</li>';
           } else {
             var link_attrs = ' role="menuitem" href="{{tool_url}}" title="{{item_title}}"';
 
             li_template = '<li class="Mrphs-sitesNav__submenuitem{{is_current}}">' +
-              '<a class="Mrphs-sitesNav__submenuitem-icon"' + link_attrs + '><span class="toolMenuIcon icon-sakai--{{icon}}"></span></a>' +
-              '<a class="Mrphs-sitesNav__submenuitem-title"' + link_attrs + '>{{item_title}}</a>' +
+              '<a class="Mrphs-sitesNav__submenuitem-link"' + link_attrs+'>' +
+              '  <span class="Mrphs-sitesNav__submenuitem-icon"><span class="toolMenuIcon icon-sakai--{{icon}}"></span></span>' +
+              '  <span class="Mrphs-sitesNav__submenuitem-title">{{item_title}}</span>' +
+              '</a>' +
               '</li>';
           }
 
