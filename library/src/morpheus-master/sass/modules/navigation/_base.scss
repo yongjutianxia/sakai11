@@ -206,7 +206,6 @@ body.is-logged-out{
 }
 
 .#{$namespace}topHeader{
-	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 	background: $top-header-background;
 	color: $background-color;
 	font-size: 1em;
@@ -243,6 +242,7 @@ body.is-logged-out{
 		top: 0;
 		font-size: 12px;
 		min-height: $header-size;
+		box-shadow: none;
 
 		&.moving{
 			top: -4.2em;
