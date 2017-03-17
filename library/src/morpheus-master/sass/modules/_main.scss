@@ -19,6 +19,7 @@
 
 .#{$namespace}portalWrapper {
 	position: relative;
+	background: $main-content-background;
 }
 
 #pageBody{
@@ -54,7 +55,8 @@
 }
 
 .#{$namespace}mainContent{
-  background: $main-content-background;
+	background: $main-content-background;
+	padding-top: 1em;
 }
 
 .#{$namespace}pageColumns--single, .#{$namespace}footer{

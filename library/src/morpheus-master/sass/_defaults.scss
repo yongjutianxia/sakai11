@@ -42,10 +42,12 @@ $alt-colour: 				 #d36f00 !default;
 
 $text-color:				 #212121 !default;
 
+$body-background-color: #FAFAFA !default;
+
 $portal-background-color: $background-color !default;
 
 $tool-background-color:		 $background-color !default;
-$tool-menu-background-color:			 #FAFAFA !default;
+$tool-menu-background-color:			 $body-background-color !default;
 $tool-menu-color: 			 #424242 !default;
 $tool-tab-background-color: 			 #F8F8F8 !default;
 $tool-border-color:			 #F0F0F0 !default;
