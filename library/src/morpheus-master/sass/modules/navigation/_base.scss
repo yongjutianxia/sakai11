@@ -226,6 +226,10 @@ body.is-logged-out{
 	.#{$namespace}loginNav{
 		float: right;
 		margin: 0 1em 0 0px;
+		@include flex-shrink( 0 );
+		@include display-flex( flex );
+		@include align-items( center );
+		@include justify-content( flex-end );
 	}
 
 	@media #{$phone}{
