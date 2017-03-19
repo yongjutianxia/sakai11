@@ -144,7 +144,7 @@ body.is-logged-out{
 		min-height: 15px;
 		a{
 			display: block;
-			padding: 0.5em 0.65em;
+			padding: 0.65em;
 			text-decoration: none;
 			color: $primary-color-highContrast;
 			&:focus, &:hover, &:active
@@ -777,7 +777,8 @@ body.is-logged-out{
 					}
 					.#{$namespace}sitesNav__submenuitem-icon {
 						display: inline-block;
-						vertical-align: top;
+						vertical-align: middle;
+						padding: 0 10px;
 					}
 					.#{$namespace}sitesNav__submenuitem-title {
 						margin-bottom: 2px;
