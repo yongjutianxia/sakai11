@@ -23,12 +23,18 @@ body.is-logged-out{
 		width: 100%;
 		overflow: hidden;
 		padding: 1em;
+		@media #{$phone}{
+			padding: 0.5em 1em;
+		}
 		text-align: center;
 		@include transition( width 0.5s linear 0s );
 		.#{$namespace}headerLogo--institution{
 			background: url($logo) no-repeat center center;
 			width: 		$logo-width;
 			height: 	$logo-height;
+			@media #{$phone}{
+				height: 100%; // align vertically center
+			}
 			float: left;
 		}
 	}
@@ -863,20 +869,33 @@ body.is-logged-out{
 				background: $sites-nav-submenu-background;
 				li.#{$namespace}sitesNav__submenuitem{
 					a {
-						border-left: 4px solid $sites-nav-submenu-item-left-border-color;
 						background: $sites-nav-submenu-item-background;
 						color: $sites-nav-submenu-item-color;
 						.toolMenuIcon {
 							color: $sites-nav-submenu-item-icon-color;
 						}
 
+						position: relative;
+
+						&:before{
+							border-left: 4px solid $sites-nav-submenu-item-left-border-color;
+							content: '';
+							height: 100%;
+							display: inline-block;
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
+
 						&:hover, &:active
 						{
 							background: $sites-nav-submenu-item-hover-item-background;
 							color: $sites-nav-submenu-item-hover-item-color;
-							border-left-color: $sites-nav-submenu-item-hover-left-border-color;
 							.toolMenuIcon {
 								color: $sites-nav-submenu-item-hover-item-icon-color;
+							}
+							&:before{
+								border-left-color: $sites-nav-submenu-item-hover-left-border-color;
 							}
 						}
 					}
