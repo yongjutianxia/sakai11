@@ -41,36 +41,48 @@
             }
         });
 
-        self.setup_parent_menu($li, $menu);
         $li.appendChild($submenu);
+        self.setup_parent_menu($li, $menu);
     };
 
 
     LessonsSubPageNavigation.prototype.setup_parent_menu = function($li, $menu) {
         $li.classList.add('has-lessons-sub-pages');
-        var $goto = document.createElement('a');
-        $goto.href = $menu.href;
+        var $goto = document.createElement('span');
+        var topLevelPageHref = $menu.href;
         $goto.classList.add('lessons-goto-top-page');
         $menu.href = 'javascript:void(0);';
 
         $menu.addEventListener('click', function(event) {
             event.preventDefault();
+
+            if (event.target.classList.contains('lessons-goto-top-page')) {
+                location.href = topLevelPageHref;
+                return false;
+            }
+
             if ($li.classList.contains('expanded')) {
-                $li.classList.remove('expanded');
+                //Disable collapse - do nuffin
+                //$li.classList.remove('expanded');
             } else {
                 var $ul = $li.parentElement;
-                $li.querySelectorAll('li.expanded').forEach(function(el) {
+                $li.parentNode.querySelectorAll('li.expanded').forEach(function(el) {
                     el.classList.remove('expanded');
+                    el.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
                 });
                 $li.classList.add('expanded');
+                var subpages = $li.querySelectorAll('.lessons-sub-page-menu li').length;
+                $li.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
             }
         });
 
         if ($li.classList.contains('is-current')) {
             $li.classList.add('expanded');
+            var subpages = $li.querySelectorAll('.lessons-sub-page-menu li').length;
+            $li.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
         }
 
-        $li.appendChild($goto);
+        $menu.appendChild($goto);
     };
 
 
