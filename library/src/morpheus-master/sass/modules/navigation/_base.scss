@@ -22,20 +22,18 @@ body.is-logged-out{
 	.#{$namespace}headerLogo{
 		width: 100%;
 		overflow: hidden;
-		padding: 1em;
-		@media #{$phone}{
-			padding: 0.5em 1em;
-		}
+		padding: 0 1em;
+		height: $banner-height;
+		background: $top-header-background;
+
 		text-align: center;
 		@include transition( width 0.5s linear 0s );
 		.#{$namespace}headerLogo--institution{
 			background: url($logo) no-repeat center center;
 			width: 		$logo-width;
-			height: 	$logo-height;
-			@media #{$phone}{
-				height: 100%; // align vertically center
-			}
+			height: 100%; // align vertically center
 			float: left;
+			background-size: $logo-width $logo-height;
 		}
 	}
 
@@ -80,26 +78,16 @@ body.is-logged-out{
 	}
 
 	&.is-fixed {
-
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 9999;
-		height: 2.8em;
-
-		#topnav {
-			display: none;
+		.#{$namespace}topHeader {
+			padding-top: $banner-height;
 		}
-
-		.#{$namespace}topHeader > * {
-			-webkit-transform: scale(0.75, 0.75); /* Safari */
-		    transform: scale(0.75, 0.75);
+		.#{$namespace}headerLogo {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			box-shadow: $divider-shadow;
+			z-index: 9999;
 		}
-
-		.#{$namespace}headerLogo{
-			padding: 4px 0 0;
-		}
-
 	}
 
 	@media #{$phone}{
@@ -234,7 +222,7 @@ body.is-logged-out{
 	}
 	.#{$namespace}loginNav{
 		float: right;
-		margin: 0 1em 0 0px;
+		height: $banner-height;
 		@include flex-shrink( 0 );
 		@include display-flex( flex );
 		@include align-items( center );
