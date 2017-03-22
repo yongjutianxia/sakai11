@@ -49,6 +49,8 @@
     LessonsSubPageNavigation.prototype.setup_parent_menu = function($li, $menu) {
         $li.classList.add('has-lessons-sub-pages');
         var $goto = document.createElement('span');
+        $goto.title = 'Click the arrow icon to open the top-level page.';
+
         var topLevelPageHref = $menu.href;
         $goto.classList.add('lessons-goto-top-page');
         $menu.href = 'javascript:void(0);';
@@ -66,13 +68,18 @@
                 //$li.classList.remove('expanded');
             } else {
                 var $ul = $li.parentElement;
-                $li.parentNode.querySelectorAll('li.expanded').forEach(function(el) {
-                    el.classList.remove('expanded');
-                    el.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
-                });
+
                 $li.classList.add('expanded');
+
                 var subpages = $li.querySelectorAll('.lessons-sub-page-menu li').length;
                 $li.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
+
+                $li.parentNode.querySelectorAll('li.expanded').forEach(function(el) {
+                    if ($li != el) {
+                      el.classList.remove('expanded');
+                      el.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
+                    }
+                });
             }
         });
 

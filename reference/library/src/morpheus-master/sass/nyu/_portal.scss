@@ -1326,11 +1326,20 @@ body {
 
         &.is-parent-of-current {
           > a {
+            .#{$namespace}toolsNav__menuitem--icon {
+              color: $nyu-tool-nav-item-icon-color !important;
+            }
             .#{$namespace}toolsNav__menuitem--title {
+              color: $nyu-tool-nav-item-text-color !important;
               font-weight: normal !important;
             }
             &:hover {
+              color: $nyu-tool-nav-item-hover-text-color !important;
               border-left: $nyu-tool-nav-item-hover-border-left !important;
+
+              .#{$namespace}toolsNav__menuitem--icon {
+                color: $nyu-tool-nav-item-hover-icon-color !important;
+              }
             }
           }
         }
@@ -1359,7 +1368,7 @@ body {
       ul.lessons-sub-page-menu {
         overflow:hidden;
         max-height: 0;
-        //transition: max-height 0.5s ease-in-out 0s;
+        transition: max-height 0.5s ease-in-out 0s;
 
         li {
           border-bottom: none;
@@ -1377,17 +1386,25 @@ body {
             text-overflow: ellipsis;
             overflow:hidden;
             border-left: $nyu-tool-nav-item-border-left !important;
+            color: $nyu-tool-nav-item-text-color !important;
 
             &:hover {
               border-left: $nyu-tool-nav-item-hover-border-left !important;
               background-color: $nyu-tool-nav-item-hover-background-color !important;
+              color: $nyu-tool-nav-item-hover-text-color !important;
             }
           }
 
           &.is-current {
             a {
               font-weight: bold !important;
+              color: $nyu-tool-nav-item-selected-text-color !important;
               border-left: $nyu-tool-nav-item-selected-border-left !important;
+
+              &:hover {
+                color: $nyu-tool-nav-item-selected-hover-text-color !important;
+                border-left: $nyu-tool-nav-item-selected-hover-border-left !important;
+              }
             }
           }
         }
