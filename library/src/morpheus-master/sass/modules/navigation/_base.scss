@@ -660,6 +660,9 @@ body.is-logged-out{
 			background: $sites-nav-menu-item-background;
 
 			> a.link-container{
+				@include display-flex( flex );
+				@include align-items( center );
+
 				padding: 0.5em 36px 0.5em 0.5em;
 				color: $sites-nav-menu-item-color;
 				text-decoration: none;
