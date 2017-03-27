@@ -74,22 +74,25 @@
                 return false;
             }
 
-            if ($li.classList.contains('expanded')) {
+            // We have jQuery now... YAY, get on that.
+            var $li = $PBJQ(event.target).closest('li');
+
+            if ($li.is('.expanded')) {
                 //Disable collapse - do nuffin
                 //$li.classList.remove('expanded');
             } else {
-                expandMenu($li)
-
-                $li.parentNode.querySelectorAll('li.expanded').forEach(function(el) {
-                    if ($li != el) {
-                      collapseMenu(el);
-                    }
+                $li.closest('ul').find('.expanded .lessons-sub-page-menu').slideUp(function() {
+                  $PBJQ(this).closest('.expanded').removeClass('expanded');
+                });
+                $li.find('.lessons-sub-page-menu').slideDown(function() {
+                  $li.addClass('expanded');
                 });
             }
         });
 
         if ($li.classList.contains('is-current')) {
-            expandMenu($li)
+            $li.classList.add('expanded');
+            $li.querySelector('.lessons-sub-page-menu').style.display = 'block';
         }
 
         var $title = $menu.querySelector('.Mrphs-toolsNav__menuitem--title');

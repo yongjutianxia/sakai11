@@ -1359,16 +1359,12 @@ body {
             -ms-transform: rotate(90deg);
             -webkit-transform: rotate(90deg);
             transform: rotate(90deg);
-
-            transition: all 0.3s ease-in-out 0s;
           }
         }
       }
 
       ul.lessons-sub-page-menu {
-        overflow:hidden;
-        max-height: 0;
-        transition: max-height 0.5s ease-in-out 0s;
+        display: none;
 
         li {
           border-bottom: none;
