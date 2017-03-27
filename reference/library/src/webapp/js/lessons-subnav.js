@@ -55,6 +55,17 @@
         $goto.classList.add('lessons-goto-top-page');
         $menu.href = 'javascript:void(0);';
 
+        function expandMenu($expandMe) {
+            $expandMe.classList.add('expanded');
+            var subpages = $expandMe.querySelectorAll('.lessons-sub-page-menu li').length;
+            $expandMe.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
+        };
+
+        function collapseMenu($collapseMe) {
+            $collapseMe.classList.remove('expanded');
+            $collapseMe.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
+        };
+
         $menu.addEventListener('click', function(event) {
             event.preventDefault();
 
@@ -67,29 +78,22 @@
                 //Disable collapse - do nuffin
                 //$li.classList.remove('expanded');
             } else {
-                var $ul = $li.parentElement;
-
-                $li.classList.add('expanded');
-
-                var subpages = $li.querySelectorAll('.lessons-sub-page-menu li').length;
-                $li.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
+                expandMenu($li)
 
                 $li.parentNode.querySelectorAll('li.expanded').forEach(function(el) {
                     if ($li != el) {
-                      el.classList.remove('expanded');
-                      el.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
+                      collapseMenu(el);
                     }
                 });
             }
         });
 
         if ($li.classList.contains('is-current')) {
-            $li.classList.add('expanded');
-            var subpages = $li.querySelectorAll('.lessons-sub-page-menu li').length;
-            $li.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
+            expandMenu($li)
         }
 
-        $menu.appendChild($goto);
+        var $title = $menu.querySelector('.Mrphs-toolsNav__menuitem--title');
+        $title.appendChild($goto);
     };
 
 
