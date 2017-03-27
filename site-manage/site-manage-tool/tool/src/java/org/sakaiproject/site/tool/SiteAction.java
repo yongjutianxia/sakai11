@@ -3078,6 +3078,36 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("selectedTools", selectedTools);
 			}
 			
+			// CLASSES-2686
+			//
+			// If the old site has either Gradebook or GradebookNG,
+			// and the new site has either Gradebook or GradebookNG,
+			// we should allow the gradebook to import (even if the
+			// old site used Gradebook and the new site uses
+			// GradebookNG, or vice versa).
+			List<String> targetSiteToolIds = selectedTools;
+			List<String> sourceSiteToolIds = allImportableToolIdsInOriginalSites;
+
+			List<String> gradebooksInTargetSite = new ArrayList<String>();
+			for (String toolId : targetSiteToolIds) {
+				if ("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) {
+					gradebooksInTargetSite.add(toolId);
+				}
+			}
+
+			if (gradebooksInTargetSite.size() == 1) {
+				// If we only have one of the Gradebooks, we
+				// need to make sure that it's represented in
+				// the source site (so we get the option to
+				// import)
+				String targetSiteGradebook = gradebooksInTargetSite.get(0);
+
+				if (!sourceSiteToolIds.contains(targetSiteGradebook)) {
+					sourceSiteToolIds.add(targetSiteGradebook);
+				}
+			}
+
+
 			//get all known tool names from the sites selected to import from (importSites) and the selectedTools list
 			Map<String,Set<String>> toolNames = this.getToolNames(selectedTools, importSites);
 			
@@ -16167,28 +16197,35 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	 * @return Map keyed on siteId. Set contains toolIds that have content.
 	 */
 	private Map<String, Set<String>> getSiteImportToolsWithContent(List<Site> sites, List<String> toolIds) {
-		
 		Map<String, Set<String>> siteToolsWithContent = new HashMap<>(); 
-		
+
 		for(Site site: sites) {
 			
 			Set<String> toolsWithContent = new HashSet<>();
 			
 			for(String toolId: toolIds) {
-				if(site.getToolForCommonId(toolId) != null) {
+				if(site.getToolForCommonId(toolId) != null ||
+						(("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) &&
+							(site.getToolForCommonId("sakai.gradebook.tool") != null || site.getToolForCommonId("sakai.gradebookng") != null)))
+				{
 					
 					//check the tool has content
 					if(hasContent(toolId, site.getId())) {
 						toolsWithContent.add(toolId);
+					} else {
+						if (("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) &&
+								hasContent("sakai.gradebook.tool", site.getId()) || hasContent("sakai.gradebookng", site.getId())) {
+							toolsWithContent.add(toolId);
+						}
 					}
 				}
+
 			}
-			
 			M_log.debug("Site: " + site.getId() + ", has the following tools with content: " + toolsWithContent);
 			
 			siteToolsWithContent.put(site.getId(), toolsWithContent);
 		}
-	
+
 		return siteToolsWithContent;
 	}
 	
