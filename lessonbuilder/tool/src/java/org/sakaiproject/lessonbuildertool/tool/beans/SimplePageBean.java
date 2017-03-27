@@ -2382,15 +2382,8 @@ public class SimplePageBean {
 	public String adjustPath(String op, Long pageId, Long pageItemId, String title) {
 		List<PathEntry> path = (List<PathEntry>)sessionManager.getCurrentToolSession().getAttribute(LESSONBUILDER_PATH);
 
-		// if no current path, op doesn't matter. we can just do the current page
-		if (path == null || path.size() == 0) {
-			PathEntry entry = new PathEntry();
-			entry.pageId = pageId;
-			entry.pageItemId = pageItemId;
-			entry.title = title;
-			path = new ArrayList<PathEntry>();
-			path.add(entry);
-		} else if (op.equals("clear_and_push")) {
+		// NYU's custom op trumps all!
+		if (op.equals("clear_and_push")) {
 			// clear path for top level subpage
 			path = new ArrayList<PathEntry>();
 			// add an entry for the parent page
@@ -2406,6 +2399,15 @@ public class SimplePageBean {
 			entry.pageItemId = pageItemId;
 			entry.title = title;
 			path.add(entry);  // put it on the end
+
+		// if no current path, op doesn't matter. we can just do the current page
+		} else if (path == null || path.size() == 0) {
+			PathEntry entry = new PathEntry();
+			entry.pageId = pageId;
+			entry.pageItemId = pageItemId;
+			entry.title = title;
+			path = new ArrayList<PathEntry>();
+				path.add(entry);
 	    } else if (path.get(path.size()-1).pageId.equals(pageId)) {
 	    	// nothing. we're already there. this is to prevent 
 	    	// oddities if we refresh the page
