@@ -1457,6 +1457,15 @@ body {
         }
       }
 
+      &.is-current.is-parent-of-current {
+        .lessons-goto-top-page {
+           color: $nyu-tool-nav-item-text-color !important;
+           &:hover {
+             color: $nyu-tool-nav-item-hover-text-color !important;
+           }
+        }
+      }
+
       @media #{$tablet} {
         &.expanded {
           .lessons-goto-top-page {
