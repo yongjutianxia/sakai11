@@ -1884,10 +1884,10 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 			  String answer2 = st.nextToken().trim();
 
 			  if (answer1 != null){ 	 
-		             answer1 = answer1.trim().replace(',','.');  // in Spain, comma is used as a decimal point 	 
+		             answer1 = answer1.trim().replaceAll("\\s+", "").replace(',','.');  // in Spain, comma is used as a decimal point 	 
 			  } 	 
 			  if (answer2 != null){ 	 
-		             answer2 = answer2.trim().replace(',','.');  // in Spain, comma is used as a decimal point 	 
+		             answer2 = answer2.trim().replaceAll("\\s+", "").replace(',','.');  // in Spain, comma is used as a decimal point 	 
 		      } 	 
 		 
 			  try {
