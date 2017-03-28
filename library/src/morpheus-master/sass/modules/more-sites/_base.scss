@@ -79,7 +79,6 @@ body.active-more-sites{
 	}
 
 	.tab-box{
-		border: 1px solid $all-sites-tab-border-color;
 		padding: 5px 5px 5px 1em;
 		background-color: $all-sites-tab-active-background-color;
 		margin: 0 1px 0 0;
@@ -88,6 +87,7 @@ body.active-more-sites{
 	.tab-bar{
 		list-style: none;
 		padding: 0 0 0 0;
+		border-bottom: 1px solid $all-sites-tab-border-color;
 	}
 
 	.tab-bar .tab-btn{
@@ -185,8 +185,10 @@ body.active-more-sites{
         }
 
 	.favorites-term-header {
-		font-size: 1.8em;
-  		margin: 1.5em 0 0.6em 0;
+		color: $all-sites-title-text-color;
+		font-size: $all-sites-title-text-size;
+		font-weight: $all-sites-title-text-weight;
+		margin: 1.5em 0 0.6em 0;
 	}
 }
 
@@ -216,6 +218,15 @@ ul#otherSitesMenu{
 	li.otherSitesMenuClose{
 		display: inline-block;
 		font-size: 1.5em;
+
+		a {
+			color: $all-sites-close-action-color;
+
+			&:hover {
+				color: $all-sites-close-action-hover-color;
+			}
+		}
+
 		@media #{$phone}{
 			display: none;
 		}
@@ -256,25 +267,91 @@ ul#otherSitesMenu{
 
 
 
-ul.otherSitesCategorList{
+ul.otherSitesCategorList,
+ul.favoriteSiteList{
 	list-style: none;
 	padding: 0 0 0 0;
 	li{
 		display: inline-block;
-		border: 1px solid darken( $background-color, 30% );
-		background: darken( $background-color, 5% );
-		@include border-radius( 4px );
+		font-size: $all-sites-button-text-size;
+		background: $all-sites-button-background-color;
+		border: 1px solid $all-sites-button-border-color;
+		@include border-radius( $all-sites-button-border-radius );
 		margin: 0.3em;
-		padding: 0.1em 0.5em 0.1em 0.5em;
+		padding: 0;
+		position: relative;
+
 		a{
-			@extend .userNav_link;
-			font-weight: 700;
-			&.toolMenus{
-				display: inline-block;
+			color: $all-sites-button-text-color;
+			font-weight: $all-sites-button-text-weight;
+
+			&:hover {
+				color: $all-sites-button-hover-text-color;
 			}
 		}
+
+		.site-favorite-btn {
+			padding: 0 0.5em 0 10px;
+			height: $all-sites-button-height;
+			display: inline-block;
+
+			.site-nonfavorite {
+				color: $all-sites-button-star-empty-color;
+			}
+			.site-favorite {
+				color: $all-sites-button-star-full-color;
+			}
+		}
+
+		.toolMenus {
+			display: inline-block;
+			color: $all-sites-button-dropdown-color;
+			padding: 0 1em 0 0;
+			height: $all-sites-button-height;
+			line-height: $all-sites-button-height;
+		}
+
 		&.is-selected{
-			border: 1px solid darken( $tool-border-color, 30% );
+			color: $all-sites-button-selected-text-color;
+			font-size: $all-sites-button-selected-text-size;
+			font-weight: $all-sites-button-selected-text-weight;
+			background: $all-sites-button-selected-background-color;
+			border-color: $all-sites-button-selected-border-color;
+			border-radius: $all-sites-button-selected-border-radius;
+
+			.toolMenus {
+				color: $all-sites-button-selected-dropdown-color;
+			}
+
+			.site-favorite-btn {
+				.site-nonfavorite {
+					color: $all-sites-button-selected-star-empty-color;
+				}
+				.site-favorite {
+					color: $all-sites-button-selected-star-full-color;
+				}
+			}
+		}
+
+		&:hover {
+			color: $all-sites-button-hover-text-color;
+			font-size: $all-sites-button-hover-text-size;
+			font-weight: $all-sites-button-hover-text-weight;
+			background: $all-sites-button-hover-background-color;
+			border: 1px solid $all-sites-button-hover-border-color;
+
+			.toolMenus {
+				color: $all-sites-button-hover-dropdown-color;
+			}
+
+			.site-favorite-btn {
+				.site-nonfavorite {
+					color: $all-sites-button-hover-star-empty-color;
+				}
+				.site-favorite {
+					color: $all-sites-button-hover-star-full-color;
+				}
+			}
 		}
 	}
 }
@@ -329,23 +406,59 @@ ul#otherSiteTools{
 	list-style: none;
 	padding-left: 0;
 	padding-bottom: 5px;
+	background: $all-sites-tool-menu-background-color;
 
 	li{
-		padding: 0 0 5px 5px;
-		font-family: $header-font-family;
 		border: 0;
+		margin: 0;
 		display: block;
 
 		a{
-			color: $text-color;
+			display: block;
+			padding: 5px 6px;
+			color: $all-sites-tool-menu-text-color;
+			font-size: $all-sites-tool-menu-text-size;
+			background: $all-sites-tool-menu-background-color;
 			text-decoration: none;
+			font-weight: $all-sites-tool-menu-text-weight;
+			border-left: $all-sites-tool-menu-left-border;
+
+			.otherSiteToolIcon{
+				display: inline-block;
+				color: $all-sites-tool-menu-icon-color;
+			}
+
+			&:hover {
+				background: $all-sites-tool-menu-hover-background-color;
+				color: $all-sites-tool-menu-hover-text-color;
+				border-left: $all-sites-tool-menu-hover-left-border;
+
+				.otherSiteToolIcon{
+					color: $all-sites-tool-menu-hover-icon-color;
+				}
+			}
 		}
 
-                .otherSiteToolIcon{
-			display: inline-block;
-                }
+		&.gotosite {
+			border-top: 1px solid $all-sites-tool-menu-divider-color;
 
-                .icon-sakai--see-all-tools{
+			a {
+				&:after {
+					color: $all-sites-tool-menu-icon-color;
+					font-family: FontAwesome;
+					content: '\f178';
+					margin-left: 10px;
+				}
+
+				&:hover {
+					&:after {
+						color: $all-sites-tool-menu-hover-icon-color;
+					}
+				}
+			}
+		}
+
+		.icon-sakai--see-all-tools{
 			display: none;
 		}
 	}
@@ -356,34 +469,38 @@ ul.favoriteSiteList{
 	padding: 0 0 0 0;
 	> li{
 		display: block;
-		border: 1px solid $tool-border-color;
-		@include border-radius( 4px );
+		font-size: $all-sites-button-text-size;
+		background: $all-sites-button-background-color;
+		border: 1px solid $all-sites-button-border-color;
+		@include border-radius( $all-sites-button-border-radius );
 		width: 305px;
 		white-space: nowrap;
 		overflow: hidden;
 		margin: 0.3em;
-		padding: 0.3em 0.5em 0.3em 0.5em;
+		padding: 0;
 	}
 }
 
 	div.fav-title-myworkspace {
-		width: 264px;
+		width: 276px;
 		
 		a {
-		
+			width: 100%;
+
 			.fa-home {
 				font-size: 1.33333em;
-				padding-right: 6px;
-				
+				padding: 0 0.5em 0 10px;
 			}
-			
+
 			&:hover {
 				text-decoration: none;
 			}
+			.fa-home, .fullTitle {
+				height: $all-sites-button-height;
+				line-height: $all-sites-button-height;
+			}
 		}
-		
 	}
-		
 
 .fav-title{
 	width: 240px;
@@ -391,12 +508,12 @@ ul.favoriteSiteList{
 	display: inline-block;
 	vertical-align: middle;
 	a{
-		@extend .userNav_link;
-		font-weight: 700;
-		vertical-align: middle;
-	}
-	&.toolMenus{
+		width: 100%;
 		display: inline-block;
+		height: $all-sites-button-height;
+		line-height: $all-sites-button-height;
+		text-decoration: none !important;
+		vertical-align: middle;
 	}
 }
 
@@ -438,11 +555,21 @@ ul.favoriteSiteList{
 		position: relative;
 		right: 2px;
 		padding: 0 6px;
-		color: $tool-border-color;
+		height: $tool-tab-height;
+		line-height: $tool-tab-height;
+		color: $all-sites-button-drag-icon-color;
 		cursor: move; /* fallback if grab cursor is unsupported */
 		cursor: grab;
 		cursor: -moz-grab;
 		cursor: -webkit-grab;
+		border-left: 1px dotted $all-sites-button-border-color;
+	}
+	> li {
+		&:hover {
+			.fav-drag-handle {
+				color: $all-sites-button-drag-icon-hover-color;
+			}
+		}
 	}
 	.fav-drag-handle:active{
 		cursor: grabbing;
