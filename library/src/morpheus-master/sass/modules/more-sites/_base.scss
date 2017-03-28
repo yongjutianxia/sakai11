@@ -3,7 +3,7 @@ body.active-more-sites{
 }
 
 #portalMask{
-	background: rgba(255,255,255,0.8);
+	background: $all-sites-mask-background;
 	position: fixed;
 }
 
@@ -13,13 +13,13 @@ body.active-more-sites{
 	overflow:visible;
 	@include transition( left 0.4s linear 0s );
 	&.dhtml_more_tabs{
-		background: $tool-menu-background-color;
+		background: $all-sites-background-color;
 		display: block;
 		position: fixed;
 		width: 60% ;
 		max-height: 100%;
 		padding: 0 1em 1em 1em;
-		box-shadow: 5px 0 50px 0px rgba(0,0,0,0.5);
+		box-shadow: $all-sites-drop-shadow;
 		@media #{$phone}{
 			width: 100%;
 			height: 100%;
@@ -77,34 +77,69 @@ body.active-more-sites{
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
-	.tab-box{
-		border: 1px solid $tool-border-color;
-		padding: 5px 5px 5px 1em;
 
-                background-color: $tool-background-color;
+	.tab-box{
+		border: 1px solid $all-sites-tab-border-color;
+		padding: 5px 5px 5px 1em;
+		background-color: $all-sites-tab-active-background-color;
+		margin: 0 1px 0 0;
 	}
-	
+
 	.tab-bar{
 		list-style: none;
 		padding: 0 0 0 0;
 	}
 
 	.tab-bar .tab-btn{
+		position: relative;
 		display: inline-block;
-		padding: 5px 2em 5px 2em;
-		border: 1px solid $tool-border-color;
+		padding: 0 2em;
+		height: $tool-tab-height;
+		line-height: $tool-tab-height;
+		border: 1px solid $all-sites-tab-border-color;
 		border-bottom:  0;
 		margin: 0;
-		background-color: darken( $tool-background-color, 20% );
+		color: $all-sites-tab-text-color;
+		background-color: $all-sites-tab-background-color;
 	}
 
 	.tab-bar .tab-btn:hover{
 		cursor: pointer;
+		color: $all-sites-tab-hover-text-color;
+		background-color: $all-sites-tab-hover-background-color;
+		&:before {
+			border-top: 4px solid $all-sites-tab-hover-highlight;
+			content: '';
+			display: block;
+			position: absolute;
+			left: -1px;
+			right: -1px;
+			top: -1px;
+		}
 	}
 
 	.tab-bar .tab-btn.active{
 		cursor: default;
-		background-color: $tool-background-color;
+		color: $all-sites-tab-active-text-color;
+		background: $all-sites-tab-active-background-color;
+		&:before {
+			border-top: 4px solid $all-sites-tab-active-highlight-color;
+			content: '';
+			display: block;
+			position: absolute;
+			left: -1px;
+			right: -1px;
+			top: -1px;
+		}
+		&:after{
+			border-bottom: 1px solid $tool-tab-active-background-color;
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -1px;
+		}
 	}
 
 	.tab-bar .tab-btn.tab-disabled{
@@ -118,15 +153,28 @@ body.active-more-sites{
 	.tab-bar{
 		margin: 5px 0 0 0;
 		position: relative;
-		top: 1px;
 		z-index: 2;
 	}
 
 
-	.tab-bar .favorites-tab-label {
-		font-weight: $default-font-weight;
-		font-size: $default-font-size;
-		margin: 0.2em;
+	.tab-bar{
+		.tab-btn{
+			.favorites-tab-label {
+				font-weight: $tool-tab-text-weight;
+				font-size: $tool-tab-text-size;
+				line-height: $tool-tab-height;
+				padding: 0;
+				margin: 0;
+			}
+			&.active{
+				.favorites-tab-label {
+					font-size: $tool-tab-active-text-size;
+				}
+			}
+			&.organizeFavorites {
+				margin-left: -5px;
+			}
+		}
 	}
 
 
@@ -176,7 +224,6 @@ ul#otherSitesMenu{
 
 
 #otherSitesCategorWrap{
-	width: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
 
