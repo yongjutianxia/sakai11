@@ -2051,6 +2051,11 @@ public class SiteAction extends PagedResourceActionII {
                                   }
                                 }
 
+				if (siteProperties.getProperty("imported_from_sites") != null) {
+					context.put("importedFromSites", siteProperties.getProperty("imported_from_sites"));
+				}
+
+
 				context.put("siteFriendlyUrls", getSiteUrlsForSite(site));
 				context.put("siteDefaultUrl", getDefaultSiteUrl(siteId));
 				
@@ -9600,6 +9605,16 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 							final Session session = SessionManager.getCurrentSession();
 							final ToolSession toolSession = SessionManager.getCurrentToolSession();
 							final String siteId = existingSite.getId();
+
+							final List<String> importFromSiteIds = new ArrayList<>();
+
+							Hashtable importFromSites = (Hashtable) state.getAttribute(STATE_IMPORT_SITES);
+							if (importFromSites != null) {
+							    for (Object site : importFromSites.keySet()) {
+								importFromSiteIds.add(((Site) site).getId());
+							    }
+							}
+
 							Thread siteImportThread = new Thread(){
 								public void run() {
 									Site existingSite;
@@ -9609,6 +9624,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 										SessionManager.setCurrentToolSession(toolSession);
 										EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_START, existingSite.getReference(), false));
 										importToolIntoSite(existingTools, importTools, existingSite);
+
+										recordImportLineage(siteId, importFromSiteIds);
+
 										if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
 											userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
 										}
@@ -11912,6 +11930,48 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			state.setAttribute(STATE_MULTIPLE_TOOL_ID_TITLE_MAP, multipleToolIdTitleMap);
 		}
 	} // getFeatures
+
+	final String IMPORT_LINEAGE_PROPERTY = "imported_from_sites";
+
+	private void recordImportLineage(String existingSiteId, List<String> importFromSiteIds) {
+		try {
+			Site site = SiteService.getSite(existingSiteId);
+
+			ResourcePropertiesEdit properties = site.getPropertiesEdit();
+
+			String existingLineage = properties.getProperty(IMPORT_LINEAGE_PROPERTY);
+
+			List<String> siteIds = new ArrayList<>();
+
+			if (existingLineage != null) {
+				siteIds.addAll(Arrays.asList(existingLineage.split(", *")));
+			}
+
+			for (String newSiteId : importFromSiteIds) {
+				if (!siteIds.contains(newSiteId)) {
+					siteIds.add(newSiteId);
+				}
+			}
+
+			StringBuilder value = new StringBuilder();
+			for (String siteId : siteIds) {
+				if (value.length() > 0) {
+					value.append(", ");
+				}
+
+				value.append(siteId);
+			}
+
+			properties.removeProperty(IMPORT_LINEAGE_PROPERTY);
+			properties.addProperty(IMPORT_LINEAGE_PROPERTY, value.toString());
+
+			SiteService.save(site);
+		} catch (IdUnusedException | PermissionException e) {
+			M_log.warn("Failed to record import lineage for site: " + existingSiteId + " due to error: " + e);
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * Import tools and content into the site

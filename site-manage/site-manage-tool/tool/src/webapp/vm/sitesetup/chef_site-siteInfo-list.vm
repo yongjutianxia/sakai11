@@ -431,6 +431,19 @@
                 </td>
             </tr>
             #end			
+
+	    #if ($!allowUpdate)
+		    #if ($!importedFromSites)
+			    <tr>
+				    <th>Imported from site(s)</th>
+				    <td>
+					    $!importedFromSites
+				    </td>
+			    </tr>
+		    #end
+	    #end
+
+
 		</table>
 
 		#set ($desc = $siteDescription) 
