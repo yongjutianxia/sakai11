@@ -29,7 +29,11 @@
 			<h:commandLink action="#{mfStatisticsBean.processActionStatisticsByAllTopics}" value="#{msgs.cdfm_statistics} #{msgs.stat_byTopic}" title="#{msgs.cdfm_statistics} #{msgs.stat_byTopic}"/>				
 		  </h:panelGroup>
         </h:panelGrid>
-  	
+
+	<div class="table-responsive">
+		<h:commandLink styleClass="btn btn-default pull-right" action="#{mfStatisticsBean.processUserStatsAsCSV}" value="#{msgs.stat_downloadAsCSV}" title="#{msgs.stat_downloadAsCSV}" />
+	</div>
+
       <div class="table-responsive">
   		<h:dataTable styleClass="table table-hover table-striped table-bordered lines nolines" id="members" value="#{mfStatisticsBean.allUserStatistics}" var="stat" rendered="true"
    	 		columnClasses="specialLink,bogus,bogus,bogus,bogus" cellpadding="0" cellspacing="0">
