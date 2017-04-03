@@ -45,6 +45,8 @@ import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.PresenceObservingCourier;
 import org.sakaiproject.util.ResourceLoader;
 
+import org.sakaiproject.user.cover.UserDirectoryService;
+
 /**
  * <p>
  * PresenceToolAction is the presence display tool showing everyone everywhere.
@@ -167,6 +169,8 @@ public class PresenceToolAction extends VelocityPortletPaneledAction
 			serverList.addAll(sessionsByServer.keySet());
 			context.put("serverList", serverList);
 
+			context.put("enableStopButton", "admin".equals(UserDirectoryService.getCurrentUser().getEid()));
+
 			int count = 0;
 			for (List<UsageSession> sessions : sessionsByServer.values())
 			{
@@ -197,6 +201,8 @@ public class PresenceToolAction extends VelocityPortletPaneledAction
 			serverList.addAll(nodes.keySet());
 			serverList.addAll(session.keySet());
 			context.put("serverList", serverList);
+
+			context.put("enableStopButton", "admin".equals(UserDirectoryService.getCurrentUser().getEid()));
 
 			int count = 0;
 			for (List<UsageSession> sessions : session.values())
@@ -280,9 +286,6 @@ public class PresenceToolAction extends VelocityPortletPaneledAction
 
 	public void doSwitch(RunData data, Context context)
 	{
-		if (1 == 1) {
-			throw new RuntimeException("NO WAY");
-		}
 		// We look at the status in the request so that if someone else has changed the status
 		// of a node we don't switch it back.
 		String id = data.getParameters().getString("server_id");
