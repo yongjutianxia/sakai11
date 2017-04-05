@@ -48,12 +48,12 @@
 
 
     AutoPopulateHandler.prototype.cleanInitialDescription = function () {
-        var description = this.descriptionInput.val();
+        var description = this.descriptionInput.val().trim();
         this.descriptionInput.val(description.replace(this.invalid_description_regex, ' '));
     };
 
     AutoPopulateHandler.prototype.descriptionUpdated = function () {
-        var description = this.descriptionInput.val();
+        var description = this.descriptionInput.val().trim();
 
         // Check that the description doesn't have any garbage
         if (new RegExp(this.invalid_description_regex).test(description)) {
@@ -78,7 +78,9 @@
             .replace(this.invalid_address_regex, '')
             .replace(new RegExp(this.whitespace_replacement_char + '+', 'g'),
                      this.whitespace_replacement_char)
-            .substring(0, this.calculateMaxLength());
+            .substring(0, this.calculateMaxLength())
+            .replace(new RegExp(this.whitespace_replacement_char + '$'),
+                     '');
 
         this.addressInput.val(this.lastGeneratedValue).trigger("change");
     };
@@ -107,7 +109,7 @@
 
     AutoPopulateHandler.prototype.bindToEvents = function () {
         var self = this;
-        this.descriptionInput.on('keyup change', function () {
+        this.descriptionInput.on('paste keyup input change', function () {
             self.descriptionUpdated();
         });
 
