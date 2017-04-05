@@ -80,6 +80,9 @@
 									#if($toolId == "sakai.iframe.site")
 										#set($toolTitle = $siteInfoToolTitle)
 									#end
+									#if($toolId == "sakai.gradebookng")
+									    #set($toolTitle = "Gradebook")
+									#end
 								
 									#set($alternateToolTitles = $!alternateToolTitlesMap.get($toolId))
 								
