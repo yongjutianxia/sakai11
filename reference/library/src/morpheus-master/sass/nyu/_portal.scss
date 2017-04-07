@@ -1511,4 +1511,37 @@ body {
       }
     }
   }
+  &.#{$namespace}toolMenu-collapsed {
+    #toolMenu {
+      li {
+        &.has-lessons-sub-pages {
+          .lessons-sub-page-menu {
+            display: none !important;
+          }
+          .#{$namespace}toolsNav__menuitem--icon {
+            -ms-transform: rotate(0deg) !important;
+            -webkit-transform: rotate(0deg) !important;
+            transform: rotate(0deg) !important;
+            &:before {
+              content: '\f212';
+            }
+          }
+          &.is-current, &.is-parent-of-current,
+          &.expanded.is-current, &.expanded.is-parent-of-current {
+            .#{$namespace}toolsNav__menuitem--link {
+              border-left: $nyu-tool-nav-item-selected-border-left !important;
+              .#{$namespace}toolsNav__menuitem--icon {
+                color: $nyu-tool-nav-item-selected-icon-color !important;
+              }
+              &:hover {
+                .#{$namespace}toolsNav__menuitem--icon {
+                  color: $nyu-tool-nav-item-selected-icon-color !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

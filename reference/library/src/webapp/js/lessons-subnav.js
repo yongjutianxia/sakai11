@@ -69,6 +69,13 @@
         $menu.addEventListener('click', function(event) {
             event.preventDefault();
 
+            // when collapsed, a click should take you to the top page and not toggle the menu
+            if (document.body.classList.contains('Mrphs-toolMenu-collapsed')) {
+                location.href = topLevelPageHref;
+                return false;
+            }
+
+            // clicked the magic goto span!
             if (event.target.classList.contains('lessons-goto-top-page')) {
                 location.href = topLevelPageHref;
                 return false;
