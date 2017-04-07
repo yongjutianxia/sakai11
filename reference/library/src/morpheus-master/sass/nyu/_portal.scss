@@ -1372,6 +1372,11 @@ body {
           max-height: 100px;
           text-overflow: ellipsis;
           overflow:hidden;
+          background-color: #FFFFFF;
+
+          &:last-child{
+              margin-bottom: 8px;
+          }
 
           a {
             text-align: left;
@@ -1402,16 +1407,6 @@ body {
                 border-left: $nyu-tool-nav-item-selected-hover-border-left !important;
               }
             }
-          }
-        }
-      }
-  
-      &.expanded {
-        ul.lessons-sub-page-menu {
-          padding-bottom: 8px;
-
-          li {
-              background-color: #FFFFFF;
           }
         }
       }
