@@ -20,6 +20,10 @@
  **********************************************************************************/
 package org.sakaiproject.tool.messageforums.ui;
 
+import au.com.bytecode.opencsv.CSVWriter;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,6 +44,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -2137,6 +2142,45 @@ public class MessageForumStatisticsBean {
 		return FORUM_STATISTICS_USER;
 	}
 	
+	public void processUserStatsAsCSV() {
+		HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+		String siteId = toolManager.getCurrentPlacement().getContext();
+
+		response.setHeader("Content-type", "text/csv; charset=UTF-8");
+		response.setHeader("Content-Disposition", "attachment; filename=" + siteId + ".csv");
+
+		try {
+			CSVWriter out = new CSVWriter(response.getWriter());
+
+			out.writeNext(new String[] {
+						getResourceBundleString("stat_name"),
+						getResourceBundleString("stat_authored"),
+						getResourceBundleString("stat_read"),
+						getResourceBundleString("stat_unread"),
+						getResourceBundleString("stat_percent_read"),
+					});
+
+			List<DecoratedCompiledMessageStatistics> statistics = (List<DecoratedCompiledMessageStatistics>)getAllUserStatistics();
+			for (DecoratedCompiledMessageStatistics statistic : statistics) {
+				out.writeNext(new String[] {
+							statistic.getUseAnonId() ? statistic.getSiteAnonId() : statistic.getSiteUser(),
+							String.valueOf(statistic.getAuthoredForumsAmt()),
+							String.valueOf(statistic.getReadForumsAmt()),
+							String.valueOf(statistic.getUnreadForumsAmt()),
+							String.valueOf(statistic.getPercentReadForumsAmt()),
+						});
+			}
+
+			out.close();
+		} catch (IOException e) {
+			LOG.error("Failure when exporting site " + siteId + " forum stats as CSV: " + e);
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		FacesContext.getCurrentInstance().responseComplete();
+	}
 
 
 	// **************************************** helper methods**********************************

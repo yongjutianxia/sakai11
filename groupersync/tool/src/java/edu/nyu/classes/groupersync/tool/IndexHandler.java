@@ -63,7 +63,7 @@ public class IndexHandler extends BaseHandler {
             List<GroupView> sections = new ArrayList<GroupView>();
             List<GroupView> adhocGroups = new ArrayList<GroupView>();
 
-            wholeSite.add(new GroupView(site, "All site members", grouper));
+            wholeSite.add(new GroupView(site, buildAllMembersTitle(site), grouper));
             for (Group group : site.getGroups()) {
                 GroupView groupView = new GroupView(group, grouper);
 
@@ -89,12 +89,12 @@ public class IndexHandler extends BaseHandler {
             context.put("sections", sections);
             context.put("adhocGroups", adhocGroups);
 
-	    // Configuration bits we need
-	    context.put("maxDescriptionLength", Configuration.getMaxDescriptionLength());
-	    context.put("maxAddressLength", Configuration.getMaxAddressLength());
-	    context.put("descriptionExcludedCharacters", Configuration.getDescriptionExcludedCharacters());
-	    context.put("addressAllowedCharacters", Configuration.getAddressAllowedCharacters());
-	    context.put("whitespaceReplacementCharacter", Configuration.getWhitespaceReplacementCharacter());
+            // Configuration bits we need
+            context.put("maxDescriptionLength", Configuration.getMaxDescriptionLength());
+            context.put("maxAddressLength", Configuration.getMaxAddressLength());
+            context.put("descriptionExcludedCharacters", Configuration.getDescriptionExcludedCharacters());
+            context.put("addressAllowedCharacters", Configuration.getAddressAllowedCharacters());
+            context.put("whitespaceReplacementCharacter", Configuration.getWhitespaceReplacementCharacter());
 
             context.put("subpage", "index");
 
@@ -116,6 +116,19 @@ public class IndexHandler extends BaseHandler {
         } catch (IdUnusedException e) {
             throw new ServletException("Couldn't find site", e);
         }
+    }
+
+
+    private String buildAllMembersTitle(Site site) {
+        String title = site.getTitle();
+        String suffix = Configuration.getAllSiteMembersSuffix();
+        int maxLength = Configuration.getMaxDescriptionLength();
+
+        if ((title.length() + suffix.length()) > maxLength) {
+            title = title.substring(0, maxLength - suffix.length());
+        }
+
+        return title + suffix;
     }
 
 

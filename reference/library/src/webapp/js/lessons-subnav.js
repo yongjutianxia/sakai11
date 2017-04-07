@@ -41,36 +41,69 @@
             }
         });
 
-        self.setup_parent_menu($li, $menu);
         $li.appendChild($submenu);
+        self.setup_parent_menu($li, $menu);
     };
 
 
     LessonsSubPageNavigation.prototype.setup_parent_menu = function($li, $menu) {
         $li.classList.add('has-lessons-sub-pages');
-        var $goto = document.createElement('a');
-        $goto.href = $menu.href;
+        var $goto = document.createElement('span');
+        $goto.title = 'Click the arrow icon to open the top-level page.';
+
+        var topLevelPageHref = $menu.href;
         $goto.classList.add('lessons-goto-top-page');
         $menu.href = 'javascript:void(0);';
 
+        function expandMenu($expandMe) {
+            $expandMe.classList.add('expanded');
+            var subpages = $expandMe.querySelectorAll('.lessons-sub-page-menu li').length;
+            $expandMe.querySelector('.lessons-sub-page-menu').style.maxHeight = (subpages * 100) + 'px';
+        };
+
+        function collapseMenu($collapseMe) {
+            $collapseMe.classList.remove('expanded');
+            $collapseMe.querySelector('.lessons-sub-page-menu').style.maxHeight = 0 + 'px';
+        };
+
         $menu.addEventListener('click', function(event) {
             event.preventDefault();
-            if ($li.classList.contains('expanded')) {
-                $li.classList.remove('expanded');
+
+            if (event.target.classList.contains('lessons-goto-top-page')) {
+                location.href = topLevelPageHref;
+                return false;
+            }
+
+            // We have jQuery now... YAY, get on that.
+            var $li = $PBJQ(event.target).closest('li');
+
+            if ($li.is('.expanded')) {
+                //Disable collapse - do nuffin
+                //$li.classList.remove('expanded');
             } else {
-                var $ul = $li.parentElement;
-                $li.querySelectorAll('li.expanded').forEach(function(el) {
-                    el.classList.remove('expanded');
+                $li.closest('ul').find('.expanded').each(function() {
+                    var $expanded = $PBJQ(this);
+                    $expanded.addClass('sliding-up');
+                    $expanded.find('.lessons-sub-page-menu').slideUp(500, function() {
+                        $expanded.removeClass('sliding-up');
+                        $expanded.removeClass('expanded');
+                    });
+                })
+                $li.addClass('sliding-down');
+                $li.find('.lessons-sub-page-menu').slideDown(500, function() {
+                    $li.removeClass('sliding-down');
+                    $li.addClass('expanded');
                 });
-                $li.classList.add('expanded');
             }
         });
 
         if ($li.classList.contains('is-current')) {
             $li.classList.add('expanded');
+            $li.querySelector('.lessons-sub-page-menu').style.display = 'block';
         }
 
-        $li.appendChild($goto);
+        var $title = $menu.querySelector('.Mrphs-toolsNav__menuitem--title');
+        $title.appendChild($goto);
     };
 
 

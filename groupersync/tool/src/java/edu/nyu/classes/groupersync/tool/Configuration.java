@@ -32,4 +32,7 @@ class Configuration {
         return "-";
     }
 
+    public static String getAllSiteMembersSuffix() {
+        return " - All Members";
+    }
 }

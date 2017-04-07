@@ -2051,6 +2051,11 @@ public class SiteAction extends PagedResourceActionII {
                                   }
                                 }
 
+				if (siteProperties.getProperty("imported_from_sites") != null) {
+					context.put("importedFromSites", siteProperties.getProperty("imported_from_sites"));
+				}
+
+
 				context.put("siteFriendlyUrls", getSiteUrlsForSite(site));
 				context.put("siteDefaultUrl", getDefaultSiteUrl(siteId));
 				
@@ -3078,6 +3083,36 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("selectedTools", selectedTools);
 			}
 			
+			// CLASSES-2686
+			//
+			// If the old site has either Gradebook or GradebookNG,
+			// and the new site has either Gradebook or GradebookNG,
+			// we should allow the gradebook to import (even if the
+			// old site used Gradebook and the new site uses
+			// GradebookNG, or vice versa).
+			List<String> targetSiteToolIds = selectedTools;
+			List<String> sourceSiteToolIds = allImportableToolIdsInOriginalSites;
+
+			List<String> gradebooksInTargetSite = new ArrayList<String>();
+			for (String toolId : targetSiteToolIds) {
+				if ("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) {
+					gradebooksInTargetSite.add(toolId);
+				}
+			}
+
+			if (gradebooksInTargetSite.size() == 1) {
+				// If we only have one of the Gradebooks, we
+				// need to make sure that it's represented in
+				// the source site (so we get the option to
+				// import)
+				String targetSiteGradebook = gradebooksInTargetSite.get(0);
+
+				if (!sourceSiteToolIds.contains(targetSiteGradebook)) {
+					sourceSiteToolIds.add(targetSiteGradebook);
+				}
+			}
+
+
 			//get all known tool names from the sites selected to import from (importSites) and the selectedTools list
 			Map<String,Set<String>> toolNames = this.getToolNames(selectedTools, importSites);
 			
@@ -9570,6 +9605,16 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 							final Session session = SessionManager.getCurrentSession();
 							final ToolSession toolSession = SessionManager.getCurrentToolSession();
 							final String siteId = existingSite.getId();
+
+							final List<String> importFromSiteIds = new ArrayList<>();
+
+							Hashtable importFromSites = (Hashtable) state.getAttribute(STATE_IMPORT_SITES);
+							if (importFromSites != null) {
+							    for (Object site : importFromSites.keySet()) {
+								importFromSiteIds.add(((Site) site).getId());
+							    }
+							}
+
 							Thread siteImportThread = new Thread(){
 								public void run() {
 									Site existingSite;
@@ -9579,6 +9624,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 										SessionManager.setCurrentToolSession(toolSession);
 										EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_START, existingSite.getReference(), false));
 										importToolIntoSite(existingTools, importTools, existingSite);
+
+										recordImportLineage(siteId, importFromSiteIds);
+
 										if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
 											userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
 										}
@@ -11882,6 +11930,48 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			state.setAttribute(STATE_MULTIPLE_TOOL_ID_TITLE_MAP, multipleToolIdTitleMap);
 		}
 	} // getFeatures
+
+	final String IMPORT_LINEAGE_PROPERTY = "imported_from_sites";
+
+	private void recordImportLineage(String existingSiteId, List<String> importFromSiteIds) {
+		try {
+			Site site = SiteService.getSite(existingSiteId);
+
+			ResourcePropertiesEdit properties = site.getPropertiesEdit();
+
+			String existingLineage = properties.getProperty(IMPORT_LINEAGE_PROPERTY);
+
+			List<String> siteIds = new ArrayList<>();
+
+			if (existingLineage != null) {
+				siteIds.addAll(Arrays.asList(existingLineage.split(", *")));
+			}
+
+			for (String newSiteId : importFromSiteIds) {
+				if (!siteIds.contains(newSiteId)) {
+					siteIds.add(newSiteId);
+				}
+			}
+
+			StringBuilder value = new StringBuilder();
+			for (String siteId : siteIds) {
+				if (value.length() > 0) {
+					value.append(", ");
+				}
+
+				value.append(siteId);
+			}
+
+			properties.removeProperty(IMPORT_LINEAGE_PROPERTY);
+			properties.addProperty(IMPORT_LINEAGE_PROPERTY, value.toString());
+
+			SiteService.save(site);
+		} catch (IdUnusedException | PermissionException e) {
+			M_log.warn("Failed to record import lineage for site: " + existingSiteId + " due to error: " + e);
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * Import tools and content into the site
@@ -16167,28 +16257,35 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	 * @return Map keyed on siteId. Set contains toolIds that have content.
 	 */
 	private Map<String, Set<String>> getSiteImportToolsWithContent(List<Site> sites, List<String> toolIds) {
-		
 		Map<String, Set<String>> siteToolsWithContent = new HashMap<>(); 
-		
+
 		for(Site site: sites) {
 			
 			Set<String> toolsWithContent = new HashSet<>();
 			
 			for(String toolId: toolIds) {
-				if(site.getToolForCommonId(toolId) != null) {
+				if(site.getToolForCommonId(toolId) != null ||
+						(("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) &&
+							(site.getToolForCommonId("sakai.gradebook.tool") != null || site.getToolForCommonId("sakai.gradebookng") != null)))
+				{
 					
 					//check the tool has content
 					if(hasContent(toolId, site.getId())) {
 						toolsWithContent.add(toolId);
+					} else {
+						if (("sakai.gradebook.tool".equals(toolId) || "sakai.gradebookng".equals(toolId)) &&
+								hasContent("sakai.gradebook.tool", site.getId()) || hasContent("sakai.gradebookng", site.getId())) {
+							toolsWithContent.add(toolId);
+						}
 					}
 				}
+
 			}
-			
 			M_log.debug("Site: " + site.getId() + ", has the following tools with content: " + toolsWithContent);
 			
 			siteToolsWithContent.put(site.getId(), toolsWithContent);
 		}
-	
+
 		return siteToolsWithContent;
 	}
 	

@@ -919,11 +919,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 					rs = ps.executeQuery();
 
 					while (rs.next()) {
-						if (!result.containsKey(rs.getString("toolId"))) {
-							result.put(rs.getString("toolId"), new ArrayList<Map<String, String>>());
+						if (!result.containsKey(rs.getString("sakaiToolId"))) {
+							result.put(rs.getString("sakaiToolId"), new ArrayList<Map<String, String>>());
 						}
 
-						result.get(rs.getString("toolId")).add(makeMap(rs));
+						result.get(rs.getString("sakaiToolId")).add(makeMap(rs));
 					}
 
 				} finally {
@@ -943,15 +943,21 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		}
 
 		private String buildSQL(Connection conn, List<String> pageIds) {
-			return ("select s.tool_id as toolId, s.site_id as siteId, p.toolId as pageId, p.parent, p.pageId as sendingPage, p.title as name, i.id as itemId" +
-					" from lesson_builder_pages p" +
-					" inner join lesson_builder_items i on p.parent = i.pageId AND type = 2 AND " + toChar(conn, "p.pageId") + " = i.sakaiId" +
-					" inner join sakai_site_tool s on p.toolId = s.page_id" +
-					" where p.parent in " +
-					"   (select pageId from lesson_builder_pages" +
-					"      where parent is null AND" +
-					"        toolId in (" + placeholdersFor(pageIds) + "))" +
-					" order by i.sequence");
+			return ("SELECT p.toolId as sakaiPageId," +
+					" p.pageId as lessonsPageId," +
+					" s.site_id as sakaiSiteId," +
+					" s.tool_id as sakaiToolId," +
+					" i.id as lessonsItemId," +
+					" i.name as name," +
+					" " + toChar(conn, "i.sakaiId") + " as sendingPage" +
+					" FROM lesson_builder_pages p" +
+					" INNER JOIN sakai_site_tool s" +
+					"   on p.toolId = s.page_id" +
+					" INNER JOIN lesson_builder_items i" +
+					"   on (i.pageId = p.pageId AND type = 2)" +
+					" WHERE p.parent IS NULL" +
+					"   AND p.toolId in (" + placeholdersFor(pageIds) + ")" +
+					" ORDER BY i.sequence");
 		}
 
 		private String toChar(Connection conn, String expr) {
@@ -973,10 +979,9 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		private Map<String, String> makeMap(ResultSet rs) throws SQLException {
 			Map<String, String> result = new HashMap<>();
 
-			result.put("toolId", rs.getString("toolId"));
-			result.put("pageId", rs.getString("pageId"));
-			result.put("siteId", rs.getString("siteId"));
-			result.put("itemId", rs.getString("itemId"));
+			result.put("toolId", rs.getString("sakaiToolId"));
+			result.put("siteId", rs.getString("sakaiSiteId"));
+			result.put("itemId", rs.getString("lessonsItemId"));
 			result.put("sendingPage", rs.getString("sendingPage"));
 			result.put("name", rs.getString("name"));
 

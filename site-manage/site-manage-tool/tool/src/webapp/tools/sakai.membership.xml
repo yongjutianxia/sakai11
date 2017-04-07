@@ -10,6 +10,7 @@
 		<category name="myworkspace" />
 
 		<configuration name="reset.button" value="false" type="final" />
+		<configuration name="pagesize" value="100" />
 	</tool>
 
 </registration>
