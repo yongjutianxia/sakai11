@@ -1420,7 +1420,7 @@ body {
 
           a {
             text-align: left;
-            padding: 3.5px 0 3.5px 40px;
+            padding: 3.5px 3.5px 3.5px 40px;
             font-size: 12px !important;
             min-height: 28px;
             max-height: 100px;
@@ -1441,6 +1441,7 @@ body {
               font-weight: bold !important;
               color: $nyu-tool-nav-item-selected-text-color !important;
               border-left: $nyu-tool-nav-item-selected-border-left !important;
+              margin-right: 0;
 
               &:hover {
                 color: $nyu-tool-nav-item-selected-hover-text-color !important;
