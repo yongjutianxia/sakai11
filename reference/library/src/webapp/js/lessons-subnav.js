@@ -81,11 +81,18 @@
                 //Disable collapse - do nuffin
                 //$li.classList.remove('expanded');
             } else {
-                $li.closest('ul').find('.expanded .lessons-sub-page-menu').slideUp(function() {
-                  $PBJQ(this).closest('.expanded').removeClass('expanded');
-                });
-                $li.find('.lessons-sub-page-menu').slideDown(function() {
-                  $li.addClass('expanded');
+                $li.closest('ul').find('.expanded').each(function() {
+                    var $expanded = $PBJQ(this);
+                    $expanded.addClass('sliding-up');
+                    $expanded.find('.lessons-sub-page-menu').slideUp(500, function() {
+                        $expanded.removeClass('sliding-up');
+                        $expanded.removeClass('expanded');
+                    });
+                })
+                $li.addClass('sliding-down');
+                $li.find('.lessons-sub-page-menu').slideDown(500, function() {
+                    $li.removeClass('sliding-down');
+                    $li.addClass('expanded');
                 });
             }
         });

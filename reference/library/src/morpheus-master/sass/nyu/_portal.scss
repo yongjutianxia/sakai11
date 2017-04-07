@@ -1363,6 +1363,46 @@ body {
         }
       }
 
+      &.sliding-down {
+          a {
+              .#{$namespace}toolsNav__menuitem--icon {
+                  -webkit-transition-duration: 0.5s;
+                  -moz-transition-duration: 0.5s;
+                  -o-transition-duration: 0.5s;
+                  transition-duration: 0.5s;
+
+                  -webkit-transition-property: -webkit-transform;
+                  -moz-transition-property: -moz-transform;
+                  -o-transition-property: -o-transform;
+                  transition-property: transform;
+
+                  -ms-transform: rotate(90deg);
+                  -webkit-transform: rotate(90deg);
+                  transform: rotate(90deg);
+              }
+          }
+      }
+
+      &.sliding-up {
+          a {
+              .#{$namespace}toolsNav__menuitem--icon {
+                  -webkit-transition-duration: 0.5s;
+                  -moz-transition-duration: 0.5s;
+                  -o-transition-duration: 0.5s;
+                  transition-duration: 0.5s;
+
+                  -webkit-transition-property: -webkit-transform;
+                  -moz-transition-property: -moz-transform;
+                  -o-transition-property: -o-transform;
+                  transition-property: transform;
+
+                  -ms-transform: rotate(0deg);
+                  -webkit-transform: rotate(0deg);
+                  transform: rotate(0deg);
+              }
+          }
+      }
+
       ul.lessons-sub-page-menu {
         display: none;
 
