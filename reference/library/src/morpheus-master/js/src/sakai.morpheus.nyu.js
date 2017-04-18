@@ -24,9 +24,39 @@ $PBJQ(function() {
 });
 
 // Allow custom tool button to toggle tool nav too
+// And include some ARIA stuff to improve mobile
+// accessbility with iOS voiceover
+var HIDE_TOOL_MENU_LABEL = 'Hide the tools menu';
+var SHOW_TOOL_MENU_LABEL = 'Show the tools menu';
 $PBJQ(function() {
-  $PBJQ(".Mrphs-siteHierarchy").prepend("<a href='javascript:void' aria-hidden='true' id='nyuToolToggle'>Tools</a>");
-  $PBJQ("#nyuToolToggle").on("click", toggleToolsNav);
+  var $nyuToolToggle = $("<a href='javascript:void(0);' id='nyuToolToggle'>Tools</a>");
+  $nyuToolToggle.attr('title', SHOW_TOOL_MENU_LABEL);
+  $nyuToolToggle.attr('aria-label', SHOW_TOOL_MENU_LABEL);
+  $nyuToolToggle.attr('aria-haspopup', 'true');
+  $nyuToolToggle.attr('aria-expanded', 'false');
+  $nyuToolToggle.attr('aria-controls', 'toolMenu');
+
+  $PBJQ(".Mrphs-siteHierarchy").prepend($nyuToolToggle);
+  $PBJQ("#nyuToolToggle").on("click", function() {
+    toggleToolsNav();
+
+    if ($PBJQ(document.body).is('.toolsNav--displayed')) {
+      $PBJQ('#toolMenu').attr('aria-hidden', 'false');
+      $PBJQ('#nyuToolToggle').attr('aria-expanded', 'true');
+      $PBJQ('#nyuToolToggle').attr('title', HIDE_TOOL_MENU_LABEL);
+      $PBJQ('#nyuToolToggle').attr('aria-label', HIDE_TOOL_MENU_LABEL);
+    } else {
+      $PBJQ('#toolMenu').attr('aria-hidden', 'true');
+      $PBJQ('#nyuToolToggle').attr('aria-expanded', 'false');
+      $PBJQ('#nyuToolToggle').attr('title', SHOW_TOOL_MENU_LABEL);
+      $PBJQ('#nyuToolToggle').attr('aria-label', SHOW_TOOL_MENU_LABEL);
+    }
+  });
+
+  if ($PBJQ("#nyuToolToggle").is(':visible')) {
+    $PBJQ('#toolMenu').attr('aria-labelledby', 'nyuToolToggle');
+    $PBJQ('#toolMenu').attr('role', 'dialog');
+  }
 });
 
 // Setup banner logo to return to top of page upon click

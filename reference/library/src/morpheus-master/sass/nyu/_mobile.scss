@@ -39,6 +39,12 @@ body {
 //  Header / Login
 // --------------------------------------------------------------------------------------------------------------------
 @media #{$tablet} {
+  // hide the skipNav div on mobile as the nav items are not visible on mobile
+  #skipNav {
+    display: none;
+  }
+
+
   #roleSwitch {
     display: none !important;
   }
