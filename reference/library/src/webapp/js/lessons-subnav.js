@@ -98,8 +98,12 @@
                 })
                 $li.addClass('sliding-down');
                 $li.find('.lessons-sub-page-menu').slideDown(500, function() {
-                    $li.removeClass('sliding-down');
-                    $li.addClass('expanded');
+                    $li.hide().show(0); // force a redraw so hover states are respected
+                    // and to avoid flash of the goto link pause to ensure this redraw...
+                    setTimeout(function() {
+                        $li.removeClass('sliding-down');
+                        $li.addClass('expanded');
+                    }, 200);
                 });
             }
         });

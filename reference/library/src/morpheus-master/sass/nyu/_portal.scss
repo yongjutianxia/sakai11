@@ -1144,7 +1144,7 @@ body.#{$namespace}toolMenu-collapsed ul#subSites ul li a {
 
         &.is-current {
           position: relative;
-          margin-right: -1px;
+          margin-right: 0;
 
           a, a.is-invisible {
             color: $nyu-tool-nav-item-selected-text-color !important;
@@ -1446,6 +1446,7 @@ body {
               &:hover {
                 color: $nyu-tool-nav-item-selected-hover-text-color !important;
                 border-left: $nyu-tool-nav-item-selected-hover-border-left !important;
+                background-color: $nyu-tool-nav-item-selected-hover-background-color !important;
               }
             }
           }
