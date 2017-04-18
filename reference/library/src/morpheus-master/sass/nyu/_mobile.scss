@@ -218,12 +218,6 @@ body {
         margin-right: 20px;
         font-size: 15px;
 
-        &:before {
-          font-family: 'FontAwesome';
-          content: '\f0c9';
-          margin-right: 6px;
-        }
-
         &:after {
           content: '';
           border-right: 1px solid #E5E5E5;

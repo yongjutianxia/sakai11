@@ -29,7 +29,9 @@ $PBJQ(function() {
 var HIDE_TOOL_MENU_LABEL = 'Hide the tools menu';
 var SHOW_TOOL_MENU_LABEL = 'Show the tools menu';
 $PBJQ(function() {
-  var $nyuToolToggle = $("<a href='javascript:void(0);' id='nyuToolToggle'>Tools</a>");
+  var $nyuToolToggle = $("<a href='javascript:void(0);' id='nyuToolToggle'></a>");
+  $nyuToolToggle.text('Tools');
+  $nyuToolToggle.prepend('<i class="fa fa-bars" aria-hidden="true"></i> ');
   $nyuToolToggle.attr('title', SHOW_TOOL_MENU_LABEL);
   $nyuToolToggle.attr('aria-label', SHOW_TOOL_MENU_LABEL);
   $nyuToolToggle.attr('aria-haspopup', 'true');
