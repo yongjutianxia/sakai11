@@ -9626,6 +9626,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 										importToolIntoSite(existingTools, importTools, existingSite);
 
 										recordImportLineage(siteId, importFromSiteIds);
+										inheritSelectedSiteProperties(siteId, importFromSiteIds);
 
 										if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
 											userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
@@ -9693,6 +9694,16 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 							final Session session = SessionManager.getCurrentSession();
 							final ToolSession toolSession = SessionManager.getCurrentToolSession();
 							final String siteId = existingSite.getId();
+
+							final List<String> importFromSiteIds = new ArrayList<>();
+
+							Hashtable importFromSites = (Hashtable) state.getAttribute(STATE_IMPORT_SITES);
+							if (importFromSites != null) {
+								for (Object site : importFromSites.keySet()) {
+									importFromSiteIds.add(((Site) site).getId());
+								}
+							}
+
 							Thread siteImportThread = new Thread(){
 								public void run() {
 									Site existingSite;
@@ -9703,6 +9714,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 										EventTrackingService.post(EventTrackingService.newEvent(SiteService.EVENT_SITE_IMPORT_START, existingSite.getReference(), false));
 										// Remove all old contents before importing contents from new site
 										importToolIntoSiteMigrate(existingTools, importTools, existingSite);
+
+										recordImportLineage(siteId, importFromSiteIds);
+										inheritSelectedSiteProperties(siteId, importFromSiteIds);
+
 										if (ServerConfigurationService.getBoolean(SAK_PROP_IMPORT_NOTIFICATION, true)) {
 											userNotificationProvider.notifySiteImportCompleted(userEmail, existingSite.getId(), existingSite.getTitle());
 										}
@@ -11930,6 +11945,36 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			state.setAttribute(STATE_MULTIPLE_TOOL_ID_TITLE_MAP, multipleToolIdTitleMap);
 		}
 	} // getFeatures
+
+	private void inheritSelectedSiteProperties(String existingSiteId, List<String> importFromSiteIds) {
+					if (importFromSiteIds.size() != 1) {
+									// We're only interested in storing properties if the import is from a single site
+									return;
+					}
+
+					try {
+									Site existingSite = SiteService.getSite(existingSiteId);
+
+									ResourcePropertiesEdit existingSiteProperties = existingSite.getPropertiesEdit();
+
+									Site importFromSite = SiteService.getSite(importFromSiteIds.get(0));
+									ResourceProperties importFromSiteProperties = importFromSite.getProperties();
+
+									for (String property : new String[] { "mathJaxAllowed", "lessons_submenu" }) {
+													String sourceValue = importFromSiteProperties.getProperty(property);
+													String targetValue = existingSiteProperties.getProperty(property);
+
+													if (sourceValue != null && targetValue == null) {
+																	existingSiteProperties.addProperty(property, sourceValue);
+													}
+									}
+
+									SiteService.save(existingSite);
+					} catch (IdUnusedException | PermissionException e) {
+									M_log.warn("Failed to inherit properties for site: " + existingSiteId + " due to error: " + e);
+									e.printStackTrace();
+					}
+	}
 
 	final String IMPORT_LINEAGE_PROPERTY = "imported_from_sites";
 
