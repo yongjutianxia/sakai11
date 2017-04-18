@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomAction;
@@ -25,6 +27,8 @@ import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
 
 import lombok.Setter;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserEdit;
 
 /**
  * This entity provider is to support some of the Javascript front end pieces. It never was built to support third party access, and never
@@ -227,4 +231,57 @@ public class GradebookNgEntityProvider extends AbstractEntityProvider implements
 	@Setter
 	private GradebookNgBusinessService businessService;
 
+
+	// CLASSES-2716 endpoints to support a instructional popover
+	@EntityCustomAction(action = "show-help-popup", viewKey = EntityView.VIEW_LIST)
+	public String shouldShowHelpPopup(final EntityView view, final Map<String, Object> params) {
+		final String siteId = (String) params.get("siteId");
+
+		if (StringUtils.isBlank(siteId)) {
+			throw new IllegalArgumentException("Site ID must be set");
+		}
+
+		checkValidSite(siteId);
+		checkInstructorOrTA(siteId);
+
+		User user = this.businessService.getCurrentUser();
+
+		// nothing for the admin user please
+		if ("admin".equals(user.getId())) {
+			return "false";
+		}
+
+		ResourceProperties properties = user.getProperties();
+		String dismissed = (String) properties.get("gradebookng-help-popup-dismissed");
+		if ("true".equals(dismissed)) {
+			return "false";
+		} else {
+			return "true";
+		}
+	}
+
+	@EntityCustomAction(action = "dismiss-help-popup", viewKey = EntityView.VIEW_NEW)
+	public void dismissHelpPopup(final EntityReference ref, final Map<String, Object> params) {
+		final String siteId = (String) params.get("siteId");
+
+		if (StringUtils.isBlank(siteId)) {
+			throw new IllegalArgumentException("Site ID must be set");
+		}
+
+		checkValidSite(siteId);
+		checkInstructorOrTA(siteId);
+
+		try {
+			UserEdit user = this.businessService.editCurrentUser();
+
+			// we don't do this for the admin user
+			if (!"admin".equals(user.getId())) {
+				ResourcePropertiesEdit properties = user.getPropertiesEdit();
+				properties.addProperty("gradebookng-help-popup-dismissed", "true");
+				this.businessService.saveUser(user);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to set popup dismissal for user");
+		}
+	}
 }

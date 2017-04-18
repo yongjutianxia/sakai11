@@ -1,0 +1,70 @@
+#gradebookHelpPopup {
+    position: absolute;
+    max-width: 400px;
+    width: 100%;
+    background: #FFF;
+    z-index: 100;
+    right: 80px;
+    margin-top: 10px;
+    padding: 100px 20px 20px;
+    box-shadow: 2px 2px 20px 1px #666;
+    background-image: url(/gradebookng-tool/images/gradebook-help-check.png);
+    background-repeat: no-repeat;
+    background-position: center 20px;
+}
+
+#gradebookHelpPopup:after {
+    bottom: 100%;
+    right: 20px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: #FAFAFA;
+    border-width: 7px;
+    outline: 0;
+}
+
+#gradebookHelpPopup a.gradebookHelpSoftDismiss {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    color: #666;
+}
+
+#gradebookHelpPopup h3 {
+    color: #666;
+    font-size: 1.5em;
+    font-variant-caps: small-caps;
+    text-align: center;
+}
+
+#gradebookHelpPopup .help-popup-actions {
+    float: right;
+}
+
+#gradebookHelpMask {
+  height: 100%;
+  background: transparent;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+@media only screen and (max-width : 800px) {
+  #gradebookHelpPopup {
+    right: 30px;
+  }
+}
+
+@media only screen and (max-width : 500px) {
+  #gradebookHelpPopup {
+    right: 0;
+  }
+}
