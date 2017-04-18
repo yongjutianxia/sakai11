@@ -2504,9 +2504,6 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  } catch (Exception e) {
 					  log.error("Cannot get user");
 				  }
-				  responseList.add(lastName);
-				  responseList.add(firstName);
-				  responseList.add(agentEid);
 				  if (assessmentGradingData.getForGrade()) {
 					  if (lastAgentId.equals(agentId)) {
 						  numSubmission++;
@@ -2529,6 +2526,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  responseList.add(numSubmissionText);
 			  }
 		  }
+                  responseList.add(agentEid);
+                  responseList.add(lastName);
+                  responseList.add(firstName);
 
 		  if (canBeExported) {
 			  int sectionScoreColumnStart = responseList.size();
