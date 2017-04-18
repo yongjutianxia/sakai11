@@ -115,6 +115,7 @@ import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.InconsistentException;
 import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.ServerOverloadException;
+import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 
 public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implements AssessmentGradingFacadeQueriesAPI{
   private static final Logger log = LoggerFactory.getLogger(AssessmentGradingFacadeQueries.class);
@@ -2437,9 +2438,30 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
   }
   
   
+  public Iterator<String> getOrderedQuestions(PublishedAssessmentService pubService, String publishedAssessmentId) {
+      List<PublishedSectionData> sections = pubService.getPublishedAssessment(publishedAssessmentId).getSectionArray();
+
+      Collections.sort(sections);
+
+      List<String> result = new ArrayList<>();
+
+      for (PublishedSectionData section : sections) {
+	  List<PublishedItemData> items = section.getItemArray();
+
+	  Collections.sort(items);
+
+	  for (Object item : items) {
+	      result.add(((PublishedItemData)item).getText());
+	  }
+      }
+
+      return result.iterator();
+  }
+
   public List getExportResponsesData(String publishedAssessmentId, boolean anonymous, String audioMessage, String fileUploadMessage, String noSubmissionMessage, boolean showPartAndTotalScoreSpreadsheetColumns, String poolString, String partString, String questionString, String textString, String rationaleString, String itemGradingCommentsString, Map useridMap, String responseCommentString) {
 	  ArrayList dataList = new ArrayList();
 	  ArrayList headerList = new ArrayList();
+	  ArrayList questionTextList = new ArrayList();
 	  ArrayList finalList = new ArrayList(2);
 	  PublishedAssessmentService pubService = new PublishedAssessmentService();
 	  
@@ -2504,6 +2526,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  } catch (Exception e) {
 					  log.error("Cannot get user");
 				  }
+				  responseList.add(agentEid);
+				  responseList.add(lastName);
+				  responseList.add(firstName);
 				  if (assessmentGradingData.getForGrade()) {
 					  if (lastAgentId.equals(agentId)) {
 						  numSubmission++;
@@ -2526,9 +2551,6 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  responseList.add(numSubmissionText);
 			  }
 		  }
-                  responseList.add(agentEid);
-                  responseList.add(lastName);
-                  responseList.add(firstName);
 
 		  if (canBeExported) {
 			  int sectionScoreColumnStart = responseList.size();
@@ -2572,6 +2594,8 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                 }
               }
                           
+			  Iterator<String> questionTextIterator = getOrderedQuestions(pubService, publishedAssessmentId);
+
 			  int questionNumber = 0;
 			  for (Object oo: grades) {	   
 				  // There can be more than one answer to a question, e.g. for
@@ -2891,10 +2915,15 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				  // if question type is not matrix choices apply the original code
 				  if (!matrixChoices) {
 					  responseList.add(maintext);
+
+					  if (addRationale) {
+						responseList.add(rationale);
+					  }
+
 					  if (grade.getComments() != null) {
 						  itemGradingComments = grade.getComments().replaceAll("<br\\s*/>", "");
 						  }
-					  responseList.add(itemGradingComments);                          
+					  	  responseList.add(itemGradingComments);                          
 					  }
 				  else {
 					  // if there are questions not answered, a no answer response is added to the map
@@ -2916,6 +2945,11 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						  Map.Entry e = (Map.Entry)it.next();
 						  log.debug("Adding to response list "+e.getKey()+" and "+e.getValue());
 						  responseList.add(e.getValue());
+
+						  if (addRationale) {
+							  responseList.add(rationale);
+						  }
+
 						  if (grade.getComments() != null) {
 							  itemGradingComments = grade.getComments().replaceAll("<br\\s*/>", "");
 							  }
@@ -2923,10 +2957,6 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						  itemGradingComments = "";
 						  }
 					  }
-				  
-				  if (addRationale) {
-					  responseList.add(rationale);
-				  }
 				  
 				  if (addResponseComment) {
 					  responseList.add(responseComment);
@@ -2942,27 +2972,53 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                         	poolName = psd.getSectionMetaDataByLabel(SectionDataIfc.POOLNAME_FOR_RANDOM_DRAW);
                         }
                     }
+
                     if (!matrixChoices) {
                     	headerList.add(makeHeader(partString, sectionSequenceNumber, questionString, textString, questionNumber, poolString, poolName));
+
+			if (questionTextIterator.hasNext()) {
+				questionTextList.add(questionTextIterator.next());
+			} else {
+				log.error("Ran out of question text before running out of responses!  Bug?");
+			}
+
                     	if (addRationale) {
                     		headerList.add(makeHeader(partString, sectionSequenceNumber, questionString, rationaleString, questionNumber, poolString, poolName));
+                              questionTextList.add("");
                     		}
                     	if (addResponseComment) {
                     		headerList.add(makeHeader(partString, sectionSequenceNumber, questionString, responseCommentString, questionNumber, poolString, poolName));
+                              questionTextList.add("");
                     		}
                     	headerList.add(makeHeader(partString, sectionSequenceNumber, questionString, itemGradingCommentsString, questionNumber, poolString, poolName));
+                          questionTextList.add("");
                     	}
                     else {
                     	int numberRows = responsesMap.size();
+
+			String questionText = "";
+
+			if (questionTextIterator.hasNext()) {
+				questionText = questionTextIterator.next();
+			} else {
+				log.error("Matrix: Ran out of question text before running out of responses!  Bug?");
+			}
+
                     	for(int i = 0; i < numberRows; i = i+1) {
                     		headerList.add(makeHeaderMatrix(partString, sectionSequenceNumber, questionString, textString, questionNumber, i+1, poolString, poolName));
+
+                              questionTextList.add(questionText);
+
                     		if (addRationale) {
                     			headerList.add(makeHeaderMatrix(partString, sectionSequenceNumber, questionString, rationaleString, questionNumber, i+1, poolString, poolName));
+                                  questionTextList.add("");
                     			}
                     		if (addResponseComment) {
                     			headerList.add(makeHeaderMatrix(partString, sectionSequenceNumber, questionString, responseCommentString, questionNumber, i+1, poolString, poolName));
+                                  questionTextList.add("");
                     			}
                     		headerList.add(makeHeaderMatrix(partString, sectionSequenceNumber, questionString, itemGradingCommentsString, questionNumber, i+1, poolString, poolName));
+                              questionTextList.add("");
                     		}
                     	}
 				  }	    		   
@@ -3008,6 +3064,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	  Collections.sort(dataList, new ResponsesComparator(anonymous));
 	  finalList.add(dataList);
 	  finalList.add(headerList);
+	  finalList.add(questionTextList);
 	  return finalList;
   }
   
