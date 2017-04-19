@@ -1348,7 +1348,7 @@ body {
           background-color: $nyu-tool-nav-item-selected-background-color !important;
 
           &:hover {
-            background-color: $nyu-tool-nav-item-hover-background-color !important;
+            background-color: $nyu-tool-nav-item-selected-hover-background-color !important;
           }
 
           .#{$namespace}toolsNav__menuitem--icon {
@@ -1379,6 +1379,11 @@ body {
                   -ms-transform: rotate(90deg);
                   -webkit-transform: rotate(90deg);
                   transform: rotate(90deg);
+              }
+              background-color: $nyu-tool-nav-item-selected-background-color !important;
+
+              &:hover {
+                  background-color: $nyu-tool-nav-item-selected-background-color !important;
               }
           }
       }

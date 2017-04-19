@@ -97,6 +97,7 @@
                     });
                 })
                 $li.addClass('sliding-down');
+                $li.hide().show(0);
                 $li.find('.lessons-sub-page-menu').slideDown(500, function() {
                     $li.hide().show(0); // force a redraw so hover states are respected
                     // and to avoid flash of the goto link pause to ensure this redraw...
