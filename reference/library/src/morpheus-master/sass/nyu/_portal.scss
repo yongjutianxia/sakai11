@@ -1364,6 +1364,8 @@ body {
       }
 
       &.sliding-down {
+          background-color: $nyu-tool-nav-item-selected-background-color !important;
+
           a {
               .#{$namespace}toolsNav__menuitem--icon {
                   -webkit-transition-duration: 0.5s;
@@ -1511,7 +1513,7 @@ body {
       @media #{$tablet} {
         &.expanded {
           .lessons-goto-top-page {
-            display: block;
+            display: inline-block;
           }
         }
       }
