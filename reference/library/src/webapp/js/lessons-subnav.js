@@ -2,6 +2,8 @@
     function LessonsSubPageNavigation(data, currentPageId) {
         this.data = data;
         this.currentPageId = currentPageId;
+        this.has_current = false;
+        this.page_id_to_submenu_item = {};
         this.setup();
     };
 
@@ -31,6 +33,8 @@
 
             $submenu_action.href = self.build_sub_page_url_for(sub_page);
             $submenu_action.innerText = sub_page.name;
+            $submenu_action.setAttribute('data-sendingPage', sub_page.sendingPage);
+
             $submenu_item.appendChild($submenu_action);
 
             $submenu.appendChild($submenu_item);
@@ -38,7 +42,10 @@
             if (sub_page.sendingPage === self.currentPageId) {
                 $li.classList.add('is-parent-of-current');
                 $submenu_item.classList.add('is-current');
+                self.has_current = true;
             }
+
+            self.page_id_to_submenu_item[sub_page.sendingPage] = $submenu_item;
         });
 
         $li.appendChild($submenu);
@@ -129,6 +136,24 @@
         url += '&newTopLevel=false';
         return url;
     };
+
+    LessonsSubPageNavigation.prototype.set_current_page_id = function(pageId) {
+        if (this.has_current || pageId == this.currentPageId) {
+            // if we already have a current set, then there's nothing to do
+            return;
+        }
+
+        if (this.page_id_to_submenu_item[pageId]) {
+            var li = this.page_id_to_submenu_item[pageId];
+            // remove is-current from parent item
+            var parent = li.parentElement.parentElement;
+            parent.classList.add('is-parent-of-current');
+
+            // add is-current to the submenu item
+            li.classList.add('is-current');
+        }
+    };
+
 
     window.LessonsSubPageNavigation = LessonsSubPageNavigation;
 })();

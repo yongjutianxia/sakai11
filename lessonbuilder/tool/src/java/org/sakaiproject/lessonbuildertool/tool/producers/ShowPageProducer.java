@@ -3257,6 +3257,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		}
 
 		createDialogs(tofill, currentPage, pageItem);
+
+		// NYU set lessonsSubnavCurrentPageId
+		UIInput.make(tofill, "lessonsSubnavCurrentPageId", "#{simplePageBean.currentPageId}", String.valueOf(simplePageBean.getCurrentPage().getPageId()));
 	}
 	
 	public void makeCsrf(UIContainer tofill, String rsfid) {

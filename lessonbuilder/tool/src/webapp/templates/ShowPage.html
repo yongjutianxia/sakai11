@@ -48,6 +48,18 @@
  </head>
 
  <body rsf:id="scr=sakai-body">
+ <input type='hidden' rsf:id="lessonsSubnavCurrentPageId" id="lessonsSubnavCurrentPageId"/>
+ <script>
+     // NYU just in case the lesson's URL doesn't contain the current pageid,
+     // notify the lessons_subnav of this page
+     if (sakai) {
+       if (sakai.lessons_subnav) {
+         var lessonsSubnavCurrentPageInput = document.getElementById('lessonsSubnavCurrentPageId');
+         var lessonsSubnavCurrentPageId = lessonsSubnavCurrentPageInput.value;
+         sakai.lessons_subnav.set_current_page_id(lessonsSubnavCurrentPageId);
+       }
+     }
+ </script>
  <script type="text/javascript" src="$context/js/jquery-1.9.1.min.js"></script>
  <script type="text/javascript" src="$context/js/jquery-ui-1.11.1.custom.min.js"></script>
  <script rsf:id="datepicker" type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
