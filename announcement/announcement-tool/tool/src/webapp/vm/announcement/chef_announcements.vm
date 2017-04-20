@@ -54,13 +54,15 @@
 			<nav class="Mrphs-toolTitleNav Mrphs-container Mrphs-container--toolTitleNav">
 				<h2 class="Mrphs-toolTitleNav__title">Recent Announcements</h2>
 
-				<div class="Mrphs-toolTitleNav__button_container">
-					<span>
-						<a class="Mrphs-toolTitleNav__link" href="#" title="$tlang.getString("gen.recopt")" onclick="location = '#toolLink("$action" "doOptions")';return false;">
-							$tlang.getString("custom.options")
-						</a>
-					</span>
-                                </div>
+				#if ($canUpdateAnnouncements)
+					<div class="Mrphs-toolTitleNav__button_container">
+						<span>
+							<a class="Mrphs-toolTitleNav__link" href="#" title="$tlang.getString("gen.recopt")" onclick="location = '#toolLink("$action" "doOptions")';return false;">
+								$tlang.getString("custom.options")
+							</a>
+						</span>
+					</div>
+				#end
 			</nav>
 		</div>
 
