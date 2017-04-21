@@ -39,6 +39,12 @@ body {
 //  Header / Login
 // --------------------------------------------------------------------------------------------------------------------
 @media #{$tablet} {
+  // hide the skipNav div on mobile as the nav items are not visible on mobile
+  #skipNav {
+    display: none;
+  }
+
+
   #roleSwitch {
     display: none !important;
   }
@@ -176,125 +182,127 @@ body {
   display: none;
 }
 @media #{$tablet} {
-  .#{$namespace}portalWrapper {
-    .#{$namespace}topHeader {
-      z-index: 1;
-      box-shadow: none !important;
-      padding-top: $nyu-tablet-header-site-height;
-
-      .#{$namespace}headerLogo {
-        position: fixed;
-        top: 0;
+  body {
+    .#{$namespace}portalWrapper {
+      .#{$namespace}topHeader {
         z-index: 1;
-      }
-      #loginLinks {
-        position: fixed;
-        top: 13px;
-        z-index: 1;
-        right: 10px;
-        border-left: none !important;
-      }
-      .#{$namespace}userNav__subnav {
-        position: fixed;
-        top: 37px;
-      }
-    }
-    .#{$namespace}siteHierarchy {
-      background: $nyu-tablet-breadcrumb-background-color !important;
-      border-top: $nyu-tablet-divider-width solid $nyu-tablet-divider-color  !important;
-      box-shadow: $nyu-tablet-divider-shadow !important;
-      position: relative;
+        box-shadow: none !important;
+        padding-top: $nyu-tablet-header-site-height;
 
-      #nyuToolToggle {
-        display: inline-block;
+        .#{$namespace}headerLogo {
+          position: fixed;
+          top: 0;
+          z-index: 1;
+        }
+        #loginLinks {
+          position: fixed;
+          top: 13px;
+          z-index: 1;
+          right: 10px;
+          border-left: none !important;
+        }
+        .#{$namespace}userNav__subnav {
+          position: fixed;
+          top: 37px;
+        }
+      }
+      .#{$namespace}siteHierarchy {
+        background: $nyu-tablet-breadcrumb-background-color !important;
+        border-top: $nyu-tablet-divider-width solid $nyu-tablet-divider-color  !important;
+        box-shadow: $nyu-tablet-divider-shadow !important;
         position: relative;
-        margin-left: 0;
-        margin-right: 20px;
-        font-size: 15px;
 
-        &:before {
-          font-family: 'FontAwesome';
-          content: '\f0c9';
-          margin-right: 6px;
-        }
-
-        &:after {
-          content: '';
-          border-right: 1px solid #E5E5E5;
-          height: 30px;
+        #nyuToolToggle {
           display: inline-block;
-          position: absolute;
-          right: -15px;
-          top: -4px;
+          position: relative;
+          margin-left: 0;
+          margin-right: 20px;
+          font-size: 15px;
+          color: $nyu-tablet-all-sites-link-color;
+
+          &:after {
+            content: '';
+            border-right: 1px solid #E5E5E5;
+            height: 30px;
+            display: inline-block;
+            position: absolute;
+            right: -15px;
+            top: -4px;
+          }
+
+          &:hover {
+            text-decoration: none !important;
+            color: $nyu-tablet-all-sites-link-color;
+
+            i {
+              text-shadow: 0 0 5px rgba(165,165,165,0.95);
+            }
+          }
         }
 
-        &:hover {
-          text-decoration: none !important;
+        .#{$namespace}hierarchy--siteName,
+        .#{$namespace}hierarchy--siteNameSeparator {
+          display: none;
         }
-      }
 
-      .#{$namespace}hierarchy--siteName,
-      .#{$namespace}hierarchy--siteNameSeparator {
-        display: none;
-      }
-
-      .#{$namespace}hierarchy--siteName,
-      .#{$namespace}hierarchy--separator,
-      .#{$namespace}breadCrumbs--link {
-        color: $nyu-text-color !important;
-  
-        a {
+        .#{$namespace}hierarchy--siteName,
+        .#{$namespace}hierarchy--separator,
+        .#{$namespace}breadCrumbs--link {
           color: $nyu-text-color !important;
+
+          a {
+            color: $nyu-text-color !important;
+          }
         }
       }
     }
-  }
-  .#{$namespace}pageColumns--single {
-    .#{$namespace}toolTitleNav__button_container {
-      top: -52px !important;
-      right: 10px !important;
+    .#{$namespace}pageColumns--single {
+      .#{$namespace}toolTitleNav__button_container {
+        top: -52px !important;
+        right: 10px !important;
 
-      .external-news {
-        display: none !important;
-      }
-      .#{$namespace}toolTitleNav__link--help-popup {
-        border: none !important;
-        background-color: #FFFFFF !important;
-        color: $nyu-tablet-all-sites-link-color !important;
-
-        &:before {
-          color: $nyu-tablet-all-sites-link-color !important;
-          font-size: 16pt;
+        .external-news {
+          display: none !important;
         }
-
-        &:hover {
+        .#{$namespace}toolTitleNav__link--help-popup {
           border: none !important;
           background-color: #FFFFFF !important;
           color: $nyu-tablet-all-sites-link-color !important;
 
           &:before {
             color: $nyu-tablet-all-sites-link-color !important;
+            font-size: 16pt;
           }
-        }
 
-        &:after {
-          content: 'Help';
-          display: inline-block;
-          vertical-align: middle;
-          font-size: 14.5px;
-          font-family: $font-family;
-          padding: 0 4px 8px 2px;
+          &:hover {
+            border: none !important;
+            background-color: #FFFFFF !important;
+            color: $nyu-tablet-all-sites-link-color !important;
+
+            &:before {
+              color: $nyu-tablet-all-sites-link-color !important;
+            }
+          }
+
+          &:after {
+            content: 'Help';
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 14.5px;
+            font-family: $font-family;
+            padding: 0 4px 8px 2px;
+          }
         }
       }
     }
-  }
-  
-  .#{$namespace}skipNav__menu {
-    // show the tool menu to the left of breadcrumb
-  }
 
-  .user-dropdown-overlay {
-    z-index: 1 !important;
+    .#{$namespace}skipNav__menu {
+      // show the tool menu to the left of breadcrumb
+    }
+
+    .user-dropdown-overlay {
+      z-index: 1 !important;
+    }
   }
 }
 @media #{$phone} {

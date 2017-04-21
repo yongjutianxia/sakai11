@@ -68,8 +68,12 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.GradingEvent;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserEdit;
+import org.sakaiproject.user.api.UserLockedException;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.user.api.UserPermissionException;
 import org.sakaiproject.util.ResourceLoader;
 
 import lombok.Setter;
@@ -2049,4 +2053,15 @@ public class GradebookNgBusinessService {
 		}
 	}
 
+
+	// NYU Methods
+	public UserEdit editCurrentUser() throws UserNotDefinedException, UserPermissionException, UserLockedException {
+		return this.userDirectoryService.editUser(getCurrentUser().getId());
+	}
+
+	public void saveUser(UserEdit user) throws UserAlreadyDefinedException {
+		if (user.getId().equals(getCurrentUser().getId())) {
+			this.userDirectoryService.commitEdit(user);
+		}
+	}
 }

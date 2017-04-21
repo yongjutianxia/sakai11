@@ -1263,6 +1263,12 @@ public class AnnouncementAction extends PagedResourceActionII
 		// if there are pending requests to do so they can be cleared
 		justDelivered(sstate);
 
+		// Only show the synoptic tool Options button if the user has permission to update the tool
+		if (isSynopticTool() && !isOnWorkspaceTab()) {
+			String siteId = ToolManager.getCurrentPlacement().getContext();
+			context.put("canUpdateAnnouncements", m_securityService.unlock(UPDATE_PERMISSIONS, "/site/"+ siteId));
+		}
+
 		return template;
 
 	} // buildMainPanelContext

@@ -42,23 +42,6 @@
     	</h:panelGroup>
  	<f:verbatim></li></f:verbatim>
 
-
-    <!-- NYU CLASSES-354, hide options
-    <h:panelGroup rendered="#{navMenuBean.sectionOptionsManagementEnabled}">
-  		<f:verbatim><li></f:verbatim>
-  		<h:panelGroup  rendered="#{viewName ne 'options'}">
-  			<f:verbatim><span></f:verbatim>
-	    		<h:commandLink action="options" immediate="true">
-	        			<h:outputText value="#{msgs.nav_options}" />
-	    		</h:commandLink>
-	    	<f:verbatim></span></f:verbatim>
-	    </h:panelGroup>
-	    <h:panelGroup styleClass="current" rendered="#{viewName eq 'options'}" >
-	    	<h:outputText value="#{msgs.nav_options}" />
-	    </h:panelGroup>
-		<f:verbatim></li></f:verbatim>
-	</h:panelGroup>	
-    -->
 <f:verbatim></ul></f:verbatim>
 
 <h:panelGrid columns="2" styleClass="rosterPageHeader" columnClasses="rosterPageHeaderLeft,rosterPageHeaderRight">

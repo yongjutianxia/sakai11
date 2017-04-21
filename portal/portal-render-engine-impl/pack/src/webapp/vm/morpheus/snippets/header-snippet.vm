@@ -2,7 +2,7 @@
 
 <header role="banner" class="Mrphs-headerLogo">
     #if ($userIsLoggedIn && $loginUserDispId)
-      <a href="/portal/site/~${loginUserDispId}" class="Mrphs-headerLogo--institution"></a>
+      <a href="/portal/site/~${loginUserDispId}" class="Mrphs-headerLogo--institution" aria-label='Return to your Classes workspace'></a>
     #else
       <span class="Mrphs-headerLogo--institution"></span>
     #end

@@ -268,6 +268,7 @@ ASN.setupAssignNew = function(){
         }
     });
     
+    ASN.setupTIIBehaviours();
 };
 
 ASN.resizeFrame = function(updown)
@@ -963,3 +964,63 @@ ASN.handleReportsTriangleDisclosure = function (header, content)
         content.style.display = "none";
     }
 }
+
+
+// NYU TII behaviours:
+//
+// 1. When TurnItIn is selected, grey out and disable the "Allow Resubmission" checkbox,
+//    as we did in CLASSES-1833. Provide a tooltip saying "Resubmission can not be
+//    enabled when TurnItIn is being used."
+// 2. When "Allow Resubmission" is selected, grey out and disable the "Use TurnItIn"
+//    checkbox. Provide a tooltip saying "TurnItIn can not be used when assignment
+//    resubmission is enabled."
+//
+ASN.setupTIIBehaviours = function() {
+    var $form = $('#newAssignmentForm');
+    if ($form.length == 0) {
+      return;
+    }
+
+    var $resubmissionCheckbox = $form.find('#allowResToggle');
+    var $tiiCheckbox = $form.find('#new_assignment_use_review_service');
+
+    function handleResubmissionToggled() {
+        if ($resubmissionCheckbox.is(':checked')) {
+            // disable TII
+            $tiiCheckbox.prop('checked', false).prop('disabled', true);
+            $tiiCheckbox.closest('label').attr('title', 'TurnItIn can not be used when assignment resubmission is enabled.');
+        } else {
+            // enable TII
+            $tiiCheckbox.prop('disabled', false);
+            $tiiCheckbox.closest('label').removeAttr('title').removeClass('disabled');
+        }
+    };
+
+    function handleTiiToggled() {
+        if ($tiiCheckbox.is(':checked')) {
+            // disable TII
+            $resubmissionCheckbox.prop('checked', false).prop('disabled', true);
+            $resubmissionCheckbox.attr('title', 'Resubmission can not be enabled when TurnItIn is being used.');
+        } else {
+            // enable TII
+            $resubmissionCheckbox.prop('disabled', false);
+            $resubmissionCheckbox.removeAttr('title');
+        }
+    };
+
+    if ($resubmissionCheckbox.is(':checked') && $tiiCheckbox.is(':checked')) {
+        // FREAK OUT. Well.. do nothing and we'll right things once things are changed
+    } else if ($resubmissionCheckbox.is(':checked')) {
+        handleResubmissionToggled();
+    } else if ($tiiCheckbox.is(':checked')) {
+        handleTiiToggled();
+    }
+
+    $resubmissionCheckbox.on('change', function() {
+        handleResubmissionToggled();
+    });
+
+    $tiiCheckbox.on('change', function() {
+        handleTiiToggled();
+    });
+};

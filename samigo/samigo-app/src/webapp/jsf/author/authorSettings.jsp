@@ -546,13 +546,31 @@
         </t:selectOneRadio>
         <ul class="feedback-delivery">
           <li><t:radio for="feedbackDelivery" index="0" /></li>
-          <li><t:radio for="feedbackDelivery" index="1" /></li>
           <li><t:radio for="feedbackDelivery" index="2" /></li>
 	  <li>
 	    <t:radio for="feedbackDelivery" index="3" />
             <h:outputText value="&#160;" escape="false" />
             <h:inputText value="#{assessmentSettings.feedbackDateString}" size="25" id="feedbackDate" />
 	  </li>
+          <li>
+            <t:radio for="feedbackDelivery" index="1" />
+            <!-- NYU warning message and javascript to display it -->
+            <div id='feedbackDeliveryWarning' style='display:none;'>
+              <small><strong>Note</strong>: This option makes feedback viewable to students <strong>while</strong> they are taking the assessment. This will include correct answers, if selected below. <strong>Use this option with care</strong>.</small>
+            </div>
+            <script>
+              $('.feedback-delivery :input').on('change', function() {
+                if ($(this).val() == '1') {
+                  $("#feedbackDeliveryWarning").show();
+                } else {
+                  $("#feedbackDeliveryWarning").hide();
+                }
+              });
+              if ($('.feedback-delivery :input:checked').val() == '1') {
+                $("#feedbackDeliveryWarning").show();
+              }
+            </script>
+          </li>
         </ul>
       </div>
     </h:panelGroup>

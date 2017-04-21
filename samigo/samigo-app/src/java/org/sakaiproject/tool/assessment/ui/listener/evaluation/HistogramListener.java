@@ -3088,40 +3088,28 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
     headerList = new ArrayList<Object>();
     headerList.add(ExportResponsesBean.HEADER_MARKER); 
     headerList.add(rb.getString("question"));
+    headerList.add(rb.getString("question_text"));
     if(bean.getRandomType()){
         headerList.add("N(" + bean.getNumResponses() + ")");
     }else{
         headerList.add("N");
     }
-    headerList.add(rb.getString("pct_correct_of")); 
+    headerList.add(rb.getString("pct_correct_of") + " " + rb.getString("whole_group")); 
     if (bean.getShowDiscriminationColumn()) {
-        headerList.add(rb.getString("pct_correct_of")); 
-        headerList.add(rb.getString("pct_correct_of")); 
+        headerList.add(rb.getString("pct_correct_of") + " " + rb.getString("upper_pct"));
+        headerList.add(rb.getString("pct_correct_of") + " " + rb.getString("lower_pct"));
     	headerList.add(rb.getString("discrim_abbrev"));
     }
-    headerList.add(rb.getString("frequency")); 
-    spreadsheetRows.add(headerList);
-    
-    headerList = new ArrayList<Object>();
-    headerList.add(ExportResponsesBean.HEADER_MARKER); 
-    headerList.add(""); 
-    headerList.add("");
-    headerList.add(rb.getString("whole_group")); 
-    if (bean.getShowDiscriminationColumn()) {
-	    headerList.add(rb.getString("upper_pct")); 
-	    headerList.add(rb.getString("lower_pct")); 
-	    headerList.add(""); 
-    }
 
-    // No Answer
     headerList.add(rb.getString("no_answer"));
-    
+
     // Label the response options A, B, C, ...
     int aChar = 65;
     for (char colHeader=65; colHeader < 65+bean.getMaxNumberOfAnswers(); colHeader++) {
         headerList.add(String.valueOf(colHeader));
     }
-    spreadsheetRows.add(headerList);      
+    spreadsheetRows.add(headerList);
+
 	//VULA-1948: sort the detailedStatistics list by Question Label
     sortQuestionScoresByLabel(detailedStatistics);       
     Iterator detailedStatsIter = detailedStatistics.iterator();
@@ -3130,6 +3118,7 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
     	HistogramQuestionScoresBean questionBean = (HistogramQuestionScoresBean)detailedStatsIter.next();
     	statsLine = new ArrayList();
     	statsLine.add(questionBean.getQuestionLabel());
+    	statsLine.add(questionBean.getQuestionText());
     	Double dVal;
     	
     	statsLine.add(questionBean.getNumResponses());
