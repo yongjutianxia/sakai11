@@ -440,7 +440,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     if (GbGradeTable.settings.isPercentageGradeEntry) {
       $(this.TEXTAREA_PARENT).find(".out-of")[0].innerHTML = "100%";
     } else if (GbGradeTable.settings.isPointsGradeEntry) {
-      var assignment = GbGradeTable.columns[col - 2];
+      var assignment = GbGradeTable.instance.view.settings.columns[col]._data_;
       var points = assignment.points;
       $(this.TEXTAREA_PARENT).find(".out-of")[0].innerHTML = "/" + points;
     }
@@ -1959,7 +1959,6 @@ GbGradeTable.setupKeyboardNavigation = function() {
 
         // ctrl+space to open the header menu
         if (event.ctrlKey) {
-          var col = GbGradeTable.instance.getSelected()[1];
           var $th = $(GbGradeTable.instance.rootElement).find("th.currentCol");
           $dropdown = $th.find(".dropdown-toggle");
 
