@@ -851,6 +851,12 @@ GbGradeTable.renderTable = function (elementId, tableData) {
           action: 'setStudentNameOrder',
           orderby: $action.data("order-by")
         });
+  }).
+  // Toggle Points (Course Grade)
+  on("click", ".gb-dropdown-menu .gb-toggle-points", function() {
+    GbGradeTable.ajax({
+      action: 'toggleCourseGradePoints'
+    });
   });
 
   GbGradeTable.setupToggleGradeItems();
