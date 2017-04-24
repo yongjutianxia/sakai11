@@ -1783,6 +1783,11 @@ GbGradeTable.setupDragAndDrop = function () {
 
 
   $(document).on('dragstarted', function (dragStartedEvent, e) {
+    if (e.button != 0) {
+      /* Only interested in drag events from the primary button */
+      return;
+    }
+
     dragTarget = $(e.target).closest('th');
 
     if (isDraggable(dragTarget)) {
