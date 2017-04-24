@@ -669,6 +669,13 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     }
   });
 
+  GbGradeTable.instance.selection.empty = function() {
+      // FIXME Disable the default empty behaviour for now
+      // as 'delete' key does not trigger a saveValue.
+      // We need to invoke the editor from this context to
+      // force-save the empty value.
+  };
+
   // resize the table on window resize
   var resizeTimeout;
   $(window).on("resize", function() {
