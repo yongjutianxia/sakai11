@@ -497,7 +497,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
           delete(lastValidGrades[studentId])
         }
 
-        GbGradeTable.commitScore(studentId, assignmentId, newScore);
+        GbGradeTable.syncScore(studentId, assignmentId, newScore);
       } else if (status == "error") {
         GbGradeTable.setScoreState("error", studentId, assignmentId);
 
@@ -520,12 +520,12 @@ GbGradeTable.renderTable = function (elementId, tableData) {
 
       // update the course grade cell
       if (data.courseGrade) {
-        GbGradeTable.commitCourseGrade(studentId, data.courseGrade);
+        GbGradeTable.syncCourseGrade(studentId, data.courseGrade);
       }
 
       // update the category average cell
       if (assignment.categoryId) {
-        GbGradeTable.commitCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
+        GbGradeTable.syncCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
       }
     });
 
@@ -2332,7 +2332,7 @@ GbGradeTable.localizeNumber = function(number) {
 
 
 // Commit values to the grade data and the table meta data where applicable
-GbGradeTable.commitScore = function(studentId, assignmentId, value) {
+GbGradeTable.syncScore = function(studentId, assignmentId, value) {
     var modelCol = $.inArray(GbGradeTable.colModelForAssignment(assignmentId), GbGradeTable.columns);
     var modelRow = GbGradeTable.modelIndexForStudent(studentId);
 
@@ -2343,7 +2343,7 @@ GbGradeTable.commitScore = function(studentId, assignmentId, value) {
 };
 
 
-GbGradeTable.commitCourseGrade = function(studentId, courseGradeData) {
+GbGradeTable.syncCourseGrade = function(studentId, courseGradeData) {
     // update table
     var tableRow = GbGradeTable.rowForStudent(studentId);
     GbGradeTable.instance.setDataAtCell(tableRow, GbGradeTable.COURSE_GRADE_COLUMN_INDEX, courseGradeData);
@@ -2354,7 +2354,7 @@ GbGradeTable.commitCourseGrade = function(studentId, courseGradeData) {
 };
 
 
-GbGradeTable.commitCategoryAverage = function(studentId, categoryId, categoryScore) {
+GbGradeTable.syncCategoryAverage = function(studentId, categoryId, categoryScore) {
     var categoryScoreAsLocaleString = GbGradeTable.localizeNumber(categoryScore);
 
     // update table
