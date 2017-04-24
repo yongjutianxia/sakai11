@@ -657,6 +657,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
 
       if (column == null) {
          cellProperties.readOnly = true;
+      } else if (student == null) {
+         cellProperties.readOnly = true;
       } else {
         var readonly = column.type === "assignment" ? GbGradeTable.isReadOnly(student, column.assignmentId) : false;
 
