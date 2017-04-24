@@ -514,6 +514,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         console.log("Unhandled saveValue response: " + status);
       }
 
+      that.instance.setDataAtCell(row, 0, GbGradeTable.modelForStudent(studentId));
+
       // update the course grade cell
       if (data.courseGrade) {
         that.instance.setDataAtCell(row, 1, data.courseGrade);
@@ -2282,6 +2284,10 @@ GbGradeTable.setupAccessiblityBits = function() {
 GbGradeTable.localizeNumber = function(number) {
     if (typeof number == 'string'){
       return number;
+    }
+
+    if (typeof number == 'undefined') {
+        return;
     }
 
     if (sakai && sakai.locale && sakai.locale.userLanguage) {
