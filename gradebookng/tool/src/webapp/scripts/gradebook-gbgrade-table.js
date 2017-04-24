@@ -66,6 +66,8 @@ GbGradeTable.unpackPackedScores = function (s, rowCount, columnCount) {
                 readIndex += 1;
             }
 
+            currentRow[writeIndex] = GbGradeTable.localizeNumber(currentRow[writeIndex]);
+
             writeIndex += 1;
         };
 
@@ -520,7 +522,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       // update the category average cell
       if (assignment.categoryId) {
         var categoryScoreCol = GbGradeTable.colForCategoryScore(assignment.categoryId);
-        that.instance.setDataAtCell(row, categoryScoreCol, data.categoryScore);
+        var categoryScoreAsLocaleString = GbGradeTable.localizeNumber(data.categoryScore);
+        that.instance.setDataAtCell(row, categoryScoreCol, categoryScoreAsLocaleString);
       }
     });
 
@@ -1058,7 +1061,8 @@ GbGradeTable.redrawCell = function(row, col) {
 
 GbGradeTable.formatCategoryAverage = function(value) {
   if (value != null && (value+"").length > 0 && value != "-") {
-    return '' + value + '%';
+    var valueAsLocaleString = GbGradeTable.localizeNumber(value);
+    return '' + valueAsLocaleString + '%';
   } else {
     return '-';
   }
@@ -2272,6 +2276,19 @@ GbGradeTable.setupAccessiblityBits = function() {
 
   setupWrapperAccessKey();
   setupTableCaption();
+};
+
+
+GbGradeTable.localizeNumber = function(number) {
+    if (typeof number == 'string'){
+      return number;
+    }
+
+    if (sakai && sakai.locale && sakai.locale.userLanguage) {
+        return number.toLocaleString(sakai.locale.userLanguage);
+    }
+
+    return '' + number;
 };
 
 /**************************************************************************************

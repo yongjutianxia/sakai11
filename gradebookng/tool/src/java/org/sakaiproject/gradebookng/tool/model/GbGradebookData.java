@@ -429,7 +429,7 @@ public class GbGradebookData {
 
             result.add(new AssignmentDefinition(a1.getId(),
                                                 a1.getName(),
-                                                a1.getPoints().toString(),
+                                                FormatHelper.formatDoubleToDecimal(a1.getPoints()),
                                                 FormatHelper.formatDate(a1.getDueDate(), getString("label.studentsummary.noduedate")),
 
                                                 a1.isReleased(),

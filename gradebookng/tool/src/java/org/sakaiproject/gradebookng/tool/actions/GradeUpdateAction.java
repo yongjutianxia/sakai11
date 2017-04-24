@@ -108,7 +108,7 @@ public class GradeUpdateAction implements Action, Serializable {
         // perform validation here so we can bypass the backend
         final DoubleValidator validator = new DoubleValidator();
 
-        if (StringUtils.isNotBlank(rawNewGrade) && (!validator.isValid(rawNewGrade) || Double.parseDouble(rawNewGrade) < 0)) {
+        if (StringUtils.isNotBlank(rawNewGrade) && FormatHelper.validateDouble(rawNewGrade)!= null && (!FormatHelper.isValidDouble(rawNewGrade) || FormatHelper.validateDouble(rawNewGrade) < 0)) {
             target.add(page.updateLiveGradingMessage(page.getString("feedback.error")));
 
             return new ArgumentErrorResponse("Grade not valid");
