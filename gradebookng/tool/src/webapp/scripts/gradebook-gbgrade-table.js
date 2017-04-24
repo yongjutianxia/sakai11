@@ -477,8 +477,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       studentId: studentId,
       assignmentId: assignmentId,
       oldScore: (lastValidGrades[studentId][assignmentId] || oldScore),
-      newScore: newScore,
-      comment: ""
+      newScore: newScore
     };
 
     if (assignment.categoryId != null) {
@@ -487,7 +486,6 @@ GbGradeTable.renderTable = function (elementId, tableData) {
 
     GbGradeTable.setLiveFeedbackAsSaving();
 
-    // FIXME: We'll need to pass through the original comment text here.
     GbGradeTable.ajax(postData, function (status, data) {
       if (status == "OK") {
         GbGradeTable.setScoreState("saved", studentId, assignmentId);

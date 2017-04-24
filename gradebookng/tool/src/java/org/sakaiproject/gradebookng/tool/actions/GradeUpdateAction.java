@@ -59,7 +59,7 @@ public class GradeUpdateAction implements Action, Serializable {
 
     private class ArgumentErrorResponse implements ActionResponse {
         private String msg;
-        public ArgumentErrorResponse(String msg) {
+        public ArgumentErrorResponse(final String msg) {
             this.msg = msg;
         }
 
@@ -99,7 +99,7 @@ public class GradeUpdateAction implements Action, Serializable {
     }
 
     @Override
-    public ActionResponse handleEvent(JsonNode params, AjaxRequestTarget target) {
+    public ActionResponse handleEvent(final JsonNode params, final AjaxRequestTarget target) {
         final GradebookPage page = (GradebookPage) target.getPage();
 
         final String oldGrade = params.get("oldScore").asText();
@@ -114,15 +114,20 @@ public class GradeUpdateAction implements Action, Serializable {
             return new ArgumentErrorResponse("Grade not valid");
         }
 
-        String assignmentId = params.get("assignmentId").asText();
-        String studentUuid = params.get("studentId").asText();
-        String categoryId = params.has("categoryId") ? params.get("categoryId").asText() : null; 
+        final String assignmentId = params.get("assignmentId").asText();
+        final String studentUuid = params.get("studentId").asText();
+        final String categoryId = params.has("categoryId") ? params.get("categoryId").asText() : null;
 
         final String newGrade = FormatHelper.formatGrade(rawNewGrade);
-        
+
+        // We don't pass the comment from the use interface,
+        // but the service needs it otherwise it will assume 'null'
+        // so pull it back from the service and poke it in there!
+        final String comment = businessService.getAssignmentGradeComment(Long.valueOf(assignmentId), studentUuid);
+
         // for concurrency, get the original grade we have in the UI and pass it into the service as a check
         final GradeSaveResponse result = businessService.saveGrade(Long.valueOf(assignmentId), studentUuid,
-                oldGrade, newGrade, params.get("comment").asText());
+                oldGrade, newGrade, comment);
 
         if (result.equals(GradeSaveResponse.NO_CHANGE)) {
             target.add(page.updateLiveGradingMessage(page.getString("feedback.saved")));
@@ -136,7 +141,7 @@ public class GradeUpdateAction implements Action, Serializable {
             return new SaveGradeErrorResponse(result);
         }
 
-        CourseGrade studentCourseGrade = businessService.getCourseGrade(studentUuid);
+        final CourseGrade studentCourseGrade = businessService.getCourseGrade(studentUuid);
 
         String grade = "-";
         String points = "0";
@@ -160,7 +165,7 @@ public class GradeUpdateAction implements Action, Serializable {
         String categoryScore = "-";
 
         if (categoryId != null) {
-            Double average = businessService.getCategoryScoreForStudent(Long.valueOf(categoryId), studentUuid);
+            final Double average = businessService.getCategoryScoreForStudent(Long.valueOf(categoryId), studentUuid);
             if (average != null) {
                 categoryScore = FormatHelper.formatDoubleToDecimal(average);
             }
