@@ -152,14 +152,18 @@ public class GradeUpdateAction implements Action, Serializable {
                 true);
 
             grade = courseGradeFormatter.format(studentCourseGrade);
-            points = FormatHelper.formatDoubleToDecimal(studentCourseGrade.getPointsEarned());
+            if (studentCourseGrade.getPointsEarned() != null) {
+                points = FormatHelper.formatDoubleToDecimal(studentCourseGrade.getPointsEarned());
+            }
         }
 
         String categoryScore = "-";
 
         if (categoryId != null) {
             Double average = businessService.getCategoryScoreForStudent(Long.valueOf(categoryId), studentUuid);
-            categoryScore = FormatHelper.formatDoubleToDecimal(average);
+            if (average != null) {
+                categoryScore = FormatHelper.formatDoubleToDecimal(average);
+            }
         }
 
         target.add(page.updateLiveGradingMessage(page.getString("feedback.saved")));
