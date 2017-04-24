@@ -128,7 +128,7 @@ GbGradeTable.courseGradeRenderer = function (instance, td, row, col, prop, value
     GbGradeTable.replaceContents(valueCell, document.createTextNode(value[0]));
   }
 
-  var student = instance.getDataAtCell(row, 0);
+  var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 
   $.data(td, 'studentid', student.userId);
   $.data(td, 'cell-initialised', cellKey);
@@ -166,8 +166,8 @@ GbGradeTable.replaceContents = function (elt, newContents) {
 GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellProperties) {
 
   var $td = $(td);
-  var index = col - 2;
-  var student = instance.getDataAtCell(row, 0);
+  var index = col - GbGradeTable.FIXED_COLUMN_OFFSET;
+  var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
   var column = instance.view.settings.columns[col]._data_;
 
   // key needs to contain all values the cell requires for render
@@ -186,7 +186,7 @@ GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellP
     return;
   }
 
-  var student = instance.getDataAtCell(row, 0);
+  var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 
   var valueCell;
 
@@ -496,6 +496,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         if ($.isEmptyObject(lastValidGrades[studentId])) {
           delete(lastValidGrades[studentId])
         }
+
+        GbGradeTable.commitScore(studentId, assignmentId, newScore);
       } else if (status == "error") {
         GbGradeTable.setScoreState("error", studentId, assignmentId);
 
@@ -514,18 +516,16 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         console.log("Unhandled saveValue response: " + status);
       }
 
-      that.instance.setDataAtCell(row, 0, GbGradeTable.modelForStudent(studentId));
+      that.instance.setDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX, GbGradeTable.modelForStudent(studentId));
 
       // update the course grade cell
       if (data.courseGrade) {
-        that.instance.setDataAtCell(row, 1, data.courseGrade);
+        GbGradeTable.commitCourseGrade(studentId, data.courseGrade);
       }
 
       // update the category average cell
       if (assignment.categoryId) {
-        var categoryScoreCol = GbGradeTable.colForCategoryScore(assignment.categoryId);
-        var categoryScoreAsLocaleString = GbGradeTable.localizeNumber(data.categoryScore);
-        that.instance.setDataAtCell(row, categoryScoreCol, categoryScoreAsLocaleString);
+        GbGradeTable.commitCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
       }
     });
 
@@ -640,7 +640,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         this.selectCell(0, coords.col);
       } else if (coords.col < 0) {
         event.stopImmediatePropagation();
-        this.selectCell(coords.row, 0);
+        this.selectCell(coords.row, GbGradeTable.STUDENT_COLUMN_INDEX);
       }
     },
     currentRowClassName: 'currentRow',
@@ -653,7 +653,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       var cellProperties = {};
 
       var column = GbGradeTable.instance.view.settings.columns[col]._data_;
-      var student = GbGradeTable.instance.getDataAtCell(row, 0);
+      var student = GbGradeTable.instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 
       if (column == null) {
          cellProperties.readOnly = true;
@@ -906,12 +906,12 @@ GbGradeTable.selectCourseGradeCell = function(studentId) {
     row = GbGradeTable.rowForStudent(studentId);
   }
 
-  return GbGradeTable.instance.selectCell(row, 1);
+  return GbGradeTable.instance.selectCell(row, GbGradeTable.COURSE_GRADE_COLUMN_INDEX);
 };
 
 GbGradeTable.rowForStudent = function(studentId) {
   return GbGradeTable.instance.view.settings.data.findIndex(function(row, index, array) {
-           return row[0].userId === studentId;
+           return row[GbGradeTable.STUDENT_COLUMN_INDEX].userId === studentId;
          });
 };
 
@@ -931,6 +931,18 @@ GbGradeTable.modelForStudent = function(studentId) {
 
   throw "modelForStudent: model not found for " + studentId;
 };
+
+GbGradeTable.modelIndexForStudent = function(studentId) {
+  for (var i=0; i<GbGradeTable.students.length; i++) {
+    var student = GbGradeTable.students[i];
+    if (student.userId === studentId) {
+      return i;
+    }
+  }
+
+  throw "modelIndexForStudent: model not found for " + studentId;
+};
+
 
 GbGradeTable.colForAssignment = function(assignmentId) {
   return GbGradeTable.instance.view.settings.columns.findIndex(function(column, index, array) {
@@ -1016,7 +1028,7 @@ GbGradeTable.setHasConcurrentEdit = function(conflict) {
 
   student.hasConcurrentEdit = hasConcurrentEdit.substr(0, assignmentIndex) + "1" + hasConcurrentEdit.substr(assignmentIndex+1);
 
-  GbGradeTable.instance.setDataAtCell(row, 0, student);
+  GbGradeTable.instance.setDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX, student);
   GbGradeTable.redrawCell(row, col);
 }
 
@@ -1035,13 +1047,27 @@ GbGradeTable.colModelForCategoryScore = function(categoryName) {
 };
 
 
+GbGradeTable.colModelForCategoryId = function(categoryId) {
+  for (var i=0; i<GbGradeTable.columns.length; i++) {
+    var column = GbGradeTable.columns[i];
+    if (column.type == "category") {
+      if (column.categoryId === parseInt(categoryId)) {
+        return column;
+      }
+    }
+  }
+
+  throw "colModelForCategoryId: column not found for " + categoryId;
+};
+
+
 GbGradeTable.selectStudentCell = function(studentId) {
   var row = 0;
   if (studentId != null){
     row = GbGradeTable.rowForStudent(studentId);
   }
 
-  return GbGradeTable.instance.selectCell(row, 0);
+  return GbGradeTable.instance.selectCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 };
 
 GbGradeTable.updateComment = function(assignmentId, studentId, comment) {
@@ -1057,7 +1083,7 @@ GbGradeTable.updateComment = function(assignmentId, studentId, comment) {
   var row = GbGradeTable.rowForStudent(studentId);
   var col = GbGradeTable.colForAssignment(assignmentId);
 
-  GbGradeTable.instance.setDataAtCell(row, 0, student);
+  GbGradeTable.instance.setDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX, student);
   GbGradeTable.redrawCell(row, col);
 };
 
@@ -1160,7 +1186,7 @@ GbGradeTable.applyStudentFilter = function(data) {
     var filteredData = data.filter(function(row) {
       var match = true;
 
-      var student = row[0];
+      var student = row[GbGradeTable.STUDENT_COLUMN_INDEX];
       var searchableFields = [student.firstName, student.lastName, student.eid];
       var studentSearchString = searchableFields.join(";")
 
@@ -2303,6 +2329,49 @@ GbGradeTable.localizeNumber = function(number) {
 
     return '' + number;
 };
+
+
+// Commit values to the grade data and the table meta data where applicable
+GbGradeTable.commitScore = function(studentId, assignmentId, value) {
+    var modelCol = $.inArray(GbGradeTable.colModelForAssignment(assignmentId), GbGradeTable.columns);
+    var modelRow = GbGradeTable.modelIndexForStudent(studentId);
+
+    // update model
+    GbGradeTable.grades[modelRow][modelCol + GbGradeTable.FIXED_COLUMN_OFFSET] = value;
+
+    // NB update of table is handled by saveValue
+};
+
+
+GbGradeTable.commitCourseGrade = function(studentId, courseGradeData) {
+    // update table
+    var tableRow = GbGradeTable.rowForStudent(studentId);
+    GbGradeTable.instance.setDataAtCell(tableRow, GbGradeTable.COURSE_GRADE_COLUMN_INDEX, courseGradeData);
+
+    // update model
+    var modelRow = GbGradeTable.modelIndexForStudent(studentId);
+    GbGradeTable.grades[modelRow][GbGradeTable.COURSE_GRADE_COLUMN_INDEX] = courseGradeData;
+};
+
+
+GbGradeTable.commitCategoryAverage = function(studentId, categoryId, categoryScore) {
+    var categoryScoreAsLocaleString = GbGradeTable.localizeNumber(categoryScore);
+
+    // update table
+    var tableRow = GbGradeTable.rowForStudent(studentId);
+    var tableCol = GbGradeTable.colForCategoryScore(categoryId);
+    GbGradeTable.instance.setDataAtCell(tableRow, tableCol, categoryScoreAsLocaleString);
+
+    // update model
+    var modelRow = GbGradeTable.modelIndexForStudent(studentId);
+    var modelCol = $.inArray(GbGradeTable.colModelForCategoryId(categoryId), GbGradeTable.columns);
+    GbGradeTable.grades[modelRow][modelCol + GbGradeTable.FIXED_COLUMN_OFFSET] = categoryScore;
+};
+
+
+GbGradeTable.STUDENT_COLUMN_INDEX = 0;
+GbGradeTable.COURSE_GRADE_COLUMN_INDEX = 1;
+GbGradeTable.FIXED_COLUMN_OFFSET = 2;
 
 /**************************************************************************************
  * GradebookAPI - all the GradebookNG entity provider calls in one happy place
