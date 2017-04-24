@@ -74,3 +74,8 @@
 #gradebookSorter .gb-sorter-sortable:last-child .gb-sort-down {
   display: none;
 }
+
+#gradebookSorter ul {
+  list-style: none;
+  padding: 0;
+}
