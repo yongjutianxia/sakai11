@@ -55,7 +55,7 @@ GbGradeTable.unpackPackedScores = function (s, rowCount, columnCount) {
                 if (blob[readIndex].charCodeAt() & 64) {
                     // third byte is a fraction
                     var fraction = blob[readIndex + 2].charCodeAt();
-                    currentRow[writeIndex] += (fraction / Math.pow(10, Math.ceil(Math.log10(fraction))));
+                    currentRow[writeIndex] += (fraction / 100.0);
                     readIndex += 1;
                 }
 
