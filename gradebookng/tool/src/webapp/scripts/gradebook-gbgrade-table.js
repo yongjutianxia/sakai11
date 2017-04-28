@@ -452,85 +452,6 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     }
   };
 
-  // If an entered score is invalid, we keep track of the last good value here
-  var lastValidGrades = {};
-
-  GbGradeTableEditor.prototype.saveValue = function() {
-    var that = this;
-    var row = this.row;
-
-    var $td = $(this.TD);
-
-    var oldScore = this.originalValue;
-    var newScore = $(this.TEXTAREA).val();
-    var studentId = $.data(this.TD, "studentid");
-    var assignmentId = $.data(this.TD, "assignmentid");
-
-    var assignment = GbGradeTable.colModelForAssignment(assignmentId);
-
-    if (!lastValidGrades[studentId]) {
-      lastValidGrades[studentId] = {};
-    }
-
-    var postData = {
-      action: 'setScore',
-      studentId: studentId,
-      assignmentId: assignmentId,
-      oldScore: (lastValidGrades[studentId][assignmentId] || oldScore),
-      newScore: newScore
-    };
-
-    if (assignment.categoryId != null) {
-      postData['categoryId']= assignment.categoryId;
-    }
-
-    GbGradeTable.setLiveFeedbackAsSaving();
-
-    GbGradeTable.ajax(postData, function (status, data) {
-      if (status == "OK") {
-        GbGradeTable.setScoreState("saved", studentId, assignmentId);
-        delete lastValidGrades[studentId][assignmentId];
-
-        if ($.isEmptyObject(lastValidGrades[studentId])) {
-          delete(lastValidGrades[studentId])
-        }
-
-        GbGradeTable.syncScore(studentId, assignmentId, newScore);
-      } else if (status == "error") {
-        GbGradeTable.setScoreState("error", studentId, assignmentId);
-
-        if (!lastValidGrades[studentId][assignmentId]) {
-          lastValidGrades[studentId][assignmentId] = oldScore;
-        }
-      } else if (status == "invalid") {
-        GbGradeTable.setScoreState("invalid", studentId, assignmentId);
-
-        if (!lastValidGrades[studentId][assignmentId]) {
-          lastValidGrades[studentId][assignmentId] = oldScore;
-        }
-      } else if (status == "nochange") {
-        // nothing to do!
-      } else {
-        console.log("Unhandled saveValue response: " + status);
-      }
-
-      that.instance.setDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX, GbGradeTable.modelForStudent(studentId));
-
-      // update the course grade cell
-      if (data.courseGrade) {
-        GbGradeTable.syncCourseGrade(studentId, data.courseGrade);
-      }
-
-      // update the category average cell
-      if (assignment.categoryId) {
-        GbGradeTable.syncCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
-      }
-    });
-
-    Handsontable.editors.TextEditor.prototype.saveValue.apply(this, arguments);
-  }
-
-
   GbGradeTable.container = $("#gradebookSpreadsheet");
 
   GbGradeTable.columnDOMNodeCache = {};
@@ -641,6 +562,40 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         this.selectCell(coords.row, GbGradeTable.STUDENT_COLUMN_INDEX);
       }
     },
+    afterChange: function(changes, source) {
+        if (changes) {
+            for (var i=0; i<changes.length; i++) {
+                var change = changes[i];
+                var row = change[0];
+                var col = change[1];
+                var oldScore = change[2];
+                var newScore = change[3];
+
+                if (col < GbGradeTable.FIXED_COLUMN_OFFSET) {
+                    // we don't care if a student or course grade changes
+                    continue;
+                }
+
+                if (oldScore == newScore) {
+                    // nothing to do!
+                    continue;
+                }
+
+                var column = GbGradeTable.instance.view.settings.columns[col]._data_;
+                if (column.type != "assignment") {
+                    // not an assignment!! Bail!
+                    continue;
+                }
+
+                var student = GbGradeTable.instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
+                var studentId = student.userId;
+
+                var assignmentId = column.assignmentId;
+
+                GbGradeTable.setScore(studentId, assignmentId, oldScore, newScore);
+            }
+        }
+    },
     currentRowClassName: 'currentRow',
     currentColClassName: 'currentCol',
     multiSelect: false
@@ -669,12 +624,6 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     }
   });
 
-  GbGradeTable.instance.selection.empty = function() {
-      // FIXME Disable the default empty behaviour for now
-      // as 'delete' key does not trigger a saveValue.
-      // We need to invoke the editor from this context to
-      // force-save the empty value.
-  };
 
   // resize the table on window resize
   var resizeTimeout;
@@ -2383,6 +2332,73 @@ GbGradeTable.syncCategoryAverage = function(studentId, categoryId, categoryScore
 GbGradeTable.STUDENT_COLUMN_INDEX = 0;
 GbGradeTable.COURSE_GRADE_COLUMN_INDEX = 1;
 GbGradeTable.FIXED_COLUMN_OFFSET = 2;
+
+// If an entered score is invalid, we keep track of the last good value here
+GbGradeTable.lastValidGrades = {};
+
+GbGradeTable.setScore = function(studentId, assignmentId, oldScore, newScore) {
+    if (!GbGradeTable.lastValidGrades[studentId]) {
+      GbGradeTable.lastValidGrades[studentId] = {};
+    }
+
+    var postData = {
+      action: 'setScore',
+      studentId: studentId,
+      assignmentId: assignmentId,
+      oldScore: (GbGradeTable.lastValidGrades[studentId][assignmentId] || oldScore),
+      newScore: newScore
+    };
+
+    var row = GbGradeTable.rowForStudent(studentId);
+    var assignment = GbGradeTable.colModelForAssignment(assignmentId);
+
+    if (assignment.categoryId != null) {
+      postData['categoryId']= assignment.categoryId;
+    }
+
+    GbGradeTable.setLiveFeedbackAsSaving();
+
+    GbGradeTable.ajax(postData, function (status, data) {
+      if (status == "OK") {
+        GbGradeTable.setScoreState("saved", studentId, assignmentId);
+        delete GbGradeTable.lastValidGrades[studentId][assignmentId];
+
+        if ($.isEmptyObject(GbGradeTable.lastValidGrades[studentId])) {
+          delete(GbGradeTable.lastValidGrades[studentId])
+        }
+
+        GbGradeTable.syncScore(studentId, assignmentId, newScore);
+      } else if (status == "error") {
+        GbGradeTable.setScoreState("error", studentId, assignmentId);
+
+        if (!GbGradeTable.lastValidGrades[studentId][assignmentId]) {
+          GbGradeTable.lastValidGrades[studentId][assignmentId] = oldScore;
+        }
+      } else if (status == "invalid") {
+        GbGradeTable.setScoreState("invalid", studentId, assignmentId);
+
+        if (!GbGradeTable.lastValidGrades[studentId][assignmentId]) {
+          GbGradeTable.lastValidGrades[studentId][assignmentId] = oldScore;
+        }
+      } else if (status == "nochange") {
+        // nothing to do!
+      } else {
+        console.log("Unhandled saveValue response: " + status);
+      }
+
+      GbGradeTable.instance.setDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX, GbGradeTable.modelForStudent(studentId));
+
+      // update the course grade cell
+      if (data.courseGrade) {
+        GbGradeTable.syncCourseGrade(studentId, data.courseGrade);
+      }
+
+      // update the category average cell
+      if (assignment.categoryId) {
+        GbGradeTable.syncCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
+      }
+    });
+}
 
 /**************************************************************************************
  * GradebookAPI - all the GradebookNG entity provider calls in one happy place

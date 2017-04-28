@@ -335,17 +335,7 @@ public class GbGradebookData {
     };
 
     private int decimalToInteger(double decimal, int places) {
-        if ((int)decimal == decimal) {
-            return (int)decimal;
-        } else if (places == 0) {
-            if ((decimal - (int)decimal) >= 0.5) {
-                return (int)decimal + 1;
-            } else {
-                return (int)decimal;
-            }
-        } else {
-            return decimalToInteger(decimal * 10, places - 1);
-        }
+        return (int)Math.floor(decimal * Math.pow(10, places));
     }
 
     private List<String[]> courseGrades() {
